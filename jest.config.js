@@ -10,6 +10,6 @@ module.exports = {
             "<rootDir>/src/__mocks__/fileMock.js",
     },
     moduleDirectories: ["node_modules", "<rootDir>"],
-    setupFilesAfterEnv: ["jest-canvas-mock", "@testing-library/jest-dom"],
+    setupFilesAfterEnv: ["@testing-library/jest-dom"],
     reporters: ["default", ["jest-junit", { outputName: "junit.xml" }]],
 };
