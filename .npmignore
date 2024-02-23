@@ -1,0 +1,9 @@
+**/*
+!dist/**
+!CHANGELOG.md
+!package-lock.json
+!package.json
+!README.md
+!CONTRIBUTING.md
+!MIGRATION.md
+
