@@ -1,5 +1,5 @@
-import React from "react";
+import { MainProvider } from "./context-providers/provider";
 
 export const FormBuilder = () => {
-    return <div>Hello World!</div>;
+    return <MainProvider>Hello World!</MainProvider>;
 };

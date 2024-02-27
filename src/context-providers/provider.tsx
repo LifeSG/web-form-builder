@@ -1,18 +1,12 @@
-import { BaseTheme } from "@lifesg/react-design-system/theme";
 import { ComponentProps, createContext } from "react";
-import { ThemeProvider } from "styled-components";
 import { useImmerReducer } from "use-immer";
-import {
-    IFormBuilderState,
-    TFormBuilderAction,
-    TFormBuilderContext,
-} from "./types";
+import { TState, TAction, TMainContext } from "./types";
 import { EFormBuilderMode, EFormBuilderView } from "src/types";
 
 // =============================================================================
 // DEFAULT VALUES
 // =============================================================================
-const DEFAULT_VALUES: IFormBuilderState = {
+const DEFAULT_VALUES: TState = {
     mode: EFormBuilderMode.ADD_FIELD,
     view: EFormBuilderView.EDIT_FORM,
 };
@@ -21,10 +15,7 @@ const DEFAULT_VALUES: IFormBuilderState = {
 // REDUCER
 // =============================================================================
 
-export const formBuilderReducer = (
-    state: IFormBuilderState,
-    action: TFormBuilderAction
-) => {
+export const mainReducer = (state: TState, action: TAction) => {
     //
 };
 
@@ -35,7 +26,7 @@ export const formBuilderReducer = (
 // =============================================================================
 // CONTEXT
 // =============================================================================
-export const FormBuilderContext = createContext<TFormBuilderContext>({
+export const MainContext = createContext<TMainContext>({
     state: DEFAULT_VALUES,
     dispatch: () => null,
 });
@@ -43,17 +34,12 @@ export const FormBuilderContext = createContext<TFormBuilderContext>({
 // =============================================================================
 // CONTEXT PROVIDER
 // =============================================================================
-export const FormBuilderProvider = ({ children }: ComponentProps<"div">) => {
-    const [state, dispatch] = useImmerReducer(
-        formBuilderReducer,
-        DEFAULT_VALUES
-    );
+export const MainProvider = ({ children }: ComponentProps<"div">) => {
+    const [state, dispatch] = useImmerReducer(mainReducer, DEFAULT_VALUES);
 
     return (
-        <ThemeProvider theme={BaseTheme}>
-            <FormBuilderContext.Provider value={{ state, dispatch }}>
-                {children}
-            </FormBuilderContext.Provider>
-        </ThemeProvider>
+        <MainContext.Provider value={{ state, dispatch }}>
+            {children}
+        </MainContext.Provider>
     );
 };

@@ -5,27 +5,24 @@ import { EFormBuilderMode, EFormBuilderView } from "src/types";
 // STATE
 // =============================================================================
 
-export interface IFormBuilderState {
+export type TState = {
     mode: EFormBuilderMode;
     view: EFormBuilderView;
-}
+};
 
 // =============================================================================
 // ACTIONS
 // =============================================================================
 
-export type TFormBuilderAction = Record<string, never>;
+export type TAction = Record<string, never>;
 
 // =============================================================================
 // CONTEXT
 // =============================================================================
 
-export type TFormBuilderContext = ContextType<
-    IFormBuilderState,
-    TFormBuilderAction
->;
+export type TMainContext = TContextType<TState, TAction>;
 
-export type ContextType<State, Action> = {
+export type TContextType<State, Action> = {
     state: State;
     dispatch: React.Dispatch<Action>;
 };
