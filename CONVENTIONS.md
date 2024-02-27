@@ -163,10 +163,9 @@ const Wrapper = styled.div`
 return (
     <Wrapper>
         <label className="label">This is the label</label>
-        <span className="description>Lorem ipsum dolar sit amet...</span>
+        <span className="description">Lorem ipsum dolar sit amet...</span>
     </Wrapper>
 );
-
 ```
 
 ```tsx

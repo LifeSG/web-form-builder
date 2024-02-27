@@ -31,7 +31,7 @@ module.exports = {
             },
         },
     ],
-    staticDirs: ["../public"],
+    // staticDirs: ["../public"], TODO: Reinstate after public folder contents established
     webpackFinal: async (config) => {
         config.resolve.modules = [
             path.resolve(__dirname, ".."),
