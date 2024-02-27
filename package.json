@@ -33,7 +33,8 @@
     "homepage": "https://github.com/LifeSG/web-form-builder#readme",
     "dependencies": {
         "@dnd-kit/core": "^6.0.8",
-        "@dnd-kit/sortable": "^7.0.2"
+        "@dnd-kit/sortable": "^7.0.2",
+        "use-immer": "^0.9.0"
     },
     "devDependencies": {
         "@babel/core": "^7.17.8",
