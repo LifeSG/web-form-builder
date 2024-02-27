@@ -1,5 +1,4 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
-# NOTE: Commented for now until tests are up
-# npm run test && npm run build-check
+# TODO: Uncomment when tests are up
+npm audit
+npm run build
+# npm run test
