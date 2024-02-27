@@ -1,0 +1,4 @@
+# TODO: Uncomment when tests are up
+npm audit
+npm run build
+# npm run test
