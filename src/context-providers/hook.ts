@@ -6,6 +6,5 @@ export const useMainContext = () => {
 
     return {
         state,
-        dispatch,
     };
 };

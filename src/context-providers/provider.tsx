@@ -2,6 +2,7 @@ import { ComponentProps, createContext } from "react";
 import { useImmerReducer } from "use-immer";
 import { TState, TAction, TMainContext } from "./types";
 import { EFormBuilderMode, EFormBuilderView } from "src/types";
+import { noop } from "lodash";
 
 // =============================================================================
 // DEFAULT VALUES
@@ -16,7 +17,7 @@ const DEFAULT_VALUES: TState = {
 // =============================================================================
 
 export const mainReducer = (state: TState, action: TAction) => {
-    //
+    return state;
 };
 
 // =============================================================================
@@ -28,7 +29,7 @@ export const mainReducer = (state: TState, action: TAction) => {
 // =============================================================================
 export const MainContext = createContext<TMainContext>({
     state: DEFAULT_VALUES,
-    dispatch: () => null,
+    dispatch: noop,
 });
 
 // =============================================================================
