@@ -1,5 +1,5 @@
-import React from "react";
+import { BuilderProvider } from "./context-providers/builder";
 
 export const FormBuilder = () => {
-    return <div>Hello World!</div>;
+    return <BuilderProvider>Hello World!</BuilderProvider>;
 };
