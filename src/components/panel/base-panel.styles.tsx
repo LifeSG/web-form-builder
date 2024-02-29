@@ -1,17 +1,23 @@
 import { Color } from "@lifesg/react-design-system/color";
+import { MediaQuery } from "@lifesg/react-design-system/media";
+import { Transition } from "@lifesg/react-design-system/transition";
 import styled from "styled-components";
 
 export const BasePanelWrapper = styled.div<{ $isCollapsed: boolean }>`
     height: 100%;
-    width: 589px;
-    min-width: 20vw;
+    width: 36.9rem;
     transform: ${({ $isCollapsed }) => $isCollapsed && "translateX(85%)"};
+    transition: ${Transition.Base};
     background: ${Color.Neutral[8]};
     border-left: 1px solid ${Color.Neutral[5]};
     position: fixed;
     top: 0;
     right: 0;
     box-shadow: 0px 2px 12px 0px rgba(104, 104, 104, 0.25);
+
+	${MediaQuery.MaxWidth.desktopM} {
+		width: 40vw;
+	}    
 `;
 
 export const BasePanelHeaderWrapper = styled.div`

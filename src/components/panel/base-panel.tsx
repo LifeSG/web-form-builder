@@ -15,7 +15,6 @@ export const BasePanel = ({
 }: IBasePanelProps) => {
     const { state } = useBuilder();
     return (
-        <Layout.Content type="grid">
             <BasePanelWrapper $isCollapsed={state.showPanel}>
                 {!disableToolbar && (
                     <>
@@ -25,6 +24,5 @@ export const BasePanel = ({
                 )}
                 {!state.showPanel && children}
             </BasePanelWrapper>
-        </Layout.Content>
     );
 };
