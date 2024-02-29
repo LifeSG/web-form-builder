@@ -1,5 +1,5 @@
-import { MainProvider } from "./context-providers/provider";
+import { BuilderProvider } from "./context-providers/builder";
 
 export const FormBuilder = () => {
-    return <MainProvider>Hello World!</MainProvider>;
+    return <BuilderProvider>Hello World!</BuilderProvider>;
 };

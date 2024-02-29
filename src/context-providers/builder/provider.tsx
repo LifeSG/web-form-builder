@@ -1,22 +1,20 @@
-import { ComponentProps, createContext } from "react";
+import { createContext } from "react";
 import { useImmerReducer } from "use-immer";
-import { TState, TAction, TMainContext } from "./types";
-import { EFormBuilderMode, EFormBuilderView } from "src/types";
+import { TBuilderState, TBuilderAction, TBuilderContext } from "./types";
+import { EFormBuilderMode } from "src/types";
 import { noop } from "lodash";
 
 // =============================================================================
 // DEFAULT VALUES
 // =============================================================================
-const DEFAULT_VALUES: TState = {
+const DEFAULT_VALUES: TBuilderState = {
     mode: EFormBuilderMode.ADD_FIELD,
-    view: EFormBuilderView.EDIT_FORM,
 };
 
 // =============================================================================
 // REDUCER
 // =============================================================================
-
-export const mainReducer = (state: TState, action: TAction) => {
+export const builderReducer = (state: TBuilderState, action: TBuilderAction) => {
     return state;
 };
 
@@ -27,7 +25,7 @@ export const mainReducer = (state: TState, action: TAction) => {
 // =============================================================================
 // CONTEXT
 // =============================================================================
-export const MainContext = createContext<TMainContext>({
+export const BuilderContext = createContext<TBuilderContext>({
     state: DEFAULT_VALUES,
     dispatch: noop,
 });
@@ -35,12 +33,16 @@ export const MainContext = createContext<TMainContext>({
 // =============================================================================
 // CONTEXT PROVIDER
 // =============================================================================
-export const MainProvider = ({ children }: ComponentProps<"div">) => {
-    const [state, dispatch] = useImmerReducer(mainReducer, DEFAULT_VALUES);
+export const BuilderProvider = ({
+    children,
+}: {
+    children: React.ReactNode;
+}) => {
+    const [state, dispatch] = useImmerReducer(builderReducer, DEFAULT_VALUES);
 
     return (
-        <MainContext.Provider value={{ state, dispatch }}>
+        <BuilderContext.Provider value={{ state, dispatch }}>
             {children}
-        </MainContext.Provider>
+        </BuilderContext.Provider>
     );
 };
