@@ -1,7 +1,11 @@
 import { createContext } from "react";
 import { useImmerReducer } from "use-immer";
-import { TBuilderState, TBuilderAction, TBuilderContext } from "./types";
-import { EFormBuilderMode } from "src/types";
+import {
+    TBuilderState,
+    TBuilderAction,
+    TBuilderContext,
+    EFormBuilderMode,
+} from "./types";
 import { noop } from "lodash";
 
 // =============================================================================
@@ -14,7 +18,10 @@ const DEFAULT_VALUES: TBuilderState = {
 // =============================================================================
 // REDUCER
 // =============================================================================
-export const builderReducer = (state: TBuilderState, action: TBuilderAction) => {
+export const builderReducer = (
+    state: TBuilderState,
+    action: TBuilderAction
+) => {
     return state;
 };
 

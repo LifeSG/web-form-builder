@@ -1,5 +1,10 @@
-import { EFormBuilderMode } from "src/types";
 import { TContextType } from "../types";
+
+export enum EFormBuilderMode {
+    ADD_FIELD = "add-field",
+    EDIT_FIELD = "edit-field",
+    EDIT_PAGE = "edit-page",
+}
 
 // =============================================================================
 // STATE
