@@ -1,9 +1,11 @@
 import { Color } from "@lifesg/react-design-system/color";
 import { MediaQuery } from "@lifesg/react-design-system/media";
 import { Transition } from "@lifesg/react-design-system/transition";
+import { ChevronLeftIcon } from "@lifesg/react-icons/chevron-left";
 import styled from "styled-components";
+import { IHeaderStyleProps, IWrapperStyleProps } from "./types";
 
-export const BasePanelWrapper = styled.div<{ $isCollapsed: boolean }>`
+export const Wrapper = styled.div<IWrapperStyleProps>`
     height: 100%;
     width: 36.9rem;
     transform: ${({ $isCollapsed }) => $isCollapsed && "translateX(85%)"};
@@ -15,12 +17,12 @@ export const BasePanelWrapper = styled.div<{ $isCollapsed: boolean }>`
     right: 0;
     box-shadow: 0px 2px 12px 0px rgba(104, 104, 104, 0.25);
 
-	${MediaQuery.MaxWidth.desktopM} {
-		width: 40vw;
-	}    
+    ${MediaQuery.MaxWidth.desktopM} {
+        width: 40vw;
+    }
 `;
 
-export const BasePanelHeaderWrapper = styled.div`
+export const HeaderWrapper = styled.div`
     grid-column: 2 / span 1;
     max-height: 5.75rem;
     display: flex;
@@ -41,4 +43,11 @@ export const BasePanelContent = styled.div`
     flex-direction: column;
     width: 100%;
     overflow-y: scroll;
+`;
+
+export const HeaderIcon = styled(ChevronLeftIcon)<IHeaderStyleProps>`
+    transform-origin: bottom-left;
+    transform: ${({ $isCollapsed }) =>
+        $isCollapsed ? "rotate(-180deg)" : "rotate(0)"};
+    transition: transform 0.1s ease-in-out;
 `;
