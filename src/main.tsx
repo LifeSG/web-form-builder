@@ -6,7 +6,9 @@ export const FormBuilder = () => {
     return (
         <BuilderProvider>
             <TemplatePage>
-                <BasePanel></BasePanel>
+                <BasePanel>
+                <h1>Hello World!</h1>
+                </BasePanel>
             </TemplatePage>
         </BuilderProvider>
     );
