@@ -1,6 +1,6 @@
 import React from "react";
 export interface IBasePanelProps {
-    children: React.ReactNode;
+    children?: React.ReactNode;
     disableToolbar?: boolean;
 }
 
