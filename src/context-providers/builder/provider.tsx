@@ -1,6 +1,7 @@
 import { noop } from "lodash";
 import { createContext } from "react";
 import { useImmerReducer } from "use-immer";
+import { MainWrapper } from "./provider.styles";
 import {
     EFormBuilderMode,
     TBuilderAction,
@@ -13,7 +14,7 @@ import {
 // =============================================================================
 const DEFAULT_VALUES: TBuilderState = {
     mode: EFormBuilderMode.ADD_FIELD,
-    showPanel: false,
+    showSidePanel: false,
 };
 
 // =============================================================================
@@ -25,16 +26,12 @@ export const builderReducer = (
 ) => {
     switch (action.type) {
         case "toggle-panel": {
-            state.showPanel = action.payload;
+            state.showSidePanel = action.payload;
             break;
         }
     }
     return state;
 };
-
-// =============================================================================
-// HELPER FUNCTIONS
-// =============================================================================
 
 // =============================================================================
 // CONTEXT
@@ -55,8 +52,10 @@ export const BuilderProvider = ({
     const [state, dispatch] = useImmerReducer(builderReducer, DEFAULT_VALUES);
 
     return (
-        <BuilderContext.Provider value={{ state, dispatch }}>
-            {children}
-        </BuilderContext.Provider>
+        <MainWrapper>
+            <BuilderContext.Provider value={{ state, dispatch }}>
+                {children}
+            </BuilderContext.Provider>
+        </MainWrapper>
     );
 };

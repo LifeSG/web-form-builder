@@ -22,8 +22,8 @@ export const ModeButtonList = styled.div`
 `;
 
 export const ModeButton = styled.button<{ $active: boolean }>`
-    background: ${({ $active }) =>
-        $active ? Color.Accent.Light[4] : "transparent"};
+    background: ${(props) =>
+        props.$active ? Color.Accent.Light[4](props) : "transparent"};
     color: ${Color.Primary};
     display: grid;
     cursor: pointer;

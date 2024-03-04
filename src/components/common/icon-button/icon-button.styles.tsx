@@ -1,15 +1,19 @@
 import styled from "styled-components";
 
+// =============================================================================
+// STYLING INTERFACE
+// =============================================================================
 interface IconButtonStyleProps {
     $iconSize?: string;
     $iconColor?: (props: any) => string;
 }
 
+// =============================================================================
+// STYLING
+// =============================================================================
 export const IconButton = styled.button<IconButtonStyleProps>`
     padding: 0;
     border: none;
-    display: grid;
-    place-items: center;
     background: transparent;
     cursor: pointer;
 

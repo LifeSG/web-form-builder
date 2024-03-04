@@ -1,15 +1,20 @@
-import { BasePanel } from "./components/panel/base-panel";
-import { TemplatePage } from "./components/template-page";
+import { BasePanel } from "./components/panel/side-panel";
+import {
+    BasePanelBody,
+    BasePanelContent,
+} from "./components/panel/side-panel.styles";
 import { BuilderProvider } from "./context-providers/builder";
 
 export const FormBuilder = () => {
     return (
         <BuilderProvider>
-            <TemplatePage>
-                <BasePanel>
-                <h1>Hello World!</h1>
-                </BasePanel>
-            </TemplatePage>
+            <BasePanel>
+                <BasePanelBody>
+                    <BasePanelContent>
+                        <h2>Hello World!</h2>
+                    </BasePanelContent>
+                </BasePanelBody>
+            </BasePanel>
         </BuilderProvider>
     );
 };

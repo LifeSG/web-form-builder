@@ -3,8 +3,21 @@ import { MediaQuery } from "@lifesg/react-design-system/media";
 import { Transition } from "@lifesg/react-design-system/transition";
 import { ChevronLeftIcon } from "@lifesg/react-icons/chevron-left";
 import styled from "styled-components";
-import { IHeaderStyleProps, IWrapperStyleProps } from "./types";
 
+// =============================================================================
+// STYLING INTERFACE
+// =============================================================================
+export interface IWrapperStyleProps {
+    $isCollapsed: boolean;
+}
+
+export interface IHeaderStyleProps {
+    $isCollapsed: boolean;
+}
+
+// =============================================================================
+// STYLING
+// =============================================================================
 export const Wrapper = styled.div<IWrapperStyleProps>`
     height: 100%;
     width: 36.9rem;
@@ -31,6 +44,12 @@ export const HeaderWrapper = styled.div`
     gap: 2rem;
     padding: 2rem;
     border-bottom: 1px solid ${Color.Neutral[5]};
+`;
+
+export const ContentWrapper = styled.div`
+    display: flex;
+    gap: 1rem;
+    height: 100%;
 `;
 
 export const BasePanelBody = styled.div`
