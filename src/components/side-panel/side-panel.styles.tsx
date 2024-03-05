@@ -1,5 +1,4 @@
 import { Color } from "@lifesg/react-design-system/color";
-import { MediaQuery } from "@lifesg/react-design-system/media";
 import { Transition } from "@lifesg/react-design-system/transition";
 import styled, { css } from "styled-components";
 
