@@ -1,5 +1,5 @@
 import { Color } from "@lifesg/react-design-system/color";
-import { useBuilder } from "../../context-providers";
+import { EFormBuilderMode, useBuilder } from "../../context-providers";
 import { IconButton } from "../common";
 import {
     HeaderIcon,
@@ -9,14 +9,11 @@ import {
 } from "./side-panel-header.styles";
 import { ISidePanelHeaderProps } from "./types";
 
-export const SidePanelHeader = ({
-    onSaveChanges,
-    headerTitle, // TODO: decide from context
-}: ISidePanelHeaderProps) => {
+export const SidePanelHeader = ({ onSaveChanges }: ISidePanelHeaderProps) => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
-    const { state, togglePanel } = useBuilder();
+    const { showSidePanel, togglePanel, currentMode } = useBuilder();
 
     // =========================================================================
     // EVENT HANDLERS
@@ -27,6 +24,23 @@ export const SidePanelHeader = ({
     };
 
     // =========================================================================
+    // HELPER FUNCTIONS
+    // =========================================================================
+    const displayHeaderTitle = () => {
+        switch (currentMode) {
+            case EFormBuilderMode.ADD_FIELD: {
+                return "Add elements";
+            }
+            case EFormBuilderMode.EDIT_FIELD: {
+                return "Edit details";
+            }
+            case EFormBuilderMode.EDIT_PAGES: {
+                return "Add pages";
+            }
+        }
+    };
+
+    // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
     return (
@@ -34,11 +48,11 @@ export const SidePanelHeader = ({
             <IconButton
                 $iconSize="1.5rem"
                 $iconColor={Color.Neutral[3]}
-                onClick={() => togglePanel(!state.showSidePanel)}
+                onClick={() => togglePanel(!showSidePanel)}
             >
-                <HeaderIcon $isCollapsed={state.showSidePanel} />
+                <HeaderIcon $isCollapsed={showSidePanel} />
             </IconButton>
-            <HeaderLabel weight="semibold">{headerTitle}</HeaderLabel>
+            <HeaderLabel weight="semibold">{displayHeaderTitle()}</HeaderLabel>
             {onSaveChanges && (
                 <SaveChangesButton onClick={handleSaveButtonClick}>
                     Save changes

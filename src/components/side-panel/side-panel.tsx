@@ -14,7 +14,7 @@ export const SidePanel = () => {
     // =========================================================================
     return (
         <Wrapper $isCollapsed={showSidePanel}>
-            <SidePanelHeader headerTitle="Add Elements" />
+            <SidePanelHeader />
             <ContentWrapper>
                 {currentMode !== EFormBuilderMode.EDIT_FIELD && <Toolbar />}
                 <ContentSection>Render contents conditionally</ContentSection>

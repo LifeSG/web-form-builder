@@ -1,8 +1,18 @@
 import { Color } from "@lifesg/react-design-system/color";
 import styled from "styled-components";
 
-export const ToolbarWrapper = styled.div`
-    // TODO: Rename to Wrapper
+// =============================================================================
+// STYLE INTERFACES
+// =============================================================================
+export interface IModeButtonProps {
+    $active: boolean
+}
+
+
+// =============================================================================
+// STYLING
+// =============================================================================
+export const Wrapper = styled.div`
     height: 100%;
     background: ${Color.Neutral[8]};
     display: flex;
@@ -14,10 +24,8 @@ export const ToolbarWrapper = styled.div`
     gap: 2rem;
 `;
 
-export const ModeButton = styled.button<{ $active: boolean }>`
-    // TODO: Add style interface
-    background: ${(props) =>
-        props.$active ? Color.Accent.Light[4](props) : "transparent"};
+export const ModeButton = styled.button<IModeButtonProps>`
+    background: ${({ $active }) => $active ? Color.Accent.Light[4] : "transparent"}; 
     color: ${Color.Primary};
     display: grid;
     cursor: pointer;
