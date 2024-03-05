@@ -1,8 +1,8 @@
-import { useBuilder } from "../../../context-providers/builder/hook";
-import { Toolbar } from "../toolbar";
 import { SidePanelHeader } from "./side-panel-header";
+import { Toolbar } from "./toolbar";
 import { ContentWrapper, SidePanelBody, Wrapper } from "./side-panel.styles";
 import { ISidePanelProps } from "./types";
+import { useBuilder } from "../../context-providers";
 
 export const SidePanel = ({
     children,
@@ -18,7 +18,7 @@ export const SidePanel = ({
     // =========================================================================
     return (
         <Wrapper $isCollapsed={state.showSidePanel}>
-            {!disableToolbar && (
+            {/* {!disableToolbar && (
                 <>
                     <SidePanelHeader headerTitle="Add Elements" />
                     <ContentWrapper>
@@ -27,7 +27,12 @@ export const SidePanel = ({
                     </ContentWrapper>
                 </>
             )}
-            {!state.showSidePanel && disableToolbar && children}
+            {!state.showSidePanel && disableToolbar && children} */}
+            <SidePanelHeader headerTitle="Add Elements" />
+                    <ContentWrapper>
+                        <Toolbar />
+                        <SidePanelBody>{children}</SidePanelBody>
+                    </ContentWrapper>
         </Wrapper>
     );
 };

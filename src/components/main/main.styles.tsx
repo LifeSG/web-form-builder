@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const MainWrapper = styled.div`
+export const Wrapper = styled.div`
     width: 100%;
     height: 100%;
     overflow-y: auto;
