@@ -9,7 +9,7 @@ import {
 } from "./side-panel-header.styles";
 import { ISidePanelHeaderProps } from "./types";
 
-export const SidePanelHeader = ({ onSaveChanges }: ISidePanelHeaderProps) => {
+export const SidePanelHeader = () => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
@@ -18,15 +18,17 @@ export const SidePanelHeader = ({ onSaveChanges }: ISidePanelHeaderProps) => {
     // =========================================================================
     // EVENT HANDLERS
     // =========================================================================
-    const handleSaveButtonClick: () => void = () => {
-        console.log("Save button clicked");
-        if (onSaveChanges) onSaveChanges();
-    };
+
+    // TODO: When react hook form is being set up, run this function only when there are changes in the form values 
+    // const handleSaveButtonClick  = () => {
+    //     if (onSaveChanges) onSaveChanges();
+    //     return "Save button clicked";
+    // };
 
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
-    const displayHeaderTitle = () => {
+    const getHeaderTitle = () => {
         switch (currentMode) {
             case EFormBuilderMode.ADD_FIELD: {
                 return "Add elements";
@@ -52,12 +54,13 @@ export const SidePanelHeader = ({ onSaveChanges }: ISidePanelHeaderProps) => {
             >
                 <HeaderIcon $isCollapsed={showSidePanel} />
             </IconButton>
-            <HeaderLabel weight="semibold">{displayHeaderTitle()}</HeaderLabel>
-            {onSaveChanges && (
+            <HeaderLabel weight="semibold">{getHeaderTitle()}</HeaderLabel>
+            {/* TODO: To work on when react hook form is set up */}
+            {/* {onSaveChanges && (
                 <SaveChangesButton onClick={handleSaveButtonClick}>
                     Save changes
                 </SaveChangesButton>
-            )}
+            )} */}
         </Wrapper>
     );
 };
