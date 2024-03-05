@@ -1,4 +1,4 @@
-import { Wrapper } from "./main.styles";
+import { Container, Wrapper } from "./main.styles";
 
 interface IProps {
     children: React.ReactNode;
@@ -6,6 +6,10 @@ interface IProps {
 
 export const Main = ({ children }: IProps) => {
     return (
-        <Wrapper>{children}</Wrapper>
-    ); 
+        <Wrapper>
+            <Container type="grid" stretch>
+                {children}
+            </Container>
+        </Wrapper>
+    );
 };

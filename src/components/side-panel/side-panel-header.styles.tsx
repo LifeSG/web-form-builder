@@ -1,7 +1,7 @@
 import { Button } from "@lifesg/react-design-system/button";
 import { Color } from "@lifesg/react-design-system/color";
-import { ChevronLeftIcon } from "@lifesg/react-icons/chevron-left";
 import { Text } from "@lifesg/react-design-system/text";
+import { ChevronRightIcon } from "@lifesg/react-icons/chevron-right";
 import styled from "styled-components";
 
 // =============================================================================
@@ -22,10 +22,10 @@ export const Wrapper = styled.div`
     border-bottom: 1px solid ${Color.Neutral[5]};
 `;
 
-export const HeaderIcon = styled(ChevronLeftIcon)<IIconStyleProps>`
+export const HeaderIcon = styled(ChevronRightIcon)<IIconStyleProps>`
     transform: ${({ $isCollapsed }) =>
         $isCollapsed ? "rotate(-180deg)" : "rotate(0)"};
-    transition: transform 0.3s ease-in-out;
+    transition: transform 350ms ease-in-out;
 `;
 
 export const HeaderLabel = styled(Text.H3)`

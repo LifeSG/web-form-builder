@@ -1,10 +1,15 @@
+import { Layout } from "@lifesg/react-design-system/layout";
 import styled from "styled-components";
 
-export const Wrapper = styled.div`
-    position: relative;
-    width: 100%;
+export const Wrapper = styled(Layout.Section)`
     height: 100%;
-    overflow-y: auto;
     overflow-x: hidden;
-    display: flex;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+`;
+
+export const Container = styled(Layout.Container)`
+    position: relative;
+    height: 100%;
+    padding: 2rem 3rem;
 `;

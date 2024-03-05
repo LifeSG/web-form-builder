@@ -1,7 +1,7 @@
 import { Color } from "@lifesg/react-design-system/color";
 import { MediaQuery } from "@lifesg/react-design-system/media";
 import { Transition } from "@lifesg/react-design-system/transition";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 // =============================================================================
 // STYLING INTERFACE
@@ -17,21 +17,23 @@ export const Wrapper = styled.div<IWrapperStyleProps>`
     display: flex;
     flex-direction: column;
     height: 100%;
-    width: ${({ $isCollapsed }) => ($isCollapsed ? 5.5 : 36.9)}rem;
-    /* transform: ${({ $isCollapsed }) =>
-        $isCollapsed && "translateX(calc(100% - 5.5rem))"}; */
+    width: 36.8rem;
     transition: ${Transition.Base};
     background: ${Color.Neutral[8]};
     border-left: 1px solid ${Color.Neutral[5]};
     margin-left: auto;
     box-shadow: 0px 2px 12px 0px rgba(104, 104, 104, 0.25);
-    position: sticky;
+    position: fixed;
     top: 0;
     right: 0;
 
-    ${MediaQuery.MaxWidth.desktopM} {
-        width: 40vw;
-    }
+    ${(props) => {
+        if (props.$isCollapsed) {
+            return css`
+                transform: translateX(calc(100% - 5.5rem));
+            `;
+        }
+    }}
 `;
 
 export const ContentWrapper = styled.div`
