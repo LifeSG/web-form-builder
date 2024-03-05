@@ -7,8 +7,12 @@ import {
     HeaderWrapper,
     SaveChangesButton,
 } from "./side-panel.styles";
+import { ISidePanelHeaderProps } from "./types";
 
-export const SidePanelHeader = () => {
+export const SidePanelHeader = ({
+    onClickSaveChanges = false,
+    headerTitle,
+}: ISidePanelHeaderProps) => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
@@ -33,10 +37,12 @@ export const SidePanelHeader = () => {
             >
                 <HeaderIcon $isCollapsed={state.showSidePanel} />
             </IconButton>
-            <HeaderTitle>Add elements</HeaderTitle>
-            <SaveChangesButton onClick={handleSaveButtonClick}>
-                Save changes
-            </SaveChangesButton>
+            <HeaderTitle>{headerTitle}</HeaderTitle>
+            {onClickSaveChanges && (
+                <SaveChangesButton onClick={handleSaveButtonClick}>
+                    Save changes
+                </SaveChangesButton>
+            )}
         </HeaderWrapper>
     );
 };

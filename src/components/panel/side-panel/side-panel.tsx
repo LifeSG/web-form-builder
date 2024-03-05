@@ -1,7 +1,7 @@
 import { useBuilder } from "../../../context-providers/builder/hook";
 import { Toolbar } from "../toolbar";
 import { SidePanelHeader } from "./side-panel-header";
-import { ContentWrapper, Wrapper } from "./side-panel.styles";
+import { ContentWrapper, SidePanelBody, Wrapper } from "./side-panel.styles";
 import { ISidePanelProps } from "./types";
 
 export const SidePanel = ({
@@ -20,10 +20,10 @@ export const SidePanel = ({
         <Wrapper $isCollapsed={state.showSidePanel}>
             {!disableToolbar && (
                 <>
-                    <SidePanelHeader />
+                    <SidePanelHeader headerTitle="Add Elements" />
                     <ContentWrapper>
                         <Toolbar />
-                        {children}
+                        <SidePanelBody>{children}</SidePanelBody>
                     </ContentWrapper>
                 </>
             )}

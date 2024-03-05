@@ -61,12 +61,6 @@ export const ContentWrapper = styled.div`
 export const SidePanelBody = styled.div`
     padding: 2rem 2rem 0 0;
     flex: 1;
-`;
-
-export const SidePanelContent = styled.div`
-    display: flex;
-    flex-direction: column;
-    width: 100%;
     overflow-y: scroll;
 `;
 
