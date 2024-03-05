@@ -10,7 +10,7 @@ import {
 import { ISidePanelHeaderProps } from "./types";
 
 export const SidePanelHeader = ({
-    onClickSaveChanges = false,
+    onSaveChanges,
     headerTitle, // TODO: decide from context
 }: ISidePanelHeaderProps) => {
     // =========================================================================
@@ -23,6 +23,7 @@ export const SidePanelHeader = ({
     // =========================================================================
     const handleSaveButtonClick: () => void = () => {
         console.log("Save button clicked");
+        if (onSaveChanges) onSaveChanges();
     };
 
     // =========================================================================
@@ -38,7 +39,7 @@ export const SidePanelHeader = ({
                 <HeaderIcon $isCollapsed={state.showSidePanel} />
             </IconButton>
             <HeaderLabel weight="semibold">{headerTitle}</HeaderLabel>
-            {onClickSaveChanges && (
+            {onSaveChanges && (
                 <SaveChangesButton onClick={handleSaveButtonClick}>
                     Save changes
                 </SaveChangesButton>

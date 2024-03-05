@@ -4,6 +4,6 @@ import React from "react";
 // INTERFACES
 // =============================================================================
 export interface ISidePanelHeaderProps {
-    onClickSaveChanges?: boolean;
+    onSaveChanges?: () => void;
     headerTitle?: string;
 }
