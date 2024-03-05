@@ -1,14 +1,11 @@
-import { Main } from "./components";
-import { SidePanel } from "./components/side-panel";
+import { ElementListPanel, Main, SidePanel } from "./components";
 import { BuilderProvider } from "./context-providers/builder";
 
 export const FormBuilder = () => {
     return (
         <BuilderProvider>
             <Main>
-                <div style={{ border: "2px solid red", display: "flex" }}>
-                    Main content here...
-                </div>
+                <ElementListPanel />
                 <SidePanel />
             </Main>
         </BuilderProvider>
