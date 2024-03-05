@@ -1,14 +1,25 @@
 import { Color } from "@lifesg/react-design-system/color";
-import { Text } from "@lifesg/react-design-system/text";
-import { useBuilder } from "../../context-providers/builder/hook";
-import { IconButton } from "../common/icon-button";
-import { HeaderIcon, HeaderWrapper } from "./side-panel.styles";
+import { useBuilder } from "../../../context-providers/builder/hook";
+import { IconButton } from "../../common/icon-button";
+import {
+    HeaderIcon,
+    HeaderTitle,
+    HeaderWrapper,
+    SaveChangesButton,
+} from "./side-panel.styles";
 
-export const BasePanelHeader = () => {
+export const SidePanelHeader = () => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
     const { state, togglePanel } = useBuilder();
+
+    // =========================================================================
+    // EVENT HANDLERS
+    // =========================================================================
+    const handleSaveButtonClick: () => void = () => {
+        console.log("Save button clicked");
+    };
 
     // =========================================================================
     // RENDER FUNCTIONS
@@ -22,7 +33,10 @@ export const BasePanelHeader = () => {
             >
                 <HeaderIcon $isCollapsed={state.showSidePanel} />
             </IconButton>
-            <Text.H3 weight="semibold">Add elements</Text.H3>
+            <HeaderTitle>Add elements</HeaderTitle>
+            <SaveChangesButton onClick={handleSaveButtonClick}>
+                Save changes
+            </SaveChangesButton>
         </HeaderWrapper>
     );
 };

@@ -1,7 +1,6 @@
-import { noop } from "lodash";
+import noop from "lodash/noop";
 import { createContext } from "react";
 import { useImmerReducer } from "use-immer";
-import { MainWrapper } from "./provider.styles";
 import {
     EFormBuilderMode,
     TBuilderAction,
@@ -52,10 +51,8 @@ export const BuilderProvider = ({
     const [state, dispatch] = useImmerReducer(builderReducer, DEFAULT_VALUES);
 
     return (
-        <MainWrapper>
-            <BuilderContext.Provider value={{ state, dispatch }}>
-                {children}
-            </BuilderContext.Provider>
-        </MainWrapper>
+        <BuilderContext.Provider value={{ state, dispatch }}>
+            {children}
+        </BuilderContext.Provider>
     );
 };

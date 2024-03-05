@@ -8,13 +8,6 @@ export const ToolbarWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     width: fit-content;
-`;
-
-export const ModeButtonList = styled.div`
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    align-items: center;
     padding: 2rem 1rem;
     border: 1px solid ${Color.Neutral[5]};
     border-style: none solid none none;

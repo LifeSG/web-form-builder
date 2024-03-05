@@ -3,7 +3,7 @@ import React from "react";
 // =============================================================================
 // INTERFACES
 // =============================================================================
-export interface IBasePanelProps {
+export interface ISidePanelProps {
     children?: React.ReactNode;
     disableToolbar?: boolean;
 }

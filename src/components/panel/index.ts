@@ -1,2 +1,1 @@
-export * from "./side-panel";
-export * from "./types";
+export * from "./panel";

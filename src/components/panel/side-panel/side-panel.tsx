@@ -1,14 +1,13 @@
-import { useBuilder } from "../../context-providers/builder/hook";
-import { BasePanelHeader } from "./side-panel-header";
+import { useBuilder } from "../../../context-providers/builder/hook";
+import { Toolbar } from "../toolbar";
+import { SidePanelHeader } from "./side-panel-header";
 import { ContentWrapper, Wrapper } from "./side-panel.styles";
-import { Toolbar } from "./toolbar";
-import { IBasePanelProps } from "./types";
+import { ISidePanelProps } from "./types";
 
-export const BasePanel = ({
+export const SidePanel = ({
     children,
     disableToolbar = false,
-}: IBasePanelProps) => {
-
+}: ISidePanelProps) => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
@@ -21,7 +20,7 @@ export const BasePanel = ({
         <Wrapper $isCollapsed={state.showSidePanel}>
             {!disableToolbar && (
                 <>
-                    <BasePanelHeader />
+                    <SidePanelHeader />
                     <ContentWrapper>
                         <Toolbar />
                         {children}
