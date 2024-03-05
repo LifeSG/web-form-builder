@@ -1,38 +1,24 @@
 import { SidePanelHeader } from "./side-panel-header";
 import { Toolbar } from "./toolbar";
-import { ContentWrapper, SidePanelBody, Wrapper } from "./side-panel.styles";
-import { ISidePanelProps } from "./types";
-import { useBuilder } from "../../context-providers";
+import { ContentWrapper, ContentSection, Wrapper } from "./side-panel.styles";
+import { EFormBuilderMode, useBuilder } from "../../context-providers";
 
-export const SidePanel = ({
-    children,
-    disableToolbar = false,
-}: ISidePanelProps) => {
+export const SidePanel = () => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
-    const { state } = useBuilder();
+    const { showSidePanel, currentMode } = useBuilder();
 
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
     return (
-        <Wrapper $isCollapsed={state.showSidePanel}>
-            {/* {!disableToolbar && (
-                <>
-                    <SidePanelHeader headerTitle="Add Elements" />
-                    <ContentWrapper>
-                        <Toolbar />
-                        <SidePanelBody>{children}</SidePanelBody>
-                    </ContentWrapper>
-                </>
-            )}
-            {!state.showSidePanel && disableToolbar && children} */}
+        <Wrapper $isCollapsed={showSidePanel}>
             <SidePanelHeader headerTitle="Add Elements" />
-                    <ContentWrapper>
-                        <Toolbar />
-                        <SidePanelBody>{children}</SidePanelBody>
-                    </ContentWrapper>
+            <ContentWrapper>
+                {currentMode !== EFormBuilderMode.EDIT_FIELD && <Toolbar />}
+                <ContentSection>Render contents conditionally</ContentSection>
+            </ContentWrapper>
         </Wrapper>
     );
 };

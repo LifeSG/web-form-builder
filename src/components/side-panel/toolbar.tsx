@@ -1,7 +1,6 @@
 import { DocIcon } from "@lifesg/react-icons/doc";
 import { Square2x2Icon } from "@lifesg/react-icons/square-2x2";
-import { useBuilder } from "../../../context-providers/builder/hook";
-import { EFormBuilderMode } from "../../../context-providers/builder/types";
+import { EFormBuilderMode, useBuilder } from "../../context-providers";
 import { ModeButton, ToolbarWrapper } from "./toolbar.styles";
 
 export const Toolbar = () => {

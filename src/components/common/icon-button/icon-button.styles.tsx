@@ -12,7 +12,7 @@ interface IconButtonStyleProps {
 // STYLING
 // =============================================================================
 export const IconButton = styled.button<IconButtonStyleProps>`
-    padding: 0;
+    padding: 1rem; // Increase hit zone
     border: none;
     background: transparent;
     cursor: pointer;
@@ -25,5 +25,6 @@ export const IconButton = styled.button<IconButtonStyleProps>`
         width: ${({ $iconSize }) => $iconSize};
         height: ${({ $iconSize }) => $iconSize};
         color: ${({ $iconColor }) => $iconColor};
+        margin-bottom: -5px; // Tweak to align to label
     }
 `;

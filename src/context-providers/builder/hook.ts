@@ -13,6 +13,8 @@ export const useBuilder = () => {
 
     return {
         state,
+        showSidePanel: state.showSidePanel,
+        currentMode: state.mode,
         togglePanel,
     };
 };

@@ -2,6 +2,7 @@ import { Color } from "@lifesg/react-design-system/color";
 import styled from "styled-components";
 
 export const ToolbarWrapper = styled.div`
+    // TODO: Rename to Wrapper
     height: 100%;
     background: ${Color.Neutral[8]};
     display: flex;
@@ -14,14 +15,15 @@ export const ToolbarWrapper = styled.div`
 `;
 
 export const ModeButton = styled.button<{ $active: boolean }>`
+    // TODO: Add style interface
     background: ${(props) =>
         props.$active ? Color.Accent.Light[4](props) : "transparent"};
     color: ${Color.Primary};
     display: grid;
     cursor: pointer;
-    padding: 1rem;
     border: none;
     border-radius: 0.25rem;
+    padding: 1rem;
 
     &:hover {
         background: ${Color.Accent.Light[4]};

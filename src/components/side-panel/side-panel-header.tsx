@@ -1,17 +1,17 @@
 import { Color } from "@lifesg/react-design-system/color";
-import { useBuilder } from "../../../context-providers/builder/hook";
-import { IconButton } from "../../common/icon-button";
+import { useBuilder } from "../../context-providers";
+import { IconButton } from "../common";
 import {
     HeaderIcon,
-    HeaderTitle,
-    HeaderWrapper,
+    HeaderLabel,
     SaveChangesButton,
-} from "./side-panel.styles";
+    Wrapper,
+} from "./side-panel-header.styles";
 import { ISidePanelHeaderProps } from "./types";
 
 export const SidePanelHeader = ({
     onClickSaveChanges = false,
-    headerTitle,
+    headerTitle, // TODO: decide from context
 }: ISidePanelHeaderProps) => {
     // =========================================================================
     // CONST, STATE, REFS
@@ -29,7 +29,7 @@ export const SidePanelHeader = ({
     // RENDER FUNCTIONS
     // =========================================================================
     return (
-        <HeaderWrapper>
+        <Wrapper>
             <IconButton
                 $iconSize="1.5rem"
                 $iconColor={Color.Neutral[3]}
@@ -37,12 +37,12 @@ export const SidePanelHeader = ({
             >
                 <HeaderIcon $isCollapsed={state.showSidePanel} />
             </IconButton>
-            <HeaderTitle>{headerTitle}</HeaderTitle>
+            <HeaderLabel weight="semibold">{headerTitle}</HeaderLabel>
             {onClickSaveChanges && (
                 <SaveChangesButton onClick={handleSaveButtonClick}>
                     Save changes
                 </SaveChangesButton>
             )}
-        </HeaderWrapper>
+        </Wrapper>
     );
 };
