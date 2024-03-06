@@ -1,9 +1,7 @@
+import { TField } from "src/schemas";
 import { TContextType } from "../types";
 
-// =============================================================================
-// ENUMS
-// =============================================================================
-export enum EFormBuilderMode {
+export enum EBuilderMode {
     ADD_FIELD = "add-field",
     EDIT_FIELD = "edit-field",
     EDIT_PAGES = "edit-page",
@@ -13,8 +11,10 @@ export enum EFormBuilderMode {
 // STATE
 // =============================================================================
 export type TBuilderState = {
-    mode: EFormBuilderMode;
+    mode: EBuilderMode;
     showSidePanel: boolean;
+    fields: Map<string, TField>;
+    focusedField: TField | null;
 };
 
 // =============================================================================
@@ -25,7 +25,12 @@ export type TTogglePanelAction = {
     payload: boolean;
 };
 
-export type TBuilderAction = TTogglePanelAction;
+export type TBuilderAction = TTogglePanelAction | TFocusFieldAction;
+
+export type TFocusFieldAction = {
+    type: "focus-field";
+    payload: TField | null;
+};
 
 // =============================================================================
 // CONTEXT

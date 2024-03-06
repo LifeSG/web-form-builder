@@ -29,6 +29,12 @@ export const builderReducer = (
             break;
         }
     }
+    switch (action.type) {
+        case "focus-field":
+            state.focusedField = action.payload;
+            break;
+    }
+
     return state;
 };
 
