@@ -3,7 +3,7 @@ import styled from "styled-components";
 // =============================================================================
 // STYLING INTERFACE
 // =============================================================================
-interface IconButtonStyleProps {
+interface IIconButtonStyleProps {
     $iconSize?: string;
     $iconColor?: (props: any) => string;
 }
@@ -11,7 +11,7 @@ interface IconButtonStyleProps {
 // =============================================================================
 // STYLING
 // =============================================================================
-export const IconButton = styled.button<IconButtonStyleProps>`
+export const IconButton = styled.button<IIconButtonStyleProps>`
     padding: 1rem; // Increase hit zone
     border: none;
     background: transparent;
