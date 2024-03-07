@@ -28,6 +28,10 @@ export const builderReducer = (
             state.showSidePanel = action.payload;
             break;
         }
+        case "toggle-mode": {
+            state.mode = action.payload;
+            break;
+        }
     }
     return state;
 };

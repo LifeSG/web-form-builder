@@ -9,6 +9,14 @@ export enum EFormBuilderMode {
     EDIT_PAGES = "edit-page",
 }
 
+export enum ETextFieldMode {
+    EMAIL_FIELD = "email-field",
+    NUMERIC_FIELD = "numeric-field",
+    TEXT_FIELD = "text-field",
+    CONTACT_FIELD = "contact-field",
+    TEXTAREA_FIELD = "textarea-field",
+}
+
 // =============================================================================
 // STATE
 // =============================================================================
@@ -25,7 +33,12 @@ export type TTogglePanelAction = {
     payload: boolean;
 };
 
-export type TBuilderAction = TTogglePanelAction;
+export type TToggleModeAction = {
+    type: "toggle-mode";
+    payload: EFormBuilderMode;
+};
+
+export type TBuilderAction = TTogglePanelAction | TToggleModeAction;
 
 // =============================================================================
 // CONTEXT

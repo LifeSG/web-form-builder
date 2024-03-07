@@ -4,14 +4,20 @@ import { EFormBuilderMode, useBuilder } from "../../context-providers";
 import { ModeButton, Wrapper } from "./toolbar.styles";
 
 export const Toolbar = () => {
-    const { state } = useBuilder();
+    const { state, toggleMode } = useBuilder();
 
     return (
         <Wrapper>
-            <ModeButton $active={state.mode === EFormBuilderMode.ADD_FIELD}>
+            <ModeButton
+                $active={state.mode === EFormBuilderMode.ADD_FIELD}
+                onClick={() => toggleMode(EFormBuilderMode.ADD_FIELD)}
+            >
                 <Square2x2Icon />
             </ModeButton>
-            <ModeButton $active={state.mode === EFormBuilderMode.EDIT_PAGES}>
+            <ModeButton
+                $active={state.mode === EFormBuilderMode.EDIT_PAGES}
+                onClick={() => toggleMode(EFormBuilderMode.EDIT_PAGES)}
+            >
                 <DocIcon />
             </ModeButton>
         </Wrapper>

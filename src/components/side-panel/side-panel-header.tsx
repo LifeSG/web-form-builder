@@ -1,13 +1,7 @@
 import { Color } from "@lifesg/react-design-system/color";
 import { EFormBuilderMode, useBuilder } from "../../context-providers";
 import { IconButton } from "../common";
-import {
-    HeaderIcon,
-    HeaderLabel,
-    SaveChangesButton,
-    Wrapper,
-} from "./side-panel-header.styles";
-import { ISidePanelHeaderProps } from "./types";
+import { HeaderIcon, HeaderLabel, Wrapper } from "./side-panel-header.styles";
 
 export const SidePanelHeader = () => {
     // =========================================================================
@@ -19,7 +13,7 @@ export const SidePanelHeader = () => {
     // EVENT HANDLERS
     // =========================================================================
 
-    // TODO: When react hook form is being set up, run this function only when there are changes in the form values 
+    // TODO: When react hook form is being set up, run this function only when there are changes in the form values
     // const handleSaveButtonClick  = () => {
     //     if (onSaveChanges) onSaveChanges();
     //     return "Save button clicked";
