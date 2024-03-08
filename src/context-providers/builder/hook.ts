@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useCallback, useContext } from "react";
 import { BuilderContext } from "./provider";
 import { TFocusFieldAction } from "./types";
 
@@ -12,7 +12,7 @@ export const useBuilder = () => {
         });
     };
 
-    const getFocusControls = (internalId: string) => {
+    const getFocusControls = useCallback((internalId: string) => {
         const setFocus = (payload: TFocusFieldAction["payload"]) => {
             dispatch({
                 type: "focus-field",
@@ -23,8 +23,8 @@ export const useBuilder = () => {
         return {
             isFocused: state.focusedField?.internalId === internalId,
             setFocus,
-        };
-    };
+        }
+    }, []);
 
     return {
         state,
