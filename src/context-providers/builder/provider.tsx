@@ -1,18 +1,19 @@
+import noop from "lodash/noop";
 import { createContext } from "react";
 import { useImmerReducer } from "use-immer";
 import {
-    TBuilderState,
+    EFormBuilderMode,
     TBuilderAction,
     TBuilderContext,
-    EFormBuilderMode,
+    TBuilderState,
 } from "./types";
-import { noop } from "lodash";
 
 // =============================================================================
 // DEFAULT VALUES
 // =============================================================================
 const DEFAULT_VALUES: TBuilderState = {
     mode: EFormBuilderMode.ADD_FIELD,
+    showSidePanel: false,
 };
 
 // =============================================================================
@@ -22,12 +23,14 @@ export const builderReducer = (
     state: TBuilderState,
     action: TBuilderAction
 ) => {
+    switch (action.type) {
+        case "toggle-panel": {
+            state.showSidePanel = action.payload;
+            break;
+        }
+    }
     return state;
 };
-
-// =============================================================================
-// HELPER FUNCTIONS
-// =============================================================================
 
 // =============================================================================
 // CONTEXT

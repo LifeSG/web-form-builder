@@ -1,9 +1,12 @@
 import { TContextType } from "../types";
 
+// =============================================================================
+// ENUMS
+// =============================================================================
 export enum EFormBuilderMode {
     ADD_FIELD = "add-field",
     EDIT_FIELD = "edit-field",
-    EDIT_PAGE = "edit-page",
+    EDIT_PAGES = "edit-page",
 }
 
 // =============================================================================
@@ -11,12 +14,18 @@ export enum EFormBuilderMode {
 // =============================================================================
 export type TBuilderState = {
     mode: EFormBuilderMode;
+    showSidePanel: boolean;
 };
 
 // =============================================================================
 // ACTIONS
 // =============================================================================
-export type TBuilderAction = Record<string, never>;
+export type TTogglePanelAction = {
+    type: "toggle-panel";
+    payload: boolean;
+};
+
+export type TBuilderAction = TTogglePanelAction;
 
 // =============================================================================
 // CONTEXT
