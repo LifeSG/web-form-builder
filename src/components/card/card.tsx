@@ -18,7 +18,7 @@ import { Text } from "@lifesg/react-design-system/text";
 export const Card = ({ field, isFocused, onClick }: ICardProps) => {
     const renderIcon = () => {
         let icon: React.ReactNode;
-        
+
         switch (field.type) {
             case EFieldType.EMAIL:
                 icon = <EnvelopeIcon />;
@@ -45,11 +45,11 @@ export const Card = ({ field, isFocused, onClick }: ICardProps) => {
             </CardBody>
             {isFocused && (
                 <CardActions>
-                    <CardAction>
+                    <CardAction styleType="light">
                         <CopyIcon />
                         Duplicate
                     </CardAction>
-                    <CardAction>
+                    <CardAction styleType="light">
                         <BinIcon />
                         Delete
                     </CardAction>
