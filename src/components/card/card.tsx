@@ -15,13 +15,10 @@ import { EnvelopeIcon } from "@lifesg/react-icons/envelope";
 import { EFieldType } from "src/schemas/types";
 import { Text } from "@lifesg/react-design-system/text";
 
-export const Card = ({ field }: ICardProps) => {
-    const { getFocusControls } = useBuilder();
-    const { isFocused, setFocus } = getFocusControls(field.internalId);    
-
+export const Card = ({ field, isFocused, onClick }: ICardProps) => {
     const renderIcon = () => {
         let icon: React.ReactNode;
-
+        
         switch (field.type) {
             case EFieldType.EMAIL:
                 icon = <EnvelopeIcon />;
@@ -34,7 +31,7 @@ export const Card = ({ field }: ICardProps) => {
     };
 
     return (
-        <CardContent $isFocused={isFocused} onClick={() => setFocus(field)}>
+        <CardContent $isFocused={isFocused} onClick={onClick}>
             <CardBody>
                 {/* TODO: placeholder dragger icon */}
                 {isFocused && <CardDragger />}
