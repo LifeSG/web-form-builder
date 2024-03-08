@@ -13,6 +13,10 @@ export const CardContent = styled.div<ICardContentStyles>`
     align-items: center;
     box-shadow: 0px 2px 8px 0px rgba(104, 104, 104, 0.24);
 
+    :hover {
+        border: 1px solid ${Color.Primary};
+    }
+
     ${({ $isFocused }) =>
         $isFocused
             ? css`
@@ -30,7 +34,11 @@ export const CardBody = styled(Spacer)`
     gap: 1rem;
 `;
 
-export const CardDetails = styled.div``;
+export const CardDetails = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+`;
 
 export const CardIcon = styled.div`
     width: 2rem;
