@@ -22,7 +22,7 @@ export const Wrapper = styled.div<IWrapperStyleProps>`
     border-left: 1px solid ${Color.Neutral[5]};
     margin-left: auto;
     box-shadow: 0px 2px 12px 0px rgba(104, 104, 104, 0.25);
-    position: sticky;
+    position: fixed;
     top: 0;
     right: 0;
 
