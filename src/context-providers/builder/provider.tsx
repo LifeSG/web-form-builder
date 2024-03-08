@@ -1,18 +1,20 @@
-import noop from "lodash/noop";
 import { createContext } from "react";
 import { useImmerReducer } from "use-immer";
 import {
-    EFormBuilderMode,
+    EBuilderMode,
     TBuilderAction,
     TBuilderContext,
     TBuilderState,
 } from "./types";
+import { noop } from "lodash";
 
 // =============================================================================
 // DEFAULT VALUES
 // =============================================================================
 const DEFAULT_VALUES: TBuilderState = {
-    mode: EFormBuilderMode.ADD_FIELD,
+    mode: EBuilderMode.ADD_FIELD,
+    fields: new Map(),
+    focusedField: null,
     showSidePanel: false,
 };
 
