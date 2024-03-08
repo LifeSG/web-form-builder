@@ -1,3 +1,4 @@
-import { TBaseField } from "./base-field";
+import { IBaseField } from "./base-field";
 
-export type TField = TBaseField;
+// IBaseField is placeholder for type union
+export type TField = IBaseField;

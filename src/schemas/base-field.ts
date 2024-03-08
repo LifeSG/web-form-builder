@@ -1,6 +1,6 @@
 import { EFieldType } from "./types";
 
-export type TBaseField = {
+export type IBaseField = {
     id: string;
     internalId: string;
     label: string;
