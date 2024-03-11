@@ -1,10 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { noop } from "lodash";
 import { Card } from "src/components/card";
-import { List } from "src/components/list";
-import { BuilderProvider, useBuilder } from "src/context-providers/builder";
 import { TField } from "src/schemas";
 import { EFieldType } from "src/schemas/types";
+import { Container, List } from "./doc-elements";
 
 type Component = typeof Card;
 
@@ -22,17 +21,24 @@ const meta: Meta<Component> = {
 
 export default meta;
 
-const field1: TField = {
-    id: "id-1",
+const firstNameField: TField = {
+    id: "first-name",
     internalId: "internalId-1",
     label: "First name",
     type: EFieldType.EMAIL,
 };
 
-const field2: TField = {
-    id: "id-2",
+const lastNameField: TField = {
+    id: "last-name",
     internalId: "internalId-2",
     label: "Last name",
+    type: EFieldType.EMAIL,
+};
+
+const emailField: TField = {
+    id: "email-field",
+    internalId: "internalId-3",
+    label: "Email",
     type: EFieldType.EMAIL,
 };
 
@@ -40,16 +46,8 @@ export const Default: StoryObj<Component> = {
     render: () => {
         return (
             <>
-                <Card
-                    field={field1}
-                    isFocused={false}
-                    onClick={noop}
-                />
-                <Card
-                    field={field2}
-                    isFocused={false}
-                    onClick={noop}
-                />
+                <Card field={firstNameField} isFocused={false} onClick={noop} />
+                <Card field={lastNameField} isFocused onClick={noop} />
             </>
         );
     },
@@ -57,12 +55,43 @@ export const Default: StoryObj<Component> = {
 
 export const Unfocused: StoryObj<Component> = {
     render: () => {
-        return <Card field={field2} isFocused={false} onClick={noop} />;
+        return <Card field={lastNameField} isFocused={false} onClick={noop} />;
     },
 };
 
 export const Focused: StoryObj<Component> = {
     render: () => {
-        return <Card field={field2} isFocused onClick={noop} />;
+        return <Card field={lastNameField} isFocused onClick={noop} />;
+    },
+};
+
+export const ColumnVariations: StoryObj<Component> = {
+    render: () => {
+        return (
+            <>
+                <Container type="grid">
+                    <Card
+                        desktopCols={[1, 7]}
+                        isFocused={false}
+                        field={firstNameField}
+                        onClick={noop}
+                    />
+                    <Card
+                        desktopCols={[7, 13]}
+                        isFocused={false}
+                        field={lastNameField}
+                        onClick={noop}
+                    />
+                </Container>
+                <Container type="grid">
+                    <Card
+                        desktopCols={[1, 13]}
+                        isFocused={false}
+                        field={emailField}
+                        onClick={noop}
+                    />
+                </Container>
+            </>
+        );
     },
 };

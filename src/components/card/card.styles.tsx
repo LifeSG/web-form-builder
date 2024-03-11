@@ -4,8 +4,9 @@ import { DragHandleIcon } from "@lifesg/react-icons/drag-handle";
 import { Button } from "@lifesg/react-design-system/button";
 import { Color } from "@lifesg/react-design-system/color";
 import { Spacer } from "../common/spacer";
+import { Layout } from "@lifesg/react-design-system";
 
-export const CardContent = styled.div<ICardContentStyles>`
+export const CardContent = styled(Layout.ColDiv)<ICardContentStyles>`
     padding: 1rem;
     border-radius: 0.5rem;
     position: relative;

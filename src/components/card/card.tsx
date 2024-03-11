@@ -15,7 +15,13 @@ import { EFieldType } from "src/schemas/types";
 import { Text } from "@lifesg/react-design-system/text";
 import { useState } from "react";
 
-export const Card = ({ field, isFocused, onClick, onHover }: ICardProps) => {
+export const Card = ({
+    field,
+    isFocused,
+    onClick,
+    onHover,
+    ...colProps
+}: ICardProps) => {
     const [isHovered, setIsHovered] = useState(false);
 
     const renderIcon = () => {
@@ -39,6 +45,7 @@ export const Card = ({ field, isFocused, onClick, onHover }: ICardProps) => {
 
     return (
         <CardContent
+            {...colProps}
             $isFocused={isFocused}
             onClick={onClick}
             onMouseEnter={handleHover}
