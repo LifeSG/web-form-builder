@@ -1,4 +1,3 @@
-import { useBuilder } from "src/context-providers/builder";
 import { ICardProps } from "./types";
 import {
     CardBody,
@@ -14,8 +13,11 @@ import { CopyIcon } from "@lifesg/react-icons/copy";
 import { EnvelopeIcon } from "@lifesg/react-icons/envelope";
 import { EFieldType } from "src/schemas/types";
 import { Text } from "@lifesg/react-design-system/text";
+import { useState } from "react";
 
-export const Card = ({ field, isFocused, onClick }: ICardProps) => {
+export const Card = ({ field, isFocused, onClick, onHover }: ICardProps) => {
+    const [isHovered, setIsHovered] = useState(false);
+
     const renderIcon = () => {
         let icon: React.ReactNode;
 
@@ -30,11 +32,21 @@ export const Card = ({ field, isFocused, onClick }: ICardProps) => {
         return <CardIcon>{icon}</CardIcon>;
     };
 
+    const handleHover = () => {
+        setIsHovered(!isHovered);
+        onHover();
+    };
+
     return (
-        <CardContent $isFocused={isFocused} onClick={onClick}>
+        <CardContent
+            $isFocused={isFocused}
+            onClick={onClick}
+            onMouseEnter={handleHover}
+            onMouseLeave={() => setIsHovered(false)}
+        >
             <CardBody>
                 {/* TODO: placeholder dragger icon */}
-                {isFocused && <CardDragger />}
+                {(isFocused || isHovered) && <CardDragger />}
                 {renderIcon()}
                 <CardDetails>
                     <Text.Body weight={"semibold"}>{field.label}</Text.Body>
