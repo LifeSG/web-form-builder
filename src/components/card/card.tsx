@@ -17,7 +17,7 @@ import { useState } from "react";
 
 export const Card = ({
     field,
-    isFocused,
+    isFocused = false,
     onClick,
     onHover,
     ...colProps

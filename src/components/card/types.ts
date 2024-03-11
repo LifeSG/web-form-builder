@@ -3,7 +3,7 @@ import { TField } from "src/schemas";
 
 export interface ICardProps extends ColProps {
     field: TField;
-    isFocused: boolean;
+    isFocused?: boolean;
     onHover?: () => void;
     onClick: () => void;
 }

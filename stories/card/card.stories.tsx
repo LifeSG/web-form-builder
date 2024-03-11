@@ -46,7 +46,7 @@ export const Default: StoryObj<Component> = {
     render: () => {
         return (
             <>
-                <Card field={firstNameField} isFocused={false} onClick={noop} />
+                <Card field={firstNameField} onClick={noop} />
                 <Card field={lastNameField} isFocused onClick={noop} />
             </>
         );
@@ -55,7 +55,7 @@ export const Default: StoryObj<Component> = {
 
 export const Unfocused: StoryObj<Component> = {
     render: () => {
-        return <Card field={lastNameField} isFocused={false} onClick={noop} />;
+        return <Card field={lastNameField} onClick={noop} />;
     },
 };
 
@@ -72,13 +72,11 @@ export const ColumnVariations: StoryObj<Component> = {
                 <Container type="grid">
                     <Card
                         desktopCols={[1, 7]}
-                        isFocused={false}
                         field={firstNameField}
                         onClick={noop}
                     />
                     <Card
                         desktopCols={[7, 13]}
-                        isFocused={false}
                         field={lastNameField}
                         onClick={noop}
                     />
@@ -86,7 +84,6 @@ export const ColumnVariations: StoryObj<Component> = {
                 <Container type="grid">
                     <Card
                         desktopCols={[1, 13]}
-                        isFocused={false}
                         field={emailField}
                         onClick={noop}
                     />
