@@ -34,7 +34,7 @@ export const Card = ({ field, isFocused, onClick, onHover }: ICardProps) => {
 
     const handleHover = () => {
         setIsHovered(!isHovered);
-        onHover();
+        onHover?.();
     };
 
     return (
