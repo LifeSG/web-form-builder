@@ -24,6 +24,11 @@ export const Card = ({
 }: ICardProps) => {
     const [isHovered, setIsHovered] = useState(false);
 
+    const spansFull =
+        !colProps.desktopCols ||
+        (Array.isArray(colProps.desktopCols) &&
+            colProps.desktopCols.reduce((a, b) => a + b, 0) === 14);
+
     const renderIcon = () => {
         let icon: React.ReactNode;
 
@@ -66,11 +71,11 @@ export const Card = ({
                 <CardActions>
                     <CardAction styleType="light">
                         <CopyIcon />
-                        Duplicate
+                        {spansFull && "Duplicate"}
                     </CardAction>
                     <CardAction styleType="light">
                         <BinIcon />
-                        Delete
+                        {spansFull && "Delete"}
                     </CardAction>
                 </CardActions>
             )}

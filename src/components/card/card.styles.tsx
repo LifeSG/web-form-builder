@@ -66,7 +66,7 @@ export const CardDragger = styled(DragHandleIcon)`
 export const CardActions = styled.div`
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: end;
     gap: 1rem;
     position: absolute;
     right: 1rem;
@@ -79,6 +79,7 @@ export const CardAction = styled(Button.Small)`
     background: transparent;
     padding: 0;
     border: none;
+    min-width: auto;
 
     span {
         display: flex;

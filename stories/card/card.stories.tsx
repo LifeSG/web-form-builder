@@ -79,11 +79,20 @@ export const ColumnVariations: StoryObj<Component> = {
                         desktopCols={[7, 13]}
                         field={lastNameField}
                         onClick={noop}
+                        isFocused
                     />
                 </Container>
                 <Container type="grid">
                     <Card
                         desktopCols={[1, 13]}
+                        field={emailField}
+                        onClick={noop}
+                    />
+                </Container>
+                <Container type="grid">
+                    <Card
+                        desktopCols={[1, 13]}
+                        isFocused
                         field={emailField}
                         onClick={noop}
                     />
