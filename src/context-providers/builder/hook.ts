@@ -19,11 +19,27 @@ export const useBuilder = () => {
         });
     }, []);
 
+    const deleteElement = useCallback((elementId: string) => {
+        if (state.elementIds.length > 0) {
+            const newElementIds = state.elementIds.filter(
+                (id) => id !== elementId
+            );
+
+            if (newElementIds.length < state.elementIds.length) {
+                dispatch({
+                    type: "update-element-ids",
+                    payload: newElementIds,
+                });
+            }
+        }
+    }, []);
+
     return {
         state,
         showSidePanel: state.showSidePanel,
         currentMode: state.mode,
         togglePanel,
         addElement,
+        deleteElement,
     };
 };
