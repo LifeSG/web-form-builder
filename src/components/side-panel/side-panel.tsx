@@ -13,7 +13,7 @@ export const SidePanel = () => {
     // RENDER FUNCTIONS
     // =========================================================================
     return (
-        <Wrapper $isCollapsed={showSidePanel}>
+        <Wrapper $isCollapsed={!showSidePanel}>
             <SidePanelHeader />
             <ContentWrapper>
                 {currentMode !== EFormBuilderMode.EDIT_FIELD && <Toolbar />}
