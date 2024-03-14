@@ -24,12 +24,13 @@ export const Wrapper = styled.div<IWrapperStyleProps>`
     box-shadow: 0px 2px 12px 0px rgba(104, 104, 104, 0.25);
     position: fixed;
     top: 0;
-    right: 0;
+    left: 0;
+    transform: translateX(0);
 
     ${(props) => {
         if (props.$isCollapsed) {
             return css`
-                transform: translateX(calc(100% - 5.5rem));
+                transform: translateX(calc(-100% + 5.5rem));
             `;
         }
     }}
