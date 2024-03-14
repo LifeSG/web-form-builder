@@ -1,4 +1,5 @@
 import { Color } from "@lifesg/react-design-system/color";
+import { MediaQuery } from "@lifesg/react-design-system/media";
 import { Transition } from "@lifesg/react-design-system/transition";
 import styled, { css } from "styled-components";
 
@@ -26,6 +27,10 @@ export const Wrapper = styled.div<IWrapperStyleProps>`
     top: 0;
     left: 0;
     transform: translateX(0);
+
+    ${MediaQuery.MaxWidth.desktopM} {
+        width: 30rem;
+    }
 
     ${(props) => {
         if (props.$isCollapsed) {

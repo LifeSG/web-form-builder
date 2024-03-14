@@ -52,7 +52,7 @@ export const Wrapper = styled.div<IWrapperStyleProps>`
 
                     /* To accommodate to desktops of 1024px */
                     ${MediaQuery.MaxWidth.tablet} {
-                        grid-column: 6 / span 3;
+                        grid-column: 5 / span 4;
                     }
                 `;
         }
