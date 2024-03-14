@@ -11,28 +11,34 @@ export const useBuilder = () => {
         });
     }, []);
 
-    const addElement = useCallback((elementId: string) => {
-        const newElementIds = [...state.elementIds, elementId];
-        dispatch({
-            type: "update-element-ids",
-            payload: newElementIds,
-        });
-    }, []);
+    const addElement = useCallback(
+        (elementId: string) => {
+            const newElementIds = [...state.elementIds, elementId];
+            dispatch({
+                type: "update-element-ids",
+                payload: newElementIds,
+            });
+        },
+        [state.elementIds]
+    );
 
-    const deleteElement = useCallback((elementId: string) => {
-        if (state.elementIds.length > 0) {
-            const newElementIds = state.elementIds.filter(
-                (id) => id !== elementId
-            );
+    const deleteElement = useCallback(
+        (elementId: string) => {
+            if (state.elementIds.length > 0) {
+                const newElementIds = state.elementIds.filter(
+                    (id) => id !== elementId
+                );
 
-            if (newElementIds.length < state.elementIds.length) {
-                dispatch({
-                    type: "update-element-ids",
-                    payload: newElementIds,
-                });
+                if (newElementIds.length < state.elementIds.length) {
+                    dispatch({
+                        type: "update-element-ids",
+                        payload: newElementIds,
+                    });
+                }
             }
-        }
-    }, []);
+        },
+        [state.elementIds]
+    );
 
     return {
         state,
