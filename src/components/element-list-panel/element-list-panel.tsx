@@ -11,12 +11,12 @@ export const ElementListPanel = () => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
-    const { showSidePanel, createdElements } = useBuilder();
+    const { showSidePanel, createdElementsIds } = useBuilder();
 
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
-    if (createdElements.length === 0) {
+    if (createdElementsIds.length === 0) {
         return (
             <EmptyDisplayWrapper
                 $mode={showSidePanel ? "minimised" : "expanded"}
