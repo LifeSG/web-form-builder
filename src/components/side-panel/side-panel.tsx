@@ -13,11 +13,11 @@ export const SidePanel = () => {
     // RENDER FUNCTIONS
     // =========================================================================
     return (
-        <Wrapper $isCollapsed={showSidePanel}>
+        <Wrapper $isCollapsed={!showSidePanel}>
             <SidePanelHeader />
             <ContentWrapper>
-                {currentMode !== EBuilderMode.EDIT_FIELD && <Toolbar />}
                 <ContentSection>Render contents conditionally</ContentSection>
+                {currentMode !== EBuilderMode.EDIT_FIELD && <Toolbar />}
             </ContentWrapper>
         </Wrapper>
     );

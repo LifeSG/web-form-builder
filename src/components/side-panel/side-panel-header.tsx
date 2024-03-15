@@ -19,7 +19,7 @@ export const SidePanelHeader = () => {
     // EVENT HANDLERS
     // =========================================================================
 
-    // TODO: When react hook form is being set up, run this function only when there are changes in the form values 
+    // TODO: When react hook form is being set up, run this function only when there are changes in the form values
     // const handleSaveButtonClick  = () => {
     //     if (onSaveChanges) onSaveChanges();
     //     return "Save button clicked";
@@ -47,6 +47,7 @@ export const SidePanelHeader = () => {
     // =========================================================================
     return (
         <Wrapper>
+            <HeaderLabel weight="semibold">{getHeaderTitle()}</HeaderLabel>
             <IconButton
                 $iconSize="1.5rem"
                 $iconColor={Color.Neutral[3]}
@@ -54,7 +55,6 @@ export const SidePanelHeader = () => {
             >
                 <HeaderIcon $isCollapsed={showSidePanel} />
             </IconButton>
-            <HeaderLabel weight="semibold">{getHeaderTitle()}</HeaderLabel>
             {/* TODO: To work on when react hook form is set up */}
             {/* {onSaveChanges && (
                 <SaveChangesButton onClick={handleSaveButtonClick}>

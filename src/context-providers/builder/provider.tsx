@@ -16,6 +16,7 @@ const DEFAULT_VALUES: TBuilderState = {
     fields: new Map(),
     focusedField: null,
     showSidePanel: false,
+    elementIds: [],
 };
 
 // =============================================================================
@@ -28,6 +29,10 @@ export const builderReducer = (
     switch (action.type) {
         case "toggle-panel": {
             state.showSidePanel = action.payload;
+            break;
+        }
+        case "update-element-ids": {
+            state.elementIds = action.payload;
             break;
         }
     }

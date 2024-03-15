@@ -16,9 +16,11 @@ interface IIconStyleProps {
 // =============================================================================
 export const Wrapper = styled.div`
     height: 5.75rem;
+    width: 100%;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    padding: 2rem 2rem 2rem 1rem;
+    padding: 2rem 1rem 2rem 2rem;
     border-bottom: 1px solid ${Color.Neutral[5]};
 `;
 
@@ -29,7 +31,7 @@ export const HeaderIcon = styled(ChevronRightIcon)<IIconStyleProps>`
 `;
 
 export const HeaderLabel = styled(Text.H3)`
-    margin-left: 1rem;
+    margin-right: 1rem;
 `;
 
 export const SaveChangesButton = styled(Button.Small)`

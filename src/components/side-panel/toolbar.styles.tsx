@@ -5,9 +5,8 @@ import styled from "styled-components";
 // STYLE INTERFACES
 // =============================================================================
 export interface IModeButtonProps {
-    $active: boolean
+    $active: boolean;
 }
-
 
 // =============================================================================
 // STYLING
@@ -20,12 +19,13 @@ export const Wrapper = styled.div`
     align-items: center;
     width: fit-content;
     padding: 2rem 1rem;
-    border-right: 1px solid ${Color.Neutral[5]};
+    border-left: 1px solid ${Color.Neutral[5]};
     gap: 2rem;
 `;
 
 export const ModeButton = styled.button<IModeButtonProps>`
-    background: ${({ $active }) => $active ? Color.Accent.Light[4] : "transparent"}; 
+    background: ${({ $active }) =>
+        $active ? Color.Accent.Light[4] : "transparent"};
     color: ${Color.Primary};
     display: grid;
     cursor: pointer;

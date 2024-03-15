@@ -15,6 +15,11 @@ export type TBuilderState = {
     showSidePanel: boolean;
     fields: Map<string, TField>;
     focusedField: TField | null;
+    /**
+     * Specifies the elements that have been created and used in
+     * the element list panel
+     */
+    elementIds: string[];
 };
 
 // =============================================================================
@@ -25,12 +30,19 @@ export type TTogglePanelAction = {
     payload: boolean;
 };
 
-export type TBuilderAction = TTogglePanelAction | TFocusFieldAction;
-
 export type TFocusFieldAction = {
     type: "focus-field";
     payload: TField | null;
 };
+export type TUpdateElementIdsAction = {
+    type: "update-element-ids";
+    payload: string[];
+};
+
+export type TBuilderAction =
+    | TTogglePanelAction
+    | TUpdateElementIdsAction
+    | TFocusFieldAction;
 
 // =============================================================================
 // CONTEXT
