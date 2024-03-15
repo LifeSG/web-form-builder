@@ -1,18 +1,40 @@
+import { ErrorDisplay } from "@lifesg/react-design-system/error-display";
 import { useBuilder } from "src/context-providers";
-import { Wrapper } from "./element-list-panel.styles";
+import {
+    EmptyDisplayDescription,
+    EmptyDisplayTitle,
+    EmptyDisplayWrapper,
+    Wrapper,
+} from "./element-list-panel.styles";
 
 export const ElementListPanel = () => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
-    const { showSidePanel } = useBuilder();
+    const { showSidePanel, createdElementsIds } = useBuilder();
 
     // =========================================================================
-    // HELPER FUNCTIONS
+    // RENDER FUNCTIONS
     // =========================================================================
+    if (createdElementsIds.length === 0) {
+        return (
+            <EmptyDisplayWrapper
+                $mode={showSidePanel ? "minimised" : "expanded"}
+            >
+                <ErrorDisplay type="no-item-found" imageOnly />
+                <EmptyDisplayTitle weight="semibold">
+                    Form is empty
+                </EmptyDisplayTitle>
+                <EmptyDisplayDescription>
+                    Add an element to start building your form!
+                </EmptyDisplayDescription>
+            </EmptyDisplayWrapper>
+        );
+    }
+
     return (
         <Wrapper $mode={showSidePanel ? "minimised" : "expanded"}>
-            Element List here...
+            Element lists here...
         </Wrapper>
     );
 };
