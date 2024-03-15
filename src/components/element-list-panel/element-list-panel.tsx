@@ -1,5 +1,4 @@
 import { ErrorDisplay } from "@lifesg/react-design-system/error-display";
-import { ColDivProps } from "@lifesg/react-design-system/layout";
 import { useBuilder } from "src/context-providers";
 import {
     EmptyDisplay,
@@ -13,23 +12,6 @@ export const ElementListPanel = () => {
     // CONST, STATE, REFS
     // =========================================================================
     const { showSidePanel, createdElements } = useBuilder();
-
-    // =========================================================================
-    // HELPER FUNCTIONS
-    // =========================================================================
-    const getColProps = (): ColDivProps => {
-        if (showSidePanel) {
-            return {
-                desktopCols: 6,
-                tabletCols: 7,
-            };
-        } else {
-            return {
-                desktopCols: [3, 10],
-                tabletCols: 7,
-            };
-        }
-    };
 
     // =========================================================================
     // RENDER FUNCTIONS
@@ -52,5 +34,9 @@ export const ElementListPanel = () => {
         }
     };
 
-    return <Wrapper {...getColProps()}>{renderContent()}</Wrapper>;
+    return (
+        <Wrapper $mode={showSidePanel ? "minimised" : "expanded"}>
+            {renderContent()}
+        </Wrapper>
+    );
 };
