@@ -1,9 +1,9 @@
 import { ErrorDisplay } from "@lifesg/react-design-system/error-display";
 import { useBuilder } from "src/context-providers";
 import {
-    EmptyDisplay,
     EmptyDisplayDescription,
     EmptyDisplayTitle,
+    EmptyDisplayWrapper,
     Wrapper,
 } from "./element-list-panel.styles";
 
@@ -16,27 +16,25 @@ export const ElementListPanel = () => {
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
-    const renderContent = () => {
-        if (createdElements.length === 0) {
-            return (
-                <EmptyDisplay>
-                    <ErrorDisplay type="no-item-found" imageOnly />
-                    <EmptyDisplayTitle weight="semibold">
-                        Form is empty
-                    </EmptyDisplayTitle>
-                    <EmptyDisplayDescription>
-                        Add an element to start building your form!
-                    </EmptyDisplayDescription>
-                </EmptyDisplay>
-            );
-        } else {
-            return <span>Element List here...</span>;
-        }
-    };
+    if (createdElements.length === 0) {
+        return (
+            <EmptyDisplayWrapper
+                $mode={showSidePanel ? "minimised" : "expanded"}
+            >
+                <ErrorDisplay type="no-item-found" imageOnly />
+                <EmptyDisplayTitle weight="semibold">
+                    Form is empty
+                </EmptyDisplayTitle>
+                <EmptyDisplayDescription>
+                    Add an element to start building your form!
+                </EmptyDisplayDescription>
+            </EmptyDisplayWrapper>
+        );
+    }
 
     return (
         <Wrapper $mode={showSidePanel ? "minimised" : "expanded"}>
-            {renderContent()}
+            Element lists here...
         </Wrapper>
     );
 };

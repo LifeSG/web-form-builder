@@ -60,12 +60,56 @@ export const Wrapper = styled.div<IWrapperStyleProps>`
     }}
 `;
 
-export const EmptyDisplay = styled.div`
+export const EmptyDisplayWrapper = styled.div<IWrapperStyleProps>`
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
     text-align: center;
     height: 100%;
+
+    ${({ $mode }) => {
+        switch ($mode) {
+            case "expanded":
+                return css`
+                    ${MediaQuery.MaxWidth.desktop4k} {
+                        grid-column: 4 / span 6;
+                    }
+
+                    ${MediaQuery.MaxWidth.desktopL} {
+                        grid-column: 3 / span 9;
+                    }
+
+                    ${MediaQuery.MaxWidth.desktopM} {
+                        grid-column: 3 / span 9;
+                    }
+
+                    /* To accommodate to desktops of 1024px */
+                    ${MediaQuery.MaxWidth.tablet} {
+                        grid-column: 2 / span 7;
+                    }
+                `;
+            case "minimised":
+                return css`
+                    ${MediaQuery.MaxWidth.desktop4k} {
+                        grid-column: 5 / span 7;
+                    }
+
+                    ${MediaQuery.MaxWidth.desktopL} {
+                        grid-column: 6 / span 7;
+                    }
+
+                    ${MediaQuery.MaxWidth.desktopM} {
+                        grid-column: 6 / span 7;
+                    }
+
+                    /* To accommodate to desktops of 1024px */
+                    ${MediaQuery.MaxWidth.tablet} {
+                        grid-column: 5 / span 4;
+                    }
+                `;
+        }
+    }}
 `;
 
 export const EmptyDisplayTitle = styled(Text.H3)`
