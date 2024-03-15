@@ -1,5 +1,18 @@
+import { useBuilder } from "src/context-providers";
 import { Wrapper } from "./element-list-panel.styles";
 
 export const ElementListPanel = () => {
-    return <Wrapper desktopCols={6}>Card placeholder</Wrapper>;
+    // =========================================================================
+    // CONST, STATE, REFS
+    // =========================================================================
+    const { showSidePanel } = useBuilder();
+
+    // =========================================================================
+    // HELPER FUNCTIONS
+    // =========================================================================
+    return (
+        <Wrapper $mode={showSidePanel ? "minimised" : "expanded"}>
+            Element List here...
+        </Wrapper>
+    );
 };

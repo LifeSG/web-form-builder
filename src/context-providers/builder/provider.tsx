@@ -14,6 +14,7 @@ import {
 const DEFAULT_VALUES: TBuilderState = {
     mode: EFormBuilderMode.ADD_FIELD,
     showSidePanel: false,
+    elementIds: [],
 };
 
 // =============================================================================
@@ -26,6 +27,10 @@ export const builderReducer = (
     switch (action.type) {
         case "toggle-panel": {
             state.showSidePanel = action.payload;
+            break;
+        }
+        case "update-element-ids": {
+            state.elementIds = action.payload;
             break;
         }
     }

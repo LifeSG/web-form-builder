@@ -15,6 +15,11 @@ export enum EFormBuilderMode {
 export type TBuilderState = {
     mode: EFormBuilderMode;
     showSidePanel: boolean;
+    /**
+     * Specifies the elements that have been created and used in
+     * the element list panel
+     */
+    elementIds: string[];
 };
 
 // =============================================================================
@@ -25,7 +30,12 @@ export type TTogglePanelAction = {
     payload: boolean;
 };
 
-export type TBuilderAction = TTogglePanelAction;
+export type TUpdateElementIdsAction = {
+    type: "update-element-ids";
+    payload: string[];
+};
+
+export type TBuilderAction = TTogglePanelAction | TUpdateElementIdsAction;
 
 // =============================================================================
 // CONTEXT
