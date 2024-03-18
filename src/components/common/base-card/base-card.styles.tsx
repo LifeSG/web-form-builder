@@ -33,5 +33,6 @@ export const Body = styled.div<IBodyStyleProps>`
 
     :hover {
         border-color: ${Color.Primary};
+        // TODO: Add theme customised box shadow once tokens are up
     }
 `;
