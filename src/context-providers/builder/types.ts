@@ -2,8 +2,6 @@ import { TElement } from "src/schemas";
 import { Dispatch } from "react";
 
 export enum EBuilderMode {
-    /** The initial state */
-    PRISTINE = "prisine",
     /** Mode where we get to select the elements to add */
     ADD_ELEMENT = "add-element",
     /** Mode where we edit the attributes of an element */
