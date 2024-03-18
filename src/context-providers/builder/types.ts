@@ -13,6 +13,11 @@ export enum EBuilderMode {
 // =============================================================================
 // STATE
 // =============================================================================
+export type TElementId = {
+    id: string;
+    parentId?: string;
+};
+
 export type TBuilderState = {
     mode: EBuilderMode;
     showSidePanel: boolean;
@@ -22,7 +27,7 @@ export type TBuilderState = {
      * Specifies the elements that have been created and used in
      * the element list panel
      */
-    elementIds: string[];
+    elementIds: TElementId[];
 };
 
 // =============================================================================
@@ -35,7 +40,7 @@ export type TTogglePanelAction = {
 
 export type TUpdateElementIdsAction = {
     type: "update-element-ids";
-    payload: string[];
+    payload: TElementId[];
 };
 
 export type TBuilderAction = TTogglePanelAction | TUpdateElementIdsAction;
