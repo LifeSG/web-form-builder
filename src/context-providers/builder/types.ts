@@ -1,10 +1,13 @@
-import { TField } from "src/schemas";
+import { TElement } from "src/schemas";
 import { TContextType } from "../types";
 
 export enum EBuilderMode {
-    ADD_FIELD = "add-field",
-    EDIT_FIELD = "edit-field",
-    EDIT_PAGES = "edit-page",
+    /** Mode where we get to select the elements to add */
+    ADD_ELEMENT = "add-element",
+    /** Mode where we edit the attributes of an element */
+    EDIT_ELEMENT = "edit-element",
+    /** Mode where we add and edit the pages */
+    EDIT_PAGES = "edit-pages",
 }
 
 // =============================================================================
@@ -13,8 +16,8 @@ export enum EBuilderMode {
 export type TBuilderState = {
     mode: EBuilderMode;
     showSidePanel: boolean;
-    fields: Map<string, TField>;
-    focusedField: TField | null;
+    elements: Map<[internalId: string], TElement>;
+    focusedElement: TElement | null;
     /**
      * Specifies the elements that have been created and used in
      * the element list panel
@@ -30,19 +33,12 @@ export type TTogglePanelAction = {
     payload: boolean;
 };
 
-export type TFocusFieldAction = {
-    type: "focus-field";
-    payload: TField | null;
-};
 export type TUpdateElementIdsAction = {
     type: "update-element-ids";
     payload: string[];
 };
 
-export type TBuilderAction =
-    | TTogglePanelAction
-    | TUpdateElementIdsAction
-    | TFocusFieldAction;
+export type TBuilderAction = TTogglePanelAction | TUpdateElementIdsAction;
 
 // =============================================================================
 // CONTEXT

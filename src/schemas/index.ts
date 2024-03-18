@@ -1,4 +1,18 @@
-import { IBaseField } from "./base-field";
+export enum EElementType {
+    EMAIL = "email-field",
+}
 
-// IBaseField is placeholder for type union
-export type TField = IBaseField;
+export interface IBaseAttributes {
+    id: string;
+    internalId: string;
+    type: EElementType;
+}
+
+export interface IBaseFieldAttributes extends IBaseAttributes {
+    label: string;
+}
+
+export type IEmailField = IBaseFieldAttributes;
+
+// TODO: Add the different elements to form the union type
+export type TElement = IEmailField;

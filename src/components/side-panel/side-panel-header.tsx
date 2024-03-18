@@ -30,10 +30,10 @@ export const SidePanelHeader = () => {
     // =========================================================================
     const getHeaderTitle = () => {
         switch (currentMode) {
-            case EBuilderMode.ADD_FIELD: {
+            case EBuilderMode.ADD_ELEMENT: {
                 return "Add elements";
             }
-            case EBuilderMode.EDIT_FIELD: {
+            case EBuilderMode.EDIT_ELEMENT: {
                 return "Edit details";
             }
             case EBuilderMode.EDIT_PAGES: {

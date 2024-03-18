@@ -11,9 +11,9 @@ import {
 import { BinIcon } from "@lifesg/react-icons/bin";
 import { CopyIcon } from "@lifesg/react-icons/copy";
 import { EnvelopeIcon } from "@lifesg/react-icons/envelope";
-import { EFieldType } from "src/schemas/types";
 import { Text } from "@lifesg/react-design-system/text";
 import { useState } from "react";
+import { EElementType } from "src/schemas";
 
 export const Card = ({
     field,
@@ -33,7 +33,7 @@ export const Card = ({
         let icon: React.ReactNode;
 
         switch (field.type) {
-            case EFieldType.EMAIL:
+            case EElementType.EMAIL:
                 icon = <EnvelopeIcon />;
                 break;
             default:

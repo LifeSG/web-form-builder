@@ -1,8 +1,8 @@
 import { ColProps } from "@lifesg/react-design-system";
-import { TField } from "src/schemas";
+import { TElement } from "src/schemas";
 
 export interface ICardProps extends ColProps {
-    field: TField;
+    field: TElement;
     isFocused?: boolean;
     onHover?: () => void;
     onClick: () => void;

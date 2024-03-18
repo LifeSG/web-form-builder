@@ -17,7 +17,7 @@ export const SidePanel = () => {
             <SidePanelHeader />
             <ContentWrapper>
                 <ContentSection>Render contents conditionally</ContentSection>
-                {currentMode !== EBuilderMode.EDIT_FIELD && <Toolbar />}
+                {currentMode !== EBuilderMode.EDIT_ELEMENT && <Toolbar />}
             </ContentWrapper>
         </Wrapper>
     );

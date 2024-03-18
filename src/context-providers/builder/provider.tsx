@@ -12,9 +12,9 @@ import { noop } from "lodash";
 // DEFAULT VALUES
 // =============================================================================
 const DEFAULT_VALUES: TBuilderState = {
-    mode: EBuilderMode.ADD_FIELD,
-    fields: new Map(),
-    focusedField: null,
+    mode: EBuilderMode.ADD_ELEMENT,
+    elements: new Map(),
+    focusedElement: null,
     showSidePanel: false,
     elementIds: [],
 };
@@ -35,11 +35,6 @@ export const builderReducer = (
             state.elementIds = action.payload;
             break;
         }
-    }
-    switch (action.type) {
-        case "focus-field":
-            state.focusedField = action.payload;
-            break;
     }
 
     return state;

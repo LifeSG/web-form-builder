@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { noop } from "lodash";
 import { Card } from "src/components/card";
-import { TField } from "src/schemas";
+import { TElement } from "src/schemas";
 import { EFieldType } from "src/schemas/types";
 import { Container, List } from "./doc-elements";
 
@@ -21,21 +21,21 @@ const meta: Meta<Component> = {
 
 export default meta;
 
-const firstNameField: TField = {
+const firstNameField: TElement = {
     id: "first-name",
     internalId: "internalId-1",
     label: "First name",
     type: EFieldType.EMAIL,
 };
 
-const lastNameField: TField = {
+const lastNameField: TElement = {
     id: "last-name",
     internalId: "internalId-2",
     label: "Last name",
     type: EFieldType.EMAIL,
 };
 
-const emailField: TField = {
+const emailField: TElement = {
     id: "email-field",
     internalId: "internalId-3",
     label: "Email",

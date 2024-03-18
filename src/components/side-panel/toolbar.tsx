@@ -8,7 +8,7 @@ export const Toolbar = () => {
 
     return (
         <Wrapper>
-            <ModeButton $active={state.mode === EBuilderMode.ADD_FIELD}>
+            <ModeButton $active={state.mode === EBuilderMode.ADD_ELEMENT}>
                 <Square2x2Icon />
             </ModeButton>
             <ModeButton $active={state.mode === EBuilderMode.EDIT_PAGES}>
