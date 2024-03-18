@@ -1,6 +1,6 @@
 import { DocIcon } from "@lifesg/react-icons/doc";
 import { Square2x2Icon } from "@lifesg/react-icons/square-2x2";
-import { EFormBuilderMode, useBuilder } from "../../context-providers";
+import { EBuilderMode, useBuilder } from "../../context-providers";
 import { ModeButton, Wrapper } from "./toolbar.styles";
 
 export const Toolbar = () => {
@@ -8,10 +8,10 @@ export const Toolbar = () => {
 
     return (
         <Wrapper>
-            <ModeButton $active={currentMode === EFormBuilderMode.ADD_FIELD}>
+            <ModeButton $active={currentMode === EBuilderMode.ADD_ELEMENT}>
                 <Square2x2Icon />
             </ModeButton>
-            <ModeButton $active={currentMode === EFormBuilderMode.EDIT_PAGES}>
+            <ModeButton $active={currentMode === EBuilderMode.EDIT_PAGES}>
                 <DocIcon />
             </ModeButton>
         </Wrapper>

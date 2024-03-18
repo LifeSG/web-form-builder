@@ -1,5 +1,5 @@
 import { Color } from "@lifesg/react-design-system/color";
-import { EFormBuilderMode, useBuilder } from "../../context-providers";
+import { EBuilderMode, useBuilder } from "../../context-providers";
 import { IconButton } from "../common";
 import {
     HeaderIcon,
@@ -30,13 +30,13 @@ export const SidePanelHeader = () => {
     // =========================================================================
     const getHeaderTitle = () => {
         switch (currentMode) {
-            case EFormBuilderMode.ADD_FIELD: {
+            case EBuilderMode.ADD_ELEMENT: {
                 return "Add elements";
             }
-            case EFormBuilderMode.EDIT_FIELD: {
+            case EBuilderMode.EDIT_ELEMENT: {
                 return "Edit details";
             }
-            case EFormBuilderMode.EDIT_PAGES: {
+            case EBuilderMode.EDIT_PAGES: {
                 return "Add pages";
             }
         }

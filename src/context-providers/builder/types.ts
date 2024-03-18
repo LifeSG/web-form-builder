@@ -1,12 +1,13 @@
+import { TElement } from "src/schemas";
 import { Dispatch } from "react";
 
-// =============================================================================
-// ENUMS
-// =============================================================================
-export enum EFormBuilderMode {
-    ADD_FIELD = "add-field",
-    EDIT_FIELD = "edit-field",
-    EDIT_PAGES = "edit-page",
+export enum EBuilderMode {
+    /** Mode where we get to select the elements to add */
+    ADD_ELEMENT = "add-element",
+    /** Mode where we edit the attributes of an element */
+    EDIT_ELEMENT = "edit-element",
+    /** Mode where we add and edit the pages */
+    EDIT_PAGES = "edit-pages",
 }
 
 // =============================================================================
@@ -17,9 +18,16 @@ export interface IElementId {
     parentId?: string;
 }
 
+export interface IFocusedElement {
+    element: TElement;
+    isDirty?: boolean;
+}
+
 export interface IBuilderState {
-    mode: EFormBuilderMode;
+    mode: EBuilderMode;
     showSidePanel: boolean;
+    elements: Map<[internalId: string], TElement>;
+    focusedElement: IFocusedElement | null;
     /**
      * Specifies the elements that have been created and used in
      * the element list panel
@@ -30,24 +38,22 @@ export interface IBuilderState {
 // =============================================================================
 // ACTIONS
 // =============================================================================
-export type TTogglePanelAction = {
+export interface ITogglePanelAction {
     type: "toggle-panel";
     payload: boolean;
-};
+}
 
-export type TUpdateElementIdsAction = {
+export interface IUpdateElementIdsAction {
     type: "update-element-ids";
     payload: IElementId[];
-};
+}
 
-export type TBuilderAction = TTogglePanelAction | TUpdateElementIdsAction;
+export type TBuilderAction = ITogglePanelAction | IUpdateElementIdsAction;
 
 // =============================================================================
 // CONTEXT
 // =============================================================================
-type TContextType<State, Action> = {
-    state: State;
-    dispatch: Dispatch<Action>;
+export type TBuilderContext = {
+    state: IBuilderState;
+    dispatch: Dispatch<TBuilderAction>;
 };
-
-export type TBuilderContext = TContextType<IBuilderState, TBuilderAction>;

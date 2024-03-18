@@ -1,18 +1,20 @@
-import noop from "lodash/noop";
 import { createContext } from "react";
 import { useImmerReducer } from "use-immer";
 import {
-    EFormBuilderMode,
+    EBuilderMode,
     IBuilderState,
     TBuilderAction,
     TBuilderContext,
 } from "./types";
+import { noop } from "lodash";
 
 // =============================================================================
 // DEFAULT VALUES
 // =============================================================================
 const DEFAULT_VALUES: IBuilderState = {
-    mode: EFormBuilderMode.ADD_FIELD,
+    mode: EBuilderMode.ADD_ELEMENT,
+    elements: new Map(),
+    focusedElement: null,
     showSidePanel: false,
     elementIds: [],
 };
@@ -34,6 +36,7 @@ export const builderReducer = (
             break;
         }
     }
+
     return state;
 };
 

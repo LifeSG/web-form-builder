@@ -45,6 +45,7 @@ export const useBuilder = () => {
         showSidePanel: state.showSidePanel,
         currentMode: state.mode,
         createdElementsIds: state.elementIds,
+        focusedElement: state.focusedElement,
         togglePanel,
         addElement,
         deleteElement,
