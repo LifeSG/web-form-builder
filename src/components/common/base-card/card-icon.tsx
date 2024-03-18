@@ -1,17 +1,21 @@
-import { Color } from "@lifesg/react-design-system/color";
-import styled from "styled-components";
+import { EnvelopeIcon } from "@lifesg/react-icons/envelope";
+import { EElementType } from "src/schemas";
+import { Container } from "./card-icon.styles";
 
-export const CardIcon = styled.div`
-    width: 2rem;
-    height: 2rem;
-    display: grid;
-    place-items: center;
-    border-radius: 0.4rem;
-    background: ${Color.Accent.Light[5]};
+interface IProps {
+    elementType: EElementType;
+}
 
-    svg {
-        color: ${Color.Accent.Light[2]};
-        height: 1.5rem;
-        width: 1.5rem;
+export const CardIcon = ({ elementType }: IProps) => {
+    let icon: React.ReactNode;
+
+    switch (elementType) {
+        case EElementType.EMAIL:
+            icon = <EnvelopeIcon />;
+            break;
+        default:
+            break;
     }
-`;
+
+    return <Container>{icon}</Container>;
+};
