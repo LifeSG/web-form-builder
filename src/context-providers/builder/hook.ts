@@ -1,5 +1,6 @@
 import { useCallback, useContext } from "react";
 import { BuilderContext } from "./provider";
+import { TElementId } from "./types";
 
 export const useBuilder = () => {
     const { state, dispatch } = useContext(BuilderContext);
@@ -12,7 +13,7 @@ export const useBuilder = () => {
     }, []);
 
     const addElement = useCallback(
-        (elementId: string) => {
+        (elementId: TElementId) => {
             const newElementIds = [...state.elementIds, elementId];
             dispatch({
                 type: "update-element-ids",
@@ -26,7 +27,7 @@ export const useBuilder = () => {
         (elementId: string) => {
             if (state.elementIds.length > 0) {
                 const newElementIds = state.elementIds.filter(
-                    (id) => id !== elementId
+                    ({ id }) => id !== elementId
                 );
 
                 if (newElementIds.length < state.elementIds.length) {
@@ -41,7 +42,6 @@ export const useBuilder = () => {
     );
 
     return {
-        state,
         showSidePanel: state.showSidePanel,
         currentMode: state.mode,
         createdElementsIds: state.elementIds,
