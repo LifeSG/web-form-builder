@@ -5,9 +5,9 @@ import {
     EmptyDisplayTitle,
     EmptyDisplayWrapper,
     Wrapper,
-} from "./element-list-panel.styles";
+} from "./main-panel.styles";
 
-export const ElementListPanel = () => {
+export const MainPanel = () => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
