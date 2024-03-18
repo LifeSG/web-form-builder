@@ -33,24 +33,22 @@ export interface IBuilderState {
 // =============================================================================
 // ACTIONS
 // =============================================================================
-export type TTogglePanelAction = {
+export interface ITogglePanelAction {
     type: "toggle-panel";
     payload: boolean;
-};
+}
 
-export type TUpdateElementIdsAction = {
+export interface IUpdateElementIdsAction {
     type: "update-element-ids";
     payload: IElementId[];
-};
+}
 
-export type TBuilderAction = TTogglePanelAction | TUpdateElementIdsAction;
+export type TBuilderAction = ITogglePanelAction | IUpdateElementIdsAction;
 
 // =============================================================================
 // CONTEXT
 // =============================================================================
-type TContextType<State, Action> = {
-    state: State;
-    dispatch: Dispatch<Action>;
+export type TBuilderContext = {
+    state: IBuilderState;
+    dispatch: Dispatch<TBuilderAction>;
 };
-
-export type TBuilderContext = TContextType<IBuilderState, TBuilderAction>;
