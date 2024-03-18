@@ -1,83 +1,45 @@
 import { Text } from "@lifesg/react-design-system/text";
-import { ETextFieldMode } from "src/context-providers";
+import { ELEMENTS_CATEGORIES, ELEMENT_BUTTON_LABELS } from "src/data";
+import { EElementType } from "src/schemas";
 import {
-    ElementButtonListWrapper,
-    ElementPickerWrapper,
-    FieldCategoryDivider,
+    Category,
+    CategoryHeader,
+    ElementButtonList,
+    Wrapper,
 } from "./add-elements-panel.styles";
-import { TextFieldLabels } from "./elements-data";
-import {
-    IElementButtonListProps,
-    IElementListCategoryDividerProps,
-} from "./types";
 
 export const AddElementsPanel = () => {
     // =============================================================================
-    // HELPER FUNCTIONS
+    // RENDER FUNCTIONS
     // =============================================================================
-    const ElementListCategoryDivider = ({
-        category,
-    }: IElementListCategoryDividerProps) => {
-        return (
-            <div>
-                <Text.H6>{category}</Text.H6>
-                <FieldCategoryDivider />
-            </div>
-        );
-    };
-
-    const ElementButtonList = ({
-        category,
-        children,
-    }: IElementButtonListProps) => {
-        return (
-            <ElementButtonListWrapper>
-                <div>
-                    <ElementListCategoryDivider category={category} />
-                </div>
-                {children}
-            </ElementButtonListWrapper>
-        );
-    };
-
-    const ElementButton = ({ label }: { label: string }) => {
-        return <li>{label}</li>;
-    };
-
-    const displayElementButtonList = (
-        categoryMode: Record<string, string>,
-        categoryLabels: Record<string, string>
-    ) => {
-        return Object.values(categoryMode).map((element: string) => {
+    const renderElementButtons = (elementTypes: EElementType[]) => {
+        return elementTypes.map((elementType) => {
             return (
-                <ElementButton key={element} label={categoryLabels[element]} />
+                <li key={EElementType[elementType]}>
+                    {ELEMENT_BUTTON_LABELS[elementType]}
+                </li>
             );
         });
     };
 
-    const getElementButtonListByCategory = (category: string) => {
-        switch (category) {
-            case "Text field": {
-                return displayElementButtonList(
-                    ETextFieldMode,
-                    TextFieldLabels
-                );
-            }
+    const renderCategories = () => {
+        const rendered: JSX.Element[] = [];
 
-            default: {
-                return <></>;
-            }
-        }
+        ELEMENTS_CATEGORIES.forEach((value, key) => {
+            rendered.push(
+                <Category key={key}>
+                    <CategoryHeader>
+                        <Text.H6>{value.categoryTitle}</Text.H6>
+                    </CategoryHeader>
+                    <ElementButtonList>
+                        {renderElementButtons(value.elementTypes)}
+                    </ElementButtonList>
+                </Category>
+            );
+        });
+
+        return rendered;
     };
 
-    // =============================================================================
-    // RENDER FUNCTIONS
-    // =============================================================================
-    return (
-        <ElementPickerWrapper>
-            <ElementButtonList category="Text field">
-                <ul>{getElementButtonListByCategory("Text field")}</ul>
-            </ElementButtonList>
-        </ElementPickerWrapper>
-    );
+    return <Wrapper>{renderCategories()}</Wrapper>;
 };

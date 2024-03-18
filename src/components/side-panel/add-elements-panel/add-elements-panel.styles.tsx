@@ -1,22 +1,28 @@
+import { Color } from "@lifesg/react-design-system/color";
 import { Divider } from "@lifesg/react-design-system/divider";
 import styled from "styled-components";
 
-export const ElementPickerWrapper = styled.div`
-    width: 100%;
+export const Wrapper = styled.ul`
+    list-style-type: none;
     display: flex;
     flex-direction: column;
-    padding-bottom: 6rem;
     gap: 2rem;
-    overflow-y: auto;
 `;
 
-export const ElementButtonListWrapper = styled.div`
+export const Category = styled.li`
+    display: flex;
+    flex-direction: column;
+`;
+
+export const CategoryHeader = styled.div`
+    border-bottom: 1px solid ${Color.Neutral[5]};
+    margin-bottom: 1rem;
+    padding-bottom: 0.375rem;
+`;
+
+export const ElementButtonList = styled.ul`
+    list-style-type: none;
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    padding: 0.3rem;
-`;
-
-export const FieldCategoryDivider = styled(Divider)`
-    margin: 0.2rem 0;
 `;

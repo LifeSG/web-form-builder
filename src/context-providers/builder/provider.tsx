@@ -12,7 +12,7 @@ import { noop } from "lodash";
 // DEFAULT VALUES
 // =============================================================================
 const DEFAULT_VALUES: IBuilderState = {
-    mode: EBuilderMode.PRISTINE,
+    mode: EBuilderMode.ADD_ELEMENT,
     elements: new Map(),
     focusedElement: null,
     showSidePanel: false,
