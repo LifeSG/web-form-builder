@@ -2,16 +2,16 @@ import { createContext } from "react";
 import { useImmerReducer } from "use-immer";
 import {
     EBuilderMode,
+    IBuilderState,
     TBuilderAction,
     TBuilderContext,
-    TBuilderState,
 } from "./types";
 import { noop } from "lodash";
 
 // =============================================================================
 // DEFAULT VALUES
 // =============================================================================
-const DEFAULT_VALUES: TBuilderState = {
+const DEFAULT_VALUES: IBuilderState = {
     mode: EBuilderMode.ADD_ELEMENT,
     elements: new Map(),
     focusedElement: null,
@@ -23,7 +23,7 @@ const DEFAULT_VALUES: TBuilderState = {
 // REDUCER
 // =============================================================================
 export const builderReducer = (
-    state: TBuilderState,
+    state: IBuilderState,
     action: TBuilderAction
 ) => {
     switch (action.type) {

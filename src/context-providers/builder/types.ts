@@ -1,5 +1,5 @@
 import { TElement } from "src/schemas";
-import { TContextType } from "../types";
+import { Dispatch } from "react";
 
 export enum EBuilderMode {
     /** Mode where we get to select the elements to add */
@@ -13,12 +13,12 @@ export enum EBuilderMode {
 // =============================================================================
 // STATE
 // =============================================================================
-export type TElementId = {
+export interface IElementId {
     id: string;
     parentId?: string;
-};
+}
 
-export type TBuilderState = {
+export interface IBuilderState {
     mode: EBuilderMode;
     showSidePanel: boolean;
     elements: Map<[internalId: string], TElement>;
@@ -27,8 +27,8 @@ export type TBuilderState = {
      * Specifies the elements that have been created and used in
      * the element list panel
      */
-    elementIds: TElementId[];
-};
+    elementIds: IElementId[];
+}
 
 // =============================================================================
 // ACTIONS
@@ -40,7 +40,7 @@ export type TTogglePanelAction = {
 
 export type TUpdateElementIdsAction = {
     type: "update-element-ids";
-    payload: TElementId[];
+    payload: IElementId[];
 };
 
 export type TBuilderAction = TTogglePanelAction | TUpdateElementIdsAction;
@@ -48,4 +48,9 @@ export type TBuilderAction = TTogglePanelAction | TUpdateElementIdsAction;
 // =============================================================================
 // CONTEXT
 // =============================================================================
-export type TBuilderContext = TContextType<TBuilderState, TBuilderAction>;
+type TContextType<State, Action> = {
+    state: State;
+    dispatch: Dispatch<Action>;
+};
+
+export type TBuilderContext = TContextType<IBuilderState, TBuilderAction>;

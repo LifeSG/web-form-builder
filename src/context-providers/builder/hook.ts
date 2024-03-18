@@ -1,6 +1,6 @@
 import { useCallback, useContext } from "react";
 import { BuilderContext } from "./provider";
-import { TElementId } from "./types";
+import { IElementId } from "./types";
 
 export const useBuilder = () => {
     const { state, dispatch } = useContext(BuilderContext);
@@ -13,7 +13,7 @@ export const useBuilder = () => {
     }, []);
 
     const addElement = useCallback(
-        (elementId: TElementId) => {
+        (elementId: IElementId) => {
             const newElementIds = [...state.elementIds, elementId];
             dispatch({
                 type: "update-element-ids",
