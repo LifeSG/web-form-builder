@@ -1,5 +1,5 @@
 import { Color } from "@lifesg/react-design-system/color";
-import { EFormBuilderMode, useBuilder } from "../../context-providers";
+import { EBuilderMode, useBuilder } from "../../context-providers";
 import { IconButton } from "../common";
 import { HeaderIcon, HeaderLabel, Wrapper } from "./side-panel-header.styles";
 
@@ -24,13 +24,13 @@ export const SidePanelHeader = () => {
     // =========================================================================
     const getHeaderTitle = () => {
         switch (currentMode) {
-            case EFormBuilderMode.ADD_FIELD: {
+            case EBuilderMode.ADD_ELEMENT: {
                 return "Add elements";
             }
-            case EFormBuilderMode.EDIT_FIELD: {
+            case EBuilderMode.EDIT_ELEMENT: {
                 return "Edit details";
             }
-            case EFormBuilderMode.EDIT_PAGES: {
+            case EBuilderMode.EDIT_PAGES: {
                 return "Add pages";
             }
         }
@@ -41,6 +41,7 @@ export const SidePanelHeader = () => {
     // =========================================================================
     return (
         <Wrapper>
+            <HeaderLabel weight="semibold">{getHeaderTitle()}</HeaderLabel>
             <IconButton
                 $iconSize="1.5rem"
                 $iconColor={Color.Neutral[3]}
@@ -48,7 +49,6 @@ export const SidePanelHeader = () => {
             >
                 <HeaderIcon $isCollapsed={showSidePanel} />
             </IconButton>
-            <HeaderLabel weight="semibold">{getHeaderTitle()}</HeaderLabel>
             {/* TODO: To work on when react hook form is set up */}
             {/* {onSaveChanges && (
                 <SaveChangesButton onClick={handleSaveButtonClick}>

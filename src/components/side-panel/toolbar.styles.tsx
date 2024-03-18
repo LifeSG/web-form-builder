@@ -19,7 +19,7 @@ export const Wrapper = styled.div`
     align-items: center;
     width: fit-content;
     padding: 2rem 1rem;
-    border-right: 1px solid ${Color.Neutral[5]};
+    border-left: 1px solid ${Color.Neutral[5]};
     gap: 2rem;
 `;
 

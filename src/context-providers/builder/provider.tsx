@@ -1,26 +1,29 @@
-import noop from "lodash/noop";
 import { createContext } from "react";
 import { useImmerReducer } from "use-immer";
 import {
-    EFormBuilderMode,
+    EBuilderMode,
+    IBuilderState,
     TBuilderAction,
     TBuilderContext,
-    TBuilderState,
 } from "./types";
+import { noop } from "lodash";
 
 // =============================================================================
 // DEFAULT VALUES
 // =============================================================================
-const DEFAULT_VALUES: TBuilderState = {
-    mode: EFormBuilderMode.ADD_FIELD,
+const DEFAULT_VALUES: IBuilderState = {
+    mode: EBuilderMode.PRISTINE,
+    elements: new Map(),
+    focusedElement: null,
     showSidePanel: false,
+    elementIds: [],
 };
 
 // =============================================================================
 // REDUCER
 // =============================================================================
 export const builderReducer = (
-    state: TBuilderState,
+    state: IBuilderState,
     action: TBuilderAction
 ) => {
     switch (action.type) {
@@ -32,7 +35,12 @@ export const builderReducer = (
             state.mode = action.payload;
             break;
         }
+        case "update-element-ids": {
+            state.elementIds = action.payload;
+            break;
+        }
     }
+
     return state;
 };
 

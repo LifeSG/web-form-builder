@@ -1,5 +1,5 @@
-import { EFormBuilderMode, useBuilder } from "../../context-providers";
-import { AddElementsPanel } from "../side-panel/add-elements-panel";
+import { EBuilderMode, useBuilder } from "../../context-providers";
+import { AddElementsPanel } from "./add-elements-panel";
 import { SidePanelHeader } from "./side-panel-header";
 import { ContentSection, ContentWrapper, Wrapper } from "./side-panel.styles";
 import { Toolbar } from "./toolbar";
@@ -15,10 +15,10 @@ export const SidePanel = () => {
     // =========================================================================
     const getPanelContent = () => {
         switch (currentMode) {
-            case EFormBuilderMode.ADD_FIELD:
+            case EBuilderMode.ADD_ELEMENT:
                 return <AddElementsPanel />;
             default:
-                return <></>;
+                return <>Some content here...</>;
         }
     };
 
@@ -26,11 +26,11 @@ export const SidePanel = () => {
     // RENDER FUNCTIONS
     // =========================================================================
     return (
-        <Wrapper $isCollapsed={showSidePanel}>
+        <Wrapper $isCollapsed={!showSidePanel}>
             <SidePanelHeader />
             <ContentWrapper>
-                {currentMode !== EFormBuilderMode.EDIT_FIELD && <Toolbar />}
                 <ContentSection>{getPanelContent()}</ContentSection>
+                {currentMode !== EBuilderMode.EDIT_ELEMENT && <Toolbar />}
             </ContentWrapper>
         </Wrapper>
     );

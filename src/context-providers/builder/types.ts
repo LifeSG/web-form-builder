@@ -1,12 +1,15 @@
-import { TContextType } from "../types";
+import { TElement } from "src/schemas";
+import { Dispatch } from "react";
 
-// =============================================================================
-// ENUMS
-// =============================================================================
-export enum EFormBuilderMode {
-    ADD_FIELD = "add-field",
-    EDIT_FIELD = "edit-field",
-    EDIT_PAGES = "edit-page",
+export enum EBuilderMode {
+    /** The initial state */
+    PRISTINE = "prisine",
+    /** Mode where we get to select the elements to add */
+    ADD_ELEMENT = "add-element",
+    /** Mode where we edit the attributes of an element */
+    EDIT_ELEMENT = "edit-element",
+    /** Mode where we add and edit the pages */
+    EDIT_PAGES = "edit-pages",
 }
 
 export enum ETextFieldMode {
@@ -20,27 +23,55 @@ export enum ETextFieldMode {
 // =============================================================================
 // STATE
 // =============================================================================
-export type TBuilderState = {
-    mode: EFormBuilderMode;
+export interface IElementId {
+    id: string;
+    parentId?: string;
+}
+
+export interface IFocusedElement {
+    element: TElement;
+    isDirty?: boolean;
+}
+
+export interface IBuilderState {
+    mode: EBuilderMode;
     showSidePanel: boolean;
-};
+    elements: Map<[internalId: string], TElement>;
+    focusedElement: IFocusedElement | null;
+    /**
+     * Specifies the elements that have been created and used in
+     * the element list panel
+     */
+    elementIds: IElementId[];
+}
 
 // =============================================================================
 // ACTIONS
 // =============================================================================
-export type TTogglePanelAction = {
+export interface ITogglePanelAction {
     type: "toggle-panel";
     payload: boolean;
-};
+}
 
-export type TToggleModeAction = {
+export interface IToggleModeAction {
     type: "toggle-mode";
-    payload: EFormBuilderMode;
-};
+    payload: EBuilderMode;
+}
 
-export type TBuilderAction = TTogglePanelAction | TToggleModeAction;
+export interface IUpdateElementIdsAction {
+    type: "update-element-ids";
+    payload: IElementId[];
+}
+
+export type TBuilderAction =
+    | ITogglePanelAction
+    | IUpdateElementIdsAction
+    | IToggleModeAction;
 
 // =============================================================================
 // CONTEXT
 // =============================================================================
-export type TBuilderContext = TContextType<TBuilderState, TBuilderAction>;
+export type TBuilderContext = {
+    state: IBuilderState;
+    dispatch: Dispatch<TBuilderAction>;
+};

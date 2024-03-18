@@ -1,4 +1,4 @@
 export * from "./common";
-export * from "./element-list-panel";
-export * from "./main";
+export * from "./element-card";
+export * from "./main-panel";
 export * from "./side-panel";
