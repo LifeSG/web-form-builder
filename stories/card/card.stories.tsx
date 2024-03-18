@@ -1,15 +1,15 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { noop } from "lodash";
-import { Card } from "src/components/card";
-import { TElement } from "src/schemas";
-import { EFieldType } from "src/schemas/types";
-import { Container, List } from "./doc-elements";
+import noop from "lodash/noop";
+import { ElementCard } from "src/components";
+import { EElementType, TElement } from "src/schemas";
+import { List } from "./doc-elements";
+import { BuilderContext, EBuilderMode } from "src/context-providers";
 
-type Component = typeof Card;
+type Component = typeof ElementCard;
 
 const meta: Meta<Component> = {
     title: "Card",
-    component: Card,
+    component: ElementCard,
     decorators: [
         (Story) => (
             <List>
@@ -21,83 +21,38 @@ const meta: Meta<Component> = {
 
 export default meta;
 
-const firstNameField: TElement = {
+const BASE_ELEMENT: TElement = {
     id: "first-name",
-    internalId: "internalId-1",
+    internalId: "id1",
     label: "First name",
-    type: EFieldType.EMAIL,
+    type: EElementType.EMAIL,
 };
 
-const lastNameField: TElement = {
+const FOCUSED_ELEMENT: TElement = {
     id: "last-name",
-    internalId: "internalId-2",
+    internalId: "id2",
     label: "Last name",
-    type: EFieldType.EMAIL,
-};
-
-const emailField: TElement = {
-    id: "email-field",
-    internalId: "internalId-3",
-    label: "Email",
-    type: EFieldType.EMAIL,
+    type: EElementType.EMAIL,
 };
 
 export const Default: StoryObj<Component> = {
     render: () => {
         return (
-            <>
-                <Card field={firstNameField} onClick={noop} />
-                <Card field={lastNameField} isFocused onClick={noop} />
-            </>
-        );
-    },
-};
-
-export const Unfocused: StoryObj<Component> = {
-    render: () => {
-        return <Card field={lastNameField} onClick={noop} />;
-    },
-};
-
-export const Focused: StoryObj<Component> = {
-    render: () => {
-        return <Card field={lastNameField} isFocused onClick={noop} />;
-    },
-};
-
-export const ColumnVariations: StoryObj<Component> = {
-    render: () => {
-        return (
-            <>
-                <Container type="grid">
-                    <Card
-                        desktopCols={[1, 7]}
-                        field={firstNameField}
-                        onClick={noop}
-                    />
-                    <Card
-                        desktopCols={[7, 13]}
-                        field={lastNameField}
-                        onClick={noop}
-                        isFocused
-                    />
-                </Container>
-                <Container type="grid">
-                    <Card
-                        desktopCols={[1, 13]}
-                        field={emailField}
-                        onClick={noop}
-                    />
-                </Container>
-                <Container type="grid">
-                    <Card
-                        desktopCols={[1, 13]}
-                        isFocused
-                        field={emailField}
-                        onClick={noop}
-                    />
-                </Container>
-            </>
+            <BuilderContext.Provider
+                value={{
+                    state: {
+                        mode: EBuilderMode.ADD_ELEMENT,
+                        elements: new Map(),
+                        focusedElement: FOCUSED_ELEMENT,
+                        showSidePanel: false,
+                        elementIds: [],
+                    },
+                    dispatch: noop,
+                }}
+            >
+                <ElementCard element={BASE_ELEMENT} onClick={noop} />
+                <ElementCard element={FOCUSED_ELEMENT} onClick={noop} />
+            </BuilderContext.Provider>
         );
     },
 };
