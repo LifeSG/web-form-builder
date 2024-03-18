@@ -3,15 +3,15 @@ import { createContext } from "react";
 import { useImmerReducer } from "use-immer";
 import {
     EFormBuilderMode,
+    IBuilderState,
     TBuilderAction,
     TBuilderContext,
-    TBuilderState,
 } from "./types";
 
 // =============================================================================
 // DEFAULT VALUES
 // =============================================================================
-const DEFAULT_VALUES: TBuilderState = {
+const DEFAULT_VALUES: IBuilderState = {
     mode: EFormBuilderMode.ADD_FIELD,
     showSidePanel: false,
     elementIds: [],
@@ -21,7 +21,7 @@ const DEFAULT_VALUES: TBuilderState = {
 // REDUCER
 // =============================================================================
 export const builderReducer = (
-    state: TBuilderState,
+    state: IBuilderState,
     action: TBuilderAction
 ) => {
     switch (action.type) {

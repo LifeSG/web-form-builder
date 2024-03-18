@@ -1,4 +1,4 @@
-import { TContextType } from "../types";
+import { Dispatch } from "react";
 
 // =============================================================================
 // ENUMS
@@ -12,20 +12,20 @@ export enum EFormBuilderMode {
 // =============================================================================
 // STATE
 // =============================================================================
-export type TElementId = {
+export interface IElementId {
     id: string;
     parentId?: string;
-};
+}
 
-export type TBuilderState = {
+export interface IBuilderState {
     mode: EFormBuilderMode;
     showSidePanel: boolean;
     /**
      * Specifies the elements that have been created and used in
      * the element list panel
      */
-    elementIds: TElementId[];
-};
+    elementIds: IElementId[];
+}
 
 // =============================================================================
 // ACTIONS
@@ -37,7 +37,7 @@ export type TTogglePanelAction = {
 
 export type TUpdateElementIdsAction = {
     type: "update-element-ids";
-    payload: TElementId[];
+    payload: IElementId[];
 };
 
 export type TBuilderAction = TTogglePanelAction | TUpdateElementIdsAction;
@@ -45,4 +45,9 @@ export type TBuilderAction = TTogglePanelAction | TUpdateElementIdsAction;
 // =============================================================================
 // CONTEXT
 // =============================================================================
-export type TBuilderContext = TContextType<TBuilderState, TBuilderAction>;
+type TContextType<State, Action> = {
+    state: State;
+    dispatch: Dispatch<Action>;
+};
+
+export type TBuilderContext = TContextType<IBuilderState, TBuilderAction>;
