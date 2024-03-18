@@ -18,11 +18,16 @@ export interface IElementId {
     parentId?: string;
 }
 
+export interface IFocusedElement {
+    element: TElement;
+    isDirty?: boolean;
+}
+
 export interface IBuilderState {
     mode: EBuilderMode;
     showSidePanel: boolean;
     elements: Map<[internalId: string], TElement>;
-    focusedElement: TElement | null;
+    focusedElement: IFocusedElement | null;
     /**
      * Specifies the elements that have been created and used in
      * the element list panel

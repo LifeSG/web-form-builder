@@ -3,7 +3,11 @@ import noop from "lodash/noop";
 import { ElementCard } from "src/components";
 import { EElementType, TElement } from "src/schemas";
 import { List } from "./doc-elements";
-import { BuilderContext, EBuilderMode } from "src/context-providers";
+import {
+    BuilderContext,
+    EBuilderMode,
+    IFocusedElement,
+} from "src/context-providers";
 
 type Component = typeof ElementCard;
 
@@ -28,11 +32,14 @@ const BASE_ELEMENT: TElement = {
     type: EElementType.EMAIL,
 };
 
-const FOCUSED_ELEMENT: TElement = {
-    id: "last-name",
-    internalId: "id2",
-    label: "Last name",
-    type: EElementType.EMAIL,
+const FOCUSED_ELEMENT: IFocusedElement = {
+    element: {
+        id: "last-name",
+        internalId: "id2",
+        label: "Last name",
+        type: EElementType.EMAIL,
+    },
+    isDirty: false,
 };
 
 export const Default: StoryObj<Component> = {
@@ -51,7 +58,7 @@ export const Default: StoryObj<Component> = {
                 }}
             >
                 <ElementCard element={BASE_ELEMENT} onClick={noop} />
-                <ElementCard element={FOCUSED_ELEMENT} onClick={noop} />
+                <ElementCard element={FOCUSED_ELEMENT.element} onClick={noop} />
             </BuilderContext.Provider>
         );
     },

@@ -6,7 +6,7 @@ import styled, { css } from "styled-components";
 // STYLE INTERFACES
 // =============================================================================
 interface IActionButtonStyleProps {
-    $primary?: boolean;
+    $disabled?: boolean;
 }
 
 // =============================================================================
@@ -51,14 +51,14 @@ export const ActionButton = styled.button<IActionButtonStyleProps>`
         width: 1rem;
     }
 
-    ${({ $primary }) => {
-        if ($primary) {
+    ${({ $disabled }) => {
+        if ($disabled) {
             return css`
-                color: ${Color.Primary};
+                color: ${Color.Neutral[3]};
             `;
         } else {
             return css`
-                color: ${Color.Neutral[3]};
+                color: ${Color.Primary};
             `;
         }
     }}

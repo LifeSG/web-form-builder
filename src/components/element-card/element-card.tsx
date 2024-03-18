@@ -28,6 +28,7 @@ export const ElementCard = ({ element, onClick }: IProps) => {
     const { focusedElement } = useBuilder();
 
     const isFocused = checkIsFocused();
+    const disableDuplicate = shouldDisableDuplicate();
 
     // =========================================================================
     // EVENT HANDLERS
@@ -36,6 +37,10 @@ export const ElementCard = ({ element, onClick }: IProps) => {
         event: React.MouseEvent<HTMLButtonElement>
     ) => {
         event.stopPropagation();
+
+        if (disableDuplicate) {
+            event.preventDefault();
+        }
         // TODO: Add handling
     };
 
@@ -48,7 +53,11 @@ export const ElementCard = ({ element, onClick }: IProps) => {
     // HELPER FUNCTIONS
     // =========================================================================
     function checkIsFocused() {
-        return focusedElement.internalId === element.internalId;
+        return focusedElement.element.internalId === element.internalId;
+    }
+
+    function shouldDisableDuplicate() {
+        return checkIsFocused() && focusedElement.isDirty;
     }
 
     // =========================================================================
@@ -81,15 +90,12 @@ export const ElementCard = ({ element, onClick }: IProps) => {
                         <ActionButton
                             type="button"
                             onClick={handleDuplicateClick}
+                            $disabled={disableDuplicate}
                         >
                             <CopyIcon />
                             Duplicate
                         </ActionButton>
-                        <ActionButton
-                            type="button"
-                            $primary
-                            onClick={handleDeleteClick}
-                        >
+                        <ActionButton type="button" onClick={handleDeleteClick}>
                             <BinIcon />
                             Delete
                         </ActionButton>
