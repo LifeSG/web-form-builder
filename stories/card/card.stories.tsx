@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import noop from "lodash/noop";
-import { ElementCard } from "src/components";
+import { ElementCard, ElementSelectorCard } from "src/components";
 import { EElementType, TElement } from "src/schemas";
 import { List } from "./doc-elements";
 import {
@@ -61,5 +61,11 @@ export const Default: StoryObj<Component> = {
                 <ElementCard element={FOCUSED_ELEMENT.element} onClick={noop} />
             </BuilderContext.Provider>
         );
+    },
+};
+
+export const ElementSelector: StoryObj<Component> = {
+    render: () => {
+        return <ElementSelectorCard type={EElementType.EMAIL} onClick={noop} />;
     },
 };
