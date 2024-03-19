@@ -59,6 +59,10 @@ export const ActionButton = styled.button<IActionButtonStyleProps>`
         } else {
             return css`
                 color: ${Color.Primary};
+
+                :hover {
+                    color: ${Color.Secondary};
+                }
             `;
         }
     }}
