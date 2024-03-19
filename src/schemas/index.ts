@@ -16,13 +16,13 @@ export enum EElementType {
 }
 
 export interface IBaseAttributes {
-    id: string;
+    id: string | undefined;
     internalId: string;
     type: EElementType;
 }
 
 export interface IBaseFieldAttributes extends IBaseAttributes {
-    label: string;
+    label: string | undefined;
 }
 
 export interface IBaseTextBasedFieldAttributes extends IBaseFieldAttributes {

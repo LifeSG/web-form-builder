@@ -52,7 +52,7 @@ export const Default: StoryObj<Component> = {
                         elements: new Map(),
                         focusedElement: FOCUSED_ELEMENT,
                         showSidePanel: false,
-                        elementIds: [],
+                        orderedIdentifiers: [],
                     },
                     dispatch: noop,
                 }}

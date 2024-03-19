@@ -21,9 +21,9 @@ export enum ETextFieldMode {
 // =============================================================================
 // STATE
 // =============================================================================
-export interface IElementId {
-    id: string;
-    parentId?: string;
+export interface IElementIdentifier {
+    internalId: string;
+    parentInternalId?: string;
 }
 
 export interface IFocusedElement {
@@ -45,7 +45,7 @@ export interface IBuilderState {
      * is used in the main panel. This will be used to determine the
      * rendering order
      */
-    elementIds: IElementId[];
+    orderedIdentifiers: IElementIdentifier[];
 }
 
 // =============================================================================
@@ -61,15 +61,30 @@ export interface IToggleModeAction {
     payload: EBuilderMode;
 }
 
-export interface IUpdateElementIdsAction {
-    type: "update-element-ids";
-    payload: IElementId[];
+export interface IUpdateOrderedIdentifiersAction {
+    type: "update-ordered-identifiers";
+    payload: IElementIdentifier[];
+}
+
+export interface IAddElementAction {
+    type: "add-element";
+    payload: {
+        element: TElement;
+        orderedIdentifiers: IElementIdentifier[];
+    };
+}
+
+export interface IFocusElementAction {
+    type: "focus-element";
+    payload: IFocusedElement;
 }
 
 export type TBuilderAction =
     | ITogglePanelAction
-    | IUpdateElementIdsAction
-    | IToggleModeAction;
+    | IUpdateOrderedIdentifiersAction
+    | IToggleModeAction
+    | IAddElementAction
+    | IFocusElementAction;
 
 // =============================================================================
 // CONTEXT
