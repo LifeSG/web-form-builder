@@ -14,11 +14,11 @@ export const useBuilder = () => {
         });
     }, []);
 
-    const updateElementIds = useCallback(
-        (elementIds: IElementIdentifier[]) => {
+    const updateOrderedIdentifiers = useCallback(
+        (orderedIdentifiers: IElementIdentifier[]) => {
             dispatch({
                 type: "update-ordered-identifiers",
-                payload: elementIds,
+                payload: orderedIdentifiers,
             });
         },
         [state.orderedIdentifiers]
@@ -81,7 +81,7 @@ export const useBuilder = () => {
         focusedElement: state.focusedElement,
         togglePanel,
         toggleMode,
-        updateElementIds,
+        updateOrderedIdentifiers,
         addElement,
         // deleteElement,
     };
