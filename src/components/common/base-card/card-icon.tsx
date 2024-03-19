@@ -1,4 +1,5 @@
 import { EnvelopeIcon } from "@lifesg/react-icons/envelope";
+import { PhoneIcon } from "@lifesg/react-icons/phone";
 import { EElementType } from "src/schemas";
 import { Container } from "./card-icon.styles";
 
@@ -12,6 +13,9 @@ export const CardIcon = ({ elementType }: IProps) => {
     switch (elementType) {
         case EElementType.EMAIL:
             icon = <EnvelopeIcon />;
+            break;
+        case EElementType.CONTACT:
+            icon = <PhoneIcon />;
             break;
         default:
             break;
