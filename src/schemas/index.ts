@@ -1,7 +1,14 @@
+/**
+ * Refer to the uiType in the Frontend Engine when setting
+ * the value.
+ * https://designsystem.life.gov.sg/web-frontend-engine/index.html?path=/docs/introduction-getting-started--docs
+ */
 export enum EElementType {
     EMAIL = "email-field",
     NUMERIC = "numeric-field",
     TEXT = "text-field",
+    TEXTAREA = "textarea",
+    CONTACT = "contact-field",
     CHECKBOX = "checkbox",
     RADIO = "radio",
 }

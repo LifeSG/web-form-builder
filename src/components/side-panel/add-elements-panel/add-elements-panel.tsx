@@ -1,5 +1,7 @@
 import { Text } from "@lifesg/react-design-system/text";
-import { ELEMENTS_CATEGORIES, ELEMENT_BUTTON_LABELS } from "src/data";
+import noop from "lodash/noop";
+import { ElementSelectorCard } from "src/components/element-selector-card";
+import { ELEMENTS_CATEGORIES } from "src/data";
 import { EElementType } from "src/schemas";
 import {
     Category,
@@ -16,7 +18,8 @@ export const AddElementsPanel = () => {
         return elementTypes.map((elementType) => {
             return (
                 <li key={EElementType[elementType]}>
-                    {ELEMENT_BUTTON_LABELS[elementType]}
+                    {/* TODO: Add action on click */}
+                    <ElementSelectorCard type={elementType} onClick={noop} />
                 </li>
             );
         });
