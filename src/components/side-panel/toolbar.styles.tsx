@@ -33,8 +33,12 @@ export const ModeButton = styled.button<IModeButtonProps>`
     border-radius: 0.25rem;
     padding: 1rem;
 
-    &:hover {
-        cursor: pointer;
+    :hover {
+        background: ${Color.Accent.Light[4]};
+    }
+
+    :focus {
+        outline-color: ${Color.Primary};
     }
 
     svg {

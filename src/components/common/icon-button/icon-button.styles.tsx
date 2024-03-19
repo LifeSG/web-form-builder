@@ -1,3 +1,4 @@
+import { Color } from "@lifesg/react-design-system/color";
 import styled from "styled-components";
 
 // =============================================================================
@@ -19,6 +20,10 @@ export const IconButton = styled.button<IIconButtonStyleProps>`
 
     :hover {
         box-shadow: none;
+    }
+
+    :focus {
+        outline-color: ${Color.Primary};
     }
 
     svg {
