@@ -13,7 +13,7 @@ import { noop } from "lodash";
 // =============================================================================
 const DEFAULT_VALUES: IBuilderState = {
     mode: EBuilderMode.ADD_ELEMENT,
-    elements: new Map(),
+    elements: {},
     focusedElement: null,
     showSidePanel: false,
     elementIds: [],

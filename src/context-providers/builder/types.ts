@@ -31,14 +31,19 @@ export interface IFocusedElement {
     isDirty?: boolean;
 }
 
+export type TElementMap = {
+    [internalId: string]: TElement;
+};
+
 export interface IBuilderState {
     mode: EBuilderMode;
     showSidePanel: boolean;
-    elements: Map<[internalId: string], TElement>;
+    elements: TElementMap;
     focusedElement: IFocusedElement | null;
     /**
-     * Specifies the elements that have been created and used in
-     * the element list panel
+     * Specifies the internalId of elements that have been created and
+     * is used in the main panel. This will be used to determine the
+     * rendering order
      */
     elementIds: IElementId[];
 }
