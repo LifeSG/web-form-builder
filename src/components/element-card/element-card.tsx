@@ -1,8 +1,8 @@
 import { Text } from "@lifesg/react-design-system/text";
 import { BinIcon } from "@lifesg/react-icons/bin";
 import { CopyIcon } from "@lifesg/react-icons/copy";
-import { EnvelopeIcon } from "@lifesg/react-icons/envelope";
-import { EElementType, TElement } from "src/schemas";
+import { useBuilder } from "src/context-providers";
+import { TElement } from "src/schemas";
 import { BaseCard, CardIcon } from "../common";
 import {
     ActionButton,
@@ -11,7 +11,6 @@ import {
     DetailsContainer,
     IdLabel,
 } from "./element-card.styles";
-import { useBuilder } from "src/context-providers";
 
 interface IProps {
     element: TElement;
@@ -63,24 +62,10 @@ export const ElementCard = ({ element, onClick }: IProps) => {
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
-    const renderIcon = () => {
-        let icon: React.ReactNode;
-
-        switch (element.type) {
-            case EElementType.EMAIL:
-                icon = <EnvelopeIcon />;
-                break;
-            default:
-                break;
-        }
-
-        return <CardIcon>{icon}</CardIcon>;
-    };
-
     return (
         <BaseCard onClick={onClick} focused={isFocused}>
             <Container>
-                {renderIcon()}
+                <CardIcon elementType={element.type} />
                 <DetailsContainer>
                     <Text.Body weight="semibold">{label}</Text.Body>
                     <IdLabel weight="semibold">ID: {id}</IdLabel>

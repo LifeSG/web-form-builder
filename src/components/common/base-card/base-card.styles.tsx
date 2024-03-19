@@ -35,4 +35,8 @@ export const Body = styled.div<IBodyStyleProps>`
         border-color: ${Color.Primary};
         // TODO: Add theme customised box shadow once tokens are up
     }
+
+    :focus {
+        outline-color: ${Color.Primary};
+    }
 `;
