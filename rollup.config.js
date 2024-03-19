@@ -6,7 +6,6 @@ import peerDepsExternal from "rollup-plugin-peer-deps-external";
 import postcss from "rollup-plugin-postcss";
 import { terser } from "rollup-plugin-terser";
 import typescript from "rollup-plugin-typescript2";
-import generatePackageJson from "rollup-plugin-generate-package-json";
 import pkg from "./package.json";
 
 export const plugins = [
@@ -56,18 +55,7 @@ export default [
                 interop: "compat",
             },
         ],
-        plugins: [
-            ...plugins,
-            generatePackageJson({
-                baseContents: {
-                    name: pkg.name,
-                    private: true,
-                    main: "./cjs/index.js", // point to cjs format entry point
-                    module: "./index.js", // point to esm format entry point of indiv components
-                    types: "./index.d.ts", // point to esm format entry point of indiv components
-                },
-            }),
-        ],
+        plugins,
         external: [
             "react",
             "react-dom",
