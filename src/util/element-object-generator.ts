@@ -1,5 +1,6 @@
-import { EElementType, IEmailField } from "src/schemas";
+import { EElementType, IBaseAttributes, IEmailField } from "src/schemas";
 import { SimpleIdGenerator } from "./simple-id-generator";
+import { ELEMENT_BUTTON_LABELS } from "src/data";
 
 export namespace ElementObjectGenerator {
     export const generate = (type: EElementType, existingIds: string[]) => {
@@ -8,15 +9,19 @@ export namespace ElementObjectGenerator {
             internalId = SimpleIdGenerator.generate();
         }
 
+        const baseAttributes: IBaseAttributes = {
+            internalId,
+            type,
+            id: undefined,
+        };
+
         switch (type) {
             case EElementType.EMAIL: {
-                const newElement: IEmailField = {
-                    internalId,
-                    type,
-                    id: undefined,
-                    label: undefined,
+                const attributes: IEmailField = {
+                    ...baseAttributes,
+                    label: ELEMENT_BUTTON_LABELS[type],
                 };
-                return newElement;
+                return attributes;
             }
             default:
                 return null;
