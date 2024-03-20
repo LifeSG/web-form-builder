@@ -32,8 +32,8 @@ export interface IBaseTextBasedFieldAttributes extends IBaseFieldAttributes {
 // =============================================================================
 // ELEMENT TYPES
 // =============================================================================
-export type IEmailField = IBaseFieldAttributes;
-export type INumericField = IBaseFieldAttributes;
+export type IEmailField = IBaseTextBasedFieldAttributes;
+export type INumericField = IBaseTextBasedFieldAttributes;
 
 // TODO: Add the different elements to form the union type
 export type TElement = IEmailField | INumericField;

@@ -9,9 +9,9 @@ interface IProps {
     onClick: () => void;
 }
 
-export const ElementSelectorCard = ({ type }: IProps) => {
+export const ElementSelectorCard = ({ type, onClick }: IProps) => {
     return (
-        <BaseCard>
+        <BaseCard onClick={onClick}>
             <Body>
                 <CardIcon elementType={type} />
                 <Text.Body>{ELEMENT_BUTTON_LABELS[type]}</Text.Body>

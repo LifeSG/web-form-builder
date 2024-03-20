@@ -25,15 +25,15 @@ export const useBuilder = () => {
     );
 
     const addElement = useCallback(
-        (type: EElementType) => {
-            const existingInternalIds = state.orderedIdentifiers.map(
+        (type: EElementType, setFocus?: boolean) => {
+            const existingIdentifiers = state.orderedIdentifiers.map(
                 (elementId) => elementId.internalId
             );
             const newElement: TElement = ElementObjectGenerator.generate(
                 type,
-                existingInternalIds
+                existingIdentifiers
             );
-            const newElementIds = [
+            const newOrderedIdentifiers = [
                 ...state.orderedIdentifiers,
                 { internalId: newElement.internalId },
             ];
@@ -42,12 +42,32 @@ export const useBuilder = () => {
                 type: "add-element",
                 payload: {
                     element: newElement,
-                    orderedIdentifiers: newElementIds,
+                    orderedIdentifiers: newOrderedIdentifiers,
                 },
             });
+
+            if (setFocus) {
+                dispatch({
+                    type: "focus-element",
+                    payload: {
+                        element: newElement,
+                        isDirty: true,
+                    },
+                });
+            }
         },
         [state.orderedIdentifiers]
     );
+
+    const focusElement = useCallback((element: TElement) => {
+        dispatch({
+            type: "focus-element",
+            payload: {
+                element,
+                isDirty: true, // TODO: Validate and check if dirty
+            },
+        });
+    }, []);
 
     // const deleteElement = useCallback(
     //     (elementId: string) => {
@@ -83,6 +103,7 @@ export const useBuilder = () => {
         toggleMode,
         updateOrderedIdentifiers,
         addElement,
+        focusElement,
         // deleteElement,
     };
 };

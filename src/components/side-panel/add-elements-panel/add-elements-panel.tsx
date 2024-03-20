@@ -1,5 +1,4 @@
 import { Text } from "@lifesg/react-design-system/text";
-import noop from "lodash/noop";
 import { ElementSelectorCard } from "src/components/element-selector-card";
 import { ELEMENTS_CATEGORIES } from "src/data";
 import { EElementType } from "src/schemas";
@@ -9,8 +8,21 @@ import {
     ElementButtonList,
     Wrapper,
 } from "./add-elements-panel.styles";
+import { useBuilder } from "src/context-providers";
 
 export const AddElementsPanel = () => {
+    // =============================================================================
+    // CONST, STATE, REFS
+    // =============================================================================
+    const { addElement } = useBuilder();
+
+    // =============================================================================
+    // EVENT HANDLERS
+    // =============================================================================
+    const handleElementSelectorClick = (type: EElementType) => () => {
+        addElement(type, true);
+    };
+
     // =============================================================================
     // RENDER FUNCTIONS
     // =============================================================================
@@ -18,8 +30,10 @@ export const AddElementsPanel = () => {
         return elementTypes.map((elementType) => {
             return (
                 <li key={elementType}>
-                    {/* TODO: Add action on click */}
-                    <ElementSelectorCard type={elementType} onClick={noop} />
+                    <ElementSelectorCard
+                        type={elementType}
+                        onClick={handleElementSelectorClick(elementType)}
+                    />
                 </li>
             );
         });
