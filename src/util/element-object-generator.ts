@@ -1,4 +1,8 @@
-import { EElementType, IBaseAttributes, IEmailField } from "src/schemas";
+import {
+    EElementType,
+    IBaseAttributes,
+    IBaseFieldAttributes,
+} from "src/schemas";
 import { SimpleIdGenerator } from "./simple-id-generator";
 import { ELEMENT_BUTTON_LABELS } from "src/data";
 
@@ -16,8 +20,12 @@ export namespace ElementObjectGenerator {
         };
 
         switch (type) {
-            case EElementType.EMAIL: {
-                const attributes: IEmailField = {
+            case EElementType.CONTACT:
+            case EElementType.EMAIL:
+            case EElementType.NUMERIC:
+            case EElementType.TEXT:
+            case EElementType.TEXTAREA: {
+                const attributes: IBaseFieldAttributes = {
                     ...baseAttributes,
                     label: ELEMENT_BUTTON_LABELS[type],
                 };
