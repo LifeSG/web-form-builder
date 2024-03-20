@@ -11,9 +11,9 @@ export const SidePanel = () => {
     const { showSidePanel, currentMode } = useBuilder();
 
     // =========================================================================
-    // HELPER FUNCTIONS
+    // RENDER FUNCTIONS
     // =========================================================================
-    const getPanelContent = () => {
+    const renderPanelContent = () => {
         switch (currentMode) {
             case EBuilderMode.ADD_ELEMENT:
                 return <AddElementsPanel />;
@@ -22,14 +22,11 @@ export const SidePanel = () => {
         }
     };
 
-    // =========================================================================
-    // RENDER FUNCTIONS
-    // =========================================================================
     return (
         <Wrapper $isCollapsed={!showSidePanel}>
             <SidePanelHeader />
             <ContentWrapper>
-                <ContentSection>{getPanelContent()}</ContentSection>
+                <ContentSection>{renderPanelContent()}</ContentSection>
                 {currentMode !== EBuilderMode.EDIT_ELEMENT && <Toolbar />}
             </ContentWrapper>
         </Wrapper>
