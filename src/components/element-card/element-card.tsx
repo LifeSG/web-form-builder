@@ -24,7 +24,7 @@ export const ElementCard = ({ element, onClick }: IProps) => {
     // CONST, STATE, REFS
     // =========================================================================
     const { label, id } = element;
-    const { focusedElement } = useBuilder();
+    const { focusedElement, deleteElement } = useBuilder();
 
     const isFocused = checkIsFocused();
     const disableDuplicate = shouldDisableDuplicate();
@@ -45,7 +45,8 @@ export const ElementCard = ({ element, onClick }: IProps) => {
 
     const handleDeleteClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation();
-        // TODO: Add handling
+        // TODO: Add confirmation modal
+        deleteElement(element.internalId);
     };
 
     // =========================================================================

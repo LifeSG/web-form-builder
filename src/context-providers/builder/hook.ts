@@ -59,6 +59,29 @@ export const useBuilder = () => {
         [state.orderedIdentifiers]
     );
 
+    const deleteElement = useCallback(
+        (internalId: string) => {
+            const { [internalId]: removedElement, ...remaining } =
+                state.elements;
+            const newOrderedIdentifiers = state.orderedIdentifiers.filter(
+                (identifier) => identifier.internalId !== internalId
+            );
+
+            dispatch({
+                type: "delete-element",
+                payload: {
+                    updatedElements: remaining,
+                    orderedIdentifiers: newOrderedIdentifiers,
+                },
+            });
+
+            if (state.mode === EBuilderMode.EDIT_ELEMENT) {
+                toggleMode(EBuilderMode.ADD_ELEMENT);
+            }
+        },
+        [state.orderedIdentifiers, state.elements, state.mode]
+    );
+
     const focusElement = useCallback((element: TElement) => {
         dispatch({
             type: "focus-element",
@@ -74,24 +97,6 @@ export const useBuilder = () => {
             type: "remove-focused-element",
         });
     }, []);
-
-    // const deleteElement = useCallback(
-    //     (elementId: string) => {
-    //         if (state.elementIds.length > 0) {
-    //             const newElementIds = state.elementIds.filter(
-    //                 ({ id }) => id !== elementId
-    //             );
-
-    //             if (newElementIds.length < state.elementIds.length) {
-    //                 dispatch({
-    //                     type: "update-element-ids",
-    //                     payload: newElementIds,
-    //                 });
-    //             }
-    //         }
-    //     },
-    //     [state.elementIds]
-    // );
 
     const toggleMode = useCallback((mode: EBuilderMode) => {
         dispatch({
@@ -110,8 +115,8 @@ export const useBuilder = () => {
         toggleMode,
         updateOrderedIdentifiers,
         addElement,
+        deleteElement,
         focusElement,
         removeFocusedElement,
-        // deleteElement,
     };
 };

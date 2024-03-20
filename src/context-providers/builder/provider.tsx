@@ -45,6 +45,11 @@ export const builderReducer = (
             state.orderedIdentifiers = action.payload.orderedIdentifiers;
             break;
         }
+        case "delete-element": {
+            state.elements = action.payload.updatedElements;
+            state.orderedIdentifiers = action.payload.orderedIdentifiers;
+            break;
+        }
         case "focus-element": {
             state.focusedElement = action.payload;
             state.mode = EBuilderMode.EDIT_ELEMENT;

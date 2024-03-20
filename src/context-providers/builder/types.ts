@@ -74,6 +74,14 @@ export interface IAddElementAction {
     };
 }
 
+export interface IDeleteElementAction {
+    type: "delete-element";
+    payload: {
+        updatedElements: TElementMap;
+        orderedIdentifiers: IElementIdentifier[];
+    };
+}
+
 export interface IFocusElementAction {
     type: "focus-element";
     payload: IFocusedElement;
@@ -88,6 +96,7 @@ export type TBuilderAction =
     | IUpdateOrderedIdentifiersAction
     | IToggleModeAction
     | IAddElementAction
+    | IDeleteElementAction
     | IFocusElementAction
     | IRemoveFocusedElementAction;
 
