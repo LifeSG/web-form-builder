@@ -1,6 +1,10 @@
 import { ErrorDisplay } from "@lifesg/react-design-system/error-display";
+import noop from "lodash/noop";
 import { useBuilder } from "src/context-providers";
+import { ElementCard } from "../element-card";
 import {
+    ElementItemWrapper,
+    ElementsWrapper,
     EmptyDisplayDescription,
     EmptyDisplayTitle,
     EmptyDisplayWrapper,
@@ -11,16 +15,28 @@ export const MainPanel = () => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
-    const { showSidePanel, orderedIdentifiers } = useBuilder();
+    const { showSidePanel, orderedIdentifiers, elements } = useBuilder();
+    const renderMode = showSidePanel ? "minimised" : "expanded";
 
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
+    const renderElements = () => {
+        return orderedIdentifiers.map((identifier, index) => {
+            const element = elements[identifier.internalId];
+
+            return (
+                <ElementItemWrapper key={index} $mode={renderMode} $size="full">
+                    {/* TODO: Add click handling */}
+                    <ElementCard element={element} onClick={noop} />
+                </ElementItemWrapper>
+            );
+        });
+    };
+
     if (orderedIdentifiers.length === 0) {
         return (
-            <EmptyDisplayWrapper
-                $mode={showSidePanel ? "minimised" : "expanded"}
-            >
+            <EmptyDisplayWrapper $mode={renderMode}>
                 <ErrorDisplay type="no-item-found" imageOnly />
                 <EmptyDisplayTitle weight="semibold">
                     Form is empty
@@ -33,8 +49,10 @@ export const MainPanel = () => {
     }
 
     return (
-        <Wrapper $mode={showSidePanel ? "minimised" : "expanded"}>
-            Element lists here...
+        <Wrapper $mode={renderMode}>
+            <ElementsWrapper $mode={renderMode}>
+                {renderElements()}
+            </ElementsWrapper>
         </Wrapper>
     );
 };

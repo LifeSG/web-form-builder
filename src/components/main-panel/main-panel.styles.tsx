@@ -9,12 +9,15 @@ interface IWrapperStyleProps {
     $mode: "expanded" | "minimised";
 }
 
+interface IElementItemWrapperProps extends IWrapperStyleProps {
+    $size: "full" | "half";
+}
+
 // =============================================================================
 // STYLING
 // =============================================================================
 export const Wrapper = styled.div<IWrapperStyleProps>`
     position: relative;
-    border: 1px dashed grey; // TODO: Remove when styled
 
     ${({ $mode }) => {
         switch ($mode) {
@@ -118,4 +121,75 @@ export const EmptyDisplayTitle = styled(Text.H3)`
 
 export const EmptyDisplayDescription = styled(Text.Body)`
     margin-top: 1rem;
+`;
+
+export const ElementsWrapper = styled.ul<IWrapperStyleProps>`
+    list-style-type: none;
+    display: grid;
+    row-gap: 2rem;
+
+    ${({ $mode }) => {
+        switch ($mode) {
+            case "expanded":
+                return css`
+                    ${MediaQuery.MaxWidth.desktop4k} {
+                        grid-template-columns: repeat(6, minmax(0, 1fr));
+                        column-gap: 2rem;
+                    }
+
+                    ${MediaQuery.MaxWidth.desktopL} {
+                        grid-template-columns: repeat(8, minmax(0, 1fr));
+                        column-gap: 2rem;
+                    }
+
+                    ${MediaQuery.MaxWidth.tablet} {
+                        grid-template-columns: repeat(6, minmax(0, 1fr));
+                        column-gap: 1.5rem;
+                    }
+                `;
+            case "minimised":
+                return css`
+                    ${MediaQuery.MaxWidth.desktop4k} {
+                        grid-template-columns: repeat(6, minmax(0, 1fr));
+                        column-gap: 2rem;
+                    }
+
+                    ${MediaQuery.MaxWidth.tablet} {
+                        grid-template-columns: repeat(4, minmax(0, 1fr));
+                        column-gap: 1.5rem;
+                    }
+                `;
+        }
+    }}
+`;
+
+export const ElementItemWrapper = styled.li<IElementItemWrapperProps>`
+    ${({ $mode, $size }) => {
+        switch ($mode) {
+            case "expanded":
+                return css`
+                    ${MediaQuery.MaxWidth.desktop4k} {
+                        grid-column: auto / span ${$size === "full" ? 6 : 3};
+                    }
+
+                    ${MediaQuery.MaxWidth.desktopL} {
+                        grid-column: auto / span ${$size === "full" ? 8 : 4};
+                    }
+
+                    ${MediaQuery.MaxWidth.tablet} {
+                        grid-column: auto / span ${$size === "full" ? 6 : 3};
+                    }
+                `;
+            case "minimised":
+                return css`
+                    ${MediaQuery.MaxWidth.desktop4k} {
+                        grid-column: auto / span ${$size === "full" ? 6 : 3};
+                    }
+
+                    ${MediaQuery.MaxWidth.tablet} {
+                        grid-column: auto / span ${$size === "full" ? 4 : 2};
+                    }
+                `;
+        }
+    }}
 `;
