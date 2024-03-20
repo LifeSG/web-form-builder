@@ -29,7 +29,11 @@ export const MainPanel = () => {
     // =========================================================================
     const handleElementCardClick = (element: TElement) => () => {
         if (focusedElement.element.internalId !== element.internalId) {
-            focusElement(element);
+            /**
+             * TODO: Add check if element is dirty when setting focus
+             * Hardcode to false for now
+             */
+            focusElement(element, false);
         }
     };
 

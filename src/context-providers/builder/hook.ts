@@ -82,12 +82,12 @@ export const useBuilder = () => {
         [state.orderedIdentifiers, state.elements, state.mode]
     );
 
-    const focusElement = useCallback((element: TElement) => {
+    const focusElement = useCallback((element: TElement, isDirty = false) => {
         dispatch({
             type: "focus-element",
             payload: {
                 element,
-                isDirty: true, // TODO: Validate and check if dirty
+                isDirty,
             },
         });
     }, []);
