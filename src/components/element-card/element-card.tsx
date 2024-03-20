@@ -63,7 +63,7 @@ export const ElementCard = ({ element, onClick }: IProps) => {
     // RENDER FUNCTIONS
     // =========================================================================
     return (
-        <BaseCard onClick={onClick} focused={isFocused}>
+        <BaseCard onClick={onClick} focused={isFocused} id={element.internalId}>
             <Container>
                 <CardIcon elementType={element.type} />
                 <DetailsContainer>
