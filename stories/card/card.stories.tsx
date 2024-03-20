@@ -49,7 +49,7 @@ export const Default: StoryObj<Component> = {
                 value={{
                     state: {
                         mode: EBuilderMode.ADD_ELEMENT,
-                        elements: new Map(),
+                        elements: {},
                         focusedElement: FOCUSED_ELEMENT,
                         showSidePanel: false,
                         orderedIdentifiers: [],

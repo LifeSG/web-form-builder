@@ -1,5 +1,4 @@
 import { Color } from "@lifesg/react-design-system/color";
-import { Divider } from "@lifesg/react-design-system/divider";
 import styled from "styled-components";
 
 export const Wrapper = styled.ul`

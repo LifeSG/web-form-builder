@@ -17,7 +17,7 @@ export const AddElementsPanel = () => {
     const renderElementButtons = (elementTypes: EElementType[]) => {
         return elementTypes.map((elementType) => {
             return (
-                <li key={EElementType[elementType]}>
+                <li key={elementType}>
                     {/* TODO: Add action on click */}
                     <ElementSelectorCard type={elementType} onClick={noop} />
                 </li>
