@@ -1,6 +1,6 @@
 import { ErrorDisplay } from "@lifesg/react-design-system/error-display";
-import noop from "lodash/noop";
 import { useBuilder } from "src/context-providers";
+import { TElement } from "src/schemas";
 import { ElementCard } from "../element-card";
 import {
     ElementItemWrapper,
@@ -15,8 +15,23 @@ export const MainPanel = () => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
-    const { showSidePanel, orderedIdentifiers, elements } = useBuilder();
+    const {
+        showSidePanel,
+        orderedIdentifiers,
+        elements,
+        focusedElement,
+        focusElement,
+    } = useBuilder();
     const renderMode = showSidePanel ? "minimised" : "expanded";
+
+    // =========================================================================
+    // EVENT HANDLERS
+    // =========================================================================
+    const handleElementCardClick = (element: TElement) => () => {
+        if (focusedElement.element.internalId !== element.internalId) {
+            focusElement(element);
+        }
+    };
 
     // =========================================================================
     // RENDER FUNCTIONS
@@ -27,8 +42,10 @@ export const MainPanel = () => {
 
             return (
                 <ElementItemWrapper key={index} $mode={renderMode} $size="full">
-                    {/* TODO: Add click handling */}
-                    <ElementCard element={element} onClick={noop} />
+                    <ElementCard
+                        element={element}
+                        onClick={handleElementCardClick(element)}
+                    />
                 </ElementItemWrapper>
             );
         });
