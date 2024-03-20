@@ -12,8 +12,13 @@ export const SidePanelHeader = () => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
-    const { showSidePanel, togglePanel, currentMode, toggleMode } =
-        useBuilder();
+    const {
+        showSidePanel,
+        togglePanel,
+        currentMode,
+        toggleMode,
+        removeFocusedElement,
+    } = useBuilder();
 
     // =========================================================================
     // EVENT HANDLERS
@@ -27,6 +32,7 @@ export const SidePanelHeader = () => {
 
     const handleCrossButtonClick = () => {
         toggleMode(EBuilderMode.ADD_ELEMENT);
+        removeFocusedElement();
     };
 
     // =========================================================================

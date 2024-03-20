@@ -69,6 +69,12 @@ export const useBuilder = () => {
         });
     }, []);
 
+    const removeFocusedElement = useCallback(() => {
+        dispatch({
+            type: "remove-focused-element",
+        });
+    }, []);
+
     // const deleteElement = useCallback(
     //     (elementId: string) => {
     //         if (state.elementIds.length > 0) {
@@ -105,6 +111,7 @@ export const useBuilder = () => {
         updateOrderedIdentifiers,
         addElement,
         focusElement,
+        removeFocusedElement,
         // deleteElement,
     };
 };

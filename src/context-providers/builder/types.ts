@@ -79,12 +79,17 @@ export interface IFocusElementAction {
     payload: IFocusedElement;
 }
 
+export interface IRemoveFocusedElementAction {
+    type: "remove-focused-element";
+}
+
 export type TBuilderAction =
     | ITogglePanelAction
     | IUpdateOrderedIdentifiersAction
     | IToggleModeAction
     | IAddElementAction
-    | IFocusElementAction;
+    | IFocusElementAction
+    | IRemoveFocusedElementAction;
 
 // =============================================================================
 // CONTEXT

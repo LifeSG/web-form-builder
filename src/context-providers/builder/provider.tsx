@@ -50,6 +50,10 @@ export const builderReducer = (
             state.mode = EBuilderMode.EDIT_ELEMENT;
             break;
         }
+        case "remove-focused-element": {
+            state.focusedElement = null;
+            break;
+        }
     }
 
     return state;
