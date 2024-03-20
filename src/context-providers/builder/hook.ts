@@ -106,6 +106,7 @@ export const useBuilder = () => {
     }, []);
 
     return {
+        elements: state.elements,
         showSidePanel: state.showSidePanel,
         currentMode: state.mode,
         orderedIdentifiers: state.orderedIdentifiers,
