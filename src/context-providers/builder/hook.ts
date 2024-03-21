@@ -1,6 +1,6 @@
 import { useCallback, useContext } from "react";
 import { BuilderContext } from "./provider";
-import { IElementId } from "./types";
+import { EBuilderMode, IElementId } from "./types";
 
 export const useBuilder = () => {
     const { state, dispatch } = useContext(BuilderContext);
@@ -41,12 +41,20 @@ export const useBuilder = () => {
         [state.elementIds]
     );
 
+    const toggleMode = useCallback((mode: EBuilderMode) => {
+        dispatch({
+            type: "toggle-mode",
+            payload: mode,
+        });
+    }, []);
+
     return {
         showSidePanel: state.showSidePanel,
         currentMode: state.mode,
         createdElementsIds: state.elementIds,
         focusedElement: state.focusedElement,
         togglePanel,
+        toggleMode,
         addElement,
         deleteElement,
     };

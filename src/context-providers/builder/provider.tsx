@@ -13,7 +13,7 @@ import { noop } from "lodash";
 // =============================================================================
 const DEFAULT_VALUES: IBuilderState = {
     mode: EBuilderMode.ADD_ELEMENT,
-    elements: new Map(),
+    elements: {},
     focusedElement: null,
     showSidePanel: false,
     elementIds: [],
@@ -29,6 +29,10 @@ export const builderReducer = (
     switch (action.type) {
         case "toggle-panel": {
             state.showSidePanel = action.payload;
+            break;
+        }
+        case "toggle-mode": {
+            state.mode = action.payload;
             break;
         }
         case "update-element-ids": {

@@ -10,6 +10,14 @@ export enum EBuilderMode {
     EDIT_PAGES = "edit-pages",
 }
 
+export enum ETextFieldMode {
+    EMAIL_FIELD = "email-field",
+    NUMERIC_FIELD = "numeric-field",
+    TEXT_FIELD = "text-field",
+    CONTACT_FIELD = "contact-field",
+    TEXTAREA_FIELD = "textarea-field",
+}
+
 // =============================================================================
 // STATE
 // =============================================================================
@@ -23,14 +31,19 @@ export interface IFocusedElement {
     isDirty?: boolean;
 }
 
+export type TElementMap = {
+    [internalId: string]: TElement;
+};
+
 export interface IBuilderState {
     mode: EBuilderMode;
     showSidePanel: boolean;
-    elements: Map<[internalId: string], TElement>;
+    elements: TElementMap;
     focusedElement: IFocusedElement | null;
     /**
-     * Specifies the elements that have been created and used in
-     * the element list panel
+     * Specifies the internalId of elements that have been created and
+     * is used in the main panel. This will be used to determine the
+     * rendering order
      */
     elementIds: IElementId[];
 }
@@ -43,12 +56,20 @@ export interface ITogglePanelAction {
     payload: boolean;
 }
 
+export interface IToggleModeAction {
+    type: "toggle-mode";
+    payload: EBuilderMode;
+}
+
 export interface IUpdateElementIdsAction {
     type: "update-element-ids";
     payload: IElementId[];
 }
 
-export type TBuilderAction = ITogglePanelAction | IUpdateElementIdsAction;
+export type TBuilderAction =
+    | ITogglePanelAction
+    | IUpdateElementIdsAction
+    | IToggleModeAction;
 
 // =============================================================================
 // CONTEXT

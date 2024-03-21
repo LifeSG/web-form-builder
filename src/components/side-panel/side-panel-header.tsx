@@ -1,13 +1,7 @@
 import { Color } from "@lifesg/react-design-system/color";
 import { EBuilderMode, useBuilder } from "../../context-providers";
 import { IconButton } from "../common";
-import {
-    HeaderIcon,
-    HeaderLabel,
-    SaveChangesButton,
-    Wrapper,
-} from "./side-panel-header.styles";
-import { ISidePanelHeaderProps } from "./types";
+import { HeaderIcon, HeaderLabel, Wrapper } from "./side-panel-header.styles";
 
 export const SidePanelHeader = () => {
     // =========================================================================

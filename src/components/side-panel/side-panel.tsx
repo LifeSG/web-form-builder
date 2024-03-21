@@ -1,7 +1,8 @@
-import { SidePanelHeader } from "./side-panel-header";
-import { Toolbar } from "./toolbar";
-import { ContentWrapper, ContentSection, Wrapper } from "./side-panel.styles";
 import { EBuilderMode, useBuilder } from "../../context-providers";
+import { AddElementsPanel } from "./add-elements-panel";
+import { SidePanelHeader } from "./side-panel-header";
+import { ContentSection, ContentWrapper, Wrapper } from "./side-panel.styles";
+import { Toolbar } from "./toolbar";
 
 export const SidePanel = () => {
     // =========================================================================
@@ -12,11 +13,20 @@ export const SidePanel = () => {
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
+    const renderPanelContent = () => {
+        switch (currentMode) {
+            case EBuilderMode.ADD_ELEMENT:
+                return <AddElementsPanel />;
+            default:
+                return <>Some content here...</>;
+        }
+    };
+
     return (
         <Wrapper $isCollapsed={!showSidePanel}>
             <SidePanelHeader />
             <ContentWrapper>
-                <ContentSection>Render contents conditionally</ContentSection>
+                <ContentSection>{renderPanelContent()}</ContentSection>
                 {currentMode !== EBuilderMode.EDIT_ELEMENT && <Toolbar />}
             </ContentWrapper>
         </Wrapper>
