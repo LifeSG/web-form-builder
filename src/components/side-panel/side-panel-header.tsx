@@ -14,8 +14,8 @@ export const SidePanelHeader = () => {
     // =========================================================================
     const {
         showSidePanel,
-        togglePanel,
         currentMode,
+        togglePanel,
         toggleMode,
         removeFocusedElement,
     } = useBuilder();
@@ -33,6 +33,8 @@ export const SidePanelHeader = () => {
     const handleCrossButtonClick = () => {
         toggleMode(EBuilderMode.ADD_ELEMENT);
         removeFocusedElement();
+
+        // TODO: Run some validation to check if the element is valid. If not, delete the element
     };
 
     // =========================================================================
