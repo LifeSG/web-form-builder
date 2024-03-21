@@ -29,6 +29,7 @@ export interface IElementIdentifier {
 export interface IFocusedElement {
     element: TElement;
     isDirty?: boolean;
+    isValid?: boolean;
 }
 
 export type TElementMap = {

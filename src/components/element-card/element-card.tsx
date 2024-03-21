@@ -60,7 +60,10 @@ export const ElementCard = ({ element, onClick }: IProps) => {
     }
 
     function shouldDisableDuplicate() {
-        return checkIsFocused() && focusedElement.isDirty;
+        return (
+            checkIsFocused() &&
+            (focusedElement.isDirty || !focusedElement.isValid)
+        );
     }
 
     // =========================================================================
