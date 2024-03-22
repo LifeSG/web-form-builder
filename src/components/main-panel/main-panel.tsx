@@ -1,6 +1,10 @@
 import { ErrorDisplay } from "@lifesg/react-design-system/error-display";
 import { useBuilder } from "src/context-providers";
+import { TElement } from "src/schemas";
+import { ElementCard } from "../element-card";
 import {
+    ElementItemWrapper,
+    ElementsWrapper,
     EmptyDisplayDescription,
     EmptyDisplayTitle,
     EmptyDisplayWrapper,
@@ -11,16 +15,49 @@ export const MainPanel = () => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
-    const { showSidePanel, createdElementsIds } = useBuilder();
+    const {
+        showSidePanel,
+        orderedIdentifiers,
+        elements,
+        focusedElement,
+        focusElement,
+    } = useBuilder();
+    const renderMode = showSidePanel ? "minimised" : "expanded";
+
+    // =========================================================================
+    // EVENT HANDLERS
+    // =========================================================================
+    const handleElementCardClick = (element: TElement) => () => {
+        if (focusedElement.element.internalId !== element.internalId) {
+            /**
+             * TODO: Add check if element is dirty when setting focus
+             * Hardcode to false for now
+             */
+            focusElement(element, false);
+        }
+    };
 
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
-    if (createdElementsIds.length === 0) {
+    const renderElements = () => {
+        return orderedIdentifiers.map((identifier, index) => {
+            const element = elements[identifier.internalId];
+
+            return (
+                <ElementItemWrapper key={index} $mode={renderMode} $size="full">
+                    <ElementCard
+                        element={element}
+                        onClick={handleElementCardClick(element)}
+                    />
+                </ElementItemWrapper>
+            );
+        });
+    };
+
+    if (orderedIdentifiers.length === 0) {
         return (
-            <EmptyDisplayWrapper
-                $mode={showSidePanel ? "minimised" : "expanded"}
-            >
+            <EmptyDisplayWrapper $mode={renderMode}>
                 <ErrorDisplay type="no-item-found" imageOnly />
                 <EmptyDisplayTitle weight="semibold">
                     Form is empty
@@ -33,8 +70,10 @@ export const MainPanel = () => {
     }
 
     return (
-        <Wrapper $mode={showSidePanel ? "minimised" : "expanded"}>
-            Element lists here...
+        <Wrapper $mode={renderMode}>
+            <ElementsWrapper $mode={renderMode}>
+                {renderElements()}
+            </ElementsWrapper>
         </Wrapper>
     );
 };

@@ -24,7 +24,7 @@ export const Wrapper = styled.div`
     border-bottom: 1px solid ${Color.Neutral[5]};
 `;
 
-export const HeaderIcon = styled(ChevronRightIcon)<IIconStyleProps>`
+export const HeaderChevronIcon = styled(ChevronRightIcon)<IIconStyleProps>`
     transform: ${({ $isCollapsed }) =>
         $isCollapsed ? "rotate(-180deg)" : "rotate(0)"};
     transition: transform 350ms ease-in-out;

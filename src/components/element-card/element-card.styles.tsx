@@ -55,6 +55,7 @@ export const ActionButton = styled.button<IActionButtonStyleProps>`
         if ($disabled) {
             return css`
                 color: ${Color.Neutral[3]};
+                cursor: not-allowed;
             `;
         } else {
             return css`

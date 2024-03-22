@@ -29,6 +29,7 @@ module.exports = [
         },
         rules: {
             ...tsPlugin.configs.recommended.rules,
+            "@typescript-eslint/no-namespace": "off",
         },
     },
     {

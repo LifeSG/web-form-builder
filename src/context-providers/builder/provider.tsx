@@ -16,7 +16,7 @@ const DEFAULT_VALUES: IBuilderState = {
     elements: {},
     focusedElement: null,
     showSidePanel: false,
-    elementIds: [],
+    orderedIdentifiers: [],
 };
 
 // =============================================================================
@@ -35,8 +35,28 @@ export const builderReducer = (
             state.mode = action.payload;
             break;
         }
-        case "update-element-ids": {
-            state.elementIds = action.payload;
+        case "update-ordered-identifiers": {
+            state.orderedIdentifiers = action.payload;
+            break;
+        }
+        case "add-element": {
+            const element = action.payload.element;
+            state.elements[element.internalId] = element;
+            state.orderedIdentifiers = action.payload.orderedIdentifiers;
+            break;
+        }
+        case "delete-element": {
+            state.elements = action.payload.updatedElements;
+            state.orderedIdentifiers = action.payload.orderedIdentifiers;
+            break;
+        }
+        case "focus-element": {
+            state.focusedElement = action.payload;
+            state.mode = EBuilderMode.EDIT_ELEMENT;
+            break;
+        }
+        case "remove-focused-element": {
+            state.focusedElement = null;
             break;
         }
     }

@@ -24,7 +24,7 @@ export const ElementCard = ({ element, onClick }: IProps) => {
     // CONST, STATE, REFS
     // =========================================================================
     const { label, id } = element;
-    const { focusedElement } = useBuilder();
+    const { focusedElement, deleteElement } = useBuilder();
 
     const isFocused = checkIsFocused();
     const disableDuplicate = shouldDisableDuplicate();
@@ -45,25 +45,32 @@ export const ElementCard = ({ element, onClick }: IProps) => {
 
     const handleDeleteClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation();
-        // TODO: Add handling
+        // TODO: Add confirmation modal
+        deleteElement(element.internalId);
     };
 
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
     function checkIsFocused() {
-        return focusedElement.element.internalId === element.internalId;
+        return (
+            focusedElement &&
+            focusedElement.element.internalId === element.internalId
+        );
     }
 
     function shouldDisableDuplicate() {
-        return checkIsFocused() && focusedElement.isDirty;
+        return (
+            checkIsFocused() &&
+            (focusedElement.isDirty || !focusedElement.isValid)
+        );
     }
 
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
     return (
-        <BaseCard onClick={onClick} focused={isFocused}>
+        <BaseCard onClick={onClick} focused={isFocused} id={element.internalId}>
             <Container>
                 <CardIcon elementType={element.type} />
                 <DetailsContainer>
