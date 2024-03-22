@@ -40,22 +40,18 @@ export const AddElementsPanel = () => {
     };
 
     const renderCategories = () => {
-        const rendered: JSX.Element[] = [];
-
-        ELEMENTS_CATEGORIES.forEach((value, key) => {
-            rendered.push(
+        return ELEMENTS_CATEGORIES.map((category, key) => {
+            return (
                 <Category key={key}>
                     <CategoryHeader>
-                        <Text.H6>{value.categoryTitle}</Text.H6>
+                        <Text.H6>{category.categoryTitle}</Text.H6>
                     </CategoryHeader>
                     <ElementButtonList>
-                        {renderElementButtons(value.elementTypes)}
+                        {renderElementButtons(category.elementTypes)}
                     </ElementButtonList>
                 </Category>
             );
         });
-
-        return rendered;
     };
 
     return <Wrapper>{renderCategories()}</Wrapper>;
