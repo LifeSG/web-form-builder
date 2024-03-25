@@ -54,13 +54,14 @@ export const Default: StoryObj<Component> = {
                 value={{
                     state: {
                         mode: EBuilderMode.ADD_ELEMENT,
-                        elements: new Map()
-                            .set(ELEMENT_1.internalId, ELEMENT_1)
-                            .set(ELEMENT_2.internalId, ELEMENT_2)
-                            .set(ELEMENT_3.internalId, ELEMENT_3),
+                        elements: {
+                            [ELEMENT_1.internalId]: ELEMENT_1,
+                            [ELEMENT_2.internalId]: ELEMENT_2,
+                            [ELEMENT_3.internalId]: ELEMENT_3,
+                        },
                         focusedElement: FOCUSED_ELEMENT,
                         showSidePanel: false,
-                        elementIds: [],
+                        orderedIdentifiers: [],
                     },
                     dispatch: noop,
                 }}

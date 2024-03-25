@@ -19,7 +19,7 @@ export const buildSchema = () => {
                 .required("ID is required")
                 .matches(camelCaseRegex, { message: "ID must be camelcase" })
                 .notOneOf(
-                    Array.from(elements.values())
+                    Object.values(elements)
                         .map((e) => e.id)
                         .filter((id) => id !== focusedElement.element.id),
                     "ID must not be duplicated"

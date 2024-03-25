@@ -111,7 +111,6 @@ export const useBuilder = () => {
         currentMode: state.mode,
         orderedIdentifiers: state.orderedIdentifiers,
         focusedElement: state.focusedElement,
-        elements: state.elements,
         togglePanel,
         toggleMode,
         updateOrderedIdentifiers,
