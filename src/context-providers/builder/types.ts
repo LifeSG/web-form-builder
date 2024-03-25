@@ -1,5 +1,5 @@
 import { Dispatch } from "react";
-import { TElement } from "src/schemas";
+import { IPage, TElement } from "src/schemas";
 
 export enum EBuilderMode {
     /** Mode where we get to select the elements to add */
@@ -36,6 +36,10 @@ export type TElementMap = {
     [internalId: string]: TElement;
 };
 
+export type TPageMap = {
+    [id: string]: IPage;
+};
+
 export interface IBuilderState {
     mode: EBuilderMode;
     showSidePanel: boolean;
@@ -47,6 +51,8 @@ export interface IBuilderState {
      * rendering order
      */
     orderedIdentifiers: IElementIdentifier[];
+    currentPageId: string;
+    pages: TPageMap;
 }
 
 // =============================================================================

@@ -29,7 +29,7 @@ const ELEMENT_1: TElement = {
 const FOCUSED_ELEMENT: IFocusedElement = {
     element: ELEMENT_1,
     isDirty: false,
-}
+};
 
 const ELEMENT_2: TElement = {
     id: "lastName",
@@ -62,6 +62,8 @@ export const Default: StoryObj<Component> = {
                         focusedElement: FOCUSED_ELEMENT,
                         showSidePanel: false,
                         orderedIdentifiers: [],
+                        currentPageId: "",
+                        pages: {},
                     },
                     dispatch: noop,
                 }}
