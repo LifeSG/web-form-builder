@@ -6,7 +6,7 @@ import {
     EBuilderMode,
     IFocusedElement,
 } from "src/context-providers";
-import { EElementType } from "src/schemas";
+import { EElementType, TElement } from "src/schemas";
 import { Container } from "./doc-elements";
 
 type Component = typeof ElementEditor;
@@ -18,37 +18,33 @@ const meta: Meta<Component> = {
 
 export default meta;
 
+const ELEMENT_1: TElement = {
+    id: "firstName",
+    internalId: "id1",
+    label: "Last name",
+    type: EElementType.EMAIL,
+    placeholder: "Enter email",
+};
+
 const FOCUSED_ELEMENT: IFocusedElement = {
-    element: {
-        id: "firstName",
-        internalId: "id1",
-        label: "Last name",
-        type: EElementType.EMAIL,
-        placeholder: "Enter email",
-    },
+    element: ELEMENT_1,
     isDirty: false,
+}
+
+const ELEMENT_2: TElement = {
+    id: "lastName",
+    internalId: "id2",
+    label: "Last name",
+    type: EElementType.EMAIL,
+    placeholder: "Enter email",
 };
 
-const ELEMENT_2: IFocusedElement = {
-    element: {
-        id: "lastName",
-        internalId: "id2",
-        label: "Last name",
-        type: EElementType.EMAIL,
-        placeholder: "Enter email",
-    },
-    isDirty: false,
-};
-
-const ELEMENT_3: IFocusedElement = {
-    element: {
-        id: "emailAddress",
-        internalId: "id3",
-        label: "Email Address",
-        type: EElementType.EMAIL,
-        placeholder: "Enter email",
-    },
-    isDirty: false,
+const ELEMENT_3: TElement = {
+    id: "emailAddress",
+    internalId: "id3",
+    label: "Email Address",
+    type: EElementType.EMAIL,
+    placeholder: "Enter email",
 };
 
 export const Default: StoryObj<Component> = {
@@ -59,12 +55,9 @@ export const Default: StoryObj<Component> = {
                     state: {
                         mode: EBuilderMode.ADD_ELEMENT,
                         elements: new Map()
-                            .set(
-                                FOCUSED_ELEMENT.element.internalId,
-                                FOCUSED_ELEMENT
-                            )
-                            .set(ELEMENT_2.element.internalId, ELEMENT_2)
-                            .set(ELEMENT_3.element.internalId, ELEMENT_3),
+                            .set(ELEMENT_1.internalId, ELEMENT_1)
+                            .set(ELEMENT_2.internalId, ELEMENT_2)
+                            .set(ELEMENT_3.internalId, ELEMENT_3),
                         focusedElement: FOCUSED_ELEMENT,
                         showSidePanel: false,
                         elementIds: [],
