@@ -118,5 +118,7 @@ export const useBuilder = () => {
         deleteElement,
         focusElement,
         removeFocusedElement,
+        pages: state.pages,
+        currentPage: state.pages[state.currentPageId],
     };
 };
