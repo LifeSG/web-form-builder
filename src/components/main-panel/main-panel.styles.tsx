@@ -18,6 +18,7 @@ interface IElementItemWrapperProps extends IWrapperStyleProps {
 // =============================================================================
 export const Wrapper = styled.div<IWrapperStyleProps>`
     position: relative;
+    padding-bottom: 2rem;
 
     ${({ $mode }) => {
         switch ($mode) {
