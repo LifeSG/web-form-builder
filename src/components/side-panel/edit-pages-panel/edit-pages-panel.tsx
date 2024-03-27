@@ -1,6 +1,6 @@
 import { PageButtonCard } from "src/components/page-button-card";
 import { useBuilder } from "src/context-providers";
-import { List } from "./edit-pages-panel.styles";
+import { List, ListItem } from "./edit-pages-panel.styles";
 
 export const EditPagesPanel = () => {
     const { pages } = useBuilder();
@@ -11,9 +11,9 @@ export const EditPagesPanel = () => {
         <>
             <List>
                 {Object.values(pages).map((page) => (
-                    <li>
+                    <ListItem>
                         <PageButtonCard page={page} />
-                    </li>
+                    </ListItem>
                 ))}
             </List>
         </>

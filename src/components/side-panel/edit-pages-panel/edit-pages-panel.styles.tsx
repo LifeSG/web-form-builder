@@ -5,3 +5,7 @@ export const List = styled.ul`
     flex-direction: column;
     gap: 1rem;
 `;
+
+export const ListItem = styled.li`
+    list-style: none;
+`;
