@@ -44,7 +44,9 @@ export const AddElementsPanel = () => {
             return (
                 <Category key={key}>
                     <CategoryHeader>
-                        <Text.H6>{category.categoryTitle}</Text.H6>
+                        <Text.H6 weight="semibold">
+                            {category.categoryTitle}
+                        </Text.H6>
                     </CategoryHeader>
                     <ElementButtonList>
                         {renderElementButtons(category.elementTypes)}

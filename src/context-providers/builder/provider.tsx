@@ -15,7 +15,7 @@ const DEFAULT_VALUES: IBuilderState = {
     mode: EBuilderMode.ADD_ELEMENT,
     elements: {},
     focusedElement: null,
-    showSidePanel: false,
+    showSidePanel: true,
     orderedIdentifiers: [],
 };
 
