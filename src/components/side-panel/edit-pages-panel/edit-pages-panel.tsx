@@ -11,7 +11,9 @@ export const EditPagesPanel = () => {
         <>
             <List>
                 {Object.values(pages).map((page) => (
-                    <PageButtonCard page={page} />
+                    <li>
+                        <PageButtonCard page={page} />
+                    </li>
                 ))}
             </List>
         </>
