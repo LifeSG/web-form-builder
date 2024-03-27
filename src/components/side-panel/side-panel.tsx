@@ -18,7 +18,7 @@ export const SidePanel = () => {
         switch (currentMode) {
             case EBuilderMode.ADD_ELEMENT:
                 return <AddElementsPanel />;
-            case EBuilderMode.EDIT_PAGES:
+            case EBuilderMode.MANAGE_PAGES:
                 return <EditPagesPanel />;
             default:
                 return <>Some content here...</>;

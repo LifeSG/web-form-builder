@@ -7,7 +7,7 @@ export enum EBuilderMode {
     /** Mode where we edit the attributes of an element */
     EDIT_ELEMENT = "edit-element",
     /** Mode where we add and edit the pages */
-    EDIT_PAGES = "edit-pages",
+    MANAGE_PAGES = "manage-pages",
 }
 
 export enum ETextFieldMode {

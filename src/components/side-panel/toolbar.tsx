@@ -33,8 +33,8 @@ export const Toolbar = () => {
                 <AddElementIcon />
             </ModeButton>
             <ModeButton
-                $active={currentMode === EBuilderMode.EDIT_PAGES}
-                onClick={toggleView(EBuilderMode.EDIT_PAGES)}
+                $active={currentMode === EBuilderMode.MANAGE_PAGES}
+                onClick={toggleView(EBuilderMode.MANAGE_PAGES)}
             >
                 <DocPencilIcon />
             </ModeButton>
