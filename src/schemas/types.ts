@@ -19,6 +19,8 @@ export interface IBaseAttributes {
     id: string | undefined;
     internalId: string;
     type: EElementType;
+    required: boolean;
+    requiredErrorMsg?: string | undefined;
 }
 
 export interface IBaseFieldAttributes extends IBaseAttributes {

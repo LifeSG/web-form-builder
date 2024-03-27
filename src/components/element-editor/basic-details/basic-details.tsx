@@ -1,8 +1,10 @@
 import { Button } from "@lifesg/react-design-system/button";
 import { Form } from "@lifesg/react-design-system/form";
-import { useFormContext } from "react-hook-form";
+import { Controller, useFormContext, useWatch } from "react-hook-form";
 import { useBuilder } from "src/context-providers";
 import { IFieldValues } from "../types";
+import { TogglePair } from "src/components/common/toggle-pair/toggle-pair";
+import { MandatoryFieldBox } from "./basic-details.styles";
 
 export const BasicDetails = () => {
     // =========================================================================
@@ -12,7 +14,10 @@ export const BasicDetails = () => {
     const {
         register,
         handleSubmit,
+        control,
         formState: { errors },
+        setValue,
+        watch,
     } = useFormContext<IFieldValues>();
     const element = focusedElement.element;
 
@@ -24,13 +29,13 @@ export const BasicDetails = () => {
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
-    const hasLabel = () => {
-        return "label" in element;
+    const hasProperty = (key: string) => {
+        return key in element;
     };
 
-    const hasPlaceholder = () => {
-        return "placeholder" in element;
-    };
+    // =========================================================================
+    // RENDER FUNCTIONS
+    // =========================================================================
 
     return (
         <div>
@@ -41,7 +46,7 @@ export const BasicDetails = () => {
                 placeholder="Enter ID"
                 errorMessage={errors.id?.message}
             />
-            {hasLabel() && (
+            {hasProperty("label") && (
                 <Form.Input
                     required
                     label="Label"
@@ -50,7 +55,7 @@ export const BasicDetails = () => {
                     {...register("label")}
                 />
             )}
-            {hasPlaceholder() && (
+            {hasProperty("placeholder") && (
                 <Form.Input
                     label="Placeholder"
                     placeholder="Enter placeholder"
@@ -58,6 +63,24 @@ export const BasicDetails = () => {
                     {...register("placeholder")}
                 />
             )}
+            <MandatoryFieldBox>
+                <Controller
+                    name="required"
+                    control={control}
+                    render={() => (
+                        <TogglePair
+                            label="Mandatory field"
+                            onChange={(value) => setValue("required", value)}
+                        />
+                    )}
+                />
+                {watch("required") && (
+                    <Form.Input
+                        label="Error message"
+                        {...register("requiredErrorMsg")}
+                    />
+                )}
+            </MandatoryFieldBox>
             <Button.Small onClick={handleSubmit(handleClick)}>
                 Save
             </Button.Small>
