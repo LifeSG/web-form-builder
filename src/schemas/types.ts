@@ -44,3 +44,8 @@ export type TElement =
     | ITextarea
     | INumericField
     | IContactField;
+
+export interface IPage {
+    id: string;
+    title: string;
+}

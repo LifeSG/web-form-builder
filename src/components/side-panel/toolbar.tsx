@@ -1,4 +1,4 @@
-import { DocIcon } from "@lifesg/react-icons/doc";
+import { DocPencilIcon } from "@lifesg/react-icons";
 import { EBuilderMode, useBuilder } from "../../context-providers";
 import { AddElementIcon } from "../common/icons";
 import { ModeButton, Wrapper } from "./toolbar.styles";
@@ -33,10 +33,10 @@ export const Toolbar = () => {
                 <AddElementIcon />
             </ModeButton>
             <ModeButton
-                $active={currentMode === EBuilderMode.EDIT_PAGES}
-                onClick={toggleView(EBuilderMode.EDIT_PAGES)}
+                $active={currentMode === EBuilderMode.MANAGE_PAGES}
+                onClick={toggleView(EBuilderMode.MANAGE_PAGES)}
             >
-                <DocIcon />
+                <DocPencilIcon />
             </ModeButton>
         </Wrapper>
     );

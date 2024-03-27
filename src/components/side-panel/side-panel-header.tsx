@@ -46,8 +46,8 @@ export const SidePanelHeader = () => {
                 return "Add elements";
             case EBuilderMode.EDIT_ELEMENT:
                 return "Edit details";
-            case EBuilderMode.EDIT_PAGES:
-                return "Add pages";
+            case EBuilderMode.MANAGE_PAGES:
+                return "Manage pages";
         }
     };
 
@@ -57,7 +57,7 @@ export const SidePanelHeader = () => {
     const renderIconButton = () => {
         switch (currentMode) {
             case EBuilderMode.ADD_ELEMENT:
-            case EBuilderMode.EDIT_PAGES:
+            case EBuilderMode.MANAGE_PAGES:
                 return (
                     <IconButton
                         $iconSize="1.5rem"

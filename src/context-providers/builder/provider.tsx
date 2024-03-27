@@ -17,6 +17,10 @@ const DEFAULT_VALUES: IBuilderState = {
     focusedElement: null,
     showSidePanel: true,
     orderedIdentifiers: [],
+    currentPageId: "page1",
+    pages: {
+        ["page1"]: { id: "page1", title: "Page 1" },
+    },
 };
 
 // =============================================================================

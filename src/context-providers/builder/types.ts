@@ -1,5 +1,5 @@
-import { TElement } from "src/schemas";
 import { Dispatch } from "react";
+import { IPage, TElement } from "src/schemas";
 
 export enum EBuilderMode {
     /** Mode where we get to select the elements to add */
@@ -7,7 +7,7 @@ export enum EBuilderMode {
     /** Mode where we edit the attributes of an element */
     EDIT_ELEMENT = "edit-element",
     /** Mode where we add and edit the pages */
-    EDIT_PAGES = "edit-pages",
+    MANAGE_PAGES = "manage-pages",
 }
 
 export enum ETextFieldMode {
@@ -36,6 +36,10 @@ export type TElementMap = {
     [internalId: string]: TElement;
 };
 
+export type TPageMap = {
+    [id: string]: IPage;
+};
+
 export interface IBuilderState {
     mode: EBuilderMode;
     showSidePanel: boolean;
@@ -47,6 +51,8 @@ export interface IBuilderState {
      * rendering order
      */
     orderedIdentifiers: IElementIdentifier[];
+    currentPageId: string;
+    pages: TPageMap;
 }
 
 // =============================================================================

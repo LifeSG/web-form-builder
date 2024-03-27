@@ -106,11 +106,11 @@ export const useBuilder = () => {
     }, []);
 
     return {
+        elements: state.elements,
         showSidePanel: state.showSidePanel,
         currentMode: state.mode,
         orderedIdentifiers: state.orderedIdentifiers,
         focusedElement: state.focusedElement,
-        elements: state.elements,
         togglePanel,
         toggleMode,
         updateOrderedIdentifiers,
@@ -118,5 +118,7 @@ export const useBuilder = () => {
         deleteElement,
         focusElement,
         removeFocusedElement,
+        pages: state.pages,
+        currentPage: state.pages[state.currentPageId],
     };
 };
