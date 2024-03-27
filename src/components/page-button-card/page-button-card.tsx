@@ -25,7 +25,7 @@ export const PageButtonCard = ({ page }: IProps) => {
         <BaseCard focused={currentPage.id === page.id}>
             <Container>
                 {/* {renderDragger()} */}
-                <PageTitle>Hello World</PageTitle>
+                <PageTitle>{page.title}</PageTitle>
                 {/* {renderOptions()} */}
             </Container>
         </BaseCard>
