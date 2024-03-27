@@ -17,6 +17,7 @@ export namespace ElementObjectGenerator {
             internalId,
             type,
             id: undefined,
+            required: false,
         };
 
         switch (type) {
