@@ -92,6 +92,14 @@ export interface IRemoveFocusedElementAction {
     type: "remove-focused-element";
 }
 
+export interface IToggleEditPanelAction {
+    type: "toggle-edit-panel";
+    payload: {
+        element: TElement;
+        isDirty: boolean;
+    };
+}
+
 export type TBuilderAction =
     | ITogglePanelAction
     | IUpdateOrderedIdentifiersAction
@@ -99,7 +107,8 @@ export type TBuilderAction =
     | IAddElementAction
     | IDeleteElementAction
     | IFocusElementAction
-    | IRemoveFocusedElementAction;
+    | IRemoveFocusedElementAction
+    | IToggleEditPanelAction;
 
 // =============================================================================
 // CONTEXT

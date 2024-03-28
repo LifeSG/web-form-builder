@@ -21,6 +21,7 @@ export const MainPanel = () => {
         elements,
         focusedElement,
         focusElement,
+        toggleEditPanel,
     } = useBuilder();
     const renderMode = showSidePanel ? "minimised" : "expanded";
 
@@ -28,13 +29,14 @@ export const MainPanel = () => {
     // EVENT HANDLERS
     // =========================================================================
     const handleElementCardClick = (element: TElement) => () => {
-        if (focusedElement.element.internalId !== element.internalId) {
+        if (focusedElement?.element?.internalId !== element.internalId) {
             /**
              * TODO: Add check if element is dirty when setting focus
              * Hardcode to false for now
              */
             focusElement(element, false);
         }
+        toggleEditPanel(element, true);
     };
 
     // =========================================================================
