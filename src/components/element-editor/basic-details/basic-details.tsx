@@ -1,9 +1,9 @@
 import { Button } from "@lifesg/react-design-system/button";
 import { Form } from "@lifesg/react-design-system/form";
-import { Controller, useFormContext, useWatch } from "react-hook-form";
-import { useBuilder } from "src/context-providers";
-import { IFieldValues } from "../types";
+import { Controller, useFormContext } from "react-hook-form";
 import { TogglePair } from "src/components/common/toggle-pair/toggle-pair";
+import { useBuilder } from "src/context-providers";
+import { IBaseTextBasedFieldValues } from "src/schemas";
 import { MandatoryFieldBox } from "./basic-details.styles";
 
 export const BasicDetails = () => {
@@ -18,7 +18,7 @@ export const BasicDetails = () => {
         formState: { errors },
         setValue,
         watch,
-    } = useFormContext<IFieldValues>();
+    } = useFormContext<IBaseTextBasedFieldValues>();
     const element = focusedElement.element;
 
     // =========================================================================

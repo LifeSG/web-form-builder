@@ -1,4 +1,4 @@
-import { EElementType } from "src/schemas";
+import { EElementType } from "src/context-providers";
 
 interface IElementCategoryAttributes {
     categoryTitle: string;

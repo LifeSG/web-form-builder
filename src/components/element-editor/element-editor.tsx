@@ -1,14 +1,14 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormProvider, useForm } from "react-hook-form";
+import { EElementType } from "src/context-providers";
+import { SchemaHelper } from "src/schemas";
 import { BasicDetails } from "./basic-details";
-import { buildSchema } from "../../schemas/helper";
-import { EElementType } from "src/schemas";
 
 export const ElementEditor = () => {
     const methods = useForm({
         mode: "onTouched",
         // TODO: insert proper type; email is a placeholder
-        resolver: yupResolver(buildSchema(EElementType.EMAIL)),
+        resolver: yupResolver(SchemaHelper.buildSchema(EElementType.EMAIL)),
     });
 
     return (

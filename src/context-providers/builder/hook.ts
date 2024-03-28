@@ -1,6 +1,6 @@
 import { useCallback, useContext } from "react";
-import { EElementType, TElement } from "src/schemas";
 import { ElementObjectGenerator } from "src/util";
+import { EElementType, TElement } from "./element.types";
 import { BuilderContext } from "./provider";
 import { EBuilderMode, IElementIdentifier } from "./types";
 

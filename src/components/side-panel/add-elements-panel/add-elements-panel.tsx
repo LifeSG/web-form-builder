@@ -1,14 +1,13 @@
 import { Text } from "@lifesg/react-design-system/text";
 import { ElementSelectorCard } from "src/components/element-selector-card";
+import { EElementType, useBuilder } from "src/context-providers";
 import { ELEMENTS_CATEGORIES } from "src/data";
-import { EElementType } from "src/schemas";
 import {
     Category,
     CategoryHeader,
     ElementButtonList,
     Wrapper,
 } from "./add-elements-panel.styles";
-import { useBuilder } from "src/context-providers";
 
 export const AddElementsPanel = () => {
     // =============================================================================
