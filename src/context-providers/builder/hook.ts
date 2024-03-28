@@ -1,6 +1,6 @@
 import { useCallback, useContext } from "react";
-import { EElementType, TElement } from "src/schemas";
 import { ElementObjectGenerator } from "src/util";
+import { EElementType, TElement } from "./element.types";
 import { BuilderContext } from "./provider";
 import { EBuilderMode, IElementIdentifier } from "./types";
 
@@ -106,11 +106,11 @@ export const useBuilder = () => {
     }, []);
 
     return {
+        elements: state.elements,
         showSidePanel: state.showSidePanel,
         currentMode: state.mode,
         orderedIdentifiers: state.orderedIdentifiers,
         focusedElement: state.focusedElement,
-        elements: state.elements,
         togglePanel,
         toggleMode,
         updateOrderedIdentifiers,

@@ -1,8 +1,8 @@
 import { EnvelopeIcon } from "@lifesg/react-icons/envelope";
 import { PhoneIcon } from "@lifesg/react-icons/phone";
-import { EElementType } from "src/schemas";
-import { Container } from "./card-icon.styles";
+import { EElementType } from "src/context-providers";
 import { LongTextIcon, NumbersIcon, ShortTextIcon } from "../icons";
+import { Container } from "./card-icon.styles";
 
 interface IProps {
     elementType: EElementType;

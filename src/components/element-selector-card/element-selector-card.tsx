@@ -1,8 +1,8 @@
-import { EElementType } from "src/schemas";
+import { Text } from "@lifesg/react-design-system/text";
+import { EElementType } from "src/context-providers";
+import { ELEMENT_BUTTON_LABELS } from "src/data";
 import { BaseCard, CardIcon } from "../common";
 import { Body } from "./element-selector-card.styles";
-import { Text } from "@lifesg/react-design-system/text";
-import { ELEMENT_BUTTON_LABELS } from "src/data";
 
 interface IProps {
     type: EElementType;

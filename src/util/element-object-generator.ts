@@ -2,9 +2,9 @@ import {
     EElementType,
     IBaseAttributes,
     IBaseFieldAttributes,
-} from "src/schemas";
-import { SimpleIdGenerator } from "./simple-id-generator";
+} from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data";
+import { SimpleIdGenerator } from "./simple-id-generator";
 
 export namespace ElementObjectGenerator {
     export const generate = (type: EElementType, existingIds: string[]) => {
@@ -27,6 +27,7 @@ export namespace ElementObjectGenerator {
             case EElementType.TEXTAREA: {
                 const attributes: IBaseFieldAttributes = {
                     ...baseAttributes,
+                    required: false,
                     label: ELEMENT_BUTTON_LABELS[type],
                 };
                 return attributes;

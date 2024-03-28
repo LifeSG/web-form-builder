@@ -1,8 +1,7 @@
 import { Text } from "@lifesg/react-design-system/text";
 import { BinIcon } from "@lifesg/react-icons/bin";
 import { CopyIcon } from "@lifesg/react-icons/copy";
-import { useBuilder } from "src/context-providers";
-import { TElement } from "src/schemas";
+import { TElement, useBuilder } from "src/context-providers";
 import { BaseCard, CardIcon } from "../common";
 import {
     ActionButton,

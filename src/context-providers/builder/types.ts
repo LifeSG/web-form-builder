@@ -1,5 +1,5 @@
-import { TElement } from "src/schemas";
 import { Dispatch } from "react";
+import { TElement } from "./element.types";
 
 export enum EBuilderMode {
     /** Mode where we get to select the elements to add */
