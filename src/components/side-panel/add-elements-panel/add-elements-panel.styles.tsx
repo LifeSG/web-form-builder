@@ -6,7 +6,6 @@ export const Wrapper = styled.ul`
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    overflow-y: scroll;
 `;
 
 export const Category = styled.li`
