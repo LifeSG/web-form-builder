@@ -1,44 +1,77 @@
-import { Button } from "@lifesg/react-design-system/button";
 import { Form } from "@lifesg/react-design-system/form";
 import { Controller, useFormContext } from "react-hook-form";
+import { IconDropdown } from "src/components/common/icon-dropdown";
 import { TogglePair } from "src/components/common/toggle-pair/toggle-pair";
 import { useBuilder } from "src/context-providers";
 import { IBaseTextBasedFieldValues } from "src/schemas";
-import { MandatoryFieldBox } from "./basic-details.styles";
+import {
+    FieldEditorAccordionItem,
+    MandatoryFieldBox,
+} from "./basic-details.styles";
 
 export const BasicDetails = () => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
+
     const { focusedElement } = useBuilder();
     const {
         register,
-        handleSubmit,
         control,
         formState: { errors },
-        setValue,
         watch,
     } = useFormContext<IBaseTextBasedFieldValues>();
     const element = focusedElement.element;
 
     // =========================================================================
-    // EVENT HANDLERS
-    // =========================================================================
-    const handleClick = (values: any) => {};
-
-    // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
+
     const hasProperty = (key: string) => {
         return key in element;
     };
+    console.log("errors.id:", errors.id, errors);
 
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
 
     return (
-        <div>
+        <FieldEditorAccordionItem type="default" expanded title="Basic">
+            <IconDropdown type={element?.type} id={element?.id} />
+            {hasProperty("label") && (
+                <Form.Textarea
+                    required
+                    label="Label"
+                    rows={1}
+                    placeholder="Element Name"
+                    errorMessage={errors.label?.message}
+                    maxLength={40}
+                    value={element?.label}
+                    {...register("label")}
+                />
+            )}
+            <MandatoryFieldBox>
+                <Controller
+                    name="required"
+                    control={control}
+                    defaultValue={true}
+                    render={({ field }) => (
+                        <TogglePair
+                            label="Mandatory field"
+                            defaultValue={true}
+                            onChange={(value) => field.onChange(value)}
+                        />
+                    )}
+                />
+                {watch("required", true) && (
+                    <Form.Input
+                        label="Error message"
+                        errorMessage={errors.requiredErrorMsg?.message}
+                        {...register("requiredErrorMsg")}
+                    />
+                )}
+            </MandatoryFieldBox>
             <Form.Input
                 {...register("id")}
                 required
@@ -46,44 +79,15 @@ export const BasicDetails = () => {
                 placeholder="Enter ID"
                 errorMessage={errors.id?.message}
             />
-            {hasProperty("label") && (
-                <Form.Input
-                    required
-                    label="Label"
-                    placeholder="Enter label"
-                    errorMessage={errors.label?.message}
-                    {...register("label")}
-                />
-            )}
+
             {hasProperty("placeholder") && (
                 <Form.Input
                     label="Placeholder"
-                    placeholder="Enter placeholder"
+                    placeholder="Enter placeholder text"
                     errorMessage={errors.placeholder?.message}
                     {...register("placeholder")}
                 />
             )}
-            <MandatoryFieldBox>
-                <Controller
-                    name="required"
-                    control={control}
-                    render={() => (
-                        <TogglePair
-                            label="Mandatory field"
-                            onChange={(value) => setValue("required", value)}
-                        />
-                    )}
-                />
-                {watch("required") && (
-                    <Form.Input
-                        label="Error message"
-                        {...register("requiredErrorMsg")}
-                    />
-                )}
-            </MandatoryFieldBox>
-            <Button.Small onClick={handleSubmit(handleClick)}>
-                Save
-            </Button.Small>
-        </div>
+        </FieldEditorAccordionItem>
     );
 };

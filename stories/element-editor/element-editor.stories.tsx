@@ -4,9 +4,10 @@ import { ElementEditor } from "src/components/element-editor";
 import {
     BuilderContext,
     EBuilderMode,
+    EElementType,
     IFocusedElement,
+    TElement,
 } from "src/context-providers";
-import { EElementType, TElement } from "src/schemas";
 import { Container } from "./doc-elements";
 
 type Component = typeof ElementEditor;
@@ -24,12 +25,13 @@ const ELEMENT_1: TElement = {
     label: "Last name",
     type: EElementType.EMAIL,
     placeholder: "Enter email",
+    required: false,
 };
 
 const FOCUSED_ELEMENT: IFocusedElement = {
     element: ELEMENT_1,
     isDirty: false,
-}
+};
 
 const ELEMENT_2: TElement = {
     id: "lastName",
@@ -37,6 +39,7 @@ const ELEMENT_2: TElement = {
     label: "Last name",
     type: EElementType.EMAIL,
     placeholder: "Enter email",
+    required: false,
 };
 
 const ELEMENT_3: TElement = {
@@ -45,6 +48,7 @@ const ELEMENT_3: TElement = {
     label: "Email Address",
     type: EElementType.EMAIL,
     placeholder: "Enter email",
+    required: false,
 };
 
 export const Default: StoryObj<Component> = {

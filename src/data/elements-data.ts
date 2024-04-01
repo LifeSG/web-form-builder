@@ -1,4 +1,4 @@
-import { EElementType } from "src/context-providers";
+import { EElementType } from "../context-providers/builder/element.types";
 
 interface IElementCategoryAttributes {
     categoryTitle: string;
