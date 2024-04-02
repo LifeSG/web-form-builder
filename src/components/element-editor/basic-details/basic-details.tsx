@@ -30,7 +30,6 @@ export const BasicDetails = () => {
     const hasProperty = (key: string) => {
         return key in element;
     };
-    console.log("errors.id:", errors.id, errors);
 
     // =========================================================================
     // RENDER FUNCTIONS

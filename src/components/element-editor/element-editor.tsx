@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormProvider, useForm } from "react-hook-form";
-import { EElementType } from "src/context-providers/builder";
+import { EElementType } from "src/context-providers";
 import { SchemaHelper } from "src/schemas";
 import { BasicDetails } from "./basic-details";
 import { AccordionWrapper } from "./element-editor.styles";
