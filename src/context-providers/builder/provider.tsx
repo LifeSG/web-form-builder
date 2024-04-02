@@ -59,10 +59,6 @@ export const builderReducer = (
             state.focusedElement = null;
             break;
         }
-        case "toggle-edit-panel": {
-            state.focusedElement = action.payload;
-            break;
-        }
     }
 
     return state;

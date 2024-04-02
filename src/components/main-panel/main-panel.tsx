@@ -1,5 +1,5 @@
 import { ErrorDisplay } from "@lifesg/react-design-system/error-display";
-import { useBuilder } from "src/context-providers";
+import { EBuilderMode, useBuilder } from "src/context-providers";
 import { TElement } from "src/schemas";
 import { ElementCard } from "../element-card";
 import {
@@ -19,9 +19,8 @@ export const MainPanel = () => {
         showSidePanel,
         orderedIdentifiers,
         elements,
-        focusedElement,
         focusElement,
-        toggleEditPanel,
+        togglePanel,
     } = useBuilder();
     const renderMode = showSidePanel ? "minimised" : "expanded";
 
@@ -29,14 +28,12 @@ export const MainPanel = () => {
     // EVENT HANDLERS
     // =========================================================================
     const handleElementCardClick = (element: TElement) => () => {
-        if (focusedElement?.element?.internalId !== element.internalId) {
-            /**
-             * TODO: Add check if element is dirty when setting focus
-             * Hardcode to false for now
-             */
-            focusElement(element, false);
-        }
-        toggleEditPanel(element, true);
+        /**
+         * TODO: Add check if element is dirty when setting focus
+         * Hardcode to false for now
+         */
+        focusElement(element, false);
+        togglePanel(true);
     };
 
     // =========================================================================

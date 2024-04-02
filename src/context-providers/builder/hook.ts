@@ -105,23 +105,6 @@ export const useBuilder = () => {
         });
     }, []);
 
-    const toggleEditPanel = useCallback(
-        (element: TElement, isDirty = false) => {
-            dispatch({
-                type: "focus-element",
-                payload: {
-                    element,
-                    isDirty,
-                },
-            });
-            dispatch({
-                type: "toggle-panel",
-                payload: isDirty,
-            });
-        },
-        []
-    );
-
     return {
         showSidePanel: state.showSidePanel,
         currentMode: state.mode,
@@ -135,6 +118,5 @@ export const useBuilder = () => {
         deleteElement,
         focusElement,
         removeFocusedElement,
-        toggleEditPanel,
     };
 };
