@@ -4,9 +4,10 @@ import { ElementEditor } from "src/components/element-editor";
 import {
     BuilderContext,
     EBuilderMode,
+    EElementType,
     IFocusedElement,
+    TElement,
 } from "src/context-providers";
-import { EElementType, TElement } from "src/schemas";
 import { Container } from "./doc-elements";
 
 type Component = typeof ElementEditor;
