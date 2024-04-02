@@ -1,6 +1,5 @@
 import { ErrorDisplay } from "@lifesg/react-design-system/error-display";
-import { useBuilder } from "src/context-providers";
-import { TElement } from "src/schemas";
+import { TElement, useBuilder } from "src/context-providers";
 import { ElementCard } from "../element-card";
 import {
     ElementItemWrapper,
