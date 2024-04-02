@@ -26,6 +26,11 @@ export interface IElementIdentifier {
     parentInternalId?: string;
 }
 
+export interface IPastMode {
+    panelMode?: EBuilderMode;
+    panelState?: boolean;
+}
+
 export interface IFocusedElement {
     element: TElement;
     isDirty?: boolean;
@@ -47,6 +52,7 @@ export interface IBuilderState {
      * rendering order
      */
     orderedIdentifiers: IElementIdentifier[];
+    pastMode: IPastMode;
 }
 
 // =============================================================================
@@ -92,6 +98,11 @@ export interface IRemoveFocusedElementAction {
     type: "remove-focused-element";
 }
 
+export interface ISetPastMode {
+    type: "set-past-mode";
+    payload: IPastMode;
+}
+
 export type TBuilderAction =
     | ITogglePanelAction
     | IUpdateOrderedIdentifiersAction
@@ -99,7 +110,8 @@ export type TBuilderAction =
     | IAddElementAction
     | IDeleteElementAction
     | IFocusElementAction
-    | IRemoveFocusedElementAction;
+    | IRemoveFocusedElementAction
+    | ISetPastMode;
 
 // =============================================================================
 // CONTEXT

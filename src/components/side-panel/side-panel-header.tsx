@@ -18,6 +18,7 @@ export const SidePanelHeader = () => {
         togglePanel,
         toggleMode,
         removeFocusedElement,
+        pastMode,
     } = useBuilder();
 
     // =========================================================================
@@ -29,9 +30,9 @@ export const SidePanelHeader = () => {
     //     if (onSaveChanges) onSaveChanges();
     //     return "Save button clicked";
     // };
-
     const handleCrossButtonClick = () => {
-        toggleMode(EBuilderMode.ADD_ELEMENT);
+        toggleMode(pastMode.panelMode);
+        togglePanel(pastMode.panelState);
         removeFocusedElement();
 
         // TODO: Run some validation to check if the element is valid. If not, delete the element
@@ -50,7 +51,6 @@ export const SidePanelHeader = () => {
                 return "Add pages";
         }
     };
-
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================

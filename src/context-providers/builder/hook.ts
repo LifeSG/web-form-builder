@@ -6,7 +6,6 @@ import { EBuilderMode, IElementIdentifier } from "./types";
 
 export const useBuilder = () => {
     const { state, dispatch } = useContext(BuilderContext);
-
     const togglePanel = useCallback((isCollapsed: boolean) => {
         dispatch({
             type: "toggle-panel",
@@ -33,6 +32,13 @@ export const useBuilder = () => {
                 type,
                 existingIdentifiers
             );
+            dispatch({
+                type: "set-past-mode",
+                payload: {
+                    panelMode: state.mode,
+                    panelState: state.showSidePanel,
+                },
+            });
             const newOrderedIdentifiers = [
                 ...state.orderedIdentifiers,
                 { internalId: newElement.internalId },
@@ -56,7 +62,7 @@ export const useBuilder = () => {
                 });
             }
         },
-        [state.orderedIdentifiers]
+        [state.orderedIdentifiers, state.mode, state.showSidePanel]
     );
 
     const deleteElement = useCallback(
@@ -98,12 +104,25 @@ export const useBuilder = () => {
         });
     }, []);
 
-    const toggleMode = useCallback((mode: EBuilderMode) => {
-        dispatch({
-            type: "toggle-mode",
-            payload: mode,
-        });
-    }, []);
+    const toggleMode = useCallback(
+        (mode: EBuilderMode) => {
+            if (mode === EBuilderMode.EDIT_ELEMENT) {
+                dispatch({
+                    type: "set-past-mode",
+                    payload: {
+                        panelMode: state.mode,
+                        panelState: state.showSidePanel,
+                    },
+                });
+            }
+
+            dispatch({
+                type: "toggle-mode",
+                payload: mode,
+            });
+        },
+        [state.mode, state.showSidePanel]
+    );
 
     return {
         showSidePanel: state.showSidePanel,
@@ -111,6 +130,7 @@ export const useBuilder = () => {
         orderedIdentifiers: state.orderedIdentifiers,
         focusedElement: state.focusedElement,
         elements: state.elements,
+        pastMode: state.pastMode,
         togglePanel,
         toggleMode,
         updateOrderedIdentifiers,
