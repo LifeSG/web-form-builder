@@ -6,12 +6,15 @@ import { EBuilderMode, IElementIdentifier } from "./types";
 
 export const useBuilder = () => {
     const { state, dispatch } = useContext(BuilderContext);
-    const togglePanel = useCallback((isCollapsed: boolean) => {
-        dispatch({
-            type: "toggle-panel",
-            payload: isCollapsed,
-        });
-    }, []);
+    const togglePanel = useCallback(
+        (isCollapsed: boolean) => {
+            dispatch({
+                type: "toggle-panel",
+                payload: isCollapsed,
+            });
+        },
+        [state.mode, state.showSidePanel]
+    );
 
     const updateOrderedIdentifiers = useCallback(
         (orderedIdentifiers: IElementIdentifier[]) => {
@@ -25,13 +28,6 @@ export const useBuilder = () => {
 
     const addElement = useCallback(
         (type: EElementType, setFocus?: boolean) => {
-            const existingIdentifiers = state.orderedIdentifiers.map(
-                (elementId) => elementId.internalId
-            );
-            const newElement: TElement = ElementObjectGenerator.generate(
-                type,
-                existingIdentifiers
-            );
             dispatch({
                 type: "set-past-mode",
                 payload: {
@@ -39,6 +35,13 @@ export const useBuilder = () => {
                     panelState: state.showSidePanel,
                 },
             });
+            const existingIdentifiers = state.orderedIdentifiers.map(
+                (elementId) => elementId.internalId
+            );
+            const newElement: TElement = ElementObjectGenerator.generate(
+                type,
+                existingIdentifiers
+            );
             const newOrderedIdentifiers = [
                 ...state.orderedIdentifiers,
                 { internalId: newElement.internalId },
@@ -88,15 +91,25 @@ export const useBuilder = () => {
         [state.orderedIdentifiers, state.elements, state.mode]
     );
 
-    const focusElement = useCallback((element: TElement, isDirty = false) => {
-        dispatch({
-            type: "focus-element",
-            payload: {
-                element,
-                isDirty,
-            },
-        });
-    }, []);
+    const focusElement = useCallback(
+        (element: TElement, isDirty = false) => {
+            dispatch({
+                type: "set-past-mode",
+                payload: {
+                    panelMode: state.mode,
+                    panelState: state.showSidePanel,
+                },
+            });
+            dispatch({
+                type: "focus-element",
+                payload: {
+                    element,
+                    isDirty,
+                },
+            });
+        },
+        [state.mode, state.showSidePanel]
+    );
 
     const removeFocusedElement = useCallback(() => {
         dispatch({
@@ -106,16 +119,6 @@ export const useBuilder = () => {
 
     const toggleMode = useCallback(
         (mode: EBuilderMode) => {
-            if (mode === EBuilderMode.EDIT_ELEMENT) {
-                dispatch({
-                    type: "set-past-mode",
-                    payload: {
-                        panelMode: state.mode,
-                        panelState: state.showSidePanel,
-                    },
-                });
-            }
-
             dispatch({
                 type: "toggle-mode",
                 payload: mode,
