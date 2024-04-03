@@ -52,7 +52,7 @@ export interface IBuilderState {
      * rendering order
      */
     orderedIdentifiers: IElementIdentifier[];
-    pastMode: IPastMode;
+    pastSidePanelState: IPastMode;
 }
 
 // =============================================================================

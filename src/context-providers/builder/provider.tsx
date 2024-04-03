@@ -17,7 +17,7 @@ const DEFAULT_VALUES: IBuilderState = {
     focusedElement: null,
     showSidePanel: true,
     orderedIdentifiers: [],
-    pastMode: {},
+    pastSidePanelState: {},
 };
 
 // =============================================================================
@@ -61,7 +61,7 @@ export const builderReducer = (
             break;
         }
         case "set-past-mode": {
-            state.pastMode = action.payload;
+            state.pastSidePanelState = action.payload;
             break;
         }
     }

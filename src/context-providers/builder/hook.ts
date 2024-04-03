@@ -6,15 +6,12 @@ import { EBuilderMode, IElementIdentifier } from "./types";
 
 export const useBuilder = () => {
     const { state, dispatch } = useContext(BuilderContext);
-    const togglePanel = useCallback(
-        (isCollapsed: boolean) => {
-            dispatch({
-                type: "toggle-panel",
-                payload: isCollapsed,
-            });
-        },
-        [state.mode, state.showSidePanel]
-    );
+    const togglePanel = useCallback((isCollapsed: boolean) => {
+        dispatch({
+            type: "toggle-panel",
+            payload: isCollapsed,
+        });
+    }, []);
 
     const updateOrderedIdentifiers = useCallback(
         (orderedIdentifiers: IElementIdentifier[]) => {
@@ -117,15 +114,12 @@ export const useBuilder = () => {
         });
     }, []);
 
-    const toggleMode = useCallback(
-        (mode: EBuilderMode) => {
-            dispatch({
-                type: "toggle-mode",
-                payload: mode,
-            });
-        },
-        [state.mode, state.showSidePanel]
-    );
+    const toggleMode = useCallback((mode: EBuilderMode) => {
+        dispatch({
+            type: "toggle-mode",
+            payload: mode,
+        });
+    }, []);
 
     return {
         showSidePanel: state.showSidePanel,
@@ -133,7 +127,7 @@ export const useBuilder = () => {
         orderedIdentifiers: state.orderedIdentifiers,
         focusedElement: state.focusedElement,
         elements: state.elements,
-        pastMode: state.pastMode,
+        pastMode: state.pastSidePanelState,
         togglePanel,
         toggleMode,
         updateOrderedIdentifiers,
