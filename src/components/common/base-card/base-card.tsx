@@ -9,7 +9,13 @@ interface IProps {
 
 export const BaseCard = ({ id, children, focused, onClick }: IProps) => {
     return (
-        <Body tabIndex={0} $focused={focused} onClick={onClick} id={id}>
+        <Body
+            tabIndex={0}
+            $focused={focused}
+            onClick={onClick}
+            id={id}
+            role="button"
+        >
             {children}
         </Body>
     );
