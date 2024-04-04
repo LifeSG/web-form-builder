@@ -6,7 +6,6 @@ export const Wrapper = styled.ul`
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    padding-bottom: 8rem;
 `;
 
 export const Category = styled.li`

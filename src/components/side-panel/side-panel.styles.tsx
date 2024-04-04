@@ -48,7 +48,7 @@ export const ContentWrapper = styled.div`
 `;
 
 export const ContentSection = styled.div`
-    padding: 2rem;
+    padding: 2rem 2rem 8rem 2rem;
     flex: 1;
     overflow-y: auto;
     display: flex;
