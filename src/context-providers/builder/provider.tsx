@@ -53,7 +53,6 @@ export const builderReducer = (
         }
         case "focus-element": {
             state.focusedElement = action.payload;
-            state.mode = EBuilderMode.EDIT_ELEMENT;
             break;
         }
         case "remove-focused-element": {

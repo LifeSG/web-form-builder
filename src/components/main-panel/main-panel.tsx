@@ -22,19 +22,15 @@ export const MainPanel = () => {
         focusedElement,
         focusElement,
     } = useBuilder();
-    const renderMode = showSidePanel ? "minimised" : "expanded";
+
+    const finalMode = focusedElement ? true : showSidePanel;
+    const renderMode = finalMode ? "minimised" : "expanded";
 
     // =========================================================================
     // EVENT HANDLERS
     // =========================================================================
     const handleElementCardClick = (element: TElement) => () => {
-        if (focusedElement.element.internalId !== element.internalId) {
-            /**
-             * TODO: Add check if element is dirty when setting focus
-             * Hardcode to false for now
-             */
-            focusElement(element, false);
-        }
+        focusElement(element, false);
     };
 
     // =========================================================================
