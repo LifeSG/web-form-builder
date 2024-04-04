@@ -8,15 +8,15 @@ import {
 } from "src/context-providers";
 import { ThemeProvider } from "styled-components";
 
-export namespace TestHelper {
-    const mockBuilderState: IBuilderState = {
-        mode: EBuilderMode.ADD_ELEMENT,
-        elements: {},
-        focusedElement: null,
-        showSidePanel: true,
-        orderedIdentifiers: [],
-    };
+export const mockBuilderState: IBuilderState = {
+    mode: EBuilderMode.ADD_ELEMENT,
+    elements: {},
+    focusedElement: null,
+    showSidePanel: true,
+    orderedIdentifiers: [],
+};
 
+export namespace TestHelper {
     export interface RenderOptions {
         builderContext?: Partial<IBuilderState>;
     }
