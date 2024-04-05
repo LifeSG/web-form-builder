@@ -28,30 +28,26 @@ export const IconDropdown = ({ id, type }: IProps) => {
     };
 
     return (
-        <>
-            <Form.Select
-                key={"element - " + id}
-                id={id}
-                label={"Element Type"}
-                options={renderOptions()}
-                renderCustomSelectedOption={(option) => {
-                    return (
-                        <Wrapper>
-                            <CardIcon elementType={option} />
-                            <Text.Body>
-                                {ELEMENT_BUTTON_LABELS[option]}
-                            </Text.Body>
-                        </Wrapper>
-                    );
-                }}
-                selectedOption={type}
-                renderListItem={(option) => (
+        <Form.Select
+            key={"element - " + id}
+            id={id}
+            label={"Element Type"}
+            options={renderOptions()}
+            renderCustomSelectedOption={(option) => {
+                return (
                     <Wrapper>
                         <CardIcon elementType={option} />
                         <Text.Body>{ELEMENT_BUTTON_LABELS[option]}</Text.Body>
                     </Wrapper>
-                )}
-            />
-        </>
+                );
+            }}
+            selectedOption={type}
+            renderListItem={(option) => (
+                <Wrapper>
+                    <CardIcon elementType={option} />
+                    <Text.Body>{ELEMENT_BUTTON_LABELS[option]}</Text.Body>
+                </Wrapper>
+            )}
+        />
     );
 };

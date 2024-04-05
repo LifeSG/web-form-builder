@@ -1,3 +1,4 @@
+import { Form } from "@lifesg/react-design-system";
 import { Accordion } from "@lifesg/react-design-system/accordion";
 import styled from "styled-components";
 
@@ -15,12 +16,20 @@ export const FieldEditorAccordionItem = styled(Accordion.Item)`
     }
 
     [data-testid="accordion-item-expandable-container"] {
-        padding: 0 1rem 0.3rem 0;
+        padding-left: 1rem;
         display: flex;
         flex-direction: column;
     }
 
     > *:not(:last-child) {
-        margin-bottom: 2rem;
+        margin-bottom: 1rem;
+    }
+`;
+
+export const IdLabel = styled(Form.Label)`
+    > span[data-testid="subtitle"] {
+        text-decoration: none;
+        font-size: 14px;
+        font-family: Open Sans;
     }
 `;

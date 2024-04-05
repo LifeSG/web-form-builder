@@ -14,18 +14,7 @@ export namespace BaseSchemaHelper {
             label: yup.string().required("Label is required"),
             placeholder: yup.string().optional(),
             required: yup.boolean().required().default(true),
-            requiredErrorMsg: yup.string().test({
-                name: "requiredErrorMsg",
-                test: function (value) {
-                    if (this.parent.required && !value) {
-                        throw this.createError({
-                            message: "Error message is required",
-                            path: "requiredErrorMsg",
-                        });
-                    }
-                    return true;
-                },
-            }),
+            requiredErrorMsg: yup.string().optional(),
             id: yup
                 .string()
                 .required("ID is required")
