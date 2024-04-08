@@ -23,13 +23,8 @@ describe("toolbar", () => {
 
     describe("testing the viewToggleMode()", () => {
         it("should display the relevant mode when toggleView function is called", () => {
-            renderComponent({
-                builderContext: {
-                    ...mockBuilderState,
-                },
-            });
+            renderComponent();
             fireEvent.click(getIconButton());
-            expect(mockTogglePanel).toHaveBeenCalledWith(true);
             expect(mockToggleMode).toHaveBeenCalled();
         });
 
@@ -41,7 +36,7 @@ describe("toolbar", () => {
                 },
             });
             fireEvent.click(getIconButton());
-            expect(mockTogglePanel).not.toHaveBeenCalledWith();
+            expect(mockTogglePanel).toHaveBeenCalledWith(true);
             expect(mockToggleMode).toHaveBeenCalled();
         });
     });
