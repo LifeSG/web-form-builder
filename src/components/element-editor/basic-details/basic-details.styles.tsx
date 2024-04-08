@@ -1,4 +1,4 @@
-import { Form } from "@lifesg/react-design-system";
+import { Text } from "@lifesg/react-design-system";
 import { Accordion } from "@lifesg/react-design-system/accordion";
 import styled from "styled-components";
 
@@ -16,7 +16,7 @@ export const FieldEditorAccordionItem = styled(Accordion.Item)`
     }
 
     [data-testid="accordion-item-expandable-container"] {
-        padding-left: 1rem;
+        padding: 0 0.5rem 0.3rem 0;
         display: flex;
         flex-direction: column;
     }
@@ -26,10 +26,7 @@ export const FieldEditorAccordionItem = styled(Accordion.Item)`
     }
 `;
 
-export const IdLabel = styled(Form.Label)`
-    > span[data-testid="subtitle"] {
-        text-decoration: none;
-        font-size: 14px;
-        font-family: Open Sans;
-    }
+export const Subtitle = styled(Text.BodySmall)`
+    font-size: 0.875rem !important;
+    font-family: Open Sans !important;
 `;

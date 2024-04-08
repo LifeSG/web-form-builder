@@ -9,9 +9,10 @@ import { Wrapper } from "./icon-dropdown.styles";
 interface IProps {
     id?: string;
     type?: string;
+    onChange: (option: string) => void;
 }
 
-export const IconDropdown = ({ id, type }: IProps) => {
+export const IconDropdown = ({ id, type, onChange }: IProps) => {
     // =============================================================================
     // RENDER FUNCTIONS
     // =============================================================================
@@ -48,6 +49,7 @@ export const IconDropdown = ({ id, type }: IProps) => {
                     <Text.Body>{ELEMENT_BUTTON_LABELS[option]}</Text.Body>
                 </Wrapper>
             )}
+            onSelectOption={(option) => onChange(option)}
         />
     );
 };

@@ -1,5 +1,4 @@
 import { Form } from "@lifesg/react-design-system/form";
-import { Text } from "@lifesg/react-design-system/text";
 import { Controller, useFormContext } from "react-hook-form";
 import { IconDropdown } from "src/components/common/icon-dropdown";
 import { TogglePair } from "src/components/common/toggle-pair/toggle-pair";
@@ -7,8 +6,8 @@ import { useBuilder } from "src/context-providers";
 import { IBaseTextBasedFieldValues } from "src/schemas";
 import {
     FieldEditorAccordionItem,
-    IdLabel,
     MandatoryFieldBox,
+    Subtitle,
 } from "./basic-details.styles";
 
 export const BasicDetails = () => {
@@ -42,8 +41,12 @@ export const BasicDetails = () => {
             <Controller
                 name="type"
                 control={control}
-                render={() => (
-                    <IconDropdown type={element?.type} id={element?.id} />
+                render={({ field }) => (
+                    <IconDropdown
+                        type={element?.type}
+                        id={element?.id}
+                        onChange={(value) => field.onChange(value)}
+                    />
                 )}
             />
             {hasProperty("label") && (
@@ -89,23 +92,21 @@ export const BasicDetails = () => {
                 name="id"
                 control={control}
                 render={() => (
-                    <>
-                        <IdLabel
-                            style={{
-                                textDecoration: "semibold",
-                                fontSize: "16px",
-                            }}
-                            subtitle="ID is used to differentiate element from the others in the UI schema."
-                        >
-                            ID
-                        </IdLabel>
-                        <Form.Input
-                            {...register("id")}
-                            required
-                            placeholder="Create an ID"
-                            errorMessage={errors.id?.message}
-                        />
-                    </>
+                    <Form.Input
+                        {...register("id")}
+                        label={{
+                            children: "ID",
+                            subtitle: (
+                                <Subtitle>
+                                    ID is used to differentiate element from the
+                                    others in the UI schema.
+                                </Subtitle>
+                            ),
+                        }}
+                        required
+                        placeholder="Create an ID"
+                        errorMessage={errors.id?.message}
+                    />
                 )}
             />
 

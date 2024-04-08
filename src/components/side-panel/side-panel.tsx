@@ -10,7 +10,7 @@ export const SidePanel = () => {
     // CONST, STATE, REFS
     // =========================================================================
 
-    const { showSidePanel, currentMode } = useBuilder();
+    const { showSidePanel, currentMode, focusedElement } = useBuilder();
 
     // =========================================================================
     // RENDER FUNCTIONS
@@ -31,7 +31,11 @@ export const SidePanel = () => {
         <Wrapper $isCollapsed={!showSidePanel}>
             <SidePanelHeader />
             <ContentWrapper>
-                <ContentSection>{renderPanelContent()}</ContentSection>
+                <ContentSection
+                    $isFocusedElement={focusedElement ? true : false}
+                >
+                    {renderPanelContent()}
+                </ContentSection>
                 {currentMode !== EBuilderMode.EDIT_ELEMENT && <Toolbar />}
             </ContentWrapper>
         </Wrapper>
