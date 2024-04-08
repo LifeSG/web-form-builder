@@ -15,19 +15,21 @@ const mockElement = {
 
 const mockOnClick = jest.fn();
 
-describe("element-card component", () => {
+describe("element-card", () => {
     afterEach(() => {
         jest.restoreAllMocks();
         jest.resetAllMocks();
     });
 
-    describe("element-card", () => {
+    describe("Testing onClick", () => {
         it("should be in a focused state and show the edit element panel when clicked on", () => {
             renderComponent({ element: mockElement, onClick: mockOnClick }, {});
             fireEvent.click(getElementCard() as HTMLElement);
             expect(mockOnClick).toHaveBeenCalled();
         });
+    });
 
+    describe("Testing rendering of duplicate & delete button based on isFocused", () => {
         it("should not show the duplicate and delete buttons when in normal state", () => {
             renderComponent({ element: mockElement });
             expect(getDuplicateButton(true)).not.toBeInTheDocument();
@@ -47,7 +49,9 @@ describe("element-card component", () => {
             expect(getDuplicateButton()).toBeInTheDocument();
             expect(getDeleteButton()).toBeInTheDocument();
         });
+    });
 
+    describe("Testing disabling of the duplicate button", () => {
         it("should disable the duplicate button when there is already a duplicated element card", () => {
             renderComponent(
                 { element: mockElement },
