@@ -16,7 +16,7 @@ export const FieldEditorAccordionItem = styled(Accordion.Item)`
     }
 
     [data-testid="accordion-item-expandable-container"] {
-        padding: 0 0.5rem 0.3rem 0;
+        padding: 0 1rem;
         display: flex;
         flex-direction: column;
     }
