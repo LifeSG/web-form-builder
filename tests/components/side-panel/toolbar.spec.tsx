@@ -3,25 +3,13 @@ import "jest-canvas-mock";
 import { Toolbar } from "src/components/side-panel/toolbar";
 import { TestHelper, mockBuilderState } from "src/util/test-helper";
 
-const mockTogglePanel = jest.fn();
-const mockToggleMode = jest.fn();
-
-jest.mock("src/context-providers/builder/hook.ts", () => {
-    return {
-        useBuilder: () => ({
-            toggleMode: mockToggleMode,
-            togglePanel: mockTogglePanel,
-        }),
-    };
-});
-
 describe("toolbar", () => {
     afterEach(() => {
         jest.restoreAllMocks();
         jest.resetAllMocks();
     });
 
-    describe("testing the viewToggleMode()", () => {
+    describe("viewToggleMode()", () => {
         it("should display the relevant mode when toggleView function is called", () => {
             renderComponent();
             fireEvent.click(getIconButton());
@@ -53,3 +41,19 @@ const renderComponent = (overrideOptions?: TestHelper.RenderOptions) => {
 const getIconButton = () => {
     return screen.getByTestId("add-element");
 };
+
+// =============================================================================
+// MOCKS
+// =============================================================================
+
+const mockTogglePanel = jest.fn();
+const mockToggleMode = jest.fn();
+
+jest.mock("src/context-providers/builder/hook.ts", () => {
+    return {
+        useBuilder: () => ({
+            toggleMode: mockToggleMode,
+            togglePanel: mockTogglePanel,
+        }),
+    };
+});

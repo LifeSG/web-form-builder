@@ -19,7 +19,7 @@ describe("side-panel-header", () => {
         jest.resetAllMocks();
     });
 
-    describe("Testing the getHeaderTitle() function", () => {
+    describe("getHeaderTitle", () => {
         it("should run the getHeaderTitle function according to the mode given", () => {
             renderComponent();
             expect(getHeaderLabel().textContent).toEqual("Add elements");

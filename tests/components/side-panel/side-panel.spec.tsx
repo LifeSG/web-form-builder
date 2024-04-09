@@ -5,21 +5,13 @@ import { EBuilderMode, EElementType } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data/elements-data";
 import { TestHelper, mockBuilderState } from "src/util/test-helper";
 
-const mockElement = {
-    internalId: "mock123",
-    type: EElementType.EMAIL,
-    id: "mockElement",
-    required: false,
-    label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
-};
-
 describe("side-panel", () => {
     afterEach(() => {
         jest.restoreAllMocks();
         jest.resetAllMocks();
     });
 
-    describe("Testing the rendering if the toolbar", () => {
+    describe("rendering of the toolbar", () => {
         it("should display the toolbar when there is no focused element", () => {
             renderComponent();
             expect(getToolbar()).toBeInTheDocument();
@@ -30,7 +22,7 @@ describe("side-panel", () => {
                 builderContext: {
                     ...mockBuilderState,
                     focusedElement: {
-                        element: mockElement,
+                        element: MOCK_ELEMENT,
                     },
                 },
             });
@@ -38,7 +30,7 @@ describe("side-panel", () => {
         });
     });
 
-    describe("testing the rendering of the panel content", () => {
+    describe("rendering of the panel content", () => {
         it("should display the content of the side panel based on the mode given", () => {
             renderComponent();
             expect(getAddElementsPanel()).toBeInTheDocument();
@@ -69,3 +61,15 @@ const getToolbar = (useQuery = true) =>
 
 const getAddElementsPanel = () => screen.getByTestId("add-elements-panel");
 const getDefaultContent = () => screen.getByTestId("default-content");
+
+// =============================================================================
+// MOCKS
+// =============================================================================
+
+const MOCK_ELEMENT = {
+    internalId: "mock123",
+    type: EElementType.EMAIL,
+    id: "mockElement",
+    required: false,
+    label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
+};
