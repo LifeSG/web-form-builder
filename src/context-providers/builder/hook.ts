@@ -20,40 +20,43 @@ export const useBuilder = () => {
                 payload: orderedIdentifiers,
             });
         },
-        [state.orderedIdentifiers]
+        []
     );
 
-    const addElement = useCallback((type: EElementType, setFocus?: boolean) => {
-        const existingIdentifiers = state.orderedIdentifiers.map(
-            (elementId) => elementId.internalId
-        );
-        const newElement: TElement = ElementObjectGenerator.generate(
-            type,
-            existingIdentifiers
-        );
-        const newOrderedIdentifiers = [
-            ...state.orderedIdentifiers,
-            { internalId: newElement.internalId },
-        ];
+    const addElement = useCallback(
+        (type: EElementType, setFocus?: boolean) => {
+            const existingIdentifiers = state.orderedIdentifiers.map(
+                (elementId) => elementId.internalId
+            );
+            const newElement: TElement = ElementObjectGenerator.generate(
+                type,
+                existingIdentifiers
+            );
+            const newOrderedIdentifiers = [
+                ...state.orderedIdentifiers,
+                { internalId: newElement.internalId },
+            ];
 
-        dispatch({
-            type: "add-element",
-            payload: {
-                element: newElement,
-                orderedIdentifiers: newOrderedIdentifiers,
-            },
-        });
-
-        if (setFocus) {
             dispatch({
-                type: "focus-element",
+                type: "add-element",
                 payload: {
                     element: newElement,
-                    isDirty: true,
+                    orderedIdentifiers: newOrderedIdentifiers,
                 },
             });
-        }
-    }, []);
+
+            if (setFocus) {
+                dispatch({
+                    type: "focus-element",
+                    payload: {
+                        element: newElement,
+                        isDirty: true,
+                    },
+                });
+            }
+        },
+        [state.orderedIdentifiers]
+    );
 
     const deleteElement = useCallback(
         (internalId: string) => {
@@ -107,7 +110,6 @@ export const useBuilder = () => {
         orderedIdentifiers: state.orderedIdentifiers,
         focusedElement: state.focusedElement,
         elements: state.elements,
-        pastMode: state.pastSidePanelState,
         togglePanel,
         toggleMode,
         updateOrderedIdentifiers,

@@ -17,7 +17,6 @@ const DEFAULT_VALUES: IBuilderState = {
     focusedElement: null,
     showSidePanel: true,
     orderedIdentifiers: [],
-    pastSidePanelState: {},
 };
 
 // =============================================================================
@@ -57,10 +56,6 @@ export const builderReducer = (
         }
         case "remove-focused-element": {
             state.focusedElement = null;
-            break;
-        }
-        case "set-past-mode": {
-            state.pastSidePanelState = action.payload;
             break;
         }
     }

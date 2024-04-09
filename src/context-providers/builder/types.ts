@@ -1,5 +1,5 @@
-import { TElement } from "src/schemas";
 import { Dispatch } from "react";
+import { TElement } from "src/schemas";
 
 export enum EBuilderMode {
     /** Mode where we get to select the elements to add */
@@ -26,11 +26,6 @@ export interface IElementIdentifier {
     parentInternalId?: string;
 }
 
-export interface IPastMode {
-    panelMode?: EBuilderMode;
-    panelState?: boolean;
-}
-
 export interface IFocusedElement {
     element: TElement;
     isDirty?: boolean;
@@ -52,7 +47,6 @@ export interface IBuilderState {
      * rendering order
      */
     orderedIdentifiers: IElementIdentifier[];
-    pastSidePanelState: IPastMode;
 }
 
 // =============================================================================
@@ -98,11 +92,6 @@ export interface IRemoveFocusedElementAction {
     type: "remove-focused-element";
 }
 
-export interface ISetPastMode {
-    type: "set-past-mode";
-    payload: IPastMode;
-}
-
 export type TBuilderAction =
     | ITogglePanelAction
     | IUpdateOrderedIdentifiersAction
@@ -110,8 +99,7 @@ export type TBuilderAction =
     | IAddElementAction
     | IDeleteElementAction
     | IFocusElementAction
-    | IRemoveFocusedElementAction
-    | ISetPastMode;
+    | IRemoveFocusedElementAction;
 
 // =============================================================================
 // CONTEXT
