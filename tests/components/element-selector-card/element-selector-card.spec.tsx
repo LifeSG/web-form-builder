@@ -4,7 +4,6 @@ import { ElementSelectorCard } from "src/components/element-selector-card";
 import { EElementType } from "src/context-providers/builder";
 import { TestHelper } from "src/util/test-helper";
 
-const mockOnClick = jest.fn();
 describe("element-selector-panel", () => {
     afterEach(() => {
         jest.restoreAllMocks();
@@ -43,3 +42,8 @@ const renderComponent = (
 };
 
 const getElementSelectorCard = () => screen.getByRole("button");
+
+// =============================================================================
+// MOCKS
+// =============================================================================
+const mockOnClick = jest.fn();
