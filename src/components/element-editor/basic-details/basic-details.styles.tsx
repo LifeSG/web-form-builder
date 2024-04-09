@@ -24,6 +24,9 @@ export const FieldEditorAccordionItem = styled(Accordion.Item)`
     > *:not(:last-child) {
         margin-bottom: 1rem;
     }
+    > *:last-child {
+        margin-bottom: 2rem;
+    }
 `;
 
 export const Subtitle = styled(Text.BodySmall)`
