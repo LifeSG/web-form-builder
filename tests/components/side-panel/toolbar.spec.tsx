@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
 import { Toolbar } from "src/components/side-panel/toolbar";
-import { TestHelper, mockBuilderState } from "src/util/test-helper";
+import { TestHelper } from "src/util/test-helper";
 
 describe("toolbar", () => {
     afterEach(() => {
@@ -9,24 +9,21 @@ describe("toolbar", () => {
         jest.resetAllMocks();
     });
 
-    describe("viewToggleMode()", () => {
-        it("should display the relevant mode when toggleView function is called", () => {
-            renderComponent();
-            fireEvent.click(getIconButton());
-            expect(mockToggleMode).toHaveBeenCalled();
-        });
+    it("should collapse toggle panel if it is expanded on clicking the mode button", () => {
+        renderComponent();
+        fireEvent.click(getIconButton());
+        expect(mockToggleMode).toHaveBeenCalled();
+    });
 
-        it("should run the toggle panel hook when the panel is not being shown", () => {
-            renderComponent({
-                builderContext: {
-                    ...mockBuilderState,
-                    showSidePanel: false,
-                },
-            });
-            fireEvent.click(getIconButton());
-            expect(mockTogglePanel).toHaveBeenCalledWith(true);
-            expect(mockToggleMode).toHaveBeenCalled();
+    it("should expand toggle panel if it is collapsed on clicking the mode button", () => {
+        renderComponent({
+            builderContext: {
+                showSidePanel: false,
+            },
         });
+        fireEvent.click(getIconButton());
+        expect(mockTogglePanel).toHaveBeenCalledWith(true);
+        expect(mockToggleMode).toHaveBeenCalled();
     });
 });
 

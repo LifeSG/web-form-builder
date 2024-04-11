@@ -22,13 +22,13 @@ describe("element-card component", () => {
     });
 
     describe("element-card", () => {
-        it("should be in a focused state and show the edit element panel when clicked on", () => {
+        it("should call onClick prop when clicked on", () => {
             renderComponent({ element: mockElement, onClick: mockOnClick }, {});
             fireEvent.click(getElementCard() as HTMLElement);
             expect(mockOnClick).toHaveBeenCalled();
         });
 
-        it("should not show the duplicate and delete buttons when in normal state", () => {
+        it("should not show the duplicate and delete buttons by default", () => {
             renderComponent({ element: mockElement });
             expect(getDuplicateButton(true)).not.toBeInTheDocument();
             expect(getDeleteButton(true)).not.toBeInTheDocument();
@@ -39,7 +39,6 @@ describe("element-card component", () => {
                 { element: mockElement },
                 {
                     builderContext: {
-                        ...mockBuilderState,
                         focusedElement: { element: mockElement },
                     },
                 }
@@ -53,7 +52,6 @@ describe("element-card component", () => {
                 { element: mockElement },
                 {
                     builderContext: {
-                        ...mockBuilderState,
                         focusedElement: {
                             element: mockElement,
                             isDirty: true,

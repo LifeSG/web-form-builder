@@ -1,9 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
 import { SidePanel } from "src/components";
-import { EBuilderMode, EElementType } from "src/context-providers";
+import { EElementType } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data/elements-data";
-import { TestHelper, mockBuilderState } from "src/util/test-helper";
+import { TestHelper } from "src/util/test-helper";
 
 describe("side-panel", () => {
     afterEach(() => {
@@ -20,7 +20,6 @@ describe("side-panel", () => {
         it("should not display the toolbar when there is a focused element", () => {
             renderComponent({
                 builderContext: {
-                    ...mockBuilderState,
                     focusedElement: {
                         element: MOCK_ELEMENT,
                     },
@@ -35,16 +34,6 @@ describe("side-panel", () => {
             renderComponent();
             expect(getAddElementsPanel()).toBeInTheDocument();
         });
-
-        it("should display the default content of the side panel if there is no mode given", () => {
-            renderComponent({
-                builderContext: {
-                    ...mockBuilderState,
-                    mode: EBuilderMode.EDIT_ELEMENT,
-                },
-            });
-            expect(getDefaultContent()).toBeInTheDocument();
-        });
     });
 });
 
@@ -57,10 +46,9 @@ const renderComponent = (overrideOptions?: TestHelper.RenderOptions) => {
 };
 
 const getToolbar = (useQuery = true) =>
-    useQuery ? screen.getByTestId("toolbar") : screen.queryByTestId("toolbar");
+    useQuery ? screen.queryByTestId("toolbar") : screen.getByTestId("toolbar");
 
 const getAddElementsPanel = () => screen.getByTestId("add-elements-panel");
-const getDefaultContent = () => screen.getByTestId("default-content");
 
 // =============================================================================
 // MOCKS
