@@ -97,7 +97,7 @@ export const BasicDetails = () => {
                         label={{
                             children: "ID",
                             subtitle: (
-                                <Subtitle>
+                                <Subtitle as="div" weight={400}>
                                     ID is used to differentiate element from the
                                     others in the UI schema.
                                 </Subtitle>

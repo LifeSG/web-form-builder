@@ -1,4 +1,4 @@
-import { Text } from "@lifesg/react-design-system";
+import { Color, Text } from "@lifesg/react-design-system";
 import { Accordion } from "@lifesg/react-design-system/accordion";
 import styled from "styled-components";
 
@@ -21,15 +21,12 @@ export const FieldEditorAccordionItem = styled(Accordion.Item)`
         flex-direction: column;
     }
 
-    > *:not(:last-child) {
-        margin-bottom: 1rem;
-    }
     > *:last-child {
-        margin-bottom: 2rem;
+        margin-bottom: 1rem;
     }
 `;
 
 export const Subtitle = styled(Text.BodySmall)`
-    font-size: 0.875rem !important;
-    font-family: Open Sans !important;
+    color: ${Color.Neutral[3]};
+    font-size: 0.9rem;
 `;
