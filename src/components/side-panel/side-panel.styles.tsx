@@ -44,12 +44,14 @@ export const Wrapper = styled.div<IWrapperStyleProps>`
 export const ContentWrapper = styled.div`
     display: flex;
     height: 100%;
+    overflow: hidden;
 `;
 
 export const ContentSection = styled.div`
-    padding: 2rem;
+    padding: 2rem 2rem 8rem 2rem;
     flex: 1;
-    overflow-y: scroll;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
+    height: 100%;
 `;
