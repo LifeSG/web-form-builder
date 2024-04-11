@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import { useBuilder } from "src/context-providers";
+import { useBuilder } from "src/context-providers/builder/hook";
 import { EElementType } from "../context-providers/builder/element.types";
 import { BaseSchemaHelper } from "./base-helper";
 import { EMAIL_SCHEMA } from "./text-based-fields";

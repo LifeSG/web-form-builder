@@ -44,11 +44,13 @@ export const BasicDetails = () => {
                 required
                 label="ID"
                 placeholder="Enter ID"
+                data-testid="id-field"
                 errorMessage={errors.id?.message}
             />
             {hasProperty("label") && (
                 <Form.Input
                     required
+                    data-testid="label-field"
                     label="Label"
                     placeholder="Enter label"
                     errorMessage={errors.label?.message}
@@ -76,6 +78,8 @@ export const BasicDetails = () => {
                 />
                 {watch("required") && (
                     <Form.Input
+                        role="input"
+                        data-testid="required-error-message-input"
                         label="Error message"
                         {...register("requiredErrorMsg")}
                     />
