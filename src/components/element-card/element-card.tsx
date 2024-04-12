@@ -79,14 +79,20 @@ export const ElementCard = ({ element, onClick }: IProps) => {
                 {isFocused && (
                     <ActionsContainer>
                         <ActionButton
+                            role="button"
                             type="button"
                             onClick={handleDuplicateClick}
                             $disabled={disableDuplicate}
+                            disabled={disableDuplicate}
                         >
                             <CopyIcon />
                             Duplicate
                         </ActionButton>
-                        <ActionButton type="button" onClick={handleDeleteClick}>
+                        <ActionButton
+                            role="button"
+                            type="button"
+                            onClick={handleDeleteClick}
+                        >
                             <BinIcon />
                             Delete
                         </ActionButton>
