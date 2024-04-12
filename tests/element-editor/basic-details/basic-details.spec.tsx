@@ -55,7 +55,6 @@ describe("basic-details", () => {
             fireEvent.focus(idInput);
             fireEvent.blur(idInput);
             const idErrorMessage = await getFieldErrorMessage();
-            expect(idErrorMessage).toBeInTheDocument();
             expect(idErrorMessage).toHaveTextContent("ID is required");
         });
 
@@ -71,7 +70,6 @@ describe("basic-details", () => {
             fireEvent.change(idInput, { target: { value: "camel_Case" } });
             fireEvent.blur(idInput);
             const idErrorMessage = await getFieldErrorMessage();
-            expect(idErrorMessage).toBeInTheDocument();
             expect(idErrorMessage).toHaveTextContent("ID must be camelCase");
         });
 
@@ -86,7 +84,6 @@ describe("basic-details", () => {
             fireEvent.focus(labelInput);
             fireEvent.blur(labelInput);
             const labelErrorMessage = await getFieldErrorMessage();
-            expect(labelErrorMessage).toBeInTheDocument();
             expect(labelErrorMessage).toHaveTextContent(
                 "label is a required field"
             );
