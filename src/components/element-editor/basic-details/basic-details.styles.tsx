@@ -1,4 +1,3 @@
-import { Color, Text } from "@lifesg/react-design-system";
 import { Accordion } from "@lifesg/react-design-system/accordion";
 import styled from "styled-components";
 
@@ -11,6 +10,8 @@ export const MandatoryFieldBox = styled.div`
 `;
 
 export const FieldEditorAccordionItem = styled(Accordion.Item)`
+    padding-bottom: 2rem;
+
     #content-container {
         padding: 0;
     }
@@ -20,13 +21,4 @@ export const FieldEditorAccordionItem = styled(Accordion.Item)`
         display: flex;
         flex-direction: column;
     }
-
-    > *:last-child {
-        margin-bottom: 1rem;
-    }
-`;
-
-export const Subtitle = styled(Text.BodySmall)`
-    color: ${Color.Neutral[3]};
-    font-size: 0.9rem;
 `;

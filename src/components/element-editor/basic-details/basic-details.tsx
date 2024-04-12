@@ -1,4 +1,5 @@
 import { Form } from "@lifesg/react-design-system/form";
+import { Text } from "@lifesg/react-design-system/text";
 import { Controller, useFormContext } from "react-hook-form";
 import { IconDropdown } from "src/components/common/icon-dropdown";
 import { TogglePair } from "src/components/common/toggle-pair/toggle-pair";
@@ -7,7 +8,6 @@ import { IBaseTextBasedFieldValues } from "src/schemas";
 import {
     FieldEditorAccordionItem,
     MandatoryFieldBox,
-    Subtitle,
 } from "./basic-details.styles";
 
 export const BasicDetails = () => {
@@ -97,10 +97,10 @@ export const BasicDetails = () => {
                         label={{
                             children: "ID",
                             subtitle: (
-                                <Subtitle as="div" weight={400}>
+                                <Text.H6 weight={400}>
                                     ID is used to differentiate element from the
                                     others in the UI schema.
-                                </Subtitle>
+                                </Text.H6>
                             ),
                         }}
                         required
