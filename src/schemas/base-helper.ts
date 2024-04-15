@@ -11,9 +11,9 @@ export namespace BaseSchemaHelper {
     ) =>
         yup.object<IBaseTextBasedFieldValues>().shape({
             type: yup.string().required(),
-            label: yup.string().required(),
+            label: yup.string().required("Label is required"),
             placeholder: yup.string().optional(),
-            required: yup.boolean().required().default(false),
+            required: yup.boolean().required().default(true),
             requiredErrorMsg: yup.string().optional(),
             id: yup
                 .string()

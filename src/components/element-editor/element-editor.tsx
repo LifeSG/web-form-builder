@@ -1,25 +1,28 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormProvider, useForm } from "react-hook-form";
-import { useBuilder } from "src/context-providers";
+import { EElementType } from "src/context-providers";
 import { SchemaHelper } from "src/schemas";
 import { BasicDetails } from "./basic-details";
+import { AccordionWrapper } from "./element-editor.styles";
 
 export const ElementEditor = () => {
     // =========================================================================
-    // CONST, STATE, REFS
+    // CONST, STATE, REF
     // =========================================================================
-    const { focusedElement } = useBuilder();
-
     const methods = useForm({
-        mode: "onTouched",
-        resolver: yupResolver(
-            SchemaHelper.buildSchema(focusedElement.element.type)
-        ),
+        mode: "onBlur",
+        // TODO: insert proper type; email is a placeholder
+        resolver: yupResolver(SchemaHelper.buildSchema(EElementType.EMAIL)),
     });
+    // =============================================================================
+    // RENDER FUNCTIONS
+    // =============================================================================
 
     return (
         <FormProvider {...methods}>
-            <BasicDetails />
+            <AccordionWrapper>
+                <BasicDetails />
+            </AccordionWrapper>
         </FormProvider>
     );
 };

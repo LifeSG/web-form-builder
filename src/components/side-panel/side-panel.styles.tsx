@@ -10,6 +10,9 @@ export interface IWrapperStyleProps {
     $minimised: boolean;
 }
 
+export interface IContentSectionStyleProps {
+    $isFocusedElement: boolean;
+}
 // =============================================================================
 // STYLING
 // =============================================================================
@@ -47,8 +50,9 @@ export const ContentWrapper = styled.div`
     overflow: hidden;
 `;
 
-export const ContentSection = styled.div`
-    padding: 2rem 2rem 8rem 2rem;
+export const ContentSection = styled.div<IContentSectionStyleProps>`
+    padding: ${({ $isFocusedElement }) =>
+        $isFocusedElement ? "1rem" : "2rem"};
     flex: 1;
     overflow-y: auto;
     display: flex;
