@@ -16,8 +16,8 @@ export const SidePanelHeader = () => {
         showSidePanel,
         currentMode,
         togglePanel,
-        toggleMode,
         removeFocusedElement,
+        focusedElement,
     } = useBuilder();
 
     // =========================================================================
@@ -29,32 +29,41 @@ export const SidePanelHeader = () => {
     //     if (onSaveChanges) onSaveChanges();
     //     return "Save button clicked";
     // };
-
     const handleCrossButtonClick = () => {
-        toggleMode(EBuilderMode.ADD_ELEMENT);
         removeFocusedElement();
-
-        // TODO: Run some validation to check if the element is valid. If not, delete the element
     };
 
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
     const getHeaderTitle = () => {
+        if (focusedElement) {
+            return "Edit details";
+        }
+
         switch (currentMode) {
             case EBuilderMode.ADD_ELEMENT:
                 return "Add elements";
-            case EBuilderMode.EDIT_ELEMENT:
-                return "Edit details";
             case EBuilderMode.EDIT_PAGES:
                 return "Add pages";
         }
     };
-
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
     const renderIconButton = () => {
+        if (focusedElement) {
+            return (
+                <IconButton
+                    $iconSize="1.5rem"
+                    $iconColor={Color.Neutral[3]}
+                    onClick={handleCrossButtonClick}
+                >
+                    <CrossIcon />
+                </IconButton>
+            );
+        }
+
         switch (currentMode) {
             case EBuilderMode.ADD_ELEMENT:
             case EBuilderMode.EDIT_PAGES:
@@ -65,16 +74,6 @@ export const SidePanelHeader = () => {
                         onClick={() => togglePanel(!showSidePanel)}
                     >
                         <HeaderChevronIcon $isCollapsed={showSidePanel} />
-                    </IconButton>
-                );
-            case EBuilderMode.EDIT_ELEMENT:
-                return (
-                    <IconButton
-                        $iconSize="1.5rem"
-                        $iconColor={Color.Neutral[3]}
-                        onClick={handleCrossButtonClick}
-                    >
-                        <CrossIcon />
                     </IconButton>
                 );
         }
