@@ -18,14 +18,12 @@ export const SidePanel = () => {
 
     const renderPanelContent = () => {
         if (focusedElement) {
-            return <>Some content here...</>;
+            return <ElementEditor />;
         }
 
         switch (currentMode) {
             case EBuilderMode.ADD_ELEMENT:
                 return <AddElementsPanel />;
-            case EBuilderMode.EDIT_ELEMENT:
-                return <ElementEditor />;
             default:
                 return <>Some content here...</>;
         }
@@ -40,7 +38,7 @@ export const SidePanel = () => {
                 >
                     {renderPanelContent()}
                 </ContentSection>
-                {currentMode !== EBuilderMode.EDIT_ELEMENT && <Toolbar />}
+                {focusedElement === null && <Toolbar />}
             </ContentWrapper>
         </Wrapper>
     );
