@@ -25,7 +25,7 @@ describe("side-panel", () => {
                     },
                 },
             });
-            expect(getToolbar(false)).not.toBeInTheDocument();
+            expect(getToolbar()).not.toBeInTheDocument();
         });
     });
 
@@ -45,8 +45,7 @@ const renderComponent = (overrideOptions?: TestHelper.RenderOptions) => {
     return render(TestHelper.withProviders(overrideOptions, <SidePanel />));
 };
 
-const getToolbar = (useQuery = true) =>
-    useQuery ? screen.queryByTestId("toolbar") : screen.getByTestId("toolbar");
+const getToolbar = () => screen.queryByTestId("toolbar");
 
 const getAddElementsPanel = () => screen.getByTestId("add-elements-panel");
 
