@@ -17,6 +17,10 @@ export const SidePanel = () => {
     // =========================================================================
 
     const renderPanelContent = () => {
+        if (focusedElement) {
+            return <>Some content here...</>;
+        }
+
         switch (currentMode) {
             case EBuilderMode.ADD_ELEMENT:
                 return <AddElementsPanel />;
@@ -28,7 +32,7 @@ export const SidePanel = () => {
     };
 
     return (
-        <Wrapper $isCollapsed={!showSidePanel}>
+        <Wrapper $minimised={focusedElement ? false : !showSidePanel}>
             <SidePanelHeader />
             <ContentWrapper>
                 <ContentSection

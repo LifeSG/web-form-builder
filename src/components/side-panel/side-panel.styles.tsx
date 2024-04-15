@@ -7,7 +7,7 @@ import styled, { css } from "styled-components";
 // STYLING INTERFACE
 // =============================================================================
 export interface IWrapperStyleProps {
-    $isCollapsed: boolean;
+    $minimised: boolean;
 }
 
 export interface IContentSectionStyleProps {
@@ -36,7 +36,7 @@ export const Wrapper = styled.div<IWrapperStyleProps>`
     }
 
     ${(props) => {
-        if (props.$isCollapsed) {
+        if (props.$minimised) {
             return css`
                 transform: translateX(calc(-100% + 5.5rem));
             `;
