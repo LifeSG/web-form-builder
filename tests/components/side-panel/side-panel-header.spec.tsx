@@ -3,7 +3,7 @@ import "jest-canvas-mock";
 import { SidePanelHeader } from "src/components/side-panel/side-panel-header";
 import { EBuilderMode, EElementType } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data/elements-data";
-import { TestHelper, mockBuilderState } from "src/util/test-helper";
+import { TestHelper } from "src/util/test-helper";
 
 describe("side-panel-header", () => {
     afterEach(() => {
