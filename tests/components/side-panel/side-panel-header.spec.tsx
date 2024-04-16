@@ -5,13 +5,13 @@ import { EBuilderMode, EElementType } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data/elements-data";
 import { TestHelper } from "src/util/test-helper";
 
-describe("side-panel-header", () => {
+describe("SidePanelHeader", () => {
     afterEach(() => {
         jest.restoreAllMocks();
         jest.resetAllMocks();
     });
 
-    describe("getHeaderTitle", () => {
+    describe("getHeaderTitle & conditoal rendering of the cross button", () => {
         it("should run the getHeaderTitle function and display the Add Elements title for the add-elements mode", () => {
             renderComponent();
             expect(getHeaderLabel().textContent).toEqual("Add elements");
@@ -36,6 +36,16 @@ describe("side-panel-header", () => {
             });
             expect(getHeaderLabel().textContent).toEqual("Edit details");
         });
+        it("should display the cross button when there is a focused element", () => {
+            renderComponent({
+                builderContext: {
+                    focusedElement: {
+                        element: mockElement,
+                    },
+                },
+            });
+            expect(getCrossButton()).toBeInTheDocument();
+        });
     });
 });
 
@@ -50,6 +60,7 @@ const renderComponent = (overrideOptions?: TestHelper.RenderOptions) => {
 };
 
 const getHeaderLabel = () => screen.getByTestId("header-label");
+const getCrossButton = () => screen.getByTestId("cross-button");
 
 // =============================================================================
 // MOCKS

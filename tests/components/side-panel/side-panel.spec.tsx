@@ -5,7 +5,7 @@ import { EElementType } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data/elements-data";
 import { TestHelper } from "src/util/test-helper";
 
-describe("side-panel", () => {
+describe("SidePanel", () => {
     afterEach(() => {
         jest.restoreAllMocks();
         jest.resetAllMocks();

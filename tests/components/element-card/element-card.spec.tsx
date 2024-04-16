@@ -5,7 +5,7 @@ import { EElementType, TElement } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data/elements-data";
 import { TestHelper, mockBuilderState } from "src/util/test-helper";
 
-describe("element-card", () => {
+describe("ElementCard", () => {
     afterEach(() => {
         jest.restoreAllMocks();
         jest.resetAllMocks();

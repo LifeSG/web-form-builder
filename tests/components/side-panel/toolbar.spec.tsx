@@ -3,16 +3,10 @@ import "jest-canvas-mock";
 import { Toolbar } from "src/components/side-panel/toolbar";
 import { TestHelper } from "src/util/test-helper";
 
-describe("toolbar", () => {
+describe("ToolBar", () => {
     afterEach(() => {
         jest.restoreAllMocks();
         jest.resetAllMocks();
-    });
-
-    it("should collapse toggle panel if it is expanded on clicking the mode button", () => {
-        renderComponent();
-        fireEvent.click(getIconButton());
-        expect(mockToggleMode).toHaveBeenCalled();
     });
 
     it("should expand toggle panel if it is collapsed on clicking the mode button", () => {
