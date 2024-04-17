@@ -4,7 +4,7 @@ import { ElementSelectorCard } from "src/components/element-selector-card";
 import { EElementType } from "src/context-providers/builder";
 import { ELEMENT_BUTTON_LABELS } from "src/data/elements-data";
 
-describe("ElementSelectorPanel", () => {
+describe("ElementSelectorCard", () => {
     afterEach(() => {
         jest.restoreAllMocks();
         jest.resetAllMocks();
