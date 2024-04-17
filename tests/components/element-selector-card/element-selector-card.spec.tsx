@@ -2,22 +2,40 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
 import { ElementSelectorCard } from "src/components/element-selector-card";
 import { EElementType } from "src/context-providers/builder";
-import { TestHelper } from "src/util/test-helper";
+import { ELEMENT_BUTTON_LABELS } from "src/data/elements-data";
 
-describe("element-selector-panel", () => {
+describe("ElementSelectorPanel", () => {
     afterEach(() => {
         jest.restoreAllMocks();
         jest.resetAllMocks();
     });
-    describe("onClick", () => {
-        it("should run the onClick function when the card is clicked on", () => {
+
+    test.each`
+        type                     | expectedLabel
+        ${EElementType.CHECKBOX} | ${ELEMENT_BUTTON_LABELS[EElementType.CHECKBOX]}
+        ${EElementType.CONTACT}  | ${ELEMENT_BUTTON_LABELS[EElementType.CONTACT]}
+        ${EElementType.EMAIL}    | ${ELEMENT_BUTTON_LABELS[EElementType.EMAIL]}
+        ${EElementType.NUMERIC}  | ${ELEMENT_BUTTON_LABELS[EElementType.NUMERIC]}
+        ${EElementType.RADIO}    | ${ELEMENT_BUTTON_LABELS[EElementType.RADIO]}
+        ${EElementType.TEXT}     | ${ELEMENT_BUTTON_LABELS[EElementType.TEXT]}
+        ${EElementType.TEXTAREA} | ${ELEMENT_BUTTON_LABELS[EElementType.TEXTAREA]}
+    `(
+        "should render the label according to the type provided",
+        ({ type, expectedLabel }) => {
             renderComponent({
-                type: EElementType.EMAIL,
+                type: type,
                 onClick: mockOnClick,
             });
-            fireEvent.click(getElementSelectorCard() as HTMLElement);
-            expect(mockOnClick).toHaveBeenCalled();
+            expect(screen.getByText(expectedLabel)).toBeInTheDocument();
+        }
+    );
+    it("should fire the onClick callback when the card is clicked", () => {
+        renderComponent({
+            type: EElementType.EMAIL,
+            onClick: mockOnClick,
         });
+        fireEvent.click(getElementSelectorCard() as HTMLElement);
+        expect(mockOnClick).toHaveBeenCalled();
     });
 });
 
@@ -29,16 +47,10 @@ const renderComponent = (
     options: {
         type?: EElementType;
         onClick?: () => void;
-    } = {},
-    overrideOptions?: TestHelper.RenderOptions
+    } = {}
 ) => {
     const { type, onClick } = options;
-    return render(
-        TestHelper.withProviders(
-            overrideOptions,
-            <ElementSelectorCard type={type} onClick={onClick} />
-        )
-    );
+    return render(<ElementSelectorCard type={type} onClick={onClick} />);
 };
 
 const getElementSelectorCard = () => screen.getByRole("button");
