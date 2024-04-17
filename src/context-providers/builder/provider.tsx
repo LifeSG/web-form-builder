@@ -1,3 +1,4 @@
+import { noop } from "lodash";
 import { createContext } from "react";
 import { useImmerReducer } from "use-immer";
 import {
@@ -6,7 +7,6 @@ import {
     TBuilderAction,
     TBuilderContext,
 } from "./types";
-import { noop } from "lodash";
 
 // =============================================================================
 // DEFAULT VALUES
@@ -52,7 +52,6 @@ export const builderReducer = (
         }
         case "focus-element": {
             state.focusedElement = action.payload;
-            state.mode = EBuilderMode.EDIT_ELEMENT;
             break;
         }
         case "remove-focused-element": {

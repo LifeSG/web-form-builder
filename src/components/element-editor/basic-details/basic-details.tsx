@@ -1,34 +1,32 @@
-import { Button } from "@lifesg/react-design-system/button";
 import { Form } from "@lifesg/react-design-system/form";
+import { Text } from "@lifesg/react-design-system/text";
 import { Controller, useFormContext } from "react-hook-form";
+import { IconDropdown } from "src/components/common/icon-dropdown";
 import { TogglePair } from "src/components/common/toggle-pair/toggle-pair";
 import { useBuilder } from "src/context-providers";
 import { IBaseTextBasedFieldValues } from "src/schemas";
-import { MandatoryFieldBox } from "./basic-details.styles";
+import {
+    FieldEditorAccordionItem,
+    MandatoryFieldBox,
+} from "./basic-details.styles";
 
 export const BasicDetails = () => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
+
     const { focusedElement } = useBuilder();
     const {
-        register,
-        handleSubmit,
         control,
         formState: { errors },
-        setValue,
         watch,
     } = useFormContext<IBaseTextBasedFieldValues>();
     const element = focusedElement.element;
 
     // =========================================================================
-    // EVENT HANDLERS
-    // =========================================================================
-    const handleClick = (values: any) => {};
-
-    // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
+
     const hasProperty = (key: string) => {
         return key in element;
     };
@@ -38,56 +36,93 @@ export const BasicDetails = () => {
     // =========================================================================
 
     return (
-        <div>
-            <Form.Input
-                {...register("id")}
-                required
-                label="ID"
-                placeholder="Enter ID"
-                data-testid="id-field"
-                errorMessage={errors.id?.message}
+        <FieldEditorAccordionItem type="default" expanded title="Basic">
+            <Controller
+                name="type"
+                control={control}
+                render={({ field }) => (
+                    <IconDropdown
+                        type={element?.type}
+                        id={element?.id}
+                        onChange={(value) => field.onChange(value)}
+                    />
+                )}
             />
             {hasProperty("label") && (
-                <Form.Input
-                    required
+                <Controller
+                    name="label"
+                    control={control}
                     data-testid="label-field"
-                    label="Label"
-                    placeholder="Enter label"
-                    errorMessage={errors.label?.message}
-                    {...register("label")}
-                />
-            )}
-            {hasProperty("placeholder") && (
-                <Form.Input
-                    label="Placeholder"
-                    placeholder="Enter placeholder"
-                    errorMessage={errors.placeholder?.message}
-                    {...register("placeholder")}
+                    render={() => (
+                        <Form.Textarea
+                            required
+                            label="Element Name"
+                            rows={1}
+                            placeholder="Element Name"
+                            errorMessage={errors.label?.message}
+                            maxLength={40}
+                            value={element?.label}
+                        />
+                    )}
                 />
             )}
             <MandatoryFieldBox>
                 <Controller
                     name="required"
                     control={control}
-                    render={() => (
+                    defaultValue={true}
+                    render={({ field }) => (
                         <TogglePair
                             label="Mandatory field"
-                            onChange={(value) => setValue("required", value)}
+                            defaultValue={true}
+                            onChange={(value) => field.onChange(value)}
                         />
                     )}
                 />
-                {watch("required") && (
+                {watch("required", true) && (
                     <Form.Input
                         role="input"
                         data-testid="required-error-message-input"
                         label="Error message"
-                        {...register("requiredErrorMsg")}
+                        errorMessage={errors.requiredErrorMsg?.message}
                     />
                 )}
             </MandatoryFieldBox>
-            <Button.Small onClick={handleSubmit(handleClick)}>
-                Save
-            </Button.Small>
-        </div>
+            <Controller
+                name="id"
+                control={control}
+                data-testid="id-field"
+                render={() => (
+                    <Form.Input
+                        label={{
+                            children: "ID",
+                            subtitle: (
+                                <Text.H6 weight={400}>
+                                    ID is used to differentiate element from the
+                                    others in the UI schema.
+                                </Text.H6>
+                            ),
+                        }}
+                        required
+                        placeholder="Create an ID"
+                        errorMessage={errors.id?.message}
+                    />
+                )}
+            />
+
+            {hasProperty("placeholder") && (
+                <Controller
+                    name="placeholder"
+                    control={control}
+                    render={() => (
+                        <Form.Input
+                            label="Placeholder text (optional)"
+                            placeholder="Enter placeholder text"
+                            errorMessage={errors.placeholder?.message}
+                        />
+                    )}
+                />
+            )}
+        </FieldEditorAccordionItem>
     );
 };

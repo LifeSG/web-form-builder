@@ -1,7 +1,7 @@
 import {
     EElementType,
     IBaseAttributes,
-    IBaseFieldAttributes,
+    IBaseTextBasedFieldAttributes,
 } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data";
 import { SimpleIdGenerator } from "./simple-id-generator";
@@ -20,13 +20,14 @@ export namespace ElementObjectGenerator {
         };
 
         switch (type) {
-            case EElementType.CONTACT:
             case EElementType.EMAIL:
             case EElementType.NUMERIC:
+            case EElementType.CONTACT:
             case EElementType.TEXT:
             case EElementType.TEXTAREA: {
-                const attributes: IBaseFieldAttributes = {
+                const attributes: IBaseTextBasedFieldAttributes = {
                     ...baseAttributes,
+                    placeholder: "",
                     required: false,
                     label: ELEMENT_BUTTON_LABELS[type],
                 };
