@@ -5,10 +5,15 @@ import { IconButton } from "../common";
 import {
     HeaderChevronIcon,
     HeaderLabel,
+    SaveChangesButton,
     Wrapper,
 } from "./side-panel-header.styles";
 
-export const SidePanelHeader = () => {
+interface IProps {
+    saveChangesHandler?: () => void;
+}
+
+export const SidePanelHeader = ({ saveChangesHandler }: IProps) => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
@@ -24,11 +29,12 @@ export const SidePanelHeader = () => {
     // EVENT HANDLERS
     // =========================================================================
 
-    // TODO: When react hook form is being set up, run this function only when there are changes in the form values
-    // const handleSaveButtonClick  = () => {
-    //     if (onSaveChanges) onSaveChanges();
-    //     return "Save button clicked";
-    // };
+    const handleSaveButtonClick = () => {
+        if (saveChangesHandler) {
+            saveChangesHandler();
+        }
+    };
+
     const handleCrossButtonClick = () => {
         removeFocusedElement();
     };
@@ -54,13 +60,20 @@ export const SidePanelHeader = () => {
     const renderIconButton = () => {
         if (focusedElement) {
             return (
-                <IconButton
-                    $iconSize="1.5rem"
-                    $iconColor={Color.Neutral[3]}
-                    onClick={handleCrossButtonClick}
-                >
-                    <CrossIcon />
-                </IconButton>
+                <>
+                    <SaveChangesButton onClick={handleSaveButtonClick}>
+                        {focusedElement.isDirty === false
+                            ? "Saved"
+                            : "Save Changes"}
+                    </SaveChangesButton>
+                    <IconButton
+                        $iconSize="1.5rem"
+                        $iconColor={Color.Neutral[3]}
+                        onClick={handleCrossButtonClick}
+                    >
+                        <CrossIcon />
+                    </IconButton>
+                </>
             );
         }
 
@@ -84,11 +97,6 @@ export const SidePanelHeader = () => {
             <HeaderLabel weight="semibold">{getHeaderTitle()}</HeaderLabel>
             {renderIconButton()}
             {/* TODO: To work on when react hook form is set up */}
-            {/* {onSaveChanges && (
-                <SaveChangesButton onClick={handleSaveButtonClick}>
-                    Save changes
-                </SaveChangesButton>
-            )} */}
         </Wrapper>
     );
 };

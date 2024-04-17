@@ -58,6 +58,33 @@ export const builderReducer = (
             state.focusedElement = null;
             break;
         }
+        case "update-element": {
+            const internalId = state.focusedElement.element.internalId;
+            state.elements = {
+                ...state.elements,
+                [internalId]: { ...action.payload, internalId: internalId },
+            };
+            break;
+        }
+        case "update-focused-element": {
+            if (action.payload.element) {
+                const newFocusedElement = {
+                    ...action.payload.element,
+                    internalId: state.focusedElement.element.internalId,
+                };
+                state.focusedElement = {
+                    ...state.focusedElement,
+                    isDirty: action.payload.isDirty,
+                    element: newFocusedElement,
+                };
+            } else {
+                state.focusedElement = {
+                    ...state.focusedElement,
+                    isDirty: action.payload.isDirty,
+                };
+            }
+            break;
+        }
     }
 
     return state;

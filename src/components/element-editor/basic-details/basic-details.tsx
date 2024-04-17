@@ -1,5 +1,6 @@
 import { Form } from "@lifesg/react-design-system/form";
 import { Text } from "@lifesg/react-design-system/text";
+import { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { IconDropdown } from "src/components/common/icon-dropdown";
 import { TogglePair } from "src/components/common/toggle-pair/toggle-pair";
@@ -15,11 +16,10 @@ export const BasicDetails = () => {
     // CONST, STATE, REFS
     // =========================================================================
 
-    const { focusedElement } = useBuilder();
+    const { focusedElement, updateFocusedElement } = useBuilder();
     const {
-        register,
         control,
-        formState: { errors },
+        formState: { errors, isDirty, submitCount },
         watch,
     } = useFormContext<IBaseTextBasedFieldValues>();
     const element = focusedElement.element;
@@ -33,6 +33,16 @@ export const BasicDetails = () => {
     };
 
     // =========================================================================
+    // USE EFFECTS
+    // =========================================================================
+
+    useEffect(() => {
+        if (isDirty && submitCount >= 1) {
+            updateFocusedElement(true);
+        }
+    }, [isDirty, updateFocusedElement]);
+
+    // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
 
@@ -41,19 +51,26 @@ export const BasicDetails = () => {
             <Controller
                 name="type"
                 control={control}
+                defaultValue={element?.type}
                 render={({ field }) => (
                     <IconDropdown
+                        {...field}
                         type={element?.type}
                         id={element?.id}
-                        onChange={(value) => field.onChange(value)}
+                        errorMessage={errors.type?.message}
+                        onChange={(value) =>
+                            field.onChange({ target: { value: value } })
+                        }
                     />
                 )}
             />
+
             {hasProperty("label") && (
                 <Controller
                     name="label"
                     control={control}
-                    render={() => (
+                    defaultValue={element?.label}
+                    render={({ field }) => (
                         <Form.Textarea
                             required
                             label="Element Name"
@@ -61,39 +78,48 @@ export const BasicDetails = () => {
                             placeholder="Element Name"
                             errorMessage={errors.label?.message}
                             maxLength={40}
-                            value={element?.label}
-                            {...register("label")}
+                            {...field}
                         />
                     )}
                 />
             )}
+
             <MandatoryFieldBox>
                 <Controller
                     name="required"
                     control={control}
-                    defaultValue={true}
+                    defaultValue={element.required}
                     render={({ field }) => (
                         <TogglePair
                             label="Mandatory field"
-                            defaultValue={true}
+                            defaultValue={element.required}
                             onChange={(value) => field.onChange(value)}
                         />
                     )}
                 />
-                {watch("required", true) && (
-                    <Form.Input
-                        label="Error message"
-                        errorMessage={errors.requiredErrorMsg?.message}
-                        {...register("requiredErrorMsg")}
+                {watch("required") && (
+                    <Controller
+                        name="requiredErrorMsg"
+                        control={control}
+                        defaultValue={element.requiredErrorMsg}
+                        render={({ field }) => (
+                            <Form.Input
+                                label="Error message"
+                                defaultValue={element.requiredErrorMsg}
+                                errorMessage={errors.requiredErrorMsg?.message}
+                                {...field}
+                            />
+                        )}
                     />
                 )}
             </MandatoryFieldBox>
+
             <Controller
                 name="id"
                 control={control}
-                render={() => (
+                defaultValue={element?.id}
+                render={({ field }) => (
                     <Form.Input
-                        {...register("id")}
                         label={{
                             children: "ID",
                             subtitle: (
@@ -106,20 +132,22 @@ export const BasicDetails = () => {
                         required
                         placeholder="Create an ID"
                         errorMessage={errors.id?.message}
+                        {...field}
                     />
                 )}
             />
 
             {hasProperty("placeholder") && (
                 <Controller
-                    name="type"
+                    name="placeholder"
                     control={control}
-                    render={() => (
+                    defaultValue={element?.placeholder}
+                    render={({ field }) => (
                         <Form.Input
                             label="Placeholder text (optional)"
                             placeholder="Enter placeholder text"
                             errorMessage={errors.placeholder?.message}
-                            {...register("placeholder")}
+                            {...field}
                         />
                     )}
                 />
