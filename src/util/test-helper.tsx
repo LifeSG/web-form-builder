@@ -8,7 +8,7 @@ import {
 } from "src/context-providers";
 import { ThemeProvider } from "styled-components";
 
-export const mockBuilderState: IBuilderState = {
+export const MOCK_BUILDER_STATE: IBuilderState = {
     mode: EBuilderMode.ADD_ELEMENT,
     elements: {},
     focusedElement: null,
@@ -29,7 +29,7 @@ export namespace TestHelper {
             <ThemeProvider theme={BaseTheme}>
                 <BuilderContext.Provider
                     value={{
-                        state: { ...mockBuilderState, ...builderContext },
+                        state: { ...MOCK_BUILDER_STATE, ...builderContext },
                         dispatch: noop,
                     }}
                 >

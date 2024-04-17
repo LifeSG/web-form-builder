@@ -3,7 +3,7 @@ import "jest-canvas-mock";
 import { ElementCard } from "src/components";
 import { EElementType, TElement } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data/elements-data";
-import { TestHelper, mockBuilderState } from "src/util/test-helper";
+import { TestHelper, MOCK_BUILDER_STATE } from "src/util/test-helper";
 
 describe("element-card", () => {
     afterEach(() => {
@@ -12,7 +12,7 @@ describe("element-card", () => {
     });
 
     describe("onClick", () => {
-        it("should be in a focused state and show the edit element panel when clicked on", () => {
+        it("should fire the onClick callback when clicked", () => {
             renderComponent(
                 { element: MOCK_ELEMENT, onClick: mockOnClick },
                 {}
@@ -34,7 +34,7 @@ describe("element-card", () => {
                 { element: MOCK_ELEMENT },
                 {
                     builderContext: {
-                        ...mockBuilderState,
+                        ...MOCK_BUILDER_STATE,
                         focusedElement: { element: MOCK_ELEMENT },
                     },
                 }
@@ -42,12 +42,12 @@ describe("element-card", () => {
             expect(getDuplicateButton()).toBeInTheDocument();
             expect(getDeleteButton()).toBeInTheDocument();
         });
-        it("should disable the duplicate button when there is already a duplicated element card", () => {
+        it("should disable the duplicate button when the current element is in focus", () => {
             renderComponent(
                 { element: MOCK_ELEMENT },
                 {
                     builderContext: {
-                        ...mockBuilderState,
+                        ...MOCK_BUILDER_STATE,
                         focusedElement: {
                             element: MOCK_ELEMENT,
                             isDirty: true,
@@ -58,6 +58,21 @@ describe("element-card", () => {
             );
             expect(getDuplicateButton()).toBeInTheDocument();
             expect(getDuplicateButton()).toBeDisabled();
+        });
+
+        it("should run the deleteElement hook when clicking the delete button", () => {
+            renderComponent(
+                { element: MOCK_ELEMENT },
+                {
+                    builderContext: {
+                        ...MOCK_BUILDER_STATE,
+                        focusedElement: { element: MOCK_ELEMENT },
+                    },
+                }
+            );
+            const deleteButton = getDeleteButton();
+            fireEvent.click(deleteButton);
+            expect(mockDeleteElement).toBeCalled();
         });
     });
 });
@@ -84,15 +99,15 @@ const renderComponent = (
 
 const getElementCard = () => screen.getByRole("button");
 
-const getDeleteButton = (useQuery = false) =>
-    !useQuery
-        ? screen.getByRole("button", { name: "Delete" })
-        : screen.queryByRole("button", { name: "Delete" });
+const getDeleteButton = (useQuery = true) =>
+    useQuery
+        ? screen.queryByRole("button", { name: "Delete" })
+        : screen.getByRole("button", { name: "Delete" });
 
 const getDuplicateButton = (useQuery = false) =>
-    !useQuery
-        ? screen.getByRole("button", { name: "Duplicate" })
-        : screen.queryByRole("button", { name: "Duplicate" });
+    useQuery
+        ? screen.queryByRole("button", { name: "Duplicate" })
+        : screen.getByRole("button", { name: "Duplicate" });
 
 // =============================================================================
 // MOCKS
@@ -107,3 +122,15 @@ const MOCK_ELEMENT = {
 };
 
 const mockOnClick = jest.fn();
+
+const mockDeleteElement = jest.fn();
+
+jest.mock("src/context-providers/builder/hook.ts", () => {
+    const actual = jest.requireActual("src/context-providers/builder/hook.ts");
+    return {
+        useBuilder: () => ({
+            ...actual.useBuilder(),
+            deleteElement: mockDeleteElement,
+        }),
+    };
+});
