@@ -16,7 +16,10 @@ export const ChildEntry = ({ onDelete, children }: IProps) => {
     return (
         <Wrapper>
             <ChildStyles>{children}</ChildStyles>
-            <DeleteValidationButton onClick={onDelete}>
+            <DeleteValidationButton
+                onClick={onDelete}
+                data-testid="delete-button"
+            >
                 <BinIcon />
             </DeleteValidationButton>
         </Wrapper>
