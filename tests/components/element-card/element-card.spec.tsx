@@ -5,6 +5,18 @@ import { EElementType, TElement } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data/elements-data";
 import { TestHelper, MOCK_BUILDER_STATE } from "src/util/test-helper";
 
+const mockDeleteElement = jest.fn();
+
+jest.mock("src/context-providers/builder/hook.ts", () => {
+    const actual = jest.requireActual("src/context-providers/builder/hook.ts");
+    return {
+        useBuilder: () => ({
+            ...actual.useBuilder(),
+            deleteElement: mockDeleteElement,
+        }),
+    };
+});
+
 describe("element-card", () => {
     afterEach(() => {
         jest.restoreAllMocks();
@@ -34,7 +46,6 @@ describe("element-card", () => {
                 { element: MOCK_ELEMENT },
                 {
                     builderContext: {
-                        ...MOCK_BUILDER_STATE,
                         focusedElement: { element: MOCK_ELEMENT },
                     },
                 }
@@ -47,7 +58,6 @@ describe("element-card", () => {
                 { element: MOCK_ELEMENT },
                 {
                     builderContext: {
-                        ...MOCK_BUILDER_STATE,
                         focusedElement: {
                             element: MOCK_ELEMENT,
                             isDirty: true,
@@ -65,7 +75,6 @@ describe("element-card", () => {
                 { element: MOCK_ELEMENT },
                 {
                     builderContext: {
-                        ...MOCK_BUILDER_STATE,
                         focusedElement: { element: MOCK_ELEMENT },
                     },
                 }
@@ -122,15 +131,3 @@ const MOCK_ELEMENT = {
 };
 
 const mockOnClick = jest.fn();
-
-const mockDeleteElement = jest.fn();
-
-jest.mock("src/context-providers/builder/hook.ts", () => {
-    const actual = jest.requireActual("src/context-providers/builder/hook.ts");
-    return {
-        useBuilder: () => ({
-            ...actual.useBuilder(),
-            deleteElement: mockDeleteElement,
-        }),
-    };
-});
