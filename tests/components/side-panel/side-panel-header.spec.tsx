@@ -46,6 +46,11 @@ describe("SidePanelHeader", () => {
             });
             expect(getCrossButton()).toBeInTheDocument();
         });
+
+        it("should not display the cross button when there is no focused element", () => {
+            renderComponent();
+            expect(getCrossButton(true)).not.toBeInTheDocument();
+        });
     });
 });
 
@@ -60,7 +65,10 @@ const renderComponent = (overrideOptions?: TestHelper.RenderOptions) => {
 };
 
 const getHeaderLabel = () => screen.getByTestId("header-label");
-const getCrossButton = () => screen.getByTestId("cross-button");
+const getCrossButton = (useQuery = false) =>
+    useQuery
+        ? screen.queryByTestId("cross-button")
+        : screen.getByTestId("cross-button");
 
 // =============================================================================
 // MOCKS
