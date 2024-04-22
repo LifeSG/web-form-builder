@@ -48,8 +48,8 @@ describe("AddElementsPanel", () => {
                 ).toBeInTheDocument();
                 category.elementTypes.forEach((elementType) => {
                     expect(
-                        screen.getAllByText(ELEMENT_BUTTON_LABELS[elementType])
-                    ).toHaveLength(1);
+                        screen.getByText(ELEMENT_BUTTON_LABELS[elementType])
+                    ).toBeInTheDocument();
                 });
             });
         });
