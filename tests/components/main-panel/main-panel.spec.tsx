@@ -3,7 +3,7 @@ import "jest-canvas-mock";
 import { MainPanel } from "src/components";
 import { EElementType } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data/elements-data";
-import { TestHelper, MOCK_BUILDER_STATE } from "src/util/test-helper";
+import { TestHelper } from "src/util/test-helper";
 
 describe("MainPanel", () => {
     afterEach(() => {
@@ -20,7 +20,6 @@ describe("MainPanel", () => {
     it("should display the elements", async () => {
         renderComponent({
             builderContext: {
-                ...MOCK_BUILDER_STATE,
                 orderedIdentifiers: [MOCK_ORDERED_IDENTIFIER],
                 elements: MOCK_ELEMENT,
             },
