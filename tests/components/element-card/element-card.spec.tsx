@@ -17,7 +17,7 @@ jest.mock("src/context-providers/builder/hook.ts", () => {
     };
 });
 
-describe("element-card", () => {
+describe("ElementCard", () => {
     afterEach(() => {
         jest.restoreAllMocks();
         jest.resetAllMocks();
