@@ -3,9 +3,9 @@ import "jest-canvas-mock";
 import { ElementCard } from "src/components";
 import { EElementType, TElement } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data/elements-data";
-import { TestHelper, mockBuilderState } from "src/util/test-helper";
+import { TestHelper } from "src/util/test-helper";
 
-describe("element-card", () => {
+describe("ElementCard", () => {
     afterEach(() => {
         jest.restoreAllMocks();
         jest.resetAllMocks();
@@ -34,7 +34,6 @@ describe("element-card", () => {
                 { element: MOCK_ELEMENT },
                 {
                     builderContext: {
-                        ...mockBuilderState,
                         focusedElement: { element: MOCK_ELEMENT },
                     },
                 }
@@ -47,7 +46,6 @@ describe("element-card", () => {
                 { element: MOCK_ELEMENT },
                 {
                     builderContext: {
-                        ...mockBuilderState,
                         focusedElement: {
                             element: MOCK_ELEMENT,
                             isDirty: true,

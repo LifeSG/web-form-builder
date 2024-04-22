@@ -55,5 +55,7 @@ export const AddElementsPanel = () => {
         });
     };
 
-    return <Wrapper>{renderCategories()}</Wrapper>;
+    return (
+        <Wrapper data-testid="add-elements-panel">{renderCategories()}</Wrapper>
+    );
 };
