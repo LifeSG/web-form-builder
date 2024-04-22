@@ -3,7 +3,7 @@ import "jest-canvas-mock";
 import { ElementCard } from "src/components";
 import { EElementType, TElement } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data/elements-data";
-import { TestHelper, mockBuilderState } from "src/util/test-helper";
+import { TestHelper } from "src/util/test-helper";
 
 describe("ElementCard", () => {
     afterEach(() => {
