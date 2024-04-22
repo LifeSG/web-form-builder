@@ -8,7 +8,7 @@ import {
 } from "src/context-providers";
 import { ThemeProvider } from "styled-components";
 
-export const mockBuilderState: IBuilderState = {
+const mockBuilderState: IBuilderState = {
     mode: EBuilderMode.ADD_ELEMENT,
     elements: {},
     focusedElement: null,
