@@ -1,8 +1,7 @@
 import { Form } from "@lifesg/react-design-system/form";
 import type { Meta, StoryObj } from "@storybook/react";
 import { ChildEntry } from "src/components/common";
-import { ValidationFields } from "src/components/common/child-entry/child-entry.styles";
-import { Container } from "./doc-elements";
+import { Container, FieldWrapper } from "./doc-elements";
 
 type Component = typeof ChildEntry;
 
@@ -24,7 +23,7 @@ export const Default: StoryObj<Component> = {
                         console.log("delete works!");
                     }}
                 >
-                    <ValidationFields>
+                    <FieldWrapper>
                         <div>
                             <Form.Select
                                 label=""
@@ -40,7 +39,7 @@ export const Default: StoryObj<Component> = {
                         <div>
                             <Form.Input placeholder="Set error message" />
                         </div>
-                    </ValidationFields>
+                    </FieldWrapper>
                 </ChildEntry>
             </Container>
         );

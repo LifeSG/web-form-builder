@@ -1,9 +1,5 @@
 import { BinIcon } from "@lifesg/react-icons/bin";
-import {
-    ChildStyles,
-    DeleteValidationButton,
-    Wrapper,
-} from "./child-entry.styles";
+import { ChildStyles, DeleteButton, Wrapper } from "./child-entry.styles";
 
 interface IProps {
     onDelete: () => void;
@@ -16,12 +12,9 @@ export const ChildEntry = ({ onDelete, children }: IProps) => {
     return (
         <Wrapper>
             <ChildStyles>{children}</ChildStyles>
-            <DeleteValidationButton
-                onClick={onDelete}
-                data-testid="delete-button"
-            >
+            <DeleteButton onClick={onDelete} data-testid="delete-button">
                 <BinIcon />
-            </DeleteValidationButton>
+            </DeleteButton>
         </Wrapper>
     );
 };

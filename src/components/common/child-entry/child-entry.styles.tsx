@@ -7,6 +7,7 @@ export const Wrapper = styled.div`
     flex-direction: row;
     width: 100%;
     align-items: center;
+    margin-bottom: 2rem;
 `;
 
 export const ChildStyles = styled.div`
@@ -15,7 +16,7 @@ export const ChildStyles = styled.div`
     flex-grow: 1;
 `;
 
-export const DeleteValidationButton = styled.div`
+export const DeleteButton = styled.div`
     padding: 1rem 1rem 1rem 0;
     svg {
         color: ${Color.Accent.Light[1]};
@@ -23,10 +24,4 @@ export const DeleteValidationButton = styled.div`
         height: 1.9rem;
         cursor: pointer;
     }
-`;
-
-export const ValidationFields = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
 `;
