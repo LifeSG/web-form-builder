@@ -19,20 +19,17 @@ export const MainPanel = () => {
         orderedIdentifiers,
         elements,
         focusElement,
-        togglePanel,
+        focusedElement,
     } = useBuilder();
-    const renderMode = showSidePanel ? "minimised" : "expanded";
+
+    const finalMode = focusedElement ? true : showSidePanel;
+    const renderMode = finalMode ? "minimised" : "expanded";
 
     // =========================================================================
     // EVENT HANDLERS
     // =========================================================================
     const handleElementCardClick = (element: TElement) => () => {
-        /**
-         * TODO: Add check if element is dirty when setting focus
-         * Hardcode to false for now
-         */
         focusElement(element, false);
-        togglePanel(true);
     };
 
     // =========================================================================

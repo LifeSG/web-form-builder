@@ -7,9 +7,12 @@ import styled, { css } from "styled-components";
 // STYLING INTERFACE
 // =============================================================================
 export interface IWrapperStyleProps {
-    $isCollapsed: boolean;
+    $minimised: boolean;
 }
 
+export interface IContentSectionStyleProps {
+    $isFocusedElement: boolean;
+}
 // =============================================================================
 // STYLING
 // =============================================================================
@@ -33,7 +36,7 @@ export const Wrapper = styled.div<IWrapperStyleProps>`
     }
 
     ${(props) => {
-        if (props.$isCollapsed) {
+        if (props.$minimised) {
             return css`
                 transform: translateX(calc(-100% + 5.5rem));
             `;
@@ -47,8 +50,9 @@ export const ContentWrapper = styled.div`
     overflow: hidden;
 `;
 
-export const ContentSection = styled.div`
-    padding: 2rem;
+export const ContentSection = styled.div<IContentSectionStyleProps>`
+    padding: ${({ $isFocusedElement }) =>
+        $isFocusedElement ? "1rem" : "2rem"};
     flex: 1;
     overflow-y: auto;
     display: flex;
