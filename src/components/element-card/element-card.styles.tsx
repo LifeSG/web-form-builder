@@ -1,5 +1,6 @@
 import { Color } from "@lifesg/react-design-system/color";
 import { Text, TextStyleHelper } from "@lifesg/react-design-system/text";
+import { DragHandleIcon } from "@lifesg/react-icons";
 import styled, { css } from "styled-components";
 
 // =============================================================================
@@ -67,4 +68,11 @@ export const ActionButton = styled.button<IActionButtonStyleProps>`
             `;
         }
     }}
+`;
+
+export const DragHandle = styled(DragHandleIcon)`
+    svg {
+        height: 1.25rem;
+        width: 1.25rem;
+    }
 `;

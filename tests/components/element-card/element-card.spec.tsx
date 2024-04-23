@@ -17,7 +17,7 @@ describe("ElementCard", () => {
                 { element: MOCK_ELEMENT, onClick: mockOnClick },
                 {}
             );
-            fireEvent.click(getElementCard() as HTMLElement);
+            fireEvent.click(getElementCard());
             expect(mockOnClick).toHaveBeenCalled();
         });
     });
@@ -58,6 +58,25 @@ describe("ElementCard", () => {
             expect(getDuplicateButton()).toBeDisabled();
         });
     });
+
+    describe("drag & drop functionality", () => {
+        it("should render the drag handle when hovering over the element card", () => {
+            renderComponent(
+                { element: MOCK_ELEMENT },
+                {
+                    builderContext: {
+                        focusedElement: {
+                            element: MOCK_ELEMENT,
+                            isDirty: true,
+                            isValid: false,
+                        },
+                    },
+                }
+            );
+            fireEvent.mouseEnter(getElementCard());
+            expect(screen.getByTestId("drag-handle")).toBeInTheDocument();
+        });
+    });
 });
 
 // =============================================================================
@@ -80,7 +99,8 @@ const renderComponent = (
     );
 };
 
-const getElementCard = () => screen.getByRole("button");
+const getElementCard = () =>
+    screen.getByTestId(`card${MOCK_ELEMENT.internalId}`);
 
 const getDeleteButton = (useQuery = false) =>
     !useQuery
