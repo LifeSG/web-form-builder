@@ -31,3 +31,9 @@ export const ELEMENT_BUTTON_LABELS: { [key in EElementType]: string } = {
     [EElementType.CHECKBOX]: "Checkbox",
     [EElementType.RADIO]: "Radio Button",
 };
+
+export const ELEMENT_VALIDATION_TYPES = {
+    "Text field": {
+        [EElementType.EMAIL]: ["Valid email address format"],
+    },
+};

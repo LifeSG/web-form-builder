@@ -30,6 +30,7 @@ export namespace ElementObjectGenerator {
                     placeholder: "",
                     required: false,
                     label: ELEMENT_BUTTON_LABELS[type],
+                    validation: [],
                 };
                 return attributes;
             }

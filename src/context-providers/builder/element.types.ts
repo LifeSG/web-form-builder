@@ -21,6 +21,12 @@ export interface IBaseAttributes {
     type: EElementType;
 }
 
+export interface IValidation {
+    validationType: string;
+    validationRule: string;
+    validationErrorMessage: string;
+}
+
 export interface IBaseFieldAttributes extends IBaseAttributes {
     label: string | undefined;
     required: boolean;
@@ -29,6 +35,7 @@ export interface IBaseFieldAttributes extends IBaseAttributes {
 
 export interface IBaseTextBasedFieldAttributes extends IBaseFieldAttributes {
     placeholder?: string;
+    validation?: IValidation[];
 }
 
 // =============================================================================
