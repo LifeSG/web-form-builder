@@ -8,6 +8,13 @@ import { ELEMENT_BUTTON_LABELS } from "src/data";
 import { SchemaHelper } from "src/schemas";
 import { TestHelper } from "src/util/test-helper";
 
+jest.mock("src/context-providers/builder/hook", () => ({
+    useBuilder: () => ({
+        elements: MOCK_ELEMENTS,
+        focusedElement: MOCK_FOCUSED_ELEMENT,
+    }),
+}));
+
 describe("BasicDetails", () => {
     beforeEach(() => {
         global.ResizeObserver = jest.fn().mockImplementation(() => ({
@@ -23,7 +30,7 @@ describe("BasicDetails", () => {
     });
 
     describe("rendering label & required error message fields", () => {
-        it("should render label if property is there", async () => {
+        it("should render label if element has label property", async () => {
             renderComponent({
                 builderContext: {
                     focusedElement: MOCK_FOCUSED_ELEMENT,
@@ -35,7 +42,7 @@ describe("BasicDetails", () => {
             expect(labelField).toBeInTheDocument();
         });
 
-        it("should render required error message if property is there", async () => {
+        it("should render required error message if element has required error message property", async () => {
             renderComponent({
                 builderContext: {
                     focusedElement: MOCK_FOCUSED_ELEMENT,
@@ -52,7 +59,7 @@ describe("BasicDetails", () => {
     });
 
     describe("rendering the error messages for the fields", () => {
-        it("should render an error message for the ID field when empty", async () => {
+        it("should render an error message for the ID field if it is empty", async () => {
             renderComponent({
                 builderContext: {
                     focusedElement: MOCK_FOCUSED_ELEMENT,
@@ -62,11 +69,11 @@ describe("BasicDetails", () => {
             const idInput = await getIdField();
             fireEvent.focus(idInput);
             fireEvent.blur(idInput);
-            const idErrorMessage = await getIdErrorMessage();
+            const idErrorMessage = await screen.findByText("ID is required");
             expect(idErrorMessage).toHaveTextContent("ID is required");
         });
 
-        it("should render an error message for the ID field when input is invalid", async () => {
+        it("should render an error message for the ID field if it is invalid", async () => {
             renderComponent({
                 builderContext: {
                     focusedElement: MOCK_FOCUSED_ELEMENT,
@@ -77,11 +84,13 @@ describe("BasicDetails", () => {
             fireEvent.focus(idInput);
             fireEvent.change(idInput, { target: { value: "camel_Case" } });
             fireEvent.blur(idInput);
-            const idErrorMessage = await getIdErrorMessage();
+            const idErrorMessage = await screen.findByText(
+                "ID must be camelCase"
+            );
             expect(idErrorMessage).toHaveTextContent("ID must be camelCase");
         });
 
-        it("should render an error message for the label field", async () => {
+        it("should render an error message for the label field if it is empty", async () => {
             renderComponent({
                 builderContext: {
                     focusedElement: MOCK_FOCUSED_ELEMENT,
@@ -92,8 +101,8 @@ describe("BasicDetails", () => {
             fireEvent.focus(labelInput);
             fireEvent.change(labelInput, { target: { value: "" } });
             fireEvent.blur(labelInput);
-            console.log("check this:", document.body.innerHTML);
-            const labelErrorMessage = await getLabelErrorMessage();
+            const labelErrorMessage =
+                await screen.findByText("Label is required");
             expect(labelErrorMessage).toHaveTextContent("Label is required");
         });
     });
@@ -122,19 +131,11 @@ const renderComponent = (overrideOptions?: TestHelper.RenderOptions) => {
 };
 
 const getIdField = async () => {
-    return screen.findByTestId("id-field");
+    return screen.findByPlaceholderText("Create an ID");
 };
 
 const getLabelField = async () => {
-    return screen.findByTestId("label-field");
-};
-
-const getIdErrorMessage = async () => {
-    return screen.findByTestId("form-field-error-message");
-};
-
-const getLabelErrorMessage = async () => {
-    return screen.findByTestId("form-textarea-error-message");
+    return screen.findByLabelText("Element Name");
 };
 
 // =============================================================================
@@ -160,10 +161,3 @@ const MOCK_ELEMENTS = {
         label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
     },
 };
-
-jest.mock("src/context-providers/builder/hook", () => ({
-    useBuilder: () => ({
-        elements: MOCK_ELEMENTS,
-        focusedElement: MOCK_FOCUSED_ELEMENT,
-    }),
-}));
