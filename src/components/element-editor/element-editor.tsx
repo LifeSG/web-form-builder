@@ -4,6 +4,7 @@ import { EElementType } from "src/context-providers";
 import { SchemaHelper } from "src/schemas";
 import { BasicDetails } from "./basic-details";
 import { AccordionWrapper } from "./element-editor.styles";
+import { Validation } from "./validation/validation";
 
 export const ElementEditor = () => {
     // =========================================================================
@@ -23,6 +24,7 @@ export const ElementEditor = () => {
             <AccordionWrapper>
                 <BasicDetails />
             </AccordionWrapper>
+            <Validation />
         </FormProvider>
     );
 };

@@ -13,6 +13,7 @@ describe("ValidationChild", () => {
         renderComponent({
             onDelete: mockDelete,
             options: mockOptions,
+            onChange: mockOnChange,
         });
         expect(screen.getByText("Select")).toBeInTheDocument();
         expect(screen.getByPlaceholderText("Enter rule")).toBeInTheDocument();
@@ -25,6 +26,7 @@ describe("ValidationChild", () => {
         renderComponent({
             onDelete: mockDelete,
             options: mockOptions,
+            onChange: mockOnChange,
         });
         const deleteButton = screen.getByTestId("delete-button");
         fireEvent.click(deleteButton);
@@ -35,6 +37,7 @@ describe("ValidationChild", () => {
         renderComponent({
             onDelete: mockDelete,
             options: ["Option 1"],
+            onChange: mockOnChange,
         });
         const getValidationTypeField = screen.getByRole("button", {
             name: "Option 1",
@@ -42,20 +45,40 @@ describe("ValidationChild", () => {
         expect(getValidationTypeField).toBeInTheDocument();
         expect(getValidationTypeField).toBeDisabled();
     });
+
+    it("should run onChange when there is a change in the input fields", () => {
+        renderComponent({
+            onDelete: mockDelete,
+            options: mockOptions,
+            onChange: mockOnChange,
+        });
+        const getValidationRuleField =
+            screen.getByPlaceholderText("Enter rule");
+        fireEvent.focus(getValidationRuleField);
+        fireEvent.change(getValidationRuleField, {
+            target: { value: "camel_Case" },
+        });
+        expect(mockOnChange).toBeCalled();
+    });
 });
 
 const renderComponent = (
     validationChildOptions: {
         onDelete?: () => void;
         options?: string[];
+        onChange?: (newValue: any) => void;
     } = {},
     overrideOptions?: TestHelper.RenderOptions
 ) => {
-    const { onDelete, options } = validationChildOptions;
+    const { onDelete, options, onChange } = validationChildOptions;
     return render(
         TestHelper.withProviders(
             overrideOptions,
-            <ValidationChild onDelete={onDelete} options={options} />
+            <ValidationChild
+                onDelete={onDelete}
+                options={options}
+                onChange={onChange}
+            />
         )
     );
 };
@@ -65,3 +88,4 @@ const renderComponent = (
 // =============================================================================
 const mockOptions = ["Option 1", "Option 2"];
 const mockDelete = jest.fn();
+const mockOnChange = jest.fn();
