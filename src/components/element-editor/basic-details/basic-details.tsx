@@ -63,6 +63,7 @@ export const BasicDetails = () => {
                         }
                     />
                 )}
+                shouldUnregister={true}
             />
 
             {hasProperty("label") && (
@@ -81,6 +82,7 @@ export const BasicDetails = () => {
                             {...field}
                         />
                     )}
+                    shouldUnregister={true}
                 />
             )}
 
@@ -92,12 +94,13 @@ export const BasicDetails = () => {
                     render={({ field }) => (
                         <TogglePair
                             label="Mandatory field"
-                            defaultValue={element.required}
+                            defaultValue={element.required} // Set defaultValue based on element.required
                             onChange={(value) => field.onChange(value)}
                         />
                     )}
+                    shouldUnregister={true}
                 />
-                {watch("required") && (
+                {watch("required", true) && (
                     <Controller
                         name="requiredErrorMsg"
                         control={control}
@@ -110,6 +113,7 @@ export const BasicDetails = () => {
                                 {...field}
                             />
                         )}
+                        shouldUnregister={true}
                     />
                 )}
             </MandatoryFieldBox>
@@ -129,12 +133,12 @@ export const BasicDetails = () => {
                                 </Text.H6>
                             ),
                         }}
-                        required
                         placeholder="Create an ID"
                         errorMessage={errors.id?.message}
                         {...field}
                     />
                 )}
+                shouldUnregister={true}
             />
 
             {hasProperty("placeholder") && (
@@ -150,6 +154,7 @@ export const BasicDetails = () => {
                             {...field}
                         />
                     )}
+                    shouldUnregister={true}
                 />
             )}
         </FieldEditorAccordionItem>

@@ -1,56 +1,12 @@
-import { yupResolver } from "@hookform/resolvers/yup";
-import { Alert } from "@lifesg/react-design-system/alert";
-import { useCallback, useEffect } from "react";
-import { FormProvider, useForm } from "react-hook-form";
-import { EElementType, useBuilder } from "src/context-providers";
-import { SchemaHelper } from "src/schemas";
+import { useBuilder } from "src/context-providers";
 import { BasicDetails } from "./basic-details";
-import { AccordionWrapper } from "./element-editor.styles";
+import { AccordionWrapper, SaveChangesAlert } from "./element-editor.styles";
 
-interface IProps {
-    setSaveChangesHandler: (value: () => void) => void;
-}
-export const ElementEditor = ({ setSaveChangesHandler }: IProps) => {
+export const ElementEditor = () => {
     // =========================================================================
     // CONST, STATE, REF
     // =========================================================================
-    const { updateElement, updateFocusedElement, focusedElement } =
-        useBuilder();
-
-    const methods = useForm({
-        mode: "onBlur",
-        // TODO: insert proper type; email is a placeholder
-        resolver: yupResolver(SchemaHelper.buildSchema(EElementType.EMAIL)),
-    });
-
-    // =========================================================================
-    // EVENT HANDLERS
-    // =========================================================================
-
-    const onSubmit = useCallback(
-        (values) => {
-            updateElement(values);
-            updateFocusedElement(false, values);
-            methods.reset(
-                {
-                    ...methods.getValues(),
-                },
-                {
-                    keepDirty: false,
-                }
-            );
-        },
-        [updateElement, updateFocusedElement]
-    );
-    // =========================================================================
-    // USE EFFECTS
-    // =========================================================================
-
-    useEffect(() => {
-        if (setSaveChangesHandler) {
-            setSaveChangesHandler(() => methods.handleSubmit(onSubmit));
-        }
-    }, [methods, onSubmit, setSaveChangesHandler]);
+    const { focusedElement } = useBuilder();
 
     // =============================================================================
     // RENDER FUNCTIONS
@@ -61,20 +17,18 @@ export const ElementEditor = ({ setSaveChangesHandler }: IProps) => {
             return <></>;
         }
         return (
-            <Alert type="warning" showIcon>
+            <SaveChangesAlert type="warning" showIcon>
                 To reflect changes on preview, save changes first.
-            </Alert>
+            </SaveChangesAlert>
         );
     };
 
     return (
-        <FormProvider {...methods}>
+        <>
             {renderAlert()}
-            <form onSubmit={() => methods.handleSubmit(onSubmit)}>
-                <AccordionWrapper>
-                    <BasicDetails />
-                </AccordionWrapper>
-            </form>
-        </FormProvider>
+            <AccordionWrapper>
+                <BasicDetails />
+            </AccordionWrapper>
+        </>
     );
 };

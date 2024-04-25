@@ -1,5 +1,8 @@
 import { Color } from "@lifesg/react-design-system/color";
 import { CrossIcon } from "@lifesg/react-icons/cross";
+import { useCallback } from "react";
+import { useFormContext } from "react-hook-form";
+import { IBaseTextBasedFieldValues } from "src/schemas";
 import { EBuilderMode, useBuilder } from "../../context-providers";
 import { IconButton } from "../common";
 import {
@@ -9,11 +12,7 @@ import {
     Wrapper,
 } from "./side-panel-header.styles";
 
-interface IProps {
-    saveChangesHandler?: () => void;
-}
-
-export const SidePanelHeader = ({ saveChangesHandler }: IProps) => {
+export const SidePanelHeader = () => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
@@ -23,20 +22,39 @@ export const SidePanelHeader = ({ saveChangesHandler }: IProps) => {
         togglePanel,
         removeFocusedElement,
         focusedElement,
+        updateElement,
+        updateFocusedElement,
     } = useBuilder();
+
+    const { reset, handleSubmit } = useFormContext<IBaseTextBasedFieldValues>();
 
     // =========================================================================
     // EVENT HANDLERS
     // =========================================================================
 
-    const handleSaveButtonClick = () => {
-        if (saveChangesHandler) {
-            saveChangesHandler();
-        }
-    };
-
     const handleCrossButtonClick = () => {
         removeFocusedElement();
+    };
+
+    const onSubmit = useCallback(
+        (values) => {
+            console.log("values:", values);
+            updateElement(values);
+            updateFocusedElement(false, values);
+            reset(
+                {
+                    ...values,
+                },
+                {
+                    keepDirty: false,
+                }
+            );
+        },
+        [updateElement, updateFocusedElement, reset]
+    );
+
+    const handleSaveChanges = () => {
+        handleSubmit(onSubmit)();
     };
 
     // =========================================================================
@@ -54,14 +72,15 @@ export const SidePanelHeader = ({ saveChangesHandler }: IProps) => {
                 return "Add pages";
         }
     };
+
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
-    const renderIconButton = () => {
+    const renderButtons = () => {
         if (focusedElement) {
             return (
                 <>
-                    <SaveChangesButton onClick={handleSaveButtonClick}>
+                    <SaveChangesButton onClick={handleSaveChanges}>
                         {focusedElement.isDirty === false
                             ? "Saved"
                             : "Save Changes"}
@@ -95,7 +114,7 @@ export const SidePanelHeader = ({ saveChangesHandler }: IProps) => {
     return (
         <Wrapper>
             <HeaderLabel weight="semibold">{getHeaderTitle()}</HeaderLabel>
-            {renderIconButton()}
+            {renderButtons()}
             {/* TODO: To work on when react hook form is set up */}
         </Wrapper>
     );

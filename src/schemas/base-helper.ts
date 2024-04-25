@@ -10,20 +10,20 @@ export namespace BaseSchemaHelper {
         focusedElement: IFocusedElement
     ) =>
         yup.object<IBaseTextBasedFieldValues>().shape({
-            type: yup.string().required("Element type required"),
-            label: yup.string().required("Label required"),
+            type: yup.string().required("Element type required."),
+            label: yup.string().required("Label required."),
             placeholder: yup.string().optional(),
             required: yup.boolean().required().default(true),
             requiredErrorMsg: yup.string().optional(),
             id: yup
                 .string()
-                .required("ID required")
-                .matches(CAMEL_CASE_REGEX, { message: "ID must be camelCase" })
+                .required("ID required.")
+                .matches(CAMEL_CASE_REGEX, { message: "ID must be camelCase." })
                 .notOneOf(
                     Object.values(elements)
                         .map((e) => e.id)
-                        .filter((id) => id !== focusedElement.element.id),
-                    "ID must not be duplicated"
+                        .filter((id) => id !== focusedElement?.element.id),
+                    "ID must not be duplicated."
                 ),
         });
 }
