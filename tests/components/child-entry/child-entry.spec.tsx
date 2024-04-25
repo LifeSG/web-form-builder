@@ -9,18 +9,18 @@ describe("ChildEntry", () => {
         jest.resetAllMocks();
     });
 
-    it("should contain the child content that is being passed into the component", () => {
+    it("should render the child content that is being passed into the component", () => {
         renderComponent({
-            onDelete: mockDelete,
-            children: mockChild,
+            children: <h1>Children content</h1>,
         });
         expect(screen.getByText("Children content")).toBeInTheDocument();
     });
 
-    it("should run the delete function when clicking on the bin icon", () => {
+    it("should call onDelete prop on clicking the bin icon", () => {
+        const mockDelete = jest.fn();
         renderComponent({
             onDelete: mockDelete,
-            children: mockChild,
+            children: <h1>Children content</h1>,
         });
         const deleteButton = screen.getByTestId("delete-button");
         fireEvent.click(deleteButton);
@@ -48,4 +48,3 @@ const renderComponent = (
 // MOCKS
 // =============================================================================
 const mockChild = <h1>Children content</h1>;
-const mockDelete = jest.fn();
