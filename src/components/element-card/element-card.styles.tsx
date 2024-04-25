@@ -9,15 +9,31 @@ import styled, { css } from "styled-components";
 interface IActionButtonStyleProps {
     $disabled?: boolean;
 }
+interface DroppableWrapperProps {
+    isOver: boolean;
+}
 
 // =============================================================================
 // STYLING
 // =============================================================================
+export const DragHandle = styled(DragHandleIcon)`
+    display: none;
+    transition: width 0.1s ease-out;
+
+    svg {
+        height: 1.25rem;
+        width: 1.25rem;
+    }
+`;
+
 export const Container = styled.div`
     display: flex;
     align-items: center;
     gap: 1rem;
     flex: 1;
+    &:hover ${DragHandle} {
+        display: block;
+    }
 `;
 
 export const DetailsContainer = styled.div`
@@ -70,9 +86,36 @@ export const ActionButton = styled.button<IActionButtonStyleProps>`
     }}
 `;
 
-export const DragHandle = styled(DragHandleIcon)`
+export const DroppableWrapper = styled.div<DroppableWrapperProps>`
+    ${({ isOver }) =>
+        isOver
+            ? css`
+                  border: 1px dashed ${Color.Primary};
+                  border-radius: 0.25rem;
+                  background: ${Color.Accent.Light[5]};
+                  height: 100%;
+              `
+            : css`
+                  border: 1px solid transparent;
+              `}
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.4rem;
+    gap: 0.25rem;
+
     svg {
-        height: 1.25rem;
-        width: 1.25rem;
+        color: ${Color.Primary};
+        height: 2.08rem;
+        width: 2.08rem;
     }
+`;
+
+export const DroppableText = styled(Text.Body)`
+    color: ${Color.Primary};
+    text-align: center;
+    font-size: 1rem;
+    font-weight: semi-bold;
 `;

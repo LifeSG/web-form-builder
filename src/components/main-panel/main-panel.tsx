@@ -16,6 +16,7 @@ import {
     verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { ErrorDisplay } from "@lifesg/react-design-system/error-display";
+import { useState } from "react";
 import { TElement, useBuilder } from "src/context-providers";
 import { ElementCard } from "../element-card";
 import {
@@ -43,6 +44,15 @@ export const MainPanel = () => {
     const finalMode = focusedElement ? true : showSidePanel;
     const renderMode = finalMode ? "minimised" : "expanded";
     const items: (UniqueIdentifier | { id: UniqueIdentifier })[] = [];
+    const [activeId, setActiveId] = useState<string>();
+
+    for (const orderedIdentifier of orderedIdentifiers) {
+        if ("internalId" in orderedIdentifier) {
+            items.push({ id: orderedIdentifier.internalId });
+        } else {
+            items.push(orderedIdentifier);
+        }
+    }
 
     // =========================================================================
     // HELPER FUNCTION
@@ -65,14 +75,6 @@ export const MainPanel = () => {
         })
     );
 
-    for (const orderedIdentifier of orderedIdentifiers) {
-        if ("internalId" in orderedIdentifier) {
-            items.push({ id: orderedIdentifier.internalId });
-        } else {
-            items.push(orderedIdentifier);
-        }
-    }
-
     // =========================================================================
     // EVENT HANDLERS
     // =========================================================================
@@ -84,6 +86,7 @@ export const MainPanel = () => {
         const { active, over } = event;
 
         if (active.id !== over.id) {
+            setActiveId(active.id as string);
             const oldIndex = orderedIdentifiers.findIndex(
                 (item) => item.internalId === active.id
             );
@@ -97,6 +100,7 @@ export const MainPanel = () => {
             );
 
             updateOrderedIdentifiers(updatedOrderedIdentifiers);
+            setActiveId("");
         }
     };
 
@@ -106,7 +110,6 @@ export const MainPanel = () => {
     const renderElements = () => {
         return orderedIdentifiers.map((identifier) => {
             const element = elements[identifier.internalId];
-
             return (
                 <ElementItemWrapper
                     key={identifier.internalId}
@@ -116,6 +119,7 @@ export const MainPanel = () => {
                     <ElementCard
                         element={element}
                         onClick={handleElementCardClick(element)}
+                        isDragging={activeId === identifier.internalId}
                     />
                 </ElementItemWrapper>
             );

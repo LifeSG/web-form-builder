@@ -1,9 +1,10 @@
+import { useDroppable } from "@dnd-kit/core";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Text } from "@lifesg/react-design-system/text";
+import { PlusCircleIcon } from "@lifesg/react-icons";
 import { BinIcon } from "@lifesg/react-icons/bin";
 import { CopyIcon } from "@lifesg/react-icons/copy";
-import { useState } from "react";
 import { TElement, useBuilder } from "src/context-providers";
 import { BaseCard, CardIcon } from "../common";
 import {
@@ -12,6 +13,8 @@ import {
     Container,
     DetailsContainer,
     DragHandle,
+    DroppableText,
+    DroppableWrapper,
     IdLabel,
 } from "./element-card.styles";
 
@@ -20,15 +23,15 @@ interface IProps {
     onClick: () => void;
     onDelete?: () => void;
     onDuplicate?: () => void;
+    isDragging?: boolean;
 }
 
-export const ElementCard = ({ element, onClick }: IProps) => {
+export const ElementCard = ({ element, onClick, isDragging }: IProps) => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
     const { label, id } = element;
     const { focusedElement, deleteElement } = useBuilder();
-    const [showDragHandle, setShowDragHandle] = useState(false);
 
     const isFocused = checkIsFocused();
     const disableDuplicate = shouldDisableDuplicate();
@@ -39,6 +42,7 @@ export const ElementCard = ({ element, onClick }: IProps) => {
     const style = {
         transform: CSS.Translate.toString(transform),
         transition,
+        opacity: isDragging ? 0.7 : 1,
     };
 
     const sortableProps = {
@@ -46,6 +50,17 @@ export const ElementCard = ({ element, onClick }: IProps) => {
         ...attributes,
         ...listeners,
     };
+
+    const { isOver, setNodeRef: droppableRef } = useDroppable({
+        id: element.internalId,
+    });
+
+    const droppableContent = isOver ? (
+        <DroppableWrapper isOver={isOver}>
+            <PlusCircleIcon />
+            <DroppableText>Drop your element here</DroppableText>
+        </DroppableWrapper>
+    ) : null;
 
     // =========================================================================
     // EVENT HANDLERS
@@ -88,49 +103,46 @@ export const ElementCard = ({ element, onClick }: IProps) => {
     // RENDER FUNCTIONS
     // =========================================================================
     return (
-        <div
-            ref={setNodeRef}
-            style={style}
-            {...sortableProps}
-            onMouseEnter={() => setShowDragHandle(true)}
-            onMouseLeave={() => setShowDragHandle(false)}
-        >
-            <BaseCard
-                onClick={onClick}
-                focused={isFocused}
-                id={element.internalId}
-            >
-                <Container data-testid={"card" + element.internalId}>
-                    {showDragHandle && <DragHandle data-testid="drag-handle" />}
-                    <CardIcon elementType={element.type} />
-                    <DetailsContainer>
-                        <Text.Body weight="semibold">{label}</Text.Body>
-                        <IdLabel weight="semibold">ID: {id}</IdLabel>
-                    </DetailsContainer>
-                    {isFocused && (
-                        <ActionsContainer>
-                            <ActionButton
-                                data-testid="delete-button"
-                                type="button"
-                                onClick={handleDuplicateClick}
-                                $disabled={disableDuplicate}
-                                disabled={disableDuplicate}
-                            >
-                                <CopyIcon />
-                                Duplicate
-                            </ActionButton>
-                            <ActionButton
-                                data-testid="duplicate-button"
-                                type="button"
-                                onClick={handleDeleteClick}
-                            >
-                                <BinIcon />
-                                Delete
-                            </ActionButton>
-                        </ActionsContainer>
-                    )}
-                </Container>
-            </BaseCard>
+        <div ref={droppableRef}>
+            {droppableContent}
+            <div ref={setNodeRef} {...sortableProps}>
+                <BaseCard
+                    onClick={onClick}
+                    focused={isFocused}
+                    id={element.internalId}
+                >
+                    <Container data-testid={"card" + element.internalId}>
+                        <DragHandle data-testid="drag-handle" />
+                        <CardIcon elementType={element.type} />
+                        <DetailsContainer>
+                            <Text.Body weight="semibold">{label}</Text.Body>
+                            <IdLabel weight="semibold">ID: {id}</IdLabel>
+                        </DetailsContainer>
+                        {isFocused && (
+                            <ActionsContainer>
+                                <ActionButton
+                                    data-testid="delete-button"
+                                    type="button"
+                                    onClick={handleDuplicateClick}
+                                    $disabled={disableDuplicate}
+                                    disabled={disableDuplicate}
+                                >
+                                    <CopyIcon />
+                                    Duplicate
+                                </ActionButton>
+                                <ActionButton
+                                    data-testid="duplicate-button"
+                                    type="button"
+                                    onClick={handleDeleteClick}
+                                >
+                                    <BinIcon />
+                                    Delete
+                                </ActionButton>
+                            </ActionsContainer>
+                        )}
+                    </Container>
+                </BaseCard>
+            </div>
         </div>
     );
 };
