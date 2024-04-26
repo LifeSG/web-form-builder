@@ -1,8 +1,5 @@
 import { Color } from "@lifesg/react-design-system/color";
 import { CrossIcon } from "@lifesg/react-icons/cross";
-import { useCallback } from "react";
-import { useFormContext } from "react-hook-form";
-import { IBaseTextBasedFieldValues } from "src/schemas";
 import { EBuilderMode, useBuilder } from "../../context-providers";
 import { IconButton } from "../common";
 import {
@@ -22,11 +19,7 @@ export const SidePanelHeader = () => {
         togglePanel,
         removeFocusedElement,
         focusedElement,
-        updateElement,
-        updateFocusedElement,
     } = useBuilder();
-
-    const { reset, handleSubmit } = useFormContext<IBaseTextBasedFieldValues>();
 
     // =========================================================================
     // EVENT HANDLERS
@@ -34,27 +27,6 @@ export const SidePanelHeader = () => {
 
     const handleCrossButtonClick = () => {
         removeFocusedElement();
-    };
-
-    const onSubmit = useCallback(
-        (values) => {
-            console.log("values:", values);
-            updateElement(values);
-            updateFocusedElement(false, values);
-            reset(
-                {
-                    ...values,
-                },
-                {
-                    keepDirty: false,
-                }
-            );
-        },
-        [updateElement, updateFocusedElement, reset]
-    );
-
-    const handleSaveChanges = () => {
-        handleSubmit(onSubmit)();
     };
 
     // =========================================================================
@@ -80,7 +52,7 @@ export const SidePanelHeader = () => {
         if (focusedElement) {
             return (
                 <>
-                    <SaveChangesButton onClick={handleSaveChanges}>
+                    <SaveChangesButton>
                         {focusedElement.isDirty === false
                             ? "Saved"
                             : "Save Changes"}

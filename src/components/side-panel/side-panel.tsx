@@ -1,7 +1,8 @@
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useCallback, useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { EElementType } from "src/context-providers";
-import { SchemaHelper } from "src/schemas";
+import { IBaseTextBasedFieldValues, SchemaHelper } from "src/schemas";
 import { EBuilderMode, useBuilder } from "../../context-providers";
 import { ElementEditor } from "../element-editor";
 import { AddElementsPanel } from "./add-elements-panel";
@@ -13,12 +14,52 @@ export const SidePanel = () => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
-    const { showSidePanel, currentMode, focusedElement } = useBuilder();
+    const {
+        showSidePanel,
+        currentMode,
+        focusedElement,
+        updateElement,
+        updateFocusedElement,
+    } = useBuilder();
     const methods = useForm({
         mode: "onBlur",
         // TODO: insert proper type; email is a placeholder
         resolver: yupResolver(SchemaHelper.buildSchema(EElementType.EMAIL)),
     });
+
+    // =========================================================================
+    // HELPER FUNCTIONS
+    // =========================================================================
+    const onSubmit = useCallback(
+        (values) => {
+            updateElement(values);
+            updateFocusedElement(false, values);
+        },
+        [updateElement, updateFocusedElement]
+    );
+    // =========================================================================
+    // USE EFFECTS
+    // =========================================================================
+    useEffect(() => {
+        console.log("check this: ", methods.formState.isSubmitSuccessful);
+        methods.reset(undefined, {
+            keepValues: true,
+            keepDirty: false,
+        });
+    }, [methods.formState.isSubmitSuccessful]);
+
+    useEffect(() => {
+        if (focusedElement && !methods.formState.isDirty) {
+            Object.keys(focusedElement.element).map((key) => {
+                methods.resetField(key as keyof IBaseTextBasedFieldValues, {
+                    defaultValue:
+                        focusedElement.element[key] !== undefined
+                            ? (focusedElement.element[key] as string)
+                            : "",
+                });
+            });
+        }
+    }, [focusedElement, methods.formState.isDirty]);
 
     // =========================================================================
     // RENDER FUNCTIONS
@@ -39,17 +80,19 @@ export const SidePanel = () => {
 
     return (
         <FormProvider {...methods}>
-            <Wrapper $minimised={focusedElement ? false : !showSidePanel}>
-                <SidePanelHeader />
-                <ContentWrapper>
-                    <ContentSection
-                        $isFocusedElement={focusedElement ? true : false}
-                    >
-                        {renderPanelContent()}
-                    </ContentSection>
-                    {focusedElement === null && <Toolbar />}
-                </ContentWrapper>
-            </Wrapper>
+            <form onSubmit={methods.handleSubmit(onSubmit)}>
+                <Wrapper $minimised={focusedElement ? false : !showSidePanel}>
+                    <SidePanelHeader />
+                    <ContentWrapper>
+                        <ContentSection
+                            $isFocusedElement={focusedElement ? true : false}
+                        >
+                            {renderPanelContent()}
+                        </ContentSection>
+                        {focusedElement === null && <Toolbar />}
+                    </ContentWrapper>
+                </Wrapper>
+            </form>
         </FormProvider>
     );
 };

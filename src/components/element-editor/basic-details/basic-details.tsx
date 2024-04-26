@@ -9,6 +9,7 @@ import { IBaseTextBasedFieldValues } from "src/schemas";
 import {
     FieldEditorAccordionItem,
     MandatoryFieldBox,
+    Wrapper,
 } from "./basic-details.styles";
 
 export const BasicDetails = () => {
@@ -19,7 +20,7 @@ export const BasicDetails = () => {
     const { focusedElement, updateFocusedElement } = useBuilder();
     const {
         control,
-        formState: { errors, isDirty, submitCount },
+        formState: { errors, isDirty },
         watch,
     } = useFormContext<IBaseTextBasedFieldValues>();
     const element = focusedElement.element;
@@ -37,7 +38,7 @@ export const BasicDetails = () => {
     // =========================================================================
 
     useEffect(() => {
-        if (isDirty && submitCount >= 1) {
+        if (isDirty) {
             updateFocusedElement(true);
         }
     }, [isDirty, updateFocusedElement]);
@@ -48,115 +49,119 @@ export const BasicDetails = () => {
 
     return (
         <FieldEditorAccordionItem type="default" expanded title="Basic">
-            <Controller
-                name="type"
-                control={control}
-                defaultValue={element?.type}
-                render={({ field }) => (
-                    <IconDropdown
-                        {...field}
-                        type={element?.type}
-                        id={element?.id}
-                        errorMessage={errors.type?.message}
-                        onChange={(value) =>
-                            field.onChange({ target: { value: value } })
-                        }
-                    />
-                )}
-                shouldUnregister={true}
-            />
-
-            {hasProperty("label") && (
+            <Wrapper>
                 <Controller
-                    name="label"
+                    name="type"
                     control={control}
-                    defaultValue={element?.label}
+                    defaultValue={element?.type}
                     render={({ field }) => (
-                        <Form.Textarea
-                            required
-                            label="Element Name"
-                            rows={1}
-                            placeholder="Element Name"
-                            errorMessage={errors.label?.message}
-                            maxLength={40}
+                        <IconDropdown
                             {...field}
+                            type={element?.type}
+                            id={element?.id}
+                            errorMessage={errors.type?.message}
+                            onChange={(value) =>
+                                field.onChange({ target: { value: value } })
+                            }
                         />
                     )}
                     shouldUnregister={true}
                 />
-            )}
 
-            <MandatoryFieldBox>
-                <Controller
-                    name="required"
-                    control={control}
-                    defaultValue={element.required}
-                    render={({ field }) => (
-                        <TogglePair
-                            label="Mandatory field"
-                            defaultValue={element.required} // Set defaultValue based on element.required
-                            onChange={(value) => field.onChange(value)}
-                        />
-                    )}
-                    shouldUnregister={true}
-                />
-                {watch("required", true) && (
+                {hasProperty("label") && (
                     <Controller
-                        name="requiredErrorMsg"
+                        name="label"
                         control={control}
-                        defaultValue={element.requiredErrorMsg}
+                        defaultValue={element?.label}
                         render={({ field }) => (
-                            <Form.Input
-                                label="Error message"
-                                defaultValue={element.requiredErrorMsg}
-                                errorMessage={errors.requiredErrorMsg?.message}
+                            <Form.Textarea
+                                required
+                                label="Element Name"
+                                rows={1}
+                                placeholder="Element Name"
+                                errorMessage={errors.label?.message}
+                                maxLength={40}
                                 {...field}
                             />
                         )}
                         shouldUnregister={true}
                     />
                 )}
-            </MandatoryFieldBox>
 
-            <Controller
-                name="id"
-                control={control}
-                defaultValue={element?.id}
-                render={({ field }) => (
-                    <Form.Input
-                        label={{
-                            children: "ID",
-                            subtitle: (
-                                <Text.H6 weight={400}>
-                                    ID is used to differentiate element from the
-                                    others in the UI schema.
-                                </Text.H6>
-                            ),
-                        }}
-                        placeholder="Create an ID"
-                        errorMessage={errors.id?.message}
-                        {...field}
+                <MandatoryFieldBox>
+                    <Controller
+                        name="required"
+                        control={control}
+                        defaultValue={element.required}
+                        render={({ field }) => (
+                            <TogglePair
+                                label="Mandatory field"
+                                defaultValue={element.required} // Set defaultValue based on element.required
+                                onChange={(value) => field.onChange(value)}
+                            />
+                        )}
+                        shouldUnregister={true}
                     />
-                )}
-                shouldUnregister={true}
-            />
+                    {watch("required", true) && (
+                        <Controller
+                            name="requiredErrorMsg"
+                            control={control}
+                            defaultValue={element.requiredErrorMsg}
+                            render={({ field }) => (
+                                <Form.Input
+                                    label="Error message"
+                                    defaultValue={element.requiredErrorMsg}
+                                    errorMessage={
+                                        errors.requiredErrorMsg?.message
+                                    }
+                                    {...field}
+                                />
+                            )}
+                            shouldUnregister={true}
+                        />
+                    )}
+                </MandatoryFieldBox>
 
-            {hasProperty("placeholder") && (
                 <Controller
-                    name="placeholder"
+                    name="id"
                     control={control}
-                    defaultValue={element?.placeholder}
+                    defaultValue={element?.id}
                     render={({ field }) => (
                         <Form.Input
-                            label="Placeholder text (optional)"
-                            placeholder="Enter placeholder text"
-                            errorMessage={errors.placeholder?.message}
+                            label={{
+                                children: "ID",
+                                subtitle: (
+                                    <Text.H6 weight={400}>
+                                        ID is used to differentiate element from
+                                        the others in the UI schema.
+                                    </Text.H6>
+                                ),
+                            }}
+                            placeholder="Create an ID"
+                            errorMessage={errors.id?.message}
                             {...field}
                         />
                     )}
                     shouldUnregister={true}
                 />
-            )}
+
+                {hasProperty("placeholder") && (
+                    <Controller
+                        name="placeholder"
+                        control={control}
+                        defaultValue={element?.placeholder}
+                        render={({ field }) => (
+                            <Form.Input
+                                label="Placeholder text (optional)"
+                                placeholder="Enter placeholder text"
+                                errorMessage={errors.placeholder?.message}
+                                {...field}
+                            />
+                        )}
+                        shouldUnregister={true}
+                    />
+                )}
+            </Wrapper>
         </FieldEditorAccordionItem>
     );
 };
