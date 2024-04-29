@@ -63,6 +63,7 @@ export const BasicDetails = () => {
                             maxLength={40}
                             value={element?.label}
                             {...register("label")}
+                            data-testid="label-field"
                         />
                     )}
                 />
@@ -106,6 +107,7 @@ export const BasicDetails = () => {
                         required
                         placeholder="Create an ID"
                         errorMessage={errors.id?.message}
+                        data-testid="id-field"
                     />
                 )}
             />

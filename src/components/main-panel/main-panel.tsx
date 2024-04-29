@@ -115,6 +115,7 @@ export const MainPanel = () => {
                     key={identifier.internalId}
                     $mode={renderMode}
                     $size="full"
+                    data-testid="element-content"
                 >
                     <ElementCard
                         element={element}
@@ -128,7 +129,7 @@ export const MainPanel = () => {
 
     if (orderedIdentifiers.length === 0) {
         return (
-            <EmptyDisplayWrapper $mode={renderMode}>
+            <EmptyDisplayWrapper $mode={renderMode} data-testid="empty-content">
                 <ErrorDisplay type="no-item-found" imageOnly />
                 <EmptyDisplayTitle weight="semibold">
                     Form is empty
