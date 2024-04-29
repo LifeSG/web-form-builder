@@ -9,7 +9,7 @@ import styled, { css } from "styled-components";
 interface IActionButtonStyleProps {
     $disabled?: boolean;
 }
-interface DroppableWrapperProps {
+interface IDroppableWrapperProps {
     isOver: boolean;
 }
 
@@ -86,7 +86,7 @@ export const ActionButton = styled.button<IActionButtonStyleProps>`
     }}
 `;
 
-export const DroppableWrapper = styled.div<DroppableWrapperProps>`
+export const DroppableWrapper = styled.div<IDroppableWrapperProps>`
     ${({ isOver }) =>
         isOver
             ? css`

@@ -1,4 +1,4 @@
-import { useDroppable } from "@dnd-kit/core";
+import { useDraggable, useDroppable } from "@dnd-kit/core";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Text } from "@lifesg/react-design-system/text";
@@ -23,26 +23,33 @@ interface IProps {
     onClick: () => void;
     onDelete?: () => void;
     onDuplicate?: () => void;
-    isDragging?: boolean;
 }
 
-export const ElementCard = ({ element, onClick, isDragging }: IProps) => {
+export const ElementCard = ({ element, onClick }: IProps) => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
     const { label, id } = element;
     const { focusedElement, deleteElement } = useBuilder();
 
-    const isFocused = checkIsFocused();
-    const disableDuplicate = shouldDisableDuplicate();
-
+    const { isDragging } = useDraggable({
+        id: element.internalId,
+    });
     const { attributes, listeners, setNodeRef, transform, transition } =
         useSortable({ id: element.internalId });
+    const { isOver, setNodeRef: droppableRef } = useDroppable({
+        id: element.internalId,
+    });
+
+    const isFocused = checkIsFocused();
+    const disableDuplicate = shouldDisableDuplicate();
 
     const style = {
         transform: CSS.Translate.toString(transform),
         transition,
-        opacity: isDragging ? 0.7 : 1,
+        opacity: isDragging ? "70%" : "100%",
+        background: isDragging && "white",
+        gap: isDragging && "1rem",
     };
 
     const sortableProps = {
@@ -50,17 +57,6 @@ export const ElementCard = ({ element, onClick, isDragging }: IProps) => {
         ...attributes,
         ...listeners,
     };
-
-    const { isOver, setNodeRef: droppableRef } = useDroppable({
-        id: element.internalId,
-    });
-
-    const droppableContent = isOver ? (
-        <DroppableWrapper isOver={isOver}>
-            <PlusCircleIcon />
-            <DroppableText>Drop your element here</DroppableText>
-        </DroppableWrapper>
-    ) : null;
 
     // =========================================================================
     // EVENT HANDLERS
@@ -102,6 +98,13 @@ export const ElementCard = ({ element, onClick, isDragging }: IProps) => {
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
+    const droppableContent = isOver ? (
+        <DroppableWrapper isOver={isOver}>
+            <PlusCircleIcon />
+            <DroppableText>Drop your element here</DroppableText>
+        </DroppableWrapper>
+    ) : null;
+
     return (
         <div ref={droppableRef}>
             {droppableContent}

@@ -120,7 +120,6 @@ export const MainPanel = () => {
                     <ElementCard
                         element={element}
                         onClick={handleElementCardClick(element)}
-                        isDragging={activeId === identifier.internalId}
                     />
                 </ElementItemWrapper>
             );
