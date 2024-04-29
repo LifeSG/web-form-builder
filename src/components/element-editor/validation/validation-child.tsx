@@ -1,50 +1,60 @@
 import { Form } from "@lifesg/react-design-system";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChildEntry } from "src/components/common";
+import { IValidation } from "src/context-providers/builder";
 import { FieldWrapper } from "./validation.styles";
-import { IEntryProps } from "./validation";
 
 interface IProps {
     onDelete: () => void;
     options: string[];
     onChange: (newValue: any) => void;
+    value?: IValidation;
 }
 
-export const ValidationChild = ({ onDelete, options, onChange }: IProps) => {
+export const ValidationChild = ({
+    onDelete,
+    options,
+    onChange,
+    value,
+}: IProps) => {
     // =========================================================================
-    // CONST, STATES, REFS
+    // CONST, STATE, REF
     // =========================================================================
-    const [type, setType] = useState<string>(
-        options.length === 1 ? options[0] : ""
-    );
+    const [type, setType] = useState<string>();
 
     // =============================================================================
-    // EVENT HANDLERS
+    // EVENT HANLDERS
     // =============================================================================
-    const handleChange = (rule?: string, errorMessage?: string) => {
-        const newValue = {
-            type: type,
-            rule: rule,
-            errorMessage: errorMessage,
-        };
+    const handleChange = (changeType?: string, newValue?: string) => {
+        const updatedValue = { ...value };
+        if (!updatedValue.validationType || options.length === 1) {
+            updatedValue.validationType = type;
+        }
+        if (changeType === "rule") {
+            updatedValue.validationRule = newValue;
+        } else if (changeType === "errorMessage") {
+            updatedValue.validationErrorMessage = newValue;
+        }
 
-        onChange((prevValue: IEntryProps[]) => {
-            const prevValueWithSameType = prevValue.find(
-                (value: IEntryProps) => value.type === type
-            );
-            if (prevValueWithSameType) {
-                return prevValue.map((value: IEntryProps) =>
-                    value.type === type ? { ...value, ...newValue } : value
-                );
-            } else {
-                return [...prevValue, newValue];
-            }
-        });
+        onChange(updatedValue);
     };
 
-    // =============================================================================
+    // =========================================================================
+    // USE EFFECTS
+    // =========================================================================
+
+    useEffect(() => {
+        if (options.length === 1) {
+            setType(options[0]);
+        } else {
+            setType(value.validationType);
+        }
+    }, [options]);
+
+    // =========================================================================
     // RENDER FUNCTIONS
-    // =============================================================================
+    // =========================================================================
+
     return (
         <ChildEntry onDelete={onDelete}>
             <FieldWrapper>
@@ -63,18 +73,20 @@ export const ValidationChild = ({ onDelete, options, onChange }: IProps) => {
                 <div>
                     <Form.Textarea
                         placeholder="Enter rule"
+                        defaultValue={value.validationRule}
                         onChange={(event) => {
                             event.preventDefault();
-                            handleChange(event.target.value);
+                            handleChange("rule", event.target.value);
                         }}
                     />
                 </div>
                 <div>
                     <Form.Input
                         placeholder="Set error message"
+                        defaultValue={value.validationErrorMessage}
                         onChange={(event) => {
                             event.preventDefault();
-                            handleChange(event.target.value);
+                            handleChange("errorMessage", event.target.value);
                         }}
                     />
                 </div>

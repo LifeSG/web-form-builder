@@ -1,15 +1,8 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { MultiEntry } from "src/components/common";
-import { ValidationChild } from "./validation-child";
-import { EElementType, useBuilder } from "src/context-providers";
+import { EElementType, IValidation, useBuilder } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
-import { SimpleIdGenerator } from "src/util/simple-id-generator";
-
-export interface IEntryProps {
-    type?: string;
-    rule?: string;
-    errorMessage?: string;
-}
+import { ValidationChild } from "./validation-child";
 
 export const Validation = () => {
     // =========================================================================
@@ -17,9 +10,7 @@ export const Validation = () => {
     // =========================================================================
     const { focusedElement } = useBuilder();
     const element = focusedElement.element;
-    const [numberOfChildEntry, setNumberOfChildEntry] = useState(0);
-    const [childEntryValues, setChildEntryValues] = useState<IEntryProps[]>([]);
-    const [childKey, setChildKey] = useState([]);
+    const [childEntryValues, setChildEntryValues] = useState<IValidation[]>();
 
     // =========================================================================
     // HELPER FUNCTIONS
@@ -29,64 +20,77 @@ export const Validation = () => {
             case EElementType.EMAIL:
                 return ELEMENT_VALIDATION_TYPES["Text field"][
                     EElementType.EMAIL
-                ];
+                ].validationTypes;
             default:
                 return ["Select", "Type 1"];
+        }
+    }
+
+    function getMaxEntries(elementType: EElementType) {
+        switch (elementType) {
+            case EElementType.EMAIL:
+                return ELEMENT_VALIDATION_TYPES["Text field"][
+                    EElementType.EMAIL
+                ].maxEntries;
+            default:
+                return 6;
         }
     }
 
     // =========================================================================
     // EVENT HANDLERS
     // =========================================================================
+    const handleChildChange = (index: number, newValue: IValidation) => {
+        setChildEntryValues((prevValues) => {
+            const updatedValues = [...prevValues];
+            updatedValues[index] = newValue;
+            return updatedValues;
+        });
+    };
+
     const handleAddButtonClick = () => {
-        const newKey = SimpleIdGenerator.generate();
-        setChildKey((prevValue) => [...prevValue, newKey]);
-
-        setNumberOfChildEntry((num) => num + 1);
+        setChildEntryValues((prevValues) => [
+            ...prevValues,
+            {
+                validationType: "",
+                validationRule: "",
+                validationErrorMessage: "",
+            },
+        ]);
     };
 
-    const handleBinIconClick = (type: string) => {
-        if (childEntryValues.length > 0) {
-            const updatedValues = childEntryValues.filter(
-                (child) => child?.type !== type
-            );
-            const childToRemove = childEntryValues.find(
-                (child) => child?.type === type
-            );
-            const updatedKeys = childKey.filter(
-                (_, index) => index !== childEntryValues.indexOf(childToRemove)
-            );
-
-            setChildEntryValues(updatedValues);
-            setChildKey(updatedKeys);
-            setNumberOfChildEntry((num) => num - 1);
-        }
+    const handleDelete = (index: number) => {
+        setChildEntryValues((prevValues) =>
+            prevValues.filter((_, i) => i !== index)
+        );
     };
+
+    // =========================================================================
+    // USE EFFECTS
+    // =========================================================================
+
+    useEffect(() => {
+        const element = focusedElement.element;
+        setChildEntryValues(element.validation);
+    }, [focusedElement.element]);
 
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
-    const renderChildren = () => {
-        return Array.from(
-            {
-                length: numberOfChildEntry,
-            },
-            (_, index) => {
-                return (
-                    <ValidationChild
-                        key={childKey[index]}
-                        onDelete={() =>
-                            handleBinIconClick(childEntryValues[index].type)
-                        }
-                        onChange={setChildEntryValues}
-                        options={getOptionsByType(element.type)}
-                    />
-                );
-            }
-        );
-    };
 
-    console.log("check state of values: ", childEntryValues);
+    const renderChildren = useCallback(() => {
+        return childEntryValues?.map((child, index) => (
+            <ValidationChild
+                key={`validation-entry-${index}`}
+                onDelete={() => handleDelete(index)}
+                onChange={(newValue) => handleChildChange(index, newValue)}
+                options={getOptionsByType(element.type)}
+                value={child}
+            />
+        ));
+    }, [childEntryValues, handleDelete, handleChildChange, element.type]);
+
+    console.log("check child entry:", childEntryValues);
 
     return (
         <MultiEntry
@@ -94,7 +98,7 @@ export const Validation = () => {
             title="Validation"
             buttonLabel="validation"
             disabledButton={
-                numberOfChildEntry === getOptionsByType(element.type).length
+                childEntryValues?.length === getMaxEntries(element.type)
             }
         >
             {renderChildren()}

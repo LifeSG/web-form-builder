@@ -22,9 +22,9 @@ export interface IBaseAttributes {
 }
 
 export interface IValidation {
-    validationType: string;
-    validationRule: string;
-    validationErrorMessage: string;
+    validationType?: string;
+    validationRule?: string;
+    validationErrorMessage?: string;
 }
 
 export interface IBaseFieldAttributes extends IBaseAttributes {
