@@ -1,7 +1,8 @@
 import { Form } from "@lifesg/react-design-system/form";
 import type { Meta, StoryObj } from "@storybook/react";
 import { ChildEntry } from "src/components/common";
-import { Container, FieldWrapper } from "./doc-elements";
+import { FieldWrapper } from "./doc-elements";
+import { Container } from "./doc-elements";
 
 type Component = typeof ChildEntry;
 

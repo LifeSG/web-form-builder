@@ -32,7 +32,7 @@ export const IconDropdown = ({ id, type, onChange }: IProps) => {
         <Form.Select
             key={"element - " + id}
             id={id}
-            label={"Element Type"}
+            label={"Element type"}
             options={renderOptions()}
             renderCustomSelectedOption={(option) => {
                 return (

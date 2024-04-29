@@ -56,13 +56,14 @@ export const BasicDetails = () => {
                     render={() => (
                         <Form.Textarea
                             required
-                            label="Element Name"
+                            label="Element name"
                             rows={1}
-                            placeholder="Element Name"
+                            placeholder="Element name"
                             errorMessage={errors.label?.message}
                             maxLength={40}
                             value={element?.label}
                             {...register("label")}
+                            data-testid="label-field"
                         />
                     )}
                 />
@@ -106,6 +107,7 @@ export const BasicDetails = () => {
                         required
                         placeholder="Create an ID"
                         errorMessage={errors.id?.message}
+                        data-testid="id-field"
                     />
                 )}
             />

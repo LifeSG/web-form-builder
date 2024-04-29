@@ -10,15 +10,20 @@ export const MandatoryFieldBox = styled.div`
 `;
 
 export const FieldEditorAccordionItem = styled(Accordion.Item)`
-    padding-bottom: 2rem;
+    &[aria-expanded="true"] {
+        padding-bottom: 2rem;
+    }
 
     #content-container {
         padding: 0;
     }
 
     [data-testid="accordion-item-expandable-container"] {
-        padding: 0 1rem;
         display: flex;
         flex-direction: column;
+    }
+
+    [data-testid="accordion-item-title"] {
+        margin-bottom: 2rem;
     }
 `;

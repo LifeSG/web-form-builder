@@ -4,16 +4,15 @@ import styled from "styled-components";
 export const Wrapper = styled.div`
     background: ${Color.Neutral[7]};
     display: flex;
-    flex-direction: row;
+    flex: 1;
     width: 100%;
     align-items: center;
     margin-bottom: 2rem;
 `;
 
-export const ChildStyles = styled.div`
+export const ChildrenWrapper = styled.div`
     padding: 1rem;
-    width: 100%;
-    flex-grow: 1;
+    flex: 1;
 `;
 
 export const DeleteButton = styled.div`

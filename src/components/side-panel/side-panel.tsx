@@ -25,7 +25,11 @@ export const SidePanel = () => {
             case EBuilderMode.ADD_ELEMENT:
                 return <AddElementsPanel />;
             default:
-                return <>Some content here...</>;
+                return (
+                    <div data-testid="default-content">
+                        Some content here...
+                    </div>
+                );
         }
     };
 
