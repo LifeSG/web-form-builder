@@ -85,7 +85,9 @@ export const SidePanelHeader = () => {
 
     return (
         <Wrapper>
-            <HeaderLabel weight="semibold">{getHeaderTitle()}</HeaderLabel>
+            <HeaderLabel weight="semibold" data-testid="header-label">
+                {getHeaderTitle()}
+            </HeaderLabel>
             {renderButtons()}
             {/* TODO: To work on when react hook form is set up */}
         </Wrapper>

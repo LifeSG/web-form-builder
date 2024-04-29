@@ -25,8 +25,9 @@ export const Toolbar = () => {
     // RENDER FUNCTIONS
     // =========================================================================
     return (
-        <Wrapper>
+        <Wrapper data-testid="toolbar">
             <ModeButton
+                data-testid="add-element"
                 $active={currentMode === EBuilderMode.ADD_ELEMENT}
                 onClick={toggleView(EBuilderMode.ADD_ELEMENT)}
             >
