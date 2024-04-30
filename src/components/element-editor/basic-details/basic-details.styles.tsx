@@ -1,4 +1,3 @@
-import { Form } from "@lifesg/react-design-system";
 import { Accordion } from "@lifesg/react-design-system/accordion";
 import styled from "styled-components";
 
@@ -11,6 +10,7 @@ export const MandatoryFieldBox = styled.div`
 `;
 
 export const Wrapper = styled.div`
+    padding: 0 1rem 0 1rem;
     &:last-child {
         margin-bottom: 1rem;
     }

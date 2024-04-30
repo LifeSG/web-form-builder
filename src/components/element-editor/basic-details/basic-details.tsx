@@ -75,13 +75,13 @@ export const BasicDetails = () => {
                         defaultValue={element?.label}
                         render={({ field }) => (
                             <Form.Textarea
+                                {...field}
                                 required
                                 label="Element Name"
                                 rows={1}
                                 placeholder="Element Name"
                                 errorMessage={errors.label?.message}
                                 maxLength={40}
-                                {...field}
                             />
                         )}
                         shouldUnregister={true}
@@ -95,13 +95,16 @@ export const BasicDetails = () => {
                         defaultValue={element.required}
                         render={({ field }) => (
                             <TogglePair
+                                {...field}
                                 label="Mandatory field"
-                                defaultValue={element.required} // Set defaultValue based on element.required
+                                defaultValue={element.required}
+                                id={element.internalId}
                                 onChange={(value) => field.onChange(value)}
                             />
                         )}
                         shouldUnregister={true}
                     />
+
                     {watch("required", true) && (
                         <Controller
                             name="requiredErrorMsg"
@@ -109,12 +112,12 @@ export const BasicDetails = () => {
                             defaultValue={element.requiredErrorMsg}
                             render={({ field }) => (
                                 <Form.Input
+                                    {...field}
                                     label="Error message"
                                     defaultValue={element.requiredErrorMsg}
                                     errorMessage={
                                         errors.requiredErrorMsg?.message
                                     }
-                                    {...field}
                                 />
                             )}
                             shouldUnregister={true}
@@ -128,6 +131,7 @@ export const BasicDetails = () => {
                     defaultValue={element?.id}
                     render={({ field }) => (
                         <Form.Input
+                            {...field}
                             label={{
                                 children: "ID",
                                 subtitle: (
@@ -139,7 +143,6 @@ export const BasicDetails = () => {
                             }}
                             placeholder="Create an ID"
                             errorMessage={errors.id?.message}
-                            {...field}
                         />
                     )}
                     shouldUnregister={true}
@@ -152,10 +155,10 @@ export const BasicDetails = () => {
                         defaultValue={element?.placeholder}
                         render={({ field }) => (
                             <Form.Input
+                                {...field}
                                 label="Placeholder text (optional)"
                                 placeholder="Enter placeholder text"
                                 errorMessage={errors.placeholder?.message}
-                                {...field}
                             />
                         )}
                         shouldUnregister={true}

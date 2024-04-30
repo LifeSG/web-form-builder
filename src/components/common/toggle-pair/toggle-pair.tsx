@@ -1,4 +1,4 @@
-import { Form, Text } from "@lifesg/react-design-system";
+import { Form } from "@lifesg/react-design-system";
 import { Toggle } from "@lifesg/react-design-system/toggle";
 import { useEffect, useState } from "react";
 import { Row } from "./toggle-pair.styles";
@@ -6,19 +6,18 @@ import { Row } from "./toggle-pair.styles";
 interface Props {
     label?: string;
     defaultValue?: boolean;
+    id?: string;
     onChange: (value: boolean) => void;
 }
 
-export const TogglePair = ({
-    onChange,
-    defaultValue = false,
-    label,
-}: Props) => {
+export const TogglePair = ({ onChange, defaultValue, label, id }: Props) => {
     const [value, setValue] = useState(defaultValue);
 
     useEffect(() => {
-        setValue(defaultValue);
-    }, [defaultValue]);
+        if (value !== defaultValue) {
+            setValue(defaultValue);
+        }
+    }, [defaultValue, id]);
 
     const handleChange = () => {
         setValue(!value);
@@ -29,10 +28,20 @@ export const TogglePair = ({
         <div>
             <Form.Label>{label}</Form.Label>
             <Row>
-                <Toggle type="yes" checked={value} onChange={handleChange} indicator>
+                <Toggle
+                    type="yes"
+                    checked={value}
+                    onChange={handleChange}
+                    indicator
+                >
                     Yes
                 </Toggle>
-                <Toggle type="no" checked={!value} onChange={handleChange} indicator>
+                <Toggle
+                    type="no"
+                    checked={!value}
+                    onChange={handleChange}
+                    indicator
+                >
                     No
                 </Toggle>
             </Row>
