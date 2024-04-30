@@ -31,8 +31,6 @@ export const ELEMENT_BUTTON_LABELS: { [key in EElementType]: string } = {
     [EElementType.CHECKBOX]: "Checkbox",
     [EElementType.RADIO]: "Radio Button",
 };
-// TODO: change the array to an object specifying the maxValidation entires and then the validation types
-//  E.g. [EElementType.EMAIL]:{ maxEntries: 1, validationTypes: ["Valid email address format"]},
 
 export const ELEMENT_VALIDATION_TYPES = {
     "Text field": {

@@ -25,18 +25,16 @@ describe("Validation", () => {
                 focusedElement: { element: MOCK_ELEMENT },
             },
         });
-        console.log(screen.debug());
         expect(screen.getByText("Validation")).toBeInTheDocument();
         expect(screen.getByText("Add validation")).toBeInTheDocument();
     });
 
-    it("should run onAdd and render the validation-child component when the button is being clicked", () => {
+    it("should fire onAdd and render the validation-child component when the button is being clicked", () => {
         renderComponent({
             builderContext: {
                 focusedElement: { element: MOCK_ELEMENT },
             },
         });
-        console.log(screen.debug());
         fireEvent.click(
             screen.getByRole("button", {
                 name: "Add validation",

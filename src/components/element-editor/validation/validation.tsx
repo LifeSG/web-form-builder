@@ -11,6 +11,7 @@ export const Validation = () => {
     const { focusedElement } = useBuilder();
     const element = focusedElement.element;
     const [childEntryValues, setChildEntryValues] = useState<IValidation[]>();
+    console.log("check child entry:", childEntryValues);
 
     // =========================================================================
     // HELPER FUNCTIONS
@@ -33,7 +34,7 @@ export const Validation = () => {
                     EElementType.EMAIL
                 ].maxEntries;
             default:
-                return 6;
+                return 6; // this is a arbitary value will be changed later on
         }
     }
 
@@ -89,8 +90,6 @@ export const Validation = () => {
             />
         ));
     }, [childEntryValues, handleDelete, handleChildChange, element.type]);
-
-    console.log("check child entry:", childEntryValues);
 
     return (
         <MultiEntry

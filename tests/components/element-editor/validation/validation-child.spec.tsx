@@ -22,7 +22,7 @@ describe("ValidationChild", () => {
         ).toBeInTheDocument();
     });
 
-    it("should run the delete function when clicking on the bin icon", () => {
+    it("should fire the delete function on clicking the bin icon", () => {
         renderComponent({
             onDelete: mockDelete,
             options: mockOptions,
@@ -46,7 +46,7 @@ describe("ValidationChild", () => {
         expect(getValidationTypeField).toBeDisabled();
     });
 
-    it("should run onChange when there is a change in the input fields", () => {
+    it("should fire onChange when there is a change in the input fields", () => {
         renderComponent({
             onDelete: mockDelete,
             options: mockOptions,

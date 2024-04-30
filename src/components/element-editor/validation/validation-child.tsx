@@ -1,5 +1,5 @@
 import { Form } from "@lifesg/react-design-system";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { ChildEntry } from "src/components/common";
 import { IValidation } from "src/context-providers/builder";
 import { FieldWrapper } from "./validation.styles";
@@ -17,23 +17,24 @@ export const ValidationChild = ({
     onChange,
     value,
 }: IProps) => {
-    // =========================================================================
-    // CONST, STATE, REF
-    // =========================================================================
-    const [type, setType] = useState<string>();
-
     // =============================================================================
     // EVENT HANLDERS
     // =============================================================================
     const handleChange = (changeType?: string, newValue?: string) => {
         const updatedValue = { ...value };
-        if (!updatedValue.validationType || options.length === 1) {
-            updatedValue.validationType = type;
-        }
-        if (changeType === "rule") {
-            updatedValue.validationRule = newValue;
-        } else if (changeType === "errorMessage") {
-            updatedValue.validationErrorMessage = newValue;
+
+        switch (changeType) {
+            case "type":
+                updatedValue.validationType = newValue;
+                break;
+            case "rule":
+                updatedValue.validationRule = newValue;
+                break;
+            case "errorMessage":
+                updatedValue.validationErrorMessage = newValue;
+                break;
+            default:
+                break;
         }
 
         onChange(updatedValue);
@@ -44,12 +45,10 @@ export const ValidationChild = ({
     // =========================================================================
 
     useEffect(() => {
-        if (options.length === 1) {
-            setType(options[0]);
-        } else {
-            setType(value.validationType);
+        if (options.length === 1 && !value.validationType) {
+            handleChange("type", options[0]);
         }
-    }, [options]);
+    }, [options, value.validationType]);
 
     // =========================================================================
     // RENDER FUNCTIONS
@@ -61,13 +60,12 @@ export const ValidationChild = ({
                 <div>
                     <Form.Select
                         placeholder="Select"
-                        selectedOption={type}
+                        selectedOption={value.validationType}
                         options={options}
                         disabled={options.length === 1}
                         onSelectOption={(option) => {
-                            if (options.length > 1) setType(option as string);
+                            handleChange("type", option);
                         }}
-                        onBlur={handleChange}
                     />
                 </div>
                 <div>
@@ -75,7 +73,6 @@ export const ValidationChild = ({
                         placeholder="Enter rule"
                         defaultValue={value.validationRule}
                         onChange={(event) => {
-                            event.preventDefault();
                             handleChange("rule", event.target.value);
                         }}
                     />
@@ -85,7 +82,6 @@ export const ValidationChild = ({
                         placeholder="Set error message"
                         defaultValue={value.validationErrorMessage}
                         onChange={(event) => {
-                            event.preventDefault();
                             handleChange("errorMessage", event.target.value);
                         }}
                     />
