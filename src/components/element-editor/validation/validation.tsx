@@ -11,7 +11,6 @@ export const Validation = () => {
     const { focusedElement } = useBuilder();
     const element = focusedElement.element;
     const [childEntryValues, setChildEntryValues] = useState<IValidation[]>();
-    console.log("check child entry:", childEntryValues);
 
     // =========================================================================
     // HELPER FUNCTIONS
