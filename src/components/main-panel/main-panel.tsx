@@ -29,7 +29,7 @@ export const MainPanel = () => {
     // EVENT HANDLERS
     // =========================================================================
     const handleElementCardClick = (element: TElement) => () => {
-        focusElement(element, false);
+        focusElement(element);
     };
 
     // =========================================================================

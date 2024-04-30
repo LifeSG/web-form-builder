@@ -92,6 +92,19 @@ export interface IRemoveFocusedElementAction {
     type: "remove-focused-element";
 }
 
+export interface IUpdateElementAction {
+    type: "update-element";
+    payload: TElement;
+}
+
+export interface IUpdateFocusedElementAction {
+    type: "update-focused-element";
+    payload: {
+        isDirty: boolean;
+        element?: TElement;
+    };
+}
+
 export type TBuilderAction =
     | ITogglePanelAction
     | IUpdateOrderedIdentifiersAction
@@ -99,7 +112,9 @@ export type TBuilderAction =
     | IAddElementAction
     | IDeleteElementAction
     | IFocusElementAction
-    | IRemoveFocusedElementAction;
+    | IRemoveFocusedElementAction
+    | IUpdateElementAction
+    | IUpdateFocusedElementAction;
 
 // =============================================================================
 // CONTEXT

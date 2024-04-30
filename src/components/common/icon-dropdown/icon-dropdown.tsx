@@ -1,4 +1,5 @@
 import { Form, Text } from "@lifesg/react-design-system";
+import { EElementType } from "src/context-providers";
 import {
     ELEMENTS_CATEGORIES,
     ELEMENT_BUTTON_LABELS,
@@ -9,24 +10,17 @@ import { Wrapper } from "./icon-dropdown.styles";
 interface IProps {
     id?: string;
     type?: string;
-    onChange: (option: string) => void;
+    onChange?: (option: unknown) => void;
+    errorMessage?: string;
 }
 
-export const IconDropdown = ({ id, type, onChange }: IProps) => {
+export const IconDropdown = ({ id, type, onChange, errorMessage }: IProps) => {
     // =============================================================================
     // RENDER FUNCTIONS
     // =============================================================================
 
-    const renderOptions = () => {
-        const options = [];
-
-        ELEMENTS_CATEGORIES.map((elementCategory) => {
-            elementCategory.elementTypes.map((element) => {
-                options.push(element);
-            });
-        });
-        return options;
-    };
+    const renderOptions = () =>
+        ELEMENTS_CATEGORIES.flatMap((category) => category.elementTypes);
 
     return (
         <Form.Select
@@ -34,7 +28,7 @@ export const IconDropdown = ({ id, type, onChange }: IProps) => {
             id={id}
             label={"Element type"}
             options={renderOptions()}
-            renderCustomSelectedOption={(option) => {
+            renderCustomSelectedOption={(option: EElementType) => {
                 return (
                     <Wrapper>
                         <CardIcon elementType={option} />
@@ -43,13 +37,14 @@ export const IconDropdown = ({ id, type, onChange }: IProps) => {
                 );
             }}
             selectedOption={type}
-            renderListItem={(option) => (
+            renderListItem={(option: EElementType) => (
                 <Wrapper>
                     <CardIcon elementType={option} />
                     <Text.Body>{ELEMENT_BUTTON_LABELS[option]}</Text.Body>
                 </Wrapper>
             )}
             onSelectOption={(option) => onChange(option)}
+            errorMessage={errorMessage && errorMessage}
         />
     );
 };

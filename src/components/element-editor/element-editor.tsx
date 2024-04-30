@@ -1,28 +1,34 @@
-import { yupResolver } from "@hookform/resolvers/yup";
-import { FormProvider, useForm } from "react-hook-form";
-import { EElementType } from "src/context-providers";
-import { SchemaHelper } from "src/schemas";
+import { useBuilder } from "src/context-providers";
 import { BasicDetails } from "./basic-details";
-import { AccordionWrapper } from "./element-editor.styles";
+import { AccordionWrapper, SaveChangesAlert } from "./element-editor.styles";
 
 export const ElementEditor = () => {
     // =========================================================================
     // CONST, STATE, REF
     // =========================================================================
-    const methods = useForm({
-        mode: "onBlur",
-        // TODO: insert proper type; email is a placeholder
-        resolver: yupResolver(SchemaHelper.buildSchema(EElementType.EMAIL)),
-    });
+    const { focusedElement } = useBuilder();
+
     // =============================================================================
     // RENDER FUNCTIONS
     // =============================================================================
 
+    const renderAlert = () => {
+        if (focusedElement.isDirty === false) {
+            return <></>;
+        }
+        return (
+            <SaveChangesAlert type="warning" showIcon>
+                To reflect changes on preview, save changes first.
+            </SaveChangesAlert>
+        );
+    };
+
     return (
-        <FormProvider {...methods}>
+        <>
+            {renderAlert()}
             <AccordionWrapper>
                 <BasicDetails />
             </AccordionWrapper>
-        </FormProvider>
+        </>
     );
 };

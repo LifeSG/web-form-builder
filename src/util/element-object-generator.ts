@@ -28,7 +28,8 @@ export namespace ElementObjectGenerator {
                 const attributes: IBaseTextBasedFieldAttributes = {
                     ...baseAttributes,
                     placeholder: "",
-                    required: false,
+                    required: true,
+                    requiredErrorMsg: "",
                     label: ELEMENT_BUTTON_LABELS[type],
                 };
                 return attributes;

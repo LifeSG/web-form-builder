@@ -36,4 +36,5 @@ export const HeaderLabel = styled(Text.H3)`
 
 export const SaveChangesButton = styled(Button.Small)`
     margin-left: auto;
+    margin-right: 1rem;
 `;
