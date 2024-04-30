@@ -7,6 +7,7 @@ export const Wrapper = styled.div`
     flex: 1;
     width: 100%;
     align-items: center;
+    margin-bottom: 2rem;
 `;
 
 export const ChildrenWrapper = styled.div`
