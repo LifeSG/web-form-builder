@@ -41,7 +41,6 @@ export const SidePanel = () => {
     // USE EFFECTS
     // =========================================================================
     useEffect(() => {
-        console.log("check this: ", methods.formState.isSubmitSuccessful);
         methods.reset(undefined, {
             keepValues: true,
             keepDirty: false,
@@ -49,8 +48,8 @@ export const SidePanel = () => {
     }, [methods.formState.isSubmitSuccessful]);
 
     useEffect(() => {
-        if (focusedElement && !methods.formState.isDirty) {
-            Object.keys(focusedElement.element).map((key) => {
+        if (focusedElement) {
+            Object.keys(focusedElement.element).forEach((key) => {
                 methods.resetField(key as keyof IBaseTextBasedFieldValues, {
                     defaultValue:
                         focusedElement.element[key] !== undefined
@@ -59,7 +58,7 @@ export const SidePanel = () => {
                 });
             });
         }
-    }, [focusedElement, methods.formState.isDirty]);
+    }, [focusedElement?.element, methods.resetField]);
 
     // =========================================================================
     // RENDER FUNCTIONS
