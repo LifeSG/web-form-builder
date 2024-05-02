@@ -1,7 +1,11 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useCallback, useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { EElementType } from "src/context-providers";
+import {
+    EElementType,
+    IBaseTextBasedFieldAttributes,
+    TElement,
+} from "src/context-providers";
 import { IBaseTextBasedFieldValues, SchemaHelper } from "src/schemas";
 import { EBuilderMode, useBuilder } from "../../context-providers";
 import { ElementEditor } from "../element-editor";
@@ -50,7 +54,7 @@ export const SidePanel = () => {
     useEffect(() => {
         if (focusedElement) {
             Object.keys(focusedElement.element).forEach((key) => {
-                methods.resetField(key as keyof IBaseTextBasedFieldValues, {
+                methods.resetField(key as any, {
                     defaultValue:
                         focusedElement.element[key] !== undefined
                             ? (focusedElement.element[key] as string)
