@@ -1,4 +1,4 @@
-import { Button } from "@lifesg/react-design-system";
+import { Button } from "@lifesg/react-design-system/button";
 import { Accordion } from "@lifesg/react-design-system/accordion";
 import styled from "styled-components";
 
@@ -16,8 +16,12 @@ export const MultiEntryAccordionItem = styled(Accordion.Item)`
         flex-direction: column;
     }
 
+    [data-testid="accordion-item-expand-collapse-button"] {
+        margin-right: 1rem;
+    }
+
     [data-testid="accordion-item-title"] {
-        margin-bottom: 1rem;
+        margin: 1rem 0 1rem 1rem;
     }
 `;
 
@@ -26,7 +30,6 @@ export const AddMultiEntryButton = styled(Button.Small)`
     align-items: center;
     width: 100%;
     margin: 2rem 0;
-    overflow: visible;
 
     svg {
         width: 1.2rem;

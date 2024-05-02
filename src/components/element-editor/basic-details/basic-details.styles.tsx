@@ -9,16 +9,33 @@ export const MandatoryFieldBox = styled.div`
     margin-bottom: 2rem;
 `;
 
-export const FieldEditorAccordionItem = styled(Accordion.Item)`
-    padding-bottom: 2rem;
+export const Wrapper = styled.div`
+    padding: 0 1rem 0 1rem;
+    &:last-child {
+        margin-bottom: 1rem;
+    }
 
+    > :first-child {
+        margin-top: 2rem;
+    }
+`;
+
+export const FieldEditorAccordionItem = styled(Accordion.Item)`
     #content-container {
         padding: 0;
     }
 
+    [data-testid="accordion-item-title"] {
+        padding: 1rem;
+        margin: 0;
+    }
+
     [data-testid="accordion-item-expandable-container"] {
-        padding: 0 1rem;
         display: flex;
         flex-direction: column;
+    }
+
+    [data-testid="accordion-item-expand-collapse-button"] {
+        margin-right: 0.1rem;
     }
 `;

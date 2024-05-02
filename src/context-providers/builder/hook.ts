@@ -81,7 +81,7 @@ export const useBuilder = () => {
         [state.orderedIdentifiers, state.elements, state.mode]
     );
 
-    const focusElement = useCallback((element: TElement, isDirty = false) => {
+    const focusElement = useCallback((element: TElement, isDirty?: boolean) => {
         dispatch({
             type: "focus-element",
             payload: {
@@ -104,6 +104,26 @@ export const useBuilder = () => {
         });
     }, []);
 
+    const updateElement = useCallback((element: TElement) => {
+        dispatch({
+            type: "update-element",
+            payload: element,
+        });
+    }, []);
+
+    const updateFocusedElement = useCallback(
+        (isDirty: boolean, element?: TElement) => {
+            dispatch({
+                type: "update-focused-element",
+                payload: {
+                    isDirty: isDirty,
+                    element: element,
+                },
+            });
+        },
+        []
+    );
+
     return {
         elements: state.elements,
         showSidePanel: state.showSidePanel,
@@ -117,5 +137,7 @@ export const useBuilder = () => {
         deleteElement,
         focusElement,
         removeFocusedElement,
+        updateElement,
+        updateFocusedElement,
     };
 };
