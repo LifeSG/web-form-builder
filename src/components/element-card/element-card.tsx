@@ -48,8 +48,10 @@ export const ElementCard = ({ element, onClick }: IProps) => {
         transform: CSS.Translate.toString(transform),
         transition,
         opacity: isDragging ? "70%" : "100%",
-        background: isDragging && "white",
-        gap: isDragging && "1rem",
+        background: isDragging ? "white" : "inherit",
+        gap: isDragging ? "1rem" : "inherit",
+        zIndex: isDragging ? 1 : "auto",
+        cursor: isDragging ? "grabbing" : "pointer",
     };
 
     const sortableProps = {

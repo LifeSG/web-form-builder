@@ -13,7 +13,6 @@ interface IBodyStyleProps {
 // =============================================================================
 export const Body = styled.div<IBodyStyleProps>`
     padding: 1rem;
-    cursor: pointer;
     border-radius: 0.5rem;
     width: 100%;
     position: relative;

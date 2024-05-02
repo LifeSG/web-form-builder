@@ -94,11 +94,15 @@ export const DroppableWrapper = styled.div<IDroppableWrapperProps>`
                   border-radius: 0.25rem;
                   background: ${Color.Accent.Light[5]};
                   height: 100%;
+                  z-index: -1;
               `
             : css`
                   border: 1px solid transparent;
               `}
-    height: 100%;
+    position: absolute;
+    flex-direction: column;
+    height: auto;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
