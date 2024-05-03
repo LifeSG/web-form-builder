@@ -1,4 +1,4 @@
-import { Form } from "@lifesg/react-design-system";
+import { Form } from "@lifesg/react-design-system/form";
 import { useEffect } from "react";
 import { ChildEntry } from "src/components/common";
 import { IValidation } from "src/context-providers/builder";
