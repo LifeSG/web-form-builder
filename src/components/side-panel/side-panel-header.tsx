@@ -62,7 +62,7 @@ export const SidePanelHeader = () => {
                         $iconColor={Color.Neutral[3]}
                         onClick={handleCrossButtonClick}
                     >
-                        <CrossIcon />
+                        <CrossIcon data-testid="cross-button" />
                     </IconButton>
                 </>
             );

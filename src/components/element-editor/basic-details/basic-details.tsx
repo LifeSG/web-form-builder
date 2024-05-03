@@ -56,7 +56,6 @@ export const BasicDetails = () => {
                     defaultValue={element?.type}
                     render={({ field }) => (
                         <IconDropdown
-                            {...field}
                             type={element?.type}
                             id={element?.id}
                             errorMessage={errors.type?.message}
@@ -95,7 +94,6 @@ export const BasicDetails = () => {
                         defaultValue={element.required}
                         render={({ field }) => (
                             <TogglePair
-                                {...field}
                                 label="Mandatory field"
                                 defaultValue={element.required}
                                 id={element.internalId}
