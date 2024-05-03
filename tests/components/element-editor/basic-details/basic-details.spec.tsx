@@ -12,6 +12,7 @@ jest.mock("src/context-providers/builder/hook", () => ({
     useBuilder: () => ({
         elements: MOCK_ELEMENTS,
         focusedElement: MOCK_FOCUSED_ELEMENT,
+        updateFocusedElement: jest.fn(),
     }),
 }));
 
@@ -68,9 +69,10 @@ describe("BasicDetails", () => {
             });
             const idInput = await getIdField();
             fireEvent.focus(idInput);
+            fireEvent.change(idInput, { target: { value: null } });
             fireEvent.blur(idInput);
-            const idErrorMessage = await screen.findByText("ID is required");
-            expect(idErrorMessage).toHaveTextContent("ID is required");
+            const idErrorMessage = await screen.findByText("ID required.");
+            expect(idErrorMessage).toHaveTextContent("ID required.");
         });
 
         it("should render an error message for the ID field if it is invalid", async () => {
@@ -85,9 +87,9 @@ describe("BasicDetails", () => {
             fireEvent.change(idInput, { target: { value: "camel_Case" } });
             fireEvent.blur(idInput);
             const idErrorMessage = await screen.findByText(
-                "ID must be camelCase"
+                "ID must be camelCase."
             );
-            expect(idErrorMessage).toHaveTextContent("ID must be camelCase");
+            expect(idErrorMessage).toHaveTextContent("ID must be camelCase.");
         });
 
         it("should render an error message for the label field if it is empty", async () => {
@@ -102,8 +104,8 @@ describe("BasicDetails", () => {
             fireEvent.change(labelInput, { target: { value: "" } });
             fireEvent.blur(labelInput);
             const labelErrorMessage =
-                await screen.findByText("Label is required");
-            expect(labelErrorMessage).toHaveTextContent("Label is required");
+                await screen.findByText("Label required.");
+            expect(labelErrorMessage).toHaveTextContent("Label required.");
         });
     });
 });

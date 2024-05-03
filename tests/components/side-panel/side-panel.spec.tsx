@@ -6,6 +6,14 @@ import { ELEMENT_BUTTON_LABELS } from "src/data/elements-data";
 import { TestHelper } from "src/util/test-helper";
 
 describe("SidePanel", () => {
+    beforeEach(() => {
+        global.ResizeObserver = jest.fn().mockImplementation(() => ({
+            observe: jest.fn(),
+            unobserve: jest.fn(),
+            disconnect: jest.fn(),
+        }));
+    });
+
     afterEach(() => {
         jest.restoreAllMocks();
         jest.resetAllMocks();
