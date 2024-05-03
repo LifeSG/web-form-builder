@@ -14,6 +14,7 @@ interface IBodyStyleProps {
 export const Body = styled.div<IBodyStyleProps>`
     padding: 1rem;
     border-radius: 0.5rem;
+    cursor: pointer;
     width: 100%;
     position: relative;
     display: flex;

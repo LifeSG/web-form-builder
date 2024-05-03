@@ -2,6 +2,7 @@ import { Color } from "@lifesg/react-design-system/color";
 import { Text, TextStyleHelper } from "@lifesg/react-design-system/text";
 import { DragHandleIcon } from "@lifesg/react-icons";
 import styled, { css } from "styled-components";
+import { BaseCard, IProps } from "../common";
 
 // =============================================================================
 // STYLE INTERFACES
@@ -11,6 +12,10 @@ interface IActionButtonStyleProps {
 }
 interface IDroppableWrapperProps {
     isOver: boolean;
+}
+
+interface IElementCardProps extends IProps {
+    $isDragging: boolean;
 }
 
 // =============================================================================
@@ -121,5 +126,8 @@ export const DroppableText = styled(Text.Body)`
     color: ${Color.Primary};
     text-align: center;
     font-size: 1rem;
-    font-weight: semi-bold;
+`;
+
+export const ElementBaseCard = styled(BaseCard)<IElementCardProps>`
+    cursor: ${({ $isDragging }) => ($isDragging ? "grabbing" : "pointer")};
 `;

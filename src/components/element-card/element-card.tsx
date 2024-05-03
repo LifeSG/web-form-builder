@@ -15,8 +15,10 @@ import {
     DragHandle,
     DroppableText,
     DroppableWrapper,
+    ElementBaseCard,
     IdLabel,
 } from "./element-card.styles";
+import { CSSProperties } from "react";
 
 interface IProps {
     element: TElement;
@@ -44,14 +46,15 @@ export const ElementCard = ({ element, onClick }: IProps) => {
     const isFocused = checkIsFocused();
     const disableDuplicate = shouldDisableDuplicate();
 
-    const style = {
+    const style: CSSProperties = {
         transform: CSS.Translate.toString(transform),
         transition,
         opacity: isDragging ? "70%" : "100%",
         background: isDragging ? "white" : "inherit",
         gap: isDragging ? "1rem" : "inherit",
+        width: "100%",
+        position: isDragging ? "absolute" : "relative",
         zIndex: isDragging ? 1 : "auto",
-        cursor: isDragging ? "grabbing" : "pointer",
     };
 
     const sortableProps = {
@@ -103,7 +106,7 @@ export const ElementCard = ({ element, onClick }: IProps) => {
     const droppableContent = isOver ? (
         <DroppableWrapper isOver={isOver}>
             <PlusCircleIcon />
-            <DroppableText>Drop your element here</DroppableText>
+            <DroppableText weight={600}>Drop your element here</DroppableText>
         </DroppableWrapper>
     ) : null;
 
@@ -111,10 +114,11 @@ export const ElementCard = ({ element, onClick }: IProps) => {
         <div ref={droppableRef}>
             {droppableContent}
             <div ref={setNodeRef} {...sortableProps}>
-                <BaseCard
+                <ElementBaseCard
                     onClick={onClick}
                     focused={isFocused}
                     id={element.internalId}
+                    $isDragging={isDragging}
                 >
                     <Container data-testid={"card" + element.internalId}>
                         <DragHandle data-testid="drag-handle" />
@@ -146,7 +150,7 @@ export const ElementCard = ({ element, onClick }: IProps) => {
                             </ActionsContainer>
                         )}
                     </Container>
-                </BaseCard>
+                </ElementBaseCard>
             </div>
         </div>
     );

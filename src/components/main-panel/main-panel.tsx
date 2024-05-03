@@ -44,7 +44,6 @@ export const MainPanel = () => {
     const finalMode = focusedElement ? true : showSidePanel;
     const renderMode = finalMode ? "minimised" : "expanded";
     const items: (UniqueIdentifier | { id: UniqueIdentifier })[] = [];
-    const [activeId, setActiveId] = useState<string>();
 
     for (const orderedIdentifier of orderedIdentifiers) {
         if ("internalId" in orderedIdentifier) {
@@ -86,7 +85,6 @@ export const MainPanel = () => {
         const { active, over } = event;
 
         if (active.id !== over.id) {
-            setActiveId(active.id as string);
             const oldIndex = orderedIdentifiers.findIndex(
                 (item) => item.internalId === active.id
             );
@@ -100,7 +98,6 @@ export const MainPanel = () => {
             );
 
             updateOrderedIdentifiers(updatedOrderedIdentifiers);
-            setActiveId("");
         }
     };
 
