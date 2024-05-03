@@ -58,7 +58,7 @@ export const BasicDetails = () => {
                         <IconDropdown
                             type={element?.type}
                             id={element?.id}
-                            errorMessage={errors.type?.message}
+                            errorMessage={errors.type?.message as string}
                             onChange={(value) =>
                                 field.onChange({ target: { value: value } })
                             }
@@ -96,7 +96,7 @@ export const BasicDetails = () => {
                             <TogglePair
                                 label="Mandatory field"
                                 defaultValue={element.required}
-                                id={element.internalId}
+                                id={element.internalId as string}
                                 onChange={(value) => field.onChange(value)}
                             />
                         )}
