@@ -53,7 +53,7 @@ export const ElementCard = ({ element, onClick }: IProps) => {
         background: isDragging ? "white" : "inherit",
         gap: isDragging ? "1rem" : "inherit",
         width: "100%",
-        position: isDragging ? "absolute" : "relative",
+        position: "relative",
         zIndex: isDragging ? 1 : "auto",
     };
 
