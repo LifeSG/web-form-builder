@@ -1,13 +1,20 @@
 import { Body } from "./base-card.styles";
 
-interface IProps {
+export interface IProps {
     id?: string;
     children: React.ReactNode;
     focused?: boolean;
     onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
+    className?: string;
 }
 
-export const BaseCard = ({ id, children, focused, onClick }: IProps) => {
+export const BaseCard = ({
+    id,
+    children,
+    focused,
+    onClick,
+    className = "pointer",
+}: IProps) => {
     return (
         <Body
             tabIndex={0}
@@ -15,6 +22,7 @@ export const BaseCard = ({ id, children, focused, onClick }: IProps) => {
             onClick={onClick}
             id={id}
             role="button"
+            className={className}
         >
             {children}
         </Body>

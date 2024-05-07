@@ -103,7 +103,7 @@ export const Validation = () => {
     // RENDER FUNCTIONS
     // =========================================================================
 
-    const renderChildren = useCallback(() => {
+    const renderChildren = () => {
         return childEntryValues?.map((child, index) => (
             <ValidationChild
                 key={`validation-entry-${index}`}
@@ -114,7 +114,7 @@ export const Validation = () => {
                 index={index}
             />
         ));
-    }, [childEntryValues, handleDelete, handleChildChange, element.type]);
+    };
 
     return (
         <MultiEntry
