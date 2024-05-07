@@ -1,5 +1,10 @@
+import { Color } from "@lifesg/react-design-system/color";
 import { Accordion } from "@lifesg/react-design-system/accordion";
 import styled from "styled-components";
+
+interface IProps {
+    $displayAlert: boolean;
+}
 
 export const MandatoryFieldBox = styled.div`
     background: rgba(248, 248, 248, 1);
@@ -20,7 +25,10 @@ export const Wrapper = styled.div`
     }
 `;
 
-export const FieldEditorAccordionItem = styled(Accordion.Item)`
+export const FieldEditorAccordionItem = styled(Accordion.Item)<IProps>`
+    border-top: ${({ $displayAlert }) =>
+        $displayAlert ? `1px solid ${Color.Neutral[6]}` : "0"};
+
     #content-container {
         padding: 0;
     }
