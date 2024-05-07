@@ -23,7 +23,7 @@ export const MultiEntry = ({
     // RENDER FUNCTIONS
     // =============================================================================
     return (
-        <MultiEntryAccordionItem title={title} expanded>
+        <MultiEntryAccordionItem title={title}>
             <>
                 {children}
                 <AddMultiEntryButton

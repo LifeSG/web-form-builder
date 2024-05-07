@@ -31,6 +31,7 @@ export namespace ElementObjectGenerator {
                     required: true,
                     requiredErrorMsg: "",
                     label: ELEMENT_BUTTON_LABELS[type],
+                    validation: [],
                 };
                 return attributes;
             }
