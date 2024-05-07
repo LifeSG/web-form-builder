@@ -1,8 +1,6 @@
 import { PlusIcon } from "@lifesg/react-icons/plus";
-import {
-    AddMultiEntryButton,
-    MultiEntryAccordionItem,
-} from "./multi-entry.styles";
+import { MultiEntryAccordionItem } from "./multi-entry.styles";
+import { ButtonWithIcon } from "@lifesg/react-design-system/button-with-icon";
 
 interface IProps {
     title?: string;
@@ -26,15 +24,15 @@ export const MultiEntry = ({
         <MultiEntryAccordionItem title={title}>
             <>
                 {children}
-                <AddMultiEntryButton
+                <ButtonWithIcon.Default
+                    icon={<PlusIcon />}
                     styleType="light"
                     onClick={onAdd}
                     role="button"
                     disabled={disabledButton}
                 >
-                    <PlusIcon />
                     {"Add " + buttonLabel}
-                </AddMultiEntryButton>
+                </ButtonWithIcon.Default>
             </>
         </MultiEntryAccordionItem>
     );
