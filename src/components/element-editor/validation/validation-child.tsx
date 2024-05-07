@@ -57,7 +57,7 @@ export const ValidationChild = ({
         if (options.length === 1 && !value.validationType) {
             handleChange("type", options[0]);
         }
-    }, [options, value.validationType]);
+    }, [options, value?.validationType]);
 
     // =========================================================================
     // RENDER FUNCTIONS
@@ -75,7 +75,7 @@ export const ValidationChild = ({
                             <Form.Select
                                 {...field}
                                 placeholder="Select"
-                                selectedOption={value.validationType}
+                                selectedOption={value?.validationType}
                                 options={options}
                                 disabled={options.length === 1}
                                 onSelectOption={(option) => {
@@ -122,7 +122,7 @@ export const ValidationChild = ({
                             <Form.Input
                                 {...field}
                                 placeholder="Set error message"
-                                defaultValue={value.validationErrorMessage}
+                                defaultValue={value?.validationErrorMessage}
                                 onChange={(event) => {
                                     handleChange(
                                         "errorMessage",

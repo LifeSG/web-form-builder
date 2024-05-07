@@ -11,7 +11,7 @@ export const EMAIL_SCHEMA = yup.object<IBaseTextBasedFieldAttributes>().shape({
     placeholder: yup.string().optional(),
     validation: yup.array().of(
         yup.object().shape({
-            validationType: yup.string().required("Validation required"),
+            validationType: yup.string().required("Validation required."),
 
             validationRule: yup.string().when("validationType", {
                 is: ELEMENT_VALIDATION_TYPES["Text field"][EElementType.EMAIL]
@@ -28,7 +28,7 @@ export const EMAIL_SCHEMA = yup.object<IBaseTextBasedFieldAttributes>().shape({
 
             validationErrorMessage: yup
                 .string()
-                .required("Error message required"),
+                .required("Error message required."),
         })
     ),
 });
