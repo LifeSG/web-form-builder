@@ -1,6 +1,8 @@
 import { Color } from "@lifesg/react-design-system/color";
 import { Text, TextStyleHelper } from "@lifesg/react-design-system/text";
+import { DragHandleIcon } from "@lifesg/react-icons";
 import styled, { css } from "styled-components";
+import { BaseCard, IProps } from "../common";
 
 // =============================================================================
 // STYLE INTERFACES
@@ -8,15 +10,35 @@ import styled, { css } from "styled-components";
 interface IActionButtonStyleProps {
     $disabled?: boolean;
 }
+interface IDroppableWrapperProps {
+    isOver: boolean;
+}
+
+interface IElementCardProps extends IProps {
+    $isDragging: boolean;
+}
 
 // =============================================================================
 // STYLING
 // =============================================================================
+export const DragHandle = styled(DragHandleIcon)`
+    display: none;
+    transition: width 0.1s ease-out;
+
+    svg {
+        height: 1.25rem;
+        width: 1.25rem;
+    }
+`;
+
 export const Container = styled.div`
     display: flex;
     align-items: center;
     gap: 1rem;
     flex: 1;
+    &:hover ${DragHandle} {
+        display: block;
+    }
 `;
 
 export const DetailsContainer = styled.div`
@@ -67,4 +89,45 @@ export const ActionButton = styled.button<IActionButtonStyleProps>`
             `;
         }
     }}
+`;
+
+export const DroppableWrapper = styled.div<IDroppableWrapperProps>`
+    ${({ isOver }) =>
+        isOver
+            ? css`
+                  border: 1px dashed ${Color.Primary};
+                  border-radius: 0.25rem;
+                  background: ${Color.Accent.Light[5]};
+                  height: 100%;
+                  z-index: -1;
+              `
+            : css`
+                  border: 1px solid transparent;
+              `}
+    position: absolute;
+    flex-direction: column;
+    height: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.4rem;
+    gap: 0.25rem;
+
+    svg {
+        color: ${Color.Primary};
+        height: 2.08rem;
+        width: 2.08rem;
+    }
+`;
+
+export const DroppableText = styled(Text.Body)`
+    color: ${Color.Primary};
+    text-align: center;
+    font-size: 1rem;
+`;
+
+export const ElementBaseCard = styled(BaseCard)<IElementCardProps>`
+    cursor: ${({ $isDragging }) => ($isDragging ? "grabbing" : "pointer")};
 `;

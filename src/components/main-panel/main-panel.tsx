@@ -1,4 +1,22 @@
+import {
+    DndContext,
+    DragEndEvent,
+    KeyboardSensor,
+    MouseSensor,
+    TouchSensor,
+    UniqueIdentifier,
+    closestCenter,
+    useSensor,
+    useSensors,
+} from "@dnd-kit/core";
+import {
+    SortableContext,
+    arrayMove,
+    sortableKeyboardCoordinates,
+    verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 import { ErrorDisplay } from "@lifesg/react-design-system/error-display";
+import { useState } from "react";
 import { TElement, useBuilder } from "src/context-providers";
 import { ElementCard } from "../element-card";
 import {
@@ -20,10 +38,41 @@ export const MainPanel = () => {
         elements,
         focusElement,
         focusedElement,
+        updateOrderedIdentifiers,
     } = useBuilder();
 
     const finalMode = focusedElement ? true : showSidePanel;
     const renderMode = finalMode ? "minimised" : "expanded";
+    const items: (UniqueIdentifier | { id: UniqueIdentifier })[] = [];
+
+    for (const orderedIdentifier of orderedIdentifiers) {
+        if ("internalId" in orderedIdentifier) {
+            items.push({ id: orderedIdentifier.internalId });
+        } else {
+            items.push(orderedIdentifier);
+        }
+    }
+
+    // =========================================================================
+    // HELPER FUNCTION
+    // =========================================================================
+
+    const sensors = useSensors(
+        useSensor(MouseSensor, {
+            activationConstraint: {
+                distance: 8, // mouse drag of 8px then activate the drag event
+            },
+        }),
+        useSensor(TouchSensor, {
+            activationConstraint: {
+                delay: 150,
+                tolerance: 5,
+            },
+        }),
+        useSensor(KeyboardSensor, {
+            coordinateGetter: sortableKeyboardCoordinates,
+        })
+    );
 
     // =========================================================================
     // EVENT HANDLERS
@@ -32,16 +81,35 @@ export const MainPanel = () => {
         focusElement(element);
     };
 
+    const handleDragEnd = (event: DragEndEvent) => {
+        const { active, over } = event;
+
+        if (active.id !== over.id) {
+            const oldIndex = orderedIdentifiers.findIndex(
+                (item) => item.internalId === active.id
+            );
+            const newIndex = orderedIdentifiers.findIndex(
+                (item) => item.internalId === over.id
+            );
+            const updatedOrderedIdentifiers = arrayMove(
+                orderedIdentifiers,
+                oldIndex,
+                newIndex
+            );
+
+            updateOrderedIdentifiers(updatedOrderedIdentifiers);
+        }
+    };
+
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
     const renderElements = () => {
-        return orderedIdentifiers.map((identifier, index) => {
+        return orderedIdentifiers.map((identifier) => {
             const element = elements[identifier.internalId];
-
             return (
                 <ElementItemWrapper
-                    key={index}
+                    key={identifier.internalId}
                     $mode={renderMode}
                     $size="full"
                     data-testid="element-content"
@@ -71,9 +139,20 @@ export const MainPanel = () => {
 
     return (
         <Wrapper $mode={renderMode}>
-            <ElementsWrapper $mode={renderMode}>
-                {renderElements()}
-            </ElementsWrapper>
+            <DndContext
+                sensors={sensors}
+                onDragEnd={handleDragEnd}
+                collisionDetection={closestCenter}
+            >
+                <SortableContext
+                    items={items}
+                    strategy={verticalListSortingStrategy}
+                >
+                    <ElementsWrapper $mode={renderMode}>
+                        {renderElements()}
+                    </ElementsWrapper>
+                </SortableContext>
+            </DndContext>
         </Wrapper>
     );
 };
