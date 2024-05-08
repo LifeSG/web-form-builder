@@ -31,6 +31,7 @@ export const MultiEntry = ({
                     onClick={onAdd}
                     role="button"
                     disabled={disabledButton}
+                    type="button"
                 >
                     <PlusIcon />
                     {"Add " + buttonLabel}

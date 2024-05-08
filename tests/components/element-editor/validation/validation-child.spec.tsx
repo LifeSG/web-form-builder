@@ -92,43 +92,6 @@ describe("ValidationChild", () => {
         expect(mockOnChange).toBeCalled();
     });
 
-    it("should render an error message when validation type field is left empty", async () => {
-        renderComponent({
-            onDelete: mockDelete,
-            options: mockOptions,
-            onChange: mockOnChange,
-            value: mockEmptyValue,
-            index: mockIndex,
-        });
-        const getValidationTypeField = screen.getByText("Select");
-        fireEvent.focus(getValidationTypeField);
-        fireEvent.blur(getValidationTypeField);
-        const validationRuleError = await screen.findByText(
-            "Validation required."
-        );
-        expect(validationRuleError).toHaveTextContent("Validation required.");
-    });
-
-    it("should render an error message when validation rule field is left empty", async () => {
-        renderComponent({
-            onDelete: mockDelete,
-            options: mockOptions,
-            onChange: mockOnChange,
-            value: mockEmptyValue,
-            index: mockIndex,
-        });
-        const getValidationRuleField =
-            screen.getByPlaceholderText("Enter rule");
-        fireEvent.focus(getValidationRuleField);
-        fireEvent.blur(getValidationRuleField);
-        const validationRuleError = await screen.findByText(
-            "Validation rule required."
-        );
-        expect(validationRuleError).toHaveTextContent(
-            "Validation rule required."
-        );
-    });
-
     it("should render an error message when validation rule field input is invalid", async () => {
         renderComponent({
             onDelete: mockDelete,
@@ -157,14 +120,20 @@ describe("ValidationChild", () => {
             value: mockEmptyValue,
             index: mockIndex,
         });
-        const getValidationRuleField =
-            screen.getByPlaceholderText("Set error message");
-        fireEvent.focus(getValidationRuleField);
-        fireEvent.blur(getValidationRuleField);
+        const submitButton = screen.getByText("Submit");
+        fireEvent.click(submitButton);
+        const validationError = await screen.findByText("Validation required.");
         const validationRuleError = await screen.findByText(
+            "Validation rule required."
+        );
+        const validationErrorMessageError = await screen.findByText(
             "Error message required."
         );
+        expect(validationError).toHaveTextContent("Validation required.");
         expect(validationRuleError).toHaveTextContent(
+            "Validation rule required."
+        );
+        expect(validationErrorMessageError).toHaveTextContent(
             "Error message required."
         );
     });
@@ -188,15 +157,19 @@ const MyTestComponent = ({
 
     const { onDelete, options, onChange, value, index } =
         validationChildOptions;
+    const onSubmit = jest.fn;
     return (
         <FormProvider {...methods}>
-            <ValidationChild
-                onDelete={onDelete}
-                options={options}
-                onChange={onChange}
-                value={value}
-                index={index}
-            />
+            <form onSubmit={methods.handleSubmit(onSubmit)}>
+                <ValidationChild
+                    onDelete={onDelete}
+                    options={options}
+                    onChange={onChange}
+                    value={value}
+                    index={index}
+                />
+                <button type="submit">Submit</button>
+            </form>
         </FormProvider>
     );
 };
