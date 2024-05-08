@@ -14,7 +14,7 @@ describe("ValidationChild", () => {
         jest.resetAllMocks();
     });
 
-    it("should render fields with default placeholder values when no values are provided", () => {
+    it("should render the component with provided options and fields", () => {
         renderComponent({
             onDelete: mockDelete,
             options: mockOptions,
