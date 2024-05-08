@@ -1,4 +1,5 @@
 import { Accordion } from "@lifesg/react-design-system/accordion";
+import { ButtonWithIcon } from "@lifesg/react-design-system/button-with-icon";
 import styled from "styled-components";
 
 export const MultiEntryAccordionItem = styled(Accordion.Item)`
@@ -22,4 +23,9 @@ export const MultiEntryAccordionItem = styled(Accordion.Item)`
     [data-testid="accordion-item-title"] {
         margin: 1rem 0 1rem 1rem;
     }
+`;
+
+export const AddMultiEntryButton = styled(ButtonWithIcon.Default)`
+    width: 100%;
+    margin: 2rem 0;
 `;
