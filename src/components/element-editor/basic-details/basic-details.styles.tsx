@@ -2,8 +2,8 @@ import { Color } from "@lifesg/react-design-system/color";
 import { Accordion } from "@lifesg/react-design-system/accordion";
 import styled from "styled-components";
 
-interface IProps {
-    $displayAlert: boolean;
+interface FieldEditorAccordionItemProps {
+    $hideTopBorder: boolean;
 }
 
 export const MandatoryFieldBox = styled.div`
@@ -25,16 +25,19 @@ export const Wrapper = styled.div`
     }
 `;
 
-export const FieldEditorAccordionItem = styled(Accordion.Item)<IProps>`
-    border-top: ${({ $displayAlert }) =>
-        $displayAlert ? `1px solid ${Color.Neutral[6]}` : "0"};
+export const FieldEditorAccordionItem = styled(
+    Accordion.Item
+)<FieldEditorAccordionItemProps>`
+    border-top: ${({ $hideTopBorder }) =>
+        $hideTopBorder ? `1px solid ${Color.Neutral[6]}` : "0"};
 
     #content-container {
         padding: 0;
     }
 
     [data-testid="accordion-item-title"] {
-        padding: 1rem;
+        padding: ${({ $hideTopBorder }) =>
+            $hideTopBorder ? `1rem` : "0 1rem 0 1rem"};
         margin: 0;
     }
 

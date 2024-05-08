@@ -51,7 +51,7 @@ export const BasicDetails = () => {
             type="default"
             expanded
             title="Basic"
-            $displayAlert={focusedElement.isDirty}
+            $hideTopBorder={focusedElement.isDirty}
         >
             <Wrapper>
                 <Controller
