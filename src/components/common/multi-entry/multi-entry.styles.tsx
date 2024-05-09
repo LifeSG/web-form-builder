@@ -3,7 +3,7 @@ import { Accordion } from "@lifesg/react-design-system/accordion";
 import styled from "styled-components";
 
 export const MultiEntryAccordionItem = styled(Accordion.Item)`
-    padding-bottom: 2rem;
+    padding-bottom: 1rem;
     width: 100%;
 
     #content-container {
@@ -17,7 +17,7 @@ export const MultiEntryAccordionItem = styled(Accordion.Item)`
     }
 
     [data-testid="accordion-item-expand-collapse-button"] {
-        margin-right: 1rem;
+        margin-right: 0.1rem;
     }
 
     [data-testid="accordion-item-title"] {

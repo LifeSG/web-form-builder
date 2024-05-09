@@ -37,8 +37,9 @@ export const FieldEditorAccordionItem = styled(
 
     [data-testid="accordion-item-title"] {
         padding: ${({ $hideTopBorder }) =>
-            $hideTopBorder ? `1rem` : "0 1rem 0 1rem"};
-        margin: 0;
+            $hideTopBorder ? `0` : "0 1rem 0 0"};
+        margin: ${({ $hideTopBorder }) =>
+            $hideTopBorder ? `1rem 0 1rem 1rem` : "0 0 1rem 1rem"};
     }
 
     [data-testid="accordion-item-expandable-container"] {
