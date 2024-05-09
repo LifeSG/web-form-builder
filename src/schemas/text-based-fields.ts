@@ -5,7 +5,7 @@ import {
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import * as yup from "yup";
 
-const DOMAIN_REGEX = /^@[^\s]+(\.[^\s]+)*(\s*,\s*@([^\s]+(\.[^\s]+)*)+)*$/;
+const DOMAIN_REGEX = /^@[^\s]+(\.[^\s]+)*(?:\s*,\s*@[^,\s]+(\.[^,\s]+)*)*$/;
 
 export const EMAIL_SCHEMA = yup.object<IBaseTextBasedFieldAttributes>().shape({
     placeholder: yup.string().optional(),

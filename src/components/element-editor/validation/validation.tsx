@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
 import { EElementType, IValidation, useBuilder } from "src/context-providers";
@@ -90,7 +90,9 @@ export const Validation = () => {
     }, [focusedElement.element]);
 
     useEffect(() => {
-        setValue("validation", childEntryValues, { shouldDirty: true });
+        setValue("validation", childEntryValues, {
+            shouldDirty: true,
+        });
     }, [childEntryValues]);
 
     useEffect(() => {

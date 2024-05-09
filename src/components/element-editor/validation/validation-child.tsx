@@ -24,14 +24,14 @@ export const ValidationChild = ({
     const {
         formState: { errors },
         control,
+        trigger,
     } = useFormContext<IBaseTextBasedFieldValues>();
 
     // =============================================================================
-    // EVENT HANLDERS
+    // EVENT HANDLERS
     // =============================================================================
-    const handleChange = (changeType?: string, newValue?: string) => {
+    const handleChange = (changeType: string, newValue: string) => {
         const updatedValue = { ...value };
-
         switch (changeType) {
             case "type":
                 updatedValue.validationType = newValue;
@@ -45,7 +45,6 @@ export const ValidationChild = ({
             default:
                 break;
         }
-
         onChange(updatedValue);
     };
 
@@ -80,11 +79,13 @@ export const ValidationChild = ({
                                 disabled={options.length === 1}
                                 onSelectOption={(option) => {
                                     handleChange("type", option);
+                                    trigger(
+                                        `validation.${index}.validationType`
+                                    );
                                 }}
                                 errorMessage={
-                                    errors?.validation &&
-                                    (errors?.validation[index]?.validationType
-                                        ?.message as unknown as string)
+                                    errors?.validation?.[index]?.validationType
+                                        ?.message
                                 }
                             />
                         )}
@@ -102,11 +103,13 @@ export const ValidationChild = ({
                                 placeholder="Enter rule"
                                 onChange={(event) => {
                                     handleChange("rule", event.target.value);
+                                    trigger(
+                                        `validation.${index}.validationRule`
+                                    );
                                 }}
                                 errorMessage={
-                                    errors?.validation &&
-                                    (errors?.validation[index]?.validationRule
-                                        ?.message as unknown as string)
+                                    errors?.validation?.[index]?.validationRule
+                                        ?.message
                                 }
                             />
                         )}
@@ -128,12 +131,13 @@ export const ValidationChild = ({
                                         "errorMessage",
                                         event.target.value
                                     );
+                                    trigger(
+                                        `validation.${index}.validationErrorMessage`
+                                    );
                                 }}
                                 errorMessage={
-                                    errors?.validation &&
-                                    (errors?.validation[index]
-                                        ?.validationErrorMessage
-                                        ?.message as unknown as string)
+                                    errors?.validation?.[index]
+                                        ?.validationErrorMessage?.message
                                 }
                             />
                         )}
