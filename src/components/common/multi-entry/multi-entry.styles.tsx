@@ -1,9 +1,9 @@
-import { Button } from "@lifesg/react-design-system/button";
 import { Accordion } from "@lifesg/react-design-system/accordion";
+import { ButtonWithIcon } from "@lifesg/react-design-system/button-with-icon";
 import styled from "styled-components";
 
 export const MultiEntryAccordionItem = styled(Accordion.Item)`
-    padding-bottom: 2rem;
+    padding-bottom: 1rem;
     width: 100%;
 
     #content-container {
@@ -25,16 +25,7 @@ export const MultiEntryAccordionItem = styled(Accordion.Item)`
     }
 `;
 
-export const AddMultiEntryButton = styled(Button.Small)`
-    display: flex;
-    align-items: center;
+export const AddMultiEntryButton = styled(ButtonWithIcon.Default)`
     width: 100%;
-    margin: 2rem 0;
-
-    svg {
-        width: 1.2rem;
-        height: 1.2rem;
-        vertical-align: middle;
-        margin-right: 0.5rem;
-    }
+    margin: 1rem 0;
 `;
