@@ -48,6 +48,9 @@ export const FieldEditorAccordionItem = styled(
     }
 
     [data-testid="accordion-item-expand-collapse-button"] {
-        margin-right: 0.1rem;
+        margin: ${({ $hideTopBorder }) =>
+            $hideTopBorder ? `0 0.1rem 0 1rem` : "0 0.1rem 0 0"};
+        padding-top: ${({ $hideTopBorder }) =>
+            $hideTopBorder ? "1rem" : "1.7rem"};
     }
 `;
