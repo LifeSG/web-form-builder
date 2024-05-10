@@ -18,10 +18,10 @@ export const EMAIL_SCHEMA = yup.object<IBaseTextBasedFieldAttributes>().shape({
                     .validationTypes[0],
                 then: (rule) =>
                     rule
-                        .required("Email address required.")
+                        .required("Email domain required.")
                         .matches(
                             DOMAIN_REGEX,
-                            "Invalid email address format.  Check if email address is correct with no whitespace between characters. Separate each address with a comma if there is more than 1 email."
+                            "Invalid email domain. Check if email domain is correct with no whitespace between characters. Separate each with a comma if there is more than 1 email."
                         ),
                 otherwise: (rule) => rule.required("Validation rule required."),
             }),

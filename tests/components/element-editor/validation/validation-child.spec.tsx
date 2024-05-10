@@ -105,11 +105,29 @@ describe("ValidationChild", () => {
         fireEvent.focus(getValidationRuleField);
         fireEvent.blur(getValidationRuleField);
         const validationRuleError = await screen.findByText(
-            "Invalid email address format. Check if email address is correct with no whitespace between characters. Separate each address with a comma if there is more than 1 email."
+            "Invalid email domain. Check if email domain is correct with no whitespace between characters. Separate each with a comma if there is more than 1 email."
         );
         expect(validationRuleError).toHaveTextContent(
-            "Invalid email address format. Check if email address is correct with no whitespace between characters. Separate each address with a comma if there is more than 1 email."
+            "Invalid email domain. Check if email domain is correct with no whitespace between characters. Separate each with a comma if there is more than 1 email."
         );
+    });
+
+    it("should render an error message when validation rule field for the email element is left empty", async () => {
+        renderComponent({
+            onDelete: mockDelete,
+            options: mockEmailValidationOptions,
+            onChange: mockOnChange,
+            value: mockEEmptyEmailValidationValue,
+            index: mockIndex,
+        });
+        const getValidationRuleField =
+            screen.getByPlaceholderText("Enter rule");
+        fireEvent.focus(getValidationRuleField);
+        fireEvent.blur(getValidationRuleField);
+        const validationRuleError = await screen.findByText(
+            "Email domain required."
+        );
+        expect(validationRuleError).toHaveTextContent("Email domain required.");
     });
 
     it("should render an error message when validation error message field is left empty", async () => {
@@ -212,6 +230,14 @@ const mockEmailValidationValue = {
         ELEMENT_VALIDATION_TYPES["Text field"][EElementType.EMAIL]
             .validationTypes[0],
     validationRule: "mockRule",
+    validationErrorMessage: "mockErrorMessage",
+};
+
+const mockEEmptyEmailValidationValue = {
+    validationType:
+        ELEMENT_VALIDATION_TYPES["Text field"][EElementType.EMAIL]
+            .validationTypes[0],
+    validationRule: "",
     validationErrorMessage: "mockErrorMessage",
 };
 
