@@ -1,5 +1,6 @@
 import { useBuilder } from "src/context-providers";
 import { BasicDetails } from "./basic-details";
+import { ConditionalRendering } from "./conditional-rendering";
 import { AccordionWrapper, SaveChangesAlert } from "./element-editor.styles";
 import { Validation } from "./validation/validation";
 
@@ -31,6 +32,7 @@ export const ElementEditor = () => {
                 <BasicDetails />
             </AccordionWrapper>
             <Validation />
+            <ConditionalRendering />
         </>
     );
 };

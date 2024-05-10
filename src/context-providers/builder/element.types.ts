@@ -27,6 +27,14 @@ export interface IValidation {
     validationErrorMessage?: string;
 }
 
+export interface IConditionalRendering {
+    [internalId: string]: {
+        fieldKey?: string;
+        comparator?: string;
+        value?: string;
+    };
+}
+
 export interface IBaseFieldAttributes extends IBaseAttributes {
     label: string | undefined;
     required: boolean;
@@ -36,6 +44,7 @@ export interface IBaseFieldAttributes extends IBaseAttributes {
 export interface IBaseTextBasedFieldAttributes extends IBaseFieldAttributes {
     placeholder?: string;
     validation?: IValidation[];
+    conditionalRendering?: IConditionalRendering[];
 }
 
 // =============================================================================
