@@ -3,6 +3,7 @@ import {
     AddMultiEntryButton,
     MultiEntryAccordionItem,
 } from "./multi-entry.styles";
+import { ButtonWithIcon } from "@lifesg/react-design-system/button-with-icon";
 
 interface IProps {
     title?: string;
@@ -27,12 +28,12 @@ export const MultiEntry = ({
             <>
                 {children}
                 <AddMultiEntryButton
+                    icon={<PlusIcon />}
                     styleType="light"
                     onClick={onAdd}
                     role="button"
                     disabled={disabledButton}
                 >
-                    <PlusIcon />
                     {"Add " + buttonLabel}
                 </AddMultiEntryButton>
             </>

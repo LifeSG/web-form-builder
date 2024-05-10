@@ -45,7 +45,7 @@
         "@babel/preset-env": "^7.16.11",
         "@babel/preset-react": "^7.16.7",
         "@babel/preset-typescript": "^7.16.7",
-        "@lifesg/react-design-system": "^2.4.0-canary.1",
+        "@lifesg/react-design-system": "^2.5.0",
         "@lifesg/react-icons": "^1.4.0",
         "@rollup/plugin-commonjs": "^25.0.7",
         "@rollup/plugin-image": "^3.0.3",
