@@ -20,11 +20,30 @@ describe("ValidationChild", () => {
             options: mockOptions,
             onChange: mockOnChange,
             value: mockEmptyValue,
+            index: mockIndex,
         });
         expect(screen.getByText("Select")).toBeInTheDocument();
         expect(screen.getByPlaceholderText("Enter rule")).toBeInTheDocument();
         expect(
             screen.getByPlaceholderText("Set error message")
+        ).toBeInTheDocument();
+    });
+
+    it("should render fields with prefilled values when values are provided", () => {
+        renderComponent({
+            onDelete: mockDelete,
+            options: mockOptions,
+            onChange: mockOnChange,
+            value: mockValue,
+            index: mockIndex,
+        });
+        const getValidationTypeField = screen.getByRole("button", {
+            name: "Option 1",
+        });
+        expect(getValidationTypeField).toBeInTheDocument();
+        expect(screen.getByDisplayValue("mockRule")).toBeInTheDocument();
+        expect(
+            screen.getByDisplayValue("mockErrorMessage")
         ).toBeInTheDocument();
     });
 
@@ -34,6 +53,7 @@ describe("ValidationChild", () => {
             options: mockOptions,
             onChange: mockOnChange,
             value: mockValue,
+            index: mockIndex,
         });
         const deleteButton = screen.getByTestId("delete-button");
         fireEvent.click(deleteButton);
@@ -46,6 +66,7 @@ describe("ValidationChild", () => {
             options: ["Option 1"],
             onChange: mockOnChange,
             value: mockValue,
+            index: mockIndex,
         });
         const getValidationTypeField = screen.getByRole("button", {
             name: "Option 1",
@@ -60,6 +81,7 @@ describe("ValidationChild", () => {
             options: mockOptions,
             onChange: mockOnChange,
             value: mockValue,
+            index: mockIndex,
         });
         const getValidationRuleField =
             screen.getByPlaceholderText("Enter rule");
@@ -69,6 +91,70 @@ describe("ValidationChild", () => {
         });
         expect(mockOnChange).toBeCalled();
     });
+
+    it("should render an error message when validation rule field input is invalid", async () => {
+        renderComponent({
+            onDelete: mockDelete,
+            options: mockEmailValidationOptions,
+            onChange: mockOnChange,
+            value: mockEmailValidationValue,
+            index: mockIndex,
+        });
+        const getValidationRuleField =
+            screen.getByPlaceholderText("Enter rule");
+        fireEvent.focus(getValidationRuleField);
+        fireEvent.blur(getValidationRuleField);
+        const validationRuleError = await screen.findByText(
+            "Invalid email domain. Check if email domain is correct with no whitespace between characters. Separate each with a comma if there is more than 1 email."
+        );
+        expect(validationRuleError).toHaveTextContent(
+            "Invalid email domain. Check if email domain is correct with no whitespace between characters. Separate each with a comma if there is more than 1 email."
+        );
+    });
+
+    it("should render an error message when validation rule field for the email element is left empty", async () => {
+        renderComponent({
+            onDelete: mockDelete,
+            options: mockEmailValidationOptions,
+            onChange: mockOnChange,
+            value: mockEEmptyEmailValidationValue,
+            index: mockIndex,
+        });
+        const getValidationRuleField =
+            screen.getByPlaceholderText("Enter rule");
+        fireEvent.focus(getValidationRuleField);
+        fireEvent.blur(getValidationRuleField);
+        const validationRuleError = await screen.findByText(
+            "Email domain required."
+        );
+        expect(validationRuleError).toHaveTextContent("Email domain required.");
+    });
+
+    it("should render an error message when validation error message field is left empty", async () => {
+        renderComponent({
+            onDelete: mockDelete,
+            options: mockOptions,
+            onChange: mockOnChange,
+            value: mockEmptyValue,
+            index: mockIndex,
+        });
+        const submitButton = screen.getByText("Submit");
+        fireEvent.click(submitButton);
+        const validationError = await screen.findByText("Validation required.");
+        const validationRuleError = await screen.findByText(
+            "Validation rule required."
+        );
+        const validationErrorMessageError = await screen.findByText(
+            "Error message required."
+        );
+        expect(validationError).toHaveTextContent("Validation required.");
+        expect(validationRuleError).toHaveTextContent(
+            "Validation rule required."
+        );
+        expect(validationErrorMessageError).toHaveTextContent(
+            "Error message required."
+        );
+    });
 });
 
 type ValidationChildOptions = {
@@ -76,6 +162,7 @@ type ValidationChildOptions = {
     options?: string[];
     onChange?: (newValue: any) => void;
     value?: IValidation;
+    index?: number;
 };
 
 const MyTestComponent = ({
@@ -86,7 +173,8 @@ const MyTestComponent = ({
         resolver: yupResolver(SchemaHelper.buildSchema(EElementType.EMAIL)),
     });
 
-    const { onDelete, options, onChange, value } = validationChildOptions;
+    const { onDelete, options, onChange, value, index } =
+        validationChildOptions;
     const onSubmit = jest.fn;
     return (
         <FormProvider {...methods}>
@@ -96,6 +184,7 @@ const MyTestComponent = ({
                     options={options}
                     onChange={onChange}
                     value={value}
+                    index={index}
                 />
                 <button type="submit">Submit</button>
             </form>
@@ -119,6 +208,9 @@ const renderComponent = (
 // MOCKS
 // =============================================================================
 const mockOptions = ["Option 1", "Option 2"];
+
+const mockEmailValidationOptions =
+    ELEMENT_VALIDATION_TYPES["Text field"][EElementType.EMAIL].validationTypes;
 const mockDelete = jest.fn();
 const mockOnChange = jest.fn();
 const mockValue = {
@@ -140,3 +232,13 @@ const mockEmailValidationValue = {
     validationRule: "mockRule",
     validationErrorMessage: "mockErrorMessage",
 };
+
+const mockEEmptyEmailValidationValue = {
+    validationType:
+        ELEMENT_VALIDATION_TYPES["Text field"][EElementType.EMAIL]
+            .validationTypes[0],
+    validationRule: "",
+    validationErrorMessage: "mockErrorMessage",
+};
+
+const mockIndex = 1;

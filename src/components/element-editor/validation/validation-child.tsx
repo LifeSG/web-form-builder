@@ -1,7 +1,9 @@
 import { Form } from "@lifesg/react-design-system/form";
 import { useEffect } from "react";
+import { Controller, useFormContext } from "react-hook-form";
 import { ChildEntry } from "src/components/common";
 import { IValidation } from "src/context-providers/builder";
+import { IBaseTextBasedFieldValues } from "src/schemas";
 import { FieldWrapper } from "./validation.styles";
 
 interface IProps {
@@ -9,6 +11,7 @@ interface IProps {
     options: string[];
     onChange: (newValue: any) => void;
     value?: IValidation;
+    index?: number;
 }
 
 export const ValidationChild = ({
@@ -16,13 +19,19 @@ export const ValidationChild = ({
     options,
     onChange,
     value,
+    index,
 }: IProps) => {
-    // =============================================================================
-    // EVENT HANLDERS
-    // =============================================================================
-    const handleChange = (changeType?: string, newValue?: string) => {
-        const updatedValue = { ...value };
+    const {
+        formState: { errors },
+        control,
+        trigger,
+    } = useFormContext<IBaseTextBasedFieldValues>();
 
+    // =============================================================================
+    // EVENT HANDLERS
+    // =============================================================================
+    const handleChange = (changeType: string, newValue: string) => {
+        const updatedValue = { ...value };
         switch (changeType) {
             case "type":
                 updatedValue.validationType = newValue;
@@ -36,7 +45,6 @@ export const ValidationChild = ({
             default:
                 break;
         }
-
         onChange(updatedValue);
     };
 
@@ -48,7 +56,7 @@ export const ValidationChild = ({
         if (options.length === 1 && !value.validationType) {
             handleChange("type", options[0]);
         }
-    }, [options, value.validationType]);
+    }, [options, value?.validationType]);
 
     // =========================================================================
     // RENDER FUNCTIONS
@@ -58,32 +66,82 @@ export const ValidationChild = ({
         <ChildEntry onDelete={onDelete}>
             <FieldWrapper>
                 <div>
-                    <Form.Select
-                        placeholder="Select"
-                        selectedOption={value.validationType}
-                        options={options}
-                        disabled={options.length === 1}
-                        onSelectOption={(option) => {
-                            handleChange("type", option);
-                        }}
+                    <Controller
+                        name={`validation.${index}.validationType`}
+                        control={control}
+                        defaultValue={value?.validationType || ""}
+                        render={({ field }) => (
+                            <Form.Select
+                                {...field}
+                                placeholder="Select"
+                                selectedOption={value?.validationType}
+                                options={options}
+                                disabled={options.length === 1}
+                                onSelectOption={(option) => {
+                                    handleChange("type", option);
+                                    trigger(
+                                        `validation.${index}.validationType`
+                                    );
+                                }}
+                                errorMessage={
+                                    errors?.validation?.[index]?.validationType
+                                        ?.message
+                                }
+                            />
+                        )}
+                        shouldUnregister={true}
                     />
                 </div>
                 <div>
-                    <Form.Textarea
-                        placeholder="Enter rule"
-                        defaultValue={value.validationRule}
-                        onChange={(event) => {
-                            handleChange("rule", event.target.value);
-                        }}
+                    <Controller
+                        name={`validation.${index}.validationRule`}
+                        control={control}
+                        defaultValue={value?.validationRule || ""}
+                        render={({ field }) => (
+                            <Form.Textarea
+                                {...field}
+                                placeholder="Enter rule"
+                                onChange={(event) => {
+                                    handleChange("rule", event.target.value);
+                                    trigger(
+                                        `validation.${index}.validationRule`
+                                    );
+                                }}
+                                errorMessage={
+                                    errors?.validation?.[index]?.validationRule
+                                        ?.message
+                                }
+                            />
+                        )}
+                        shouldUnregister={true}
                     />
                 </div>
                 <div>
-                    <Form.Input
-                        placeholder="Set error message"
-                        defaultValue={value.validationErrorMessage}
-                        onChange={(event) => {
-                            handleChange("errorMessage", event.target.value);
-                        }}
+                    <Controller
+                        name={`validation.${index}.validationErrorMessage`}
+                        control={control}
+                        defaultValue={value?.validationErrorMessage || ""}
+                        render={({ field }) => (
+                            <Form.Input
+                                {...field}
+                                placeholder="Set error message"
+                                defaultValue={value?.validationErrorMessage}
+                                onChange={(event) => {
+                                    handleChange(
+                                        "errorMessage",
+                                        event.target.value
+                                    );
+                                    trigger(
+                                        `validation.${index}.validationErrorMessage`
+                                    );
+                                }}
+                                errorMessage={
+                                    errors?.validation?.[index]
+                                        ?.validationErrorMessage?.message
+                                }
+                            />
+                        )}
+                        shouldUnregister={true}
                     />
                 </div>
             </FieldWrapper>

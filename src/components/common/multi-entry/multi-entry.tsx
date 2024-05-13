@@ -33,6 +33,7 @@ export const MultiEntry = ({
                     onClick={onAdd}
                     role="button"
                     disabled={disabledButton}
+                    type="button"
                 >
                     {"Add " + buttonLabel}
                 </AddMultiEntryButton>
