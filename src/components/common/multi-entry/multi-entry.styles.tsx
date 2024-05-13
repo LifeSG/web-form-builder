@@ -1,10 +1,12 @@
 import { Accordion } from "@lifesg/react-design-system/accordion";
 import { ButtonWithIcon } from "@lifesg/react-design-system/button-with-icon";
+import { Color } from "@lifesg/react-design-system/color";
 import styled from "styled-components";
 
 export const MultiEntryAccordionItem = styled(Accordion.Item)`
-    padding-bottom: 1rem;
     width: 100%;
+    border-top: 1px solid ${Color.Neutral[6]};
+    border-bottom: 1px solid ${Color.Neutral[6]};
 
     #content-container {
         padding: 0;
