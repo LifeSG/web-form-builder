@@ -44,11 +44,10 @@ export const ConditionalRenderingChild = ({
     // =============================================================================
     // EVENT HANLDERS
     // =============================================================================
-
     const handleChange = (changeType?: string, newValue?: string) => {
         const updatedValue = { ...value };
-        if (focusedElement && focusedElement.element) {
-            const internalId = focusedElement.element.internalId;
+        if (focusedElement && focusedElement?.element) {
+            const internalId = focusedElement?.element?.internalId;
 
             switch (changeType) {
                 case "fieldKey":
@@ -82,10 +81,10 @@ export const ConditionalRenderingChild = ({
     // =========================================================================
 
     useEffect(() => {
-        if (value[focusedElement.element.internalId].comparator) {
+        if (value[focusedElement?.element?.internalId]?.comparator) {
             handleChange(
                 "comparator",
-                value[focusedElement.element.internalId].comparator
+                value[focusedElement?.element?.internalId]?.comparator
             );
         } else {
             handleChange("comparator", comparatorOptions[0]);
@@ -103,12 +102,6 @@ export const ConditionalRenderingChild = ({
                     <div>
                         <SelectFieldWrapper
                             placeholder="Select"
-                            selectedOption={options.find(
-                                (option) =>
-                                    option?.id ===
-                                    value[focusedElement.element.internalId]
-                                        .fieldKey
-                            )}
                             onSelectOption={(option: IOptions) => {
                                 handleChange("fieldKey", option?.id);
                             }}
@@ -133,8 +126,8 @@ export const ConditionalRenderingChild = ({
                             selectedOption={
                                 value[focusedElement.element.internalId]
                                     .comparator
-                                    ? value[focusedElement.element.internalId]
-                                          .comparator
+                                    ? value[focusedElement?.element?.internalId]
+                                          ?.comparator
                                     : comparatorOptions[0]
                             }
                             onSelectOption={(option: string) => {
@@ -148,7 +141,7 @@ export const ConditionalRenderingChild = ({
                     <Form.Input
                         placeholder="Set value"
                         defaultValue={
-                            value[focusedElement.element.internalId].value
+                            value[focusedElement.element.internalId]?.value
                         }
                         onChange={(event) => {
                             handleChange("value", event.target.value);
