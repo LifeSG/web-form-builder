@@ -6,6 +6,7 @@ import { ConditionalRenderingChild } from "./conditional-rendering-child";
 interface IOptions {
     label?: string;
     id?: string;
+    internalId?: string;
 }
 
 export const ConditionalRendering = () => {
@@ -29,6 +30,7 @@ export const ConditionalRendering = () => {
                 const optionItem = {
                     label: value.label,
                     id: value.id,
+                    internaleId: value.internalId,
                 };
                 options.push(optionItem);
             }
@@ -76,11 +78,10 @@ export const ConditionalRendering = () => {
         setChildEntryValues((prevValues) => [
             ...prevValues,
             {
-                [element.internalId]: {
-                    fieldKey: "",
-                    comparator: "",
-                    value: "",
-                },
+                fieldKey: "",
+                comparator: "",
+                value: "",
+                internalId: "",
             },
         ]);
     };

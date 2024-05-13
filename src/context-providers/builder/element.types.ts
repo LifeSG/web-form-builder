@@ -28,11 +28,10 @@ export interface IValidation {
 }
 
 export interface IConditionalRendering {
-    [internalId: string]: {
-        fieldKey?: string;
-        comparator?: string;
-        value?: string;
-    };
+    fieldKey?: string;
+    comparator?: string;
+    value?: string;
+    internalId: string;
 }
 
 export interface IBaseFieldAttributes extends IBaseAttributes {

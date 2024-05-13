@@ -23,19 +23,12 @@ describe("ConditionalRenderingChild", () => {
     });
 
     it("should render the component with provided options and fields", () => {
-        renderComponent(
-            {
-                onDelete: mockDelete,
-                options: mockOptions,
-                onChange: mockOnChange,
-                value: mockValue,
-            },
-            {
-                builderContext: {
-                    focusedElement: { element: MOCK_ELEMENT },
-                },
-            }
-        );
+        renderComponent({
+            onDelete: mockDelete,
+            options: mockOptions,
+            onChange: mockOnChange,
+            value: mockValue,
+        });
 
         expect(screen.getByText("Select")).toBeInTheDocument();
         expect(screen.getByText("Equals")).toBeInTheDocument();
@@ -43,38 +36,26 @@ describe("ConditionalRenderingChild", () => {
     });
 
     it("should fire the delete function on clicking the bin icon", () => {
-        renderComponent(
-            {
-                onDelete: mockDelete,
-                options: mockOptions,
-                onChange: mockOnChange,
-                value: mockValue,
-            },
-            {
-                builderContext: {
-                    focusedElement: { element: MOCK_ELEMENT },
-                },
-            }
-        );
+        renderComponent({
+            onDelete: mockDelete,
+            options: mockOptions,
+            onChange: mockOnChange,
+            value: mockValue,
+        });
+
         const deleteButton = screen.getByTestId("delete-button");
         fireEvent.click(deleteButton);
         expect(mockDelete).toBeCalled();
     });
 
     it("should fire onChange when there is a change in the input fields", () => {
-        renderComponent(
-            {
-                onDelete: mockDelete,
-                options: mockOptions,
-                onChange: mockOnChange,
-                value: mockValue,
-            },
-            {
-                builderContext: {
-                    focusedElement: { element: MOCK_ELEMENT },
-                },
-            }
-        );
+        renderComponent({
+            onDelete: mockDelete,
+            options: mockOptions,
+            onChange: mockOnChange,
+            value: mockValue,
+        });
+
         const getValueField = screen.getByPlaceholderText("Set value");
         fireEvent.focus(getValueField);
         fireEvent.change(getValueField, {
@@ -126,7 +107,10 @@ const mockOptions = [{ label: "mockLabel1", id: "mockId1" }];
 const mockDelete = jest.fn();
 const mockOnChange = jest.fn();
 const mockValue = {
-    ["mock123"]: { fieldKey: "", comparator: "Equals", value: "" },
+    fieldKey: "",
+    comparator: "Equals",
+    value: "",
+    internalId: "mock123",
 };
 const MOCK_ELEMENT = {
     internalId: "mock123",
