@@ -1,11 +1,14 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import { fireEvent, render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
+import { useForm, FormProvider } from "react-hook-form";
 import {
     ConditionalRenderingChild,
     IOptions,
 } from "src/components/element-editor/conditional-rendering";
 import { EElementType, IConditionalRendering } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data";
+import { SchemaHelper } from "src/schemas";
 import { TestHelper } from "src/util/test-helper";
 
 describe("ConditionalRenderingChild", () => {
@@ -63,6 +66,26 @@ describe("ConditionalRenderingChild", () => {
         });
         expect(mockOnChange).toBeCalled();
     });
+
+    it("should render an error message when validation error message field is left empty", async () => {
+        renderComponent({
+            onDelete: mockDelete,
+            options: mockOptions,
+            onChange: mockOnChange,
+            value: mockValue,
+            index: mockIndex,
+        });
+        const submitButton = screen.getByText("Submit");
+        fireEvent.click(submitButton);
+        const referenceError = await screen.findByText("Reference required.");
+        const referenceValueError = await screen.findByText(
+            "Reference value required."
+        );
+        expect(referenceError).toHaveTextContent("Reference required.");
+        expect(referenceValueError).toHaveTextContent(
+            "Reference value required."
+        );
+    });
 });
 
 interface IConditionalRenderingChildOptions {
@@ -70,6 +93,7 @@ interface IConditionalRenderingChildOptions {
     options?: IOptions[];
     onChange?: (newValue: any) => void;
     value?: IConditionalRendering;
+    index?: number;
 }
 
 const MyTestComponent = ({
@@ -77,14 +101,26 @@ const MyTestComponent = ({
     options,
     onChange,
     value,
+    index,
 }: IConditionalRenderingChildOptions) => {
+    const methods = useForm({
+        mode: "onTouched",
+        resolver: yupResolver(SchemaHelper.buildSchema(EElementType.EMAIL)),
+    });
+    const onSubmit = jest.fn;
     return (
-        <ConditionalRenderingChild
-            onDelete={onDelete}
-            options={options}
-            onChange={onChange}
-            value={value}
-        />
+        <FormProvider {...methods}>
+            <form onSubmit={methods.handleSubmit(onSubmit)}>
+                <ConditionalRenderingChild
+                    onDelete={onDelete}
+                    options={options}
+                    onChange={onChange}
+                    value={value}
+                    index={index}
+                />
+                <button type="submit">Submit</button>
+            </form>
+        </FormProvider>
     );
 };
 
@@ -112,11 +148,4 @@ const mockValue = {
     value: "",
     internalId: "mock123",
 };
-const MOCK_ELEMENT = {
-    internalId: "mock123",
-    type: EElementType.EMAIL,
-    id: "mockElement",
-    required: false,
-    label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
-    validation: [],
-};
+const mockIndex = 0;
