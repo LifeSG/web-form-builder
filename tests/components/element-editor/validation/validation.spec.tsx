@@ -1,8 +1,11 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import { fireEvent, render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
+import { FormProvider, useForm } from "react-hook-form";
 import { Validation } from "src/components/element-editor/validation/validation";
 import { EElementType } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data";
+import { SchemaHelper } from "src/schemas";
 import { TestHelper } from "src/util/test-helper";
 
 describe("Validation", () => {
@@ -22,7 +25,7 @@ describe("Validation", () => {
     it("should contain the the component with the title, buttonLabel & children being passed into it", () => {
         renderComponent({
             builderContext: {
-                focusedElement: { element: MOCK_ELEMENT },
+                focusedElement: { element: MOCK_ELEMENT, isDirty: true },
             },
         });
         expect(screen.getByText("Validation")).toBeInTheDocument();
@@ -32,7 +35,7 @@ describe("Validation", () => {
     it("should fire onAdd and render the validation-child component when the button is being clicked", () => {
         renderComponent({
             builderContext: {
-                focusedElement: { element: MOCK_ELEMENT },
+                focusedElement: { element: MOCK_ELEMENT, isDirty: true },
             },
         });
         fireEvent.click(
@@ -57,8 +60,22 @@ describe("Validation", () => {
 // HELPER FUNCTIONS
 // =============================================================================
 
+const MyTestComponent = () => {
+    const methods = useForm({
+        mode: "onTouched",
+        resolver: yupResolver(SchemaHelper.buildSchema(EElementType.EMAIL)),
+    });
+    return (
+        <FormProvider {...methods}>
+            <Validation />
+        </FormProvider>
+    );
+};
+
 const renderComponent = (overrideOptions?: TestHelper.RenderOptions) => {
-    return render(TestHelper.withProviders(overrideOptions, <Validation />));
+    return render(
+        TestHelper.withProviders(overrideOptions, <MyTestComponent />)
+    );
 };
 
 // =============================================================================

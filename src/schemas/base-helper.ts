@@ -1,6 +1,9 @@
-import { IFocusedElement, TElementMap } from "src/context-providers";
+import {
+    IBaseFieldAttributes,
+    IFocusedElement,
+    TElementMap,
+} from "src/context-providers";
 import * as yup from "yup";
-import { IBaseTextBasedFieldValues } from "./types";
 
 const CAMEL_CASE_REGEX = /^[a-z]+((\d)|([A-Z0-9][a-z0-9]+))*([A-Z])?$/gm;
 
@@ -9,10 +12,9 @@ export namespace BaseSchemaHelper {
         elements: TElementMap,
         focusedElement: IFocusedElement
     ) =>
-        yup.object<IBaseTextBasedFieldValues>().shape({
+        yup.object<IBaseFieldAttributes>().shape({
             type: yup.string().required("Element type required."),
             label: yup.string().required("Label required."),
-            placeholder: yup.string().optional(),
             required: yup.boolean().required().default(true),
             requiredErrorMsg: yup.string().optional(),
             id: yup
