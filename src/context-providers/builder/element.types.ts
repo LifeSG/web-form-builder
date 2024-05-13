@@ -30,7 +30,7 @@ export interface IValidation {
 export interface IConditionalRendering {
     fieldKey?: string;
     comparator?: string;
-    value?: string;
+    value?: string | number;
     internalId: string;
 }
 

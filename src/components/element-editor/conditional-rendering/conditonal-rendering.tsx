@@ -1,10 +1,13 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { MultiEntry } from "src/components/common";
 import { IConditionalRendering, useBuilder } from "src/context-providers";
-import { ConditionalRenderingChild } from "./conditional-rendering-child";
+import {
+    ConditionalRenderingChild,
+    IOnChangeProps,
+} from "./conditional-rendering-child";
 
 interface IOptions {
-    label?: string;
+    label: string;
     id?: string;
     internalId?: string;
 }
@@ -23,29 +26,28 @@ export const ConditionalRendering = () => {
     // HELPER FUNCTIONS
     // =====================================================================
 
-    const getElementOption = useCallback(() => {
+    const getElementOptions = () => {
         const options: IOptions[] = [];
         Object.entries(elements).forEach(([key, value]) => {
-            if (key !== element.internalId) {
+            if (key !== element?.internalId) {
                 const optionItem = {
-                    label: value.label,
-                    id: value.id,
-                    internaleId: value.internalId,
+                    label: value?.label,
+                    id: value?.id,
                 };
                 options.push(optionItem);
             }
         });
         return options;
-    }, [elements, element.internalId]);
+    };
 
     // =========================================================================
     // USE EFFECTS
     // =========================================================================
 
     useEffect(() => {
-        const element = focusedElement.element;
-        setChildEntryValues(element.conditionalRendering);
-    }, [focusedElement.element]);
+        const element = focusedElement?.element;
+        setChildEntryValues(element?.conditionalRendering);
+    }, [focusedElement?.element]);
 
     useEffect(() => {
         if (childEntryValues?.length >= 1) {
@@ -75,15 +77,16 @@ export const ConditionalRendering = () => {
     };
 
     const handleAddButtonClick = () => {
-        setChildEntryValues((prevValues) => [
-            ...prevValues,
-            {
-                fieldKey: "",
-                comparator: "",
-                value: "",
-                internalId: "",
-            },
-        ]);
+        const conditionalRenderingChild = {
+            fieldKey: "",
+            comparator: "",
+            value: "",
+            internalId: "",
+        };
+        setChildEntryValues((prevValues) => {
+            const updatedValues = [...prevValues, conditionalRenderingChild];
+            return updatedValues;
+        });
     };
 
     const handleDelete = (index: number) => {
@@ -101,8 +104,10 @@ export const ConditionalRendering = () => {
             <ConditionalRenderingChild
                 key={`conditional-rendering-entry-${index}`}
                 onDelete={() => handleDelete(index)}
-                onChange={(newValue) => handleChildChange(index, newValue)}
-                options={getElementOption()}
+                onChange={(newValue) =>
+                    handleChildChange(index, newValue as IOnChangeProps)
+                }
+                options={getElementOptions()}
                 value={child}
             />
         ));
@@ -113,7 +118,7 @@ export const ConditionalRendering = () => {
             onAdd={handleAddButtonClick}
             title="Conditional Rendering"
             buttonLabel="condition"
-            disabledButton={getElementOption().length === 0}
+            disabledButton={getElementOptions().length === 0}
         >
             {renderChildren()}
         </MultiEntry>

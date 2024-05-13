@@ -15,10 +15,17 @@ export interface IOptions {
     id?: string;
 }
 
+export interface IOnChangeProps {
+    fieldKey: string;
+    comparator: string;
+    value: string;
+    internalId: string;
+}
+
 interface IProps {
     onDelete: () => void;
     options: IOptions[];
-    onChange: (newValue: any) => void;
+    onChange: (newValue: IOnChangeProps | {}) => void;
     value?: IConditionalRendering;
 }
 
@@ -94,7 +101,7 @@ export const ConditionalRenderingChild = ({
                                 value?.fieldKey
                                     ? options.find(
                                           (option) =>
-                                              option.id === value.fieldKey
+                                              option.id === value?.fieldKey
                                       )
                                     : null
                             }

@@ -15,7 +15,9 @@ export const SelectFieldContainer = styled.div`
 `;
 
 export const SelectFieldWrapper = styled(Form.Select)`
-    width: 100%;
+    [data-testid="dropdown-list"] {
+        max-height: 10rem;
+    }
 `;
 
 export const OptionIDText = styled(Text.XSmall)`

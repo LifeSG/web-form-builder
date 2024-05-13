@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import "jest-canvas-mock";
 import { ConditionalRendering } from "src/components/element-editor/conditional-rendering";
 import { EElementType } from "src/context-providers";
@@ -48,11 +48,11 @@ describe("ConditionalRendering", () => {
         expect(screen.getByPlaceholderText("Set value")).toBeInTheDocument();
     });
 
-    it("should disable the add button when there is only one element in the elements list", () => {
+    it("should disable the add button when there is only one element in the main panel", () => {
         renderComponent({
             builderContext: {
                 focusedElement: { element: MOCK_ELEMENT },
-                elements: MOCK_ONE_ELEMENT,
+                elements: { [MOCK_ELEMENT.internalId]: MOCK_ELEMENT },
             },
         });
 
@@ -61,6 +61,29 @@ describe("ConditionalRendering", () => {
         });
         expect(getAddButton).toBeInTheDocument();
         expect(getAddButton).toBeDisabled();
+    });
+
+    it("should render other elements labels and ids as options other than the selected element", async () => {
+        renderComponent({
+            builderContext: {
+                focusedElement: { element: MOCK_ELEMENT },
+                elements: MOCK_ELEMENTS,
+            },
+        });
+
+        fireEvent.click(
+            screen.getByRole("button", {
+                name: "Add condition",
+            })
+        );
+        fireEvent.click(screen.getByText("Select"));
+
+        await waitFor(() => {
+            const element = screen.queryByRole("list", {
+                name: `${ELEMENT_BUTTON_LABELS[EElementType.EMAIL]} ID: mockElement`,
+            });
+            expect(element).not.toBeInTheDocument();
+        });
     });
 });
 
@@ -89,33 +112,13 @@ const MOCK_ELEMENT = {
 };
 
 const MOCK_ELEMENTS = {
-    mock123: {
-        internalId: "mock123",
-        type: EElementType.EMAIL,
-        id: "mockElement",
-        required: false,
-        label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
-        validation: [],
-        conditionalRendering: [],
-    },
+    mock123: MOCK_ELEMENT,
     mock246: {
         internalId: "mock246",
         type: EElementType.TEXT,
         id: "mockShorText",
         required: false,
         label: ELEMENT_BUTTON_LABELS[EElementType.TEXT],
-        validation: [],
-        conditionalRendering: [],
-    },
-};
-
-const MOCK_ONE_ELEMENT = {
-    mock123: {
-        internalId: "mock123",
-        type: EElementType.EMAIL,
-        id: "mockElement",
-        required: false,
-        label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
         validation: [],
         conditionalRendering: [],
     },
