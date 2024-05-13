@@ -26,7 +26,7 @@ export const SidePanel = () => {
         updateFocusedElement,
     } = useBuilder();
     const methods = useForm({
-        mode: "onBlur",
+        mode: "onTouched",
         // TODO: insert proper type; email is a placeholder
         resolver: yupResolver(SchemaHelper.buildSchema(EElementType.EMAIL)),
     });
