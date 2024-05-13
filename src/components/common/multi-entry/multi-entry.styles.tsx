@@ -3,7 +3,6 @@ import { Accordion } from "@lifesg/react-design-system/accordion";
 import styled from "styled-components";
 
 export const MultiEntryAccordionItem = styled(Accordion.Item)`
-    padding-bottom: 1rem;
     width: 100%;
 
     #content-container {

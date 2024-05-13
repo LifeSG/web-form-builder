@@ -31,15 +31,15 @@ export const FieldEditorAccordionItem = styled(
     border-top: ${({ $hideTopBorder }) =>
         $hideTopBorder ? `1px solid ${Color.Neutral[6]}` : "0"};
 
+    margin-bottom: ${({ $hideTopBorder }) => ($hideTopBorder ? `0` : "0.5rem")};
+
     #content-container {
         padding: 0;
     }
 
     [data-testid="accordion-item-title"] {
-        padding: ${({ $hideTopBorder }) =>
-            $hideTopBorder ? `0` : "0 1rem 0 0"};
         margin: ${({ $hideTopBorder }) =>
-            $hideTopBorder ? `1rem 0 1rem 1rem` : "0 0 1rem 1rem"};
+            $hideTopBorder ? `1rem 0 1rem 1rem` : "0 0 0 1rem"};
     }
 
     [data-testid="accordion-item-expandable-container"] {
@@ -50,7 +50,4 @@ export const FieldEditorAccordionItem = styled(
     [data-testid="accordion-item-expand-collapse-button"] {
         margin: ${({ $hideTopBorder }) =>
             $hideTopBorder ? `0 0.1rem 0 1rem` : "0 0.1rem 0 0"};
-        padding-top: ${({ $hideTopBorder }) =>
-            $hideTopBorder ? "1rem" : "1.7rem"};
-    }
 `;
