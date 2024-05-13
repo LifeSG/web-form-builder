@@ -31,7 +31,7 @@ export interface IConditionalRendering {
     fieldKey?: string;
     comparator?: string;
     value?: string;
-    internalId: string;
+    internalId?: string;
 }
 
 export interface IBaseFieldAttributes extends IBaseAttributes {

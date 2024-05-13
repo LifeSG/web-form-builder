@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
+import { useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
 import { IConditionalRendering, useBuilder } from "src/context-providers";
+import { IBaseTextBasedFieldValues } from "src/schemas";
 import { ConditionalRenderingChild } from "./conditional-rendering-child";
 
 interface IOptions {
@@ -14,15 +16,18 @@ export const ConditionalRendering = () => {
     // CONST, STATE, REFS
     // =========================================================================
 
-    const { focusedElement, elements } = useBuilder();
+    const { focusedElement, elements, updateFocusedElement } = useBuilder();
     const element = focusedElement.element;
     const [childEntryValues, setChildEntryValues] =
         useState<IConditionalRendering[]>();
+    const {
+        setValue,
+        formState: { isDirty },
+    } = useFormContext<IBaseTextBasedFieldValues>();
 
     // =====================================================================
     // HELPER FUNCTIONS
     // =====================================================================
-
     const getElementOption = useCallback(() => {
         const options: IOptions[] = [];
         Object.entries(elements).forEach(([key, value]) => {
@@ -30,7 +35,7 @@ export const ConditionalRendering = () => {
                 const optionItem = {
                     label: value.label,
                     id: value.id,
-                    internaleId: value.internalId,
+                    internalId: value.internalId,
                 };
                 options.push(optionItem);
             }
@@ -44,20 +49,20 @@ export const ConditionalRendering = () => {
 
     useEffect(() => {
         const element = focusedElement.element;
-        setChildEntryValues(element.conditionalRendering);
-    }, [focusedElement.element]);
 
-    useEffect(() => {
-        if (childEntryValues?.length >= 1) {
-            const updatedChildEntries = childEntryValues?.filter((child) => {
-                return Object.keys(child).some((id) => {
-                    return elements?.hasOwnProperty(id);
-                });
-            });
-
+        if (element.conditionalRendering?.length >= 1) {
+            const updatedChildEntries = element.conditionalRendering?.filter(
+                (child) => {
+                    return elements?.hasOwnProperty(child.internalId);
+                }
+            );
+            setValue("conditionalRendering", updatedChildEntries);
             setChildEntryValues(updatedChildEntries);
+        } else {
+            setValue("conditionalRendering", []);
+            setChildEntryValues([]);
         }
-    }, [elements]);
+    }, [focusedElement]);
 
     // =============================================================================
     // EVENT HANDLERS
@@ -70,27 +75,55 @@ export const ConditionalRendering = () => {
         setChildEntryValues((prevValues) => {
             const updatedValues = [...prevValues];
             updatedValues[index] = newValue;
+            setValue("conditionalRendering", updatedValues);
             return updatedValues;
         });
     };
 
     const handleAddButtonClick = () => {
-        setChildEntryValues((prevValues) => [
-            ...prevValues,
-            {
-                fieldKey: "",
-                comparator: "",
-                value: "",
-                internalId: "",
-            },
-        ]);
+        const conditionalRenderingChild = {
+            fieldKey: "",
+            comparator: "",
+            value: "",
+            internalId: "",
+        };
+        setChildEntryValues((prevValues) => {
+            const updatedValues = [...prevValues, conditionalRenderingChild];
+            setValue("conditionalRendering", updatedValues);
+            return updatedValues;
+        });
     };
 
     const handleDelete = (index: number) => {
-        setChildEntryValues((prevValues) =>
-            prevValues.filter((_, i) => i !== index)
-        );
+        setChildEntryValues((prevValues) => {
+            const updatedValues = prevValues.filter((_, i) => i !== index);
+            setValue("conditionalRendering", updatedValues);
+            return updatedValues;
+        });
     };
+
+    // =========================================================================
+    // USE EFFECTS
+    // =========================================================================
+    useEffect(() => {
+        setChildEntryValues(
+            element?.conditionalRendering !== undefined
+                ? element?.conditionalRendering
+                : []
+        );
+    }, [element]);
+
+    useEffect(() => {
+        setValue("conditionalRendering", childEntryValues, {
+            shouldDirty: true,
+        });
+    }, [childEntryValues]);
+
+    useEffect(() => {
+        if (isDirty) {
+            updateFocusedElement(true);
+        }
+    }, [isDirty, updateFocusedElement]);
 
     // =============================================================================
     // RENDER FUNCTIONS
@@ -104,6 +137,7 @@ export const ConditionalRendering = () => {
                 onChange={(newValue) => handleChildChange(index, newValue)}
                 options={getElementOption()}
                 value={child}
+                index={index}
             />
         ));
     };
