@@ -19,7 +19,7 @@ export const MultiEntryAccordionItem = styled(Accordion.Item)`
     }
 
     [data-testid="accordion-item-expand-collapse-button"] {
-        margin-right: 1rem;
+        margin-right: 0.1rem;
     }
 
     [data-testid="accordion-item-title"] {
