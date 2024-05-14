@@ -46,9 +46,13 @@ export const BasicDetails = () => {
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
-
     return (
-        <FieldEditorAccordionItem type="default" expanded title="Basic">
+        <FieldEditorAccordionItem
+            type="default"
+            expanded
+            title="Basic"
+            $hideTopBorder={focusedElement.isDirty}
+        >
             <Wrapper>
                 <Controller
                     name="type"
