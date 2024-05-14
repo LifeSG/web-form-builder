@@ -7,10 +7,9 @@ interface IProps {
     onDelete: () => void;
     onChange: (newValue: any) => void;
     value?: IPrefill;
-    index?: number;
 }
 
-export const PrefillChild = ({ onDelete, onChange, value, index }: IProps) => {
+export const PrefillChild = ({ onDelete, onChange, value }: IProps) => {
     // =============================================================================
     // CONST, STATE, REFS
     // =============================================================================
