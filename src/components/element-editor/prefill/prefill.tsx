@@ -8,7 +8,7 @@ export const Prefill = () => {
     // CONST, STATES, REFS
     // =========================================================================
     const { focusedElement } = useBuilder();
-    const element = focusedElement.element;
+    const element = focusedElement?.element;
     const [childEntryValues, setChildEntryValues] = useState<IPrefill[]>([]);
 
     // =========================================================================

@@ -5,7 +5,7 @@ import { FieldWrapper } from "./prefill.styles";
 
 interface IProps {
     onDelete: () => void;
-    onChange: (newValue: any) => void;
+    onChange: (newValue: IPrefill) => void;
     value?: IPrefill;
 }
 
@@ -63,7 +63,7 @@ export const PrefillChild = ({ onDelete, onChange, value }: IProps) => {
                     />
                 </div>
                 <div>
-                    {value?.actionId !== undefined && (
+                    {value?.prefillMode === "Previous source" && (
                         <Form.Input
                             placeholder="Enter an action ID"
                             defaultValue={value.actionId}
