@@ -2,8 +2,8 @@ import { PlusIcon } from "@lifesg/react-icons/plus";
 import {
     AddMultiEntryButton,
     MultiEntryAccordionItem,
+    SubtitleText,
 } from "./multi-entry.styles";
-import { ButtonWithIcon } from "@lifesg/react-design-system/button-with-icon";
 
 interface IProps {
     title?: string;
@@ -11,6 +11,7 @@ interface IProps {
     onAdd: () => void;
     children: React.ReactNode;
     disabledButton?: boolean;
+    subtitle?: string;
 }
 
 export const MultiEntry = ({
@@ -19,12 +20,17 @@ export const MultiEntry = ({
     onAdd,
     children,
     disabledButton,
+    subtitle,
 }: IProps) => {
     // =============================================================================
     // RENDER FUNCTIONS
     // =============================================================================
     return (
-        <MultiEntryAccordionItem title={title}>
+        <MultiEntryAccordionItem
+            title={title}
+            $hasSubtitle={subtitle ? true : false}
+        >
+            {subtitle && <SubtitleText>{subtitle}</SubtitleText>}
             <>
                 {children}
                 <AddMultiEntryButton

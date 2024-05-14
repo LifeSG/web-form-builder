@@ -1,6 +1,7 @@
 import { useBuilder } from "src/context-providers";
 import { BasicDetails } from "./basic-details";
 import { AccordionWrapper, SaveChangesAlert } from "./element-editor.styles";
+import { Prefill } from "./prefill";
 import { Validation } from "./validation/validation";
 
 export const ElementEditor = () => {
@@ -31,6 +32,7 @@ export const ElementEditor = () => {
                 <BasicDetails />
             </AccordionWrapper>
             <Validation />
+            <Prefill />
         </>
     );
 };

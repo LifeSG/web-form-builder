@@ -27,6 +27,12 @@ export interface IValidation {
     validationErrorMessage?: string;
 }
 
+export interface IPrefill {
+    prefillMode?: string;
+    actionId?: string;
+    path?: string;
+}
+
 export interface IBaseFieldAttributes extends IBaseAttributes {
     label: string | undefined;
     required: boolean;
@@ -36,6 +42,7 @@ export interface IBaseFieldAttributes extends IBaseAttributes {
 export interface IBaseTextBasedFieldAttributes extends IBaseFieldAttributes {
     placeholder?: string;
     validation?: IValidation[];
+    prefill?: IPrefill[];
 }
 
 // =============================================================================
