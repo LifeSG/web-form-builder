@@ -112,11 +112,3 @@ const mockValue = {
     value: "",
     internalId: "mock123",
 };
-const MOCK_ELEMENT = {
-    internalId: "mock123",
-    type: EElementType.EMAIL,
-    id: "mockElement",
-    required: false,
-    label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
-    validation: [],
-};

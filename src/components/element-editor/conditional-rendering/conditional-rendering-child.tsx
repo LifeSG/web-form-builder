@@ -18,7 +18,7 @@ export interface IOptions {
 export interface IOnChangeProps {
     fieldKey: string;
     comparator: string;
-    value: string;
+    value: string | number;
     internalId: string;
 }
 

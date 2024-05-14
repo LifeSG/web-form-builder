@@ -25,8 +25,6 @@ export const FieldEditorAccordionItem = styled(Accordion.Item)`
         padding: 0;
     }
 
-    border-bottom: 0;
-
     [data-testid="accordion-item-title"] {
         padding: 1rem;
         margin: 0;

@@ -45,9 +45,8 @@ export const ConditionalRendering = () => {
     // =========================================================================
 
     useEffect(() => {
-        const element = focusedElement?.element;
         setChildEntryValues(element?.conditionalRendering);
-    }, [focusedElement?.element]);
+    }, [element]);
 
     useEffect(() => {
         if (childEntryValues?.length >= 1) {

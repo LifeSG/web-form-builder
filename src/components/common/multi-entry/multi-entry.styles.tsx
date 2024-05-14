@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 export const MultiEntryAccordionItem = styled(Accordion.Item)`
     width: 100%;
-    border-top: 1px solid ${Color.Neutral[6]};
+    border-top: 0;
     border-bottom: 1px solid ${Color.Neutral[6]};
 
     #content-container {

@@ -21,5 +21,5 @@ export const SelectFieldWrapper = styled(Form.Select)`
 `;
 
 export const OptionIDText = styled(Text.XSmall)`
-    text-align: justify;
+    text-align: left;
 `;
