@@ -31,7 +31,7 @@ export const FieldEditorAccordionItem = styled(
     border-top: ${({ $hideTopBorder }) =>
         $hideTopBorder ? `1px solid ${Color.Neutral[6]}` : "0"};
 
-    margin-bottom: ${({ $hideTopBorder }) => ($hideTopBorder ? `0` : "0.5rem")};
+    margin-top: ${({ $hideTopBorder }) => ($hideTopBorder ? `0` : "-1rem")};
 
     #content-container {
         padding: 0;
