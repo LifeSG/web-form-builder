@@ -50,18 +50,13 @@ export const ConditionalRendering = () => {
     useEffect(() => {
         const element = focusedElement.element;
 
-        if (element.conditionalRendering?.length >= 1) {
-            const updatedChildEntries = element.conditionalRendering?.filter(
-                (child) => {
-                    return elements?.hasOwnProperty(child.internalId);
-                }
-            );
-            setValue("conditionalRendering", updatedChildEntries);
-            setChildEntryValues(updatedChildEntries);
-        } else {
-            setValue("conditionalRendering", []);
-            setChildEntryValues([]);
-        }
+        const updatedChildEntries = element.conditionalRendering?.filter(
+            (child) => {
+                return elements?.hasOwnProperty(child.internalId);
+            }
+        );
+        setValue("conditionalRendering", updatedChildEntries);
+        setChildEntryValues(updatedChildEntries);
     }, [focusedElement]);
 
     // =============================================================================
