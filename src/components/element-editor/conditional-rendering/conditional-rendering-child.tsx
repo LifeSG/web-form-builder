@@ -11,7 +11,7 @@ import {
 } from "./conditional-rendering.styles";
 
 export interface IOptions {
-    label?: string;
+    label: string;
     id?: string;
 }
 
