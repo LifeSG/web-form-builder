@@ -25,6 +25,7 @@ export const MultiEntryAccordionItem = styled(
 
     ${SubtitleText} {
         font-size: 0.875rem !important;
+        margin-top: -0.5rem;
     }
 
     [data-testid="accordion-item-expandable-container"] {
@@ -38,8 +39,7 @@ export const MultiEntryAccordionItem = styled(
     }
 
     [data-testid="accordion-item-title"] {
-        margin: ${({ $hasSubtitle }) =>
-            $hasSubtitle ? `1rem 0 0.5rem 1rem` : "1rem 0 1rem 1rem"};
+        margin: 1rem 0 1rem 1rem;
     }
 `;
 
