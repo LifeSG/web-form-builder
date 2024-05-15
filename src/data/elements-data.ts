@@ -36,7 +36,7 @@ export const ELEMENT_VALIDATION_TYPES = {
     "Text field": {
         [EElementType.EMAIL]: {
             maxEntries: 1,
-            validationTypes: ["Valid email address format"],
+            validationTypes: ["Email domain"],
         },
     },
 };

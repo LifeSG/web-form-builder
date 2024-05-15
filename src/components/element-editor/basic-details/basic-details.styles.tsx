@@ -1,5 +1,10 @@
+import { Color } from "@lifesg/react-design-system/color";
 import { Accordion } from "@lifesg/react-design-system/accordion";
 import styled from "styled-components";
+
+interface FieldEditorAccordionItemProps {
+    $hideTopBorder: boolean;
+}
 
 export const MandatoryFieldBox = styled.div`
     background: rgba(248, 248, 248, 1);
@@ -20,16 +25,21 @@ export const Wrapper = styled.div`
     }
 `;
 
-export const FieldEditorAccordionItem = styled(Accordion.Item)`
+export const FieldEditorAccordionItem = styled(
+    Accordion.Item
+)<FieldEditorAccordionItemProps>`
+    border-top: ${({ $hideTopBorder }) =>
+        $hideTopBorder ? `1px solid ${Color.Neutral[6]}` : "0"};
+
+    margin-top: ${({ $hideTopBorder }) => ($hideTopBorder ? `0` : "-1rem")};
+
     #content-container {
         padding: 0;
     }
 
-    border-bottom: 0;
-
     [data-testid="accordion-item-title"] {
-        padding: 1rem;
-        margin: 0;
+        margin: ${({ $hideTopBorder }) =>
+            $hideTopBorder ? `1rem 0 1rem 1rem` : "0 0 0 1rem"};
     }
 
     [data-testid="accordion-item-expandable-container"] {
@@ -38,6 +48,6 @@ export const FieldEditorAccordionItem = styled(Accordion.Item)`
     }
 
     [data-testid="accordion-item-expand-collapse-button"] {
-        margin-right: 0.1rem;
-    }
+        margin: ${({ $hideTopBorder }) =>
+            $hideTopBorder ? `0 0.1rem 0 1rem` : "0 0.1rem 0 0"};
 `;

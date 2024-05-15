@@ -13,15 +13,22 @@ import {
 } from "./conditional-rendering.styles";
 
 export interface IOptions {
-    label?: string;
+    label: string;
     id?: string;
     internalId?: string;
+}
+
+export interface IOnChangeProps {
+    fieldKey: string;
+    comparator: string;
+    value: string | number;
+    internalId: string;
 }
 
 interface IProps {
     onDelete: () => void;
     options: IOptions[];
-    onChange: (newValue: any) => void;
+    onChange: (newValue: IOnChangeProps | {}) => void;
     value?: IConditionalRendering;
     index?: number;
 }

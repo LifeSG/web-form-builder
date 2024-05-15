@@ -46,10 +46,14 @@ describe("Validation", () => {
 
         expect(
             screen.getByRole("button", {
-                name: "Valid email address format",
+                name: "Email domain",
             })
         ).toBeInTheDocument();
-        expect(screen.getByPlaceholderText("Enter rule")).toBeInTheDocument();
+        expect(
+            screen.getByPlaceholderText(
+                "Enter email domain, seperating with a comma"
+            )
+        ).toBeInTheDocument();
         expect(
             screen.getByPlaceholderText("Set error message")
         ).toBeInTheDocument();
