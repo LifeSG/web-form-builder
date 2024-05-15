@@ -62,8 +62,8 @@ export const PrefillChild = ({ onDelete, onChange, value }: IProps) => {
                         }}
                     />
                 </div>
-                <div>
-                    {value?.prefillMode === "Previous source" && (
+                {value?.prefillMode === "Previous source" && (
+                    <div>
                         <Form.Input
                             placeholder="Enter an action ID"
                             defaultValue={value.actionId}
@@ -71,8 +71,8 @@ export const PrefillChild = ({ onDelete, onChange, value }: IProps) => {
                                 handleChange("actionId", event.target.value);
                             }}
                         />
-                    )}
-                </div>
+                    </div>
+                )}
                 <div>
                     <Form.Input
                         placeholder="Enter a path"

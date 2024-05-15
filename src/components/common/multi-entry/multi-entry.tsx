@@ -26,10 +26,7 @@ export const MultiEntry = ({
     // RENDER FUNCTIONS
     // =============================================================================
     return (
-        <MultiEntryAccordionItem
-            title={title}
-            $hasSubtitle={subtitle ? true : false}
-        >
+        <MultiEntryAccordionItem title={title} $hasSubtitle={!!subtitle}>
             {subtitle && <SubtitleText>{subtitle}</SubtitleText>}
             <>
                 {children}

@@ -1,4 +1,4 @@
-import { Text } from "@lifesg/react-design-system";
+import { Text } from "@lifesg/react-design-system/text";
 import { Accordion } from "@lifesg/react-design-system/accordion";
 import { ButtonWithIcon } from "@lifesg/react-design-system/button-with-icon";
 import styled from "styled-components";
