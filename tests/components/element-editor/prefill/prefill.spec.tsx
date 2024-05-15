@@ -1,3 +1,4 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import {
     cleanup,
     fireEvent,
@@ -7,9 +8,11 @@ import {
 } from "@testing-library/react";
 import "jest-canvas-mock";
 import { setupJestCanvasMock } from "jest-canvas-mock";
+import { FormProvider, useForm } from "react-hook-form";
 import { Prefill } from "src/components/element-editor/prefill";
 import { EElementType } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data";
+import { SchemaHelper } from "src/schemas";
 import { TestHelper } from "src/util/test-helper";
 
 describe("Prefill", () => {
@@ -108,10 +111,19 @@ describe("Prefill", () => {
 // =============================================================================
 
 const MyTestComponent = () => {
-    return <Prefill />;
+    const methods = useForm({
+        mode: "onTouched",
+        resolver: yupResolver(SchemaHelper.buildSchema(EElementType.EMAIL)),
+    });
+
+    return (
+        <FormProvider {...methods}>
+            <Prefill />
+        </FormProvider>
+    );
 };
 
-const renderComponent = (overrideOptions) => {
+const renderComponent = (overrideOptions: TestHelper.RenderOptions) => {
     return render(
         TestHelper.withProviders(overrideOptions, <MyTestComponent />)
     );

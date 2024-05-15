@@ -4,8 +4,7 @@ import {
     ConditionalRenderingChild,
     IOptions,
 } from "src/components/element-editor/conditional-rendering";
-import { EElementType, IConditionalRendering } from "src/context-providers";
-import { ELEMENT_BUTTON_LABELS } from "src/data";
+import { IConditionalRendering } from "src/context-providers";
 import { TestHelper } from "src/util/test-helper";
 
 describe("ConditionalRenderingChild", () => {

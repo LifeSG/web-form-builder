@@ -132,7 +132,7 @@ describe("ValidationChild", () => {
         expect(validationRuleError).toHaveTextContent("Email domain required.");
     });
 
-    it("should render an error message when validation error message field is left empty", async () => {
+    it("should render an error message when validation fields are left empty", async () => {
         renderComponent({
             onDelete: mockDelete,
             options: mockOptions,
