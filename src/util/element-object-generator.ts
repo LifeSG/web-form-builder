@@ -32,6 +32,7 @@ export namespace ElementObjectGenerator {
                     requiredErrorMsg: "",
                     label: ELEMENT_BUTTON_LABELS[type],
                     validation: [],
+                    conditionalRendering: [],
                 };
                 return attributes;
             }

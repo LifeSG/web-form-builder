@@ -8,7 +8,10 @@ export const AccordionWrapper = styled(Accordion)`
     }
 `;
 
-export const SaveChangesAlert = styled(Alert)`
-    height: 2.5rem;
-    margin-bottom: 1rem;
+export const SaveChangesAlert = styled(Alert)``;
+
+export const Wrapper = styled.div`
+    ${SaveChangesAlert} {
+        margin-bottom: 1rem;
+    }
 `;
