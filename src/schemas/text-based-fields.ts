@@ -6,6 +6,8 @@ import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import * as yup from "yup";
 
 const DOMAIN_REGEX = /^@[^\s]+(\.[^\s]+)*(?:\s*,\s*@[^,\s]+(\.[^,\s]+)*)*$/;
+const ACTIONID_REGEX = /^[a-zA-Z0-9_-]+$/;
+const PATH_REGEX = /^[a-zA-Z0-9._-]+$/;
 
 export const EMAIL_SCHEMA = yup.object<IBaseTextBasedFieldAttributes>().shape({
     placeholder: yup.string().optional(),
@@ -29,6 +31,23 @@ export const EMAIL_SCHEMA = yup.object<IBaseTextBasedFieldAttributes>().shape({
             validationErrorMessage: yup
                 .string()
                 .required("Error message required."),
+        })
+    ),
+    prefill: yup.array().of(
+        yup.object().shape({
+            prefillMode: yup.string().required("Source required."),
+            actionId: yup.string().when("prefillMode", {
+                is: "Previous source",
+                then: (rule) =>
+                    rule
+                        .required("Action ID required.")
+                        .matches(ACTIONID_REGEX, "Invalid action ID."),
+                otherwise: (rule) => rule.optional(),
+            }),
+            path: yup
+                .string()
+                .required("Path required.")
+                .matches(PATH_REGEX, "Invalid path."),
         })
     ),
 });
