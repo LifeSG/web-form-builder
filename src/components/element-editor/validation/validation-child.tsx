@@ -1,8 +1,8 @@
 import { Form } from "@lifesg/react-design-system/form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { ChildEntry } from "src/components/common";
-import { IValidation } from "src/context-providers/builder";
+import { EElementType, IValidation } from "src/context-providers/builder";
 import { IBaseTextBasedFieldValues } from "src/schemas";
 import { FieldWrapper } from "./validation.styles";
 
@@ -26,6 +26,8 @@ export const ValidationChild = ({
         control,
         trigger,
     } = useFormContext<IBaseTextBasedFieldValues>();
+    const [validationRulePlaceHolder, setValidationRulePlaceHolder] =
+        useState<string>();
 
     // =============================================================================
     // EVENT HANDLERS
@@ -55,6 +57,10 @@ export const ValidationChild = ({
     useEffect(() => {
         if (options.length === 1 && !value.validationType) {
             handleChange("type", options[0]);
+        } else if (options.length === 1 && options[0] === "Email domain") {
+            setValidationRulePlaceHolder(
+                "Enter email domain, seperating with a comma"
+            );
         }
     }, [options, value?.validationType]);
 
@@ -100,7 +106,11 @@ export const ValidationChild = ({
                         render={({ field }) => (
                             <Form.Textarea
                                 {...field}
-                                placeholder="Enter rule"
+                                placeholder={
+                                    validationRulePlaceHolder
+                                        ? validationRulePlaceHolder
+                                        : "Enter rule"
+                                }
                                 onChange={(event) => {
                                     handleChange("rule", event.target.value);
                                     trigger(

@@ -74,7 +74,8 @@ export const useBuilder = () => {
                 },
             });
 
-            if (state.mode === EBuilderMode.EDIT_ELEMENT) {
+            if (state.focusedElement !== null) {
+                removeFocusedElement();
                 toggleMode(EBuilderMode.ADD_ELEMENT);
             }
         },

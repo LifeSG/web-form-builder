@@ -27,6 +27,13 @@ export interface IValidation {
     validationErrorMessage?: string;
 }
 
+export interface IConditionalRendering {
+    fieldKey?: string;
+    comparator?: string;
+    value?: string | number;
+    internalId: string;
+}
+
 export interface IPrefill {
     prefillMode?: string;
     actionId?: string;
@@ -42,6 +49,7 @@ export interface IBaseFieldAttributes extends IBaseAttributes {
 export interface IBaseTextBasedFieldAttributes extends IBaseFieldAttributes {
     placeholder?: string;
     validation?: IValidation[];
+    conditionalRendering?: IConditionalRendering[];
     prefill?: IPrefill[];
 }
 

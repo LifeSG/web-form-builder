@@ -100,8 +100,9 @@ describe("ValidationChild", () => {
             value: mockEmailValidationValue,
             index: mockIndex,
         });
-        const getValidationRuleField =
-            screen.getByPlaceholderText("Enter rule");
+        const getValidationRuleField = screen.getByPlaceholderText(
+            "Enter email domain, seperating with a comma"
+        );
         fireEvent.focus(getValidationRuleField);
         fireEvent.blur(getValidationRuleField);
         const validationRuleError = await screen.findByText(
@@ -120,8 +121,9 @@ describe("ValidationChild", () => {
             value: mockEEmptyEmailValidationValue,
             index: mockIndex,
         });
-        const getValidationRuleField =
-            screen.getByPlaceholderText("Enter rule");
+        const getValidationRuleField = screen.getByPlaceholderText(
+            "Enter email domain, seperating with a comma"
+        );
         fireEvent.focus(getValidationRuleField);
         fireEvent.blur(getValidationRuleField);
         const validationRuleError = await screen.findByText(
