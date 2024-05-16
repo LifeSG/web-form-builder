@@ -46,20 +46,6 @@ export const ConditionalRendering = () => {
         return options;
     };
 
-    // =========================================================================
-    // USE EFFECTS
-    // =========================================================================
-
-    useEffect(() => {
-        const updatedChildEntries = element.conditionalRendering?.filter(
-            (child) => {
-                return elements?.hasOwnProperty(child.internalId);
-            }
-        );
-        setValue("conditionalRendering", updatedChildEntries);
-        setChildEntryValues(updatedChildEntries);
-    }, [focusedElement]);
-
     // =============================================================================
     // EVENT HANDLERS
     // =============================================================================
@@ -99,8 +85,18 @@ export const ConditionalRendering = () => {
     };
 
     // =========================================================================
-    // USE EFFECTS
+    // EFFECTS
     // =========================================================================
+    useEffect(() => {
+        const updatedChildEntries = element.conditionalRendering?.filter(
+            (child) => {
+                return elements?.hasOwnProperty(child.internalId);
+            }
+        );
+        setValue("conditionalRendering", updatedChildEntries);
+        setChildEntryValues(updatedChildEntries);
+    }, [focusedElement]);
+
     useEffect(() => {
         setChildEntryValues(
             element?.conditionalRendering !== undefined
