@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { MultiEntry } from "src/components/common";
-import { IPrefill, useBuilder } from "src/context-providers";
+import { IPrefillAttributes, useBuilder } from "src/context-providers";
 import { PrefillChild } from "./prefill-child";
 import { useFormContext } from "react-hook-form";
 import { IBaseTextBasedFieldValues } from "src/schemas";
@@ -11,7 +11,9 @@ export const Prefill = () => {
     // =========================================================================
     const { focusedElement, updateFocusedElement } = useBuilder();
     const element = focusedElement?.element;
-    const [childEntryValues, setChildEntryValues] = useState<IPrefill[]>([]);
+    const [childEntryValues, setChildEntryValues] = useState<
+        IPrefillAttributes[]
+    >([]);
     const {
         setValue,
         formState: { isDirty },
@@ -21,7 +23,7 @@ export const Prefill = () => {
     // EVENT HANDLERS
     // =========================================================================
 
-    const handleChildChange = (index: number, newValue: IPrefill) => {
+    const handleChildChange = (index: number, newValue: IPrefillAttributes) => {
         setChildEntryValues((prevValues) => {
             const updatedValues = [...prevValues];
             updatedValues[index] = newValue;
@@ -52,7 +54,7 @@ export const Prefill = () => {
     };
 
     // =========================================================================
-    // USE EFFECTS
+    // EFFECTS
     // =========================================================================
 
     useEffect(() => {
@@ -76,15 +78,19 @@ export const Prefill = () => {
     // =========================================================================
 
     const renderChildren = () => {
-        return childEntryValues?.map((child, index) => (
-            <PrefillChild
-                key={`prefill-entry-${index}`}
-                onDelete={() => handleDelete(index)}
-                onChange={(newValue) => handleChildChange(index, newValue)}
-                value={child}
-                index={index}
-            />
-        ));
+        if (childEntryValues.length === 0) {
+            return;
+        } else {
+            return childEntryValues?.map((child, index) => (
+                <PrefillChild
+                    key={`prefill-entry-${index}`}
+                    onDelete={() => handleDelete(index)}
+                    onChange={(newValue) => handleChildChange(index, newValue)}
+                    value={child}
+                    index={index}
+                />
+            ));
+        }
     };
 
     return (

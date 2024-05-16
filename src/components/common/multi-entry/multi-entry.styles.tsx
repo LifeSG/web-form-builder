@@ -4,7 +4,10 @@ import { ButtonWithIcon } from "@lifesg/react-design-system/button-with-icon";
 import { Color } from "@lifesg/react-design-system/color";
 import styled from "styled-components";
 
-interface MultiEntryAccordionItemProps {
+// =============================================================================
+// STYLE INTERFACE
+// =============================================================================
+interface IMultiEntryAccordionItemStyleProps {
     $hasSubtitle: boolean;
 }
 
@@ -14,7 +17,7 @@ export const SubtitleText = styled(Text.Body)`
 
 export const MultiEntryAccordionItem = styled(
     Accordion.Item
-)<MultiEntryAccordionItemProps>`
+)<IMultiEntryAccordionItemStyleProps>`
     width: 100%;
     border-top: 0;
     border-bottom: 1px solid ${Color.Neutral[6]};

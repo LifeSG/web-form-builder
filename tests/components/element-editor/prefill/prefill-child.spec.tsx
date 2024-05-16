@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
 import { FormProvider, useForm } from "react-hook-form";
 import { PrefillChild } from "src/components/element-editor/prefill";
-import { EElementType, IPrefill } from "src/context-providers";
+import { EElementType, IPrefillAttributes } from "src/context-providers";
 import { SchemaHelper } from "src/schemas";
 import { TestHelper } from "src/util/test-helper";
 
@@ -150,7 +150,7 @@ describe("PrefillChild", () => {
 type PrefillChildOptions = {
     onDelete?: () => void;
     onChange?: (newValue: any) => void;
-    value?: IPrefill;
+    value?: IPrefillAttributes;
     index?: number;
 };
 

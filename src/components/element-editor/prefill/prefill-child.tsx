@@ -1,14 +1,14 @@
 import { Form } from "@lifesg/react-design-system/form";
 import { ChildEntry } from "src/components/common";
-import { IPrefill } from "src/context-providers";
+import { IPrefillAttributes } from "src/context-providers";
 import { FieldWrapper } from "./prefill.styles";
 import { Controller, useFormContext } from "react-hook-form";
 import { IBaseTextBasedFieldValues } from "src/schemas";
 
 interface IProps {
     onDelete: () => void;
-    onChange: (newValue: IPrefill) => void;
-    value?: IPrefill;
+    onChange: (newValue: IPrefillAttributes) => void;
+    value?: IPrefillAttributes;
     index?: number;
 }
 
