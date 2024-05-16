@@ -33,6 +33,7 @@ export namespace ElementObjectGenerator {
                     label: ELEMENT_BUTTON_LABELS[type],
                     validation: [],
                     conditionalRendering: [],
+                    prefill: [],
                 };
                 return attributes;
             }

@@ -34,6 +34,12 @@ export interface IConditionalRendering {
     internalId: string;
 }
 
+export interface IPrefill {
+    prefillMode?: string;
+    actionId?: string;
+    path?: string;
+}
+
 export interface IBaseFieldAttributes extends IBaseAttributes {
     label: string | undefined;
     required: boolean;
@@ -44,6 +50,7 @@ export interface IBaseTextBasedFieldAttributes extends IBaseFieldAttributes {
     placeholder?: string;
     validation?: IValidation[];
     conditionalRendering?: IConditionalRendering[];
+    prefill?: IPrefill[];
 }
 
 // =============================================================================
