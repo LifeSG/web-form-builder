@@ -15,8 +15,30 @@ export const Validation = () => {
     const [childEntryValues, setChildEntryValues] = useState<IValidation[]>([]);
     const {
         setValue,
-        formState: { isDirty },
+        formState: { isDirty, errors, touchedFields },
     } = useFormContext<IBaseTextBasedFieldValues>();
+
+    const getTouchedAndErrorsFields = () => {
+        let count = 0;
+        if (touchedFields?.validation?.length > 0) {
+            touchedFields?.validation?.forEach((value) => {
+                Object.keys(value).map(() => {
+                    count++;
+                });
+            });
+            return (
+                errors?.validation?.length !== 0 &&
+                count !== childEntryValues.length * 3 &&
+                childEntryValues?.length > 0
+            );
+        } else {
+            return (
+                errors?.validation?.length !== 0 &&
+                touchedFields?.validation?.length === undefined &&
+                childEntryValues?.length > 0
+            );
+        }
+    };
 
     // =========================================================================
     // HELPER FUNCTIONS
@@ -40,6 +62,14 @@ export const Validation = () => {
                 ].maxEntries;
             default:
                 return 6; // this is a arbitary value will be changed later on
+        }
+    }
+
+    function getPopoverReason() {
+        if (childEntryValues?.length === getMaxEntries(element.type)) {
+            return "maxEntry";
+        } else {
+            return "emptyOrInvalid";
         }
     }
 
@@ -124,8 +154,10 @@ export const Validation = () => {
             title="Validation"
             buttonLabel="validation"
             disabledButton={
-                childEntryValues?.length === getMaxEntries(element.type)
+                childEntryValues?.length === getMaxEntries(element.type) ||
+                getTouchedAndErrorsFields()
             }
+            popoverReason={getPopoverReason()}
         >
             {renderChildren()}
         </MultiEntry>
