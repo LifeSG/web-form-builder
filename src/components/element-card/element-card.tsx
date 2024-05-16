@@ -5,8 +5,9 @@ import { Text } from "@lifesg/react-design-system/text";
 import { PlusCircleIcon } from "@lifesg/react-icons";
 import { BinIcon } from "@lifesg/react-icons/bin";
 import { CopyIcon } from "@lifesg/react-icons/copy";
+import { CSSProperties } from "react";
 import { TElement, useBuilder } from "src/context-providers";
-import { BaseCard, CardIcon } from "../common";
+import { CardIcon } from "../common";
 import {
     ActionButton,
     ActionsContainer,
@@ -18,7 +19,6 @@ import {
     ElementBaseCard,
     IdLabel,
 } from "./element-card.styles";
-import { CSSProperties } from "react";
 
 interface IProps {
     element: TElement;
@@ -32,7 +32,7 @@ export const ElementCard = ({ element, onClick }: IProps) => {
     // CONST, STATE, REFS
     // =========================================================================
     const { label, id } = element;
-    const { focusedElement, deleteElement } = useBuilder();
+    const { focusedElement, deleteElement, duplicateElement } = useBuilder();
 
     const { isDragging } = useDraggable({
         id: element.internalId,
@@ -75,6 +75,7 @@ export const ElementCard = ({ element, onClick }: IProps) => {
             event.preventDefault();
         }
         // TODO: Add handling
+        duplicateElement(focusedElement.element);
     };
 
     const handleDeleteClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -94,10 +95,7 @@ export const ElementCard = ({ element, onClick }: IProps) => {
     }
 
     function shouldDisableDuplicate() {
-        return (
-            checkIsFocused() &&
-            (focusedElement.isDirty || !focusedElement.isValid)
-        );
+        return checkIsFocused() && focusedElement.isDirty;
     }
 
     // =========================================================================

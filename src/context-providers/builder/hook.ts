@@ -58,6 +58,39 @@ export const useBuilder = () => {
         [state.orderedIdentifiers]
     );
 
+    const duplicateElement = useCallback(
+        (element: TElement) => {
+            const existingIdentifiers = state.orderedIdentifiers.map(
+                (elementId) => elementId.internalId
+            );
+            const newElement = ElementObjectGenerator.duplicate(
+                element,
+                existingIdentifiers
+            );
+            const newOrderedIdentifiers = [
+                ...state.orderedIdentifiers,
+                { internalId: newElement.internalId },
+            ];
+
+            dispatch({
+                type: "duplicate-element",
+                payload: {
+                    element: newElement as TElement,
+                    orderedIdentifiers: newOrderedIdentifiers,
+                },
+            });
+
+            dispatch({
+                type: "focus-element",
+                payload: {
+                    element: newElement as TElement,
+                    isDirty: true,
+                },
+            });
+        },
+        [state.orderedIdentifiers]
+    );
+
     const deleteElement = useCallback(
         (internalId: string) => {
             const { [internalId]: removedElement, ...remaining } =
@@ -140,5 +173,6 @@ export const useBuilder = () => {
         removeFocusedElement,
         updateElement,
         updateFocusedElement,
+        duplicateElement,
     };
 };
