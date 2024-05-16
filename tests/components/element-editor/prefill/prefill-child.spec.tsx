@@ -34,9 +34,9 @@ describe("PrefillChild", () => {
         expect(screen.getByDisplayValue("mockPath")).toBeInTheDocument();
     });
 
-    it("should render fields with prefilled values given the prefill mode is 'myInfo'", () => {
+    it("should render fields with prefilled values given the prefill mode is 'Myinfo'", () => {
         const myInfoValue = {
-            prefillMode: "myInfo",
+            prefillMode: "Myinfo",
             path: "mockPath",
         };
         renderComponent({
@@ -45,7 +45,7 @@ describe("PrefillChild", () => {
             value: myInfoValue,
         });
         const getValidationTypeField = screen.getByRole("button", {
-            name: "myInfo",
+            name: "Myinfo",
         });
         expect(getValidationTypeField).toBeInTheDocument();
         expect(screen.getByDisplayValue("mockPath")).toBeInTheDocument();

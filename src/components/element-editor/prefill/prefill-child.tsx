@@ -13,7 +13,7 @@ export const PrefillChild = ({ onDelete, onChange, value }: IProps) => {
     // =============================================================================
     // CONST, STATE, REFS
     // =============================================================================
-    const options = ["myInfo", "Previous source"];
+    const options = ["Myinfo", "Previous source"];
 
     // =============================================================================
     // EVENT HANDLERS
@@ -26,7 +26,7 @@ export const PrefillChild = ({ onDelete, onChange, value }: IProps) => {
                 if (newValue === "Previous source") {
                     updatedValue.actionId = "";
                 } else if (
-                    newValue === "myInfo" &&
+                    newValue === "Myinfo" &&
                     updatedValue.hasOwnProperty("actionId")
                 ) {
                     delete updatedValue.actionId;
