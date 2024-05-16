@@ -5,6 +5,8 @@ import {
     ConditionalRenderingChild,
     IOnChangeProps,
 } from "./conditional-rendering-child";
+import { useFormContext } from "react-hook-form";
+import { IBaseTextBasedFieldValues } from "src/schemas";
 
 interface IOptions {
     label: string;
@@ -21,6 +23,7 @@ export const ConditionalRendering = () => {
     const element = focusedElement.element;
     const [childEntryValues, setChildEntryValues] =
         useState<IConditionalRendering[]>();
+    const { setValue } = useFormContext<IBaseTextBasedFieldValues>();
 
     // =====================================================================
     // HELPER FUNCTIONS
@@ -46,6 +49,7 @@ export const ConditionalRendering = () => {
 
     useEffect(() => {
         setChildEntryValues(element?.conditionalRendering);
+        setValue("conditionalRendering", []);
     }, [element]);
 
     useEffect(() => {
