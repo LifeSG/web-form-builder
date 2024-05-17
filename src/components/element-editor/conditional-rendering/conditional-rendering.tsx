@@ -95,14 +95,6 @@ export const ConditionalRendering = () => {
         );
         setValue("conditionalRendering", updatedChildEntries);
         setChildEntryValues(updatedChildEntries);
-    }, [focusedElement]);
-
-    useEffect(() => {
-        setChildEntryValues(
-            element?.conditionalRendering !== undefined
-                ? element?.conditionalRendering
-                : []
-        );
     }, [element]);
 
     useEffect(() => {
@@ -120,7 +112,7 @@ export const ConditionalRendering = () => {
     // =============================================================================
     // RENDER FUNCTIONS
     // =============================================================================
-
+    console.log("check updated value:", childEntryValues);
     const renderChildren = () => {
         return childEntryValues?.map((child, index) => (
             <ConditionalRenderingChild
