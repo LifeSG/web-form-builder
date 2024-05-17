@@ -34,7 +34,7 @@ export const Prefill = () => {
 
     const handleAddButtonClick = () => {
         const prefillChild = {
-            prefillMode: "",
+            prefillMode: null,
             path: "",
         };
 
