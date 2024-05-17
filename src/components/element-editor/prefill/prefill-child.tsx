@@ -27,18 +27,32 @@ export const PrefillChild = ({ onDelete, onChange, value, index }: IProps) => {
     // =============================================================================
     // EVENT HANDLERS
     // =============================================================================
-    const handleChange = (changeType: string, newValue: string) => {
-        const updatedValue = { ...value };
+    const handleChange = (
+        changeType: string,
+        newValue: "Myinfo" | "Previous source" | string
+    ) => {
+        const updatedValue: IPrefillAttributes = { ...value };
+
+        const handleModeChange = (
+            updatedValue: IPrefillAttributes,
+            newValue: "Myinfo" | "Previous source"
+        ) => {
+            updatedValue.prefillMode = newValue;
+
+            if (newValue === "Previous source") {
+                updatedValue.actionId = "";
+            } else if (
+                newValue === "Myinfo" &&
+                updatedValue.hasOwnProperty("actionId")
+            ) {
+                delete updatedValue.actionId;
+            }
+        };
+
         switch (changeType) {
             case "mode":
-                updatedValue.prefillMode = newValue;
-                if (newValue === "Previous source") {
-                    updatedValue.actionId = "";
-                } else if (
-                    newValue === "myInfo" &&
-                    updatedValue.hasOwnProperty("actionId")
-                ) {
-                    delete updatedValue.actionId;
+                if (newValue === "Myinfo" || newValue === "Previous source") {
+                    handleModeChange(updatedValue, newValue);
                 }
                 break;
             case "actionId":
@@ -64,7 +78,7 @@ export const PrefillChild = ({ onDelete, onChange, value, index }: IProps) => {
                     <Controller
                         name={`prefill.${index}.prefillMode`}
                         control={control}
-                        defaultValue={value?.prefillMode || ""}
+                        defaultValue={value?.prefillMode || null}
                         render={() => (
                             <Form.Select
                                 placeholder="Select"
