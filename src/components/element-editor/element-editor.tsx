@@ -6,6 +6,7 @@ import {
     SaveChangesAlert,
     Wrapper,
 } from "./element-editor.styles";
+import { Prefill } from "./prefill";
 import { Validation } from "./validation/validation";
 
 export const ElementEditor = () => {
@@ -37,6 +38,7 @@ export const ElementEditor = () => {
             </AccordionWrapper>
             <Validation />
             <ConditionalRendering />
+            <Prefill />
         </Wrapper>
     );
 };

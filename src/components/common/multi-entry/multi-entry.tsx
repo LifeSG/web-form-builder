@@ -2,6 +2,7 @@ import { PlusIcon } from "@lifesg/react-icons/plus";
 import {
     AddMultiEntryButton,
     MultiEntryAccordionItem,
+    SubtitleText,
 } from "./multi-entry.styles";
 import { PopoverTrigger } from "@lifesg/react-design-system/popover-v2";
 
@@ -12,6 +13,7 @@ interface IProps {
     children: React.ReactNode;
     disabledButton?: boolean;
     popoverReason?: string;
+    subtitle?: string;
 }
 
 export const MultiEntry = ({
@@ -21,6 +23,7 @@ export const MultiEntry = ({
     children,
     disabledButton,
     popoverReason,
+    subtitle,
 }: IProps) => {
     // =============================================================================
     // RENDER FUNCTIONS
@@ -72,8 +75,9 @@ export const MultiEntry = ({
     };
 
     return (
-        <MultiEntryAccordionItem title={title}>
+        <MultiEntryAccordionItem title={title} $hasSubtitle={!!subtitle}>
             <>
+                {subtitle && <SubtitleText>{subtitle}</SubtitleText>}
                 {children}
                 {renderButton()}
             </>
