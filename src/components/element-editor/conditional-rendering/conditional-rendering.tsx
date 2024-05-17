@@ -112,7 +112,6 @@ export const ConditionalRendering = () => {
     // =============================================================================
     // RENDER FUNCTIONS
     // =============================================================================
-    console.log("check updated value:", childEntryValues);
     const renderChildren = () => {
         return childEntryValues?.map((child, index) => (
             <ConditionalRenderingChild
