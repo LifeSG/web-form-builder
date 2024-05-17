@@ -11,6 +11,10 @@ interface IMultiEntryAccordionItemStyleProps {
     $hasSubtitle: boolean;
 }
 
+// =============================================================================
+// STYLING
+// =============================================================================
+
 export const SubtitleText = styled(Text.Body)`
     margin-bottom: 2rem;
 `;
