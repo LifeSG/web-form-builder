@@ -78,7 +78,7 @@ export const Prefill = () => {
     // =========================================================================
 
     const renderChildren = () => {
-        if (childEntryValues.length === 0) {
+        if (childEntryValues?.length === 0) {
             return;
         } else {
             return childEntryValues?.map((child, index) => (
@@ -98,7 +98,7 @@ export const Prefill = () => {
             onAdd={handleAddButtonClick}
             title="Prefill"
             buttonLabel="prefill"
-            subtitle="Prefill information from various data sources, for example MyInfo."
+            subtitle="Prefill information from various data sources, for example Myinfo."
         >
             {renderChildren()}
         </MultiEntry>

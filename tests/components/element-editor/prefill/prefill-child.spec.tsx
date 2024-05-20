@@ -39,9 +39,9 @@ describe("PrefillChild", () => {
         expect(screen.getByDisplayValue("mockPath")).toBeInTheDocument();
     });
 
-    it("should render fields with prefilled values given the prefill mode is 'myInfo'", () => {
-        const myInfoValue = {
-            prefillMode: "myInfo",
+    it("should render fields with prefilled values given the prefill mode is 'Myinfo'", () => {
+        const myInfoValue: IPrefillAttributes = {
+            prefillMode: "Myinfo",
             path: "mockPath",
         };
         renderComponent({
@@ -51,7 +51,7 @@ describe("PrefillChild", () => {
             index: mockIndex,
         });
         const getPrefillModeField = screen.getByRole("button", {
-            name: "myInfo",
+            name: "Myinfo",
         });
         expect(getPrefillModeField).toBeInTheDocument();
         expect(screen.getByDisplayValue("mockPath")).toBeInTheDocument();
@@ -196,14 +196,14 @@ const renderComponent = (
 // =============================================================================
 const mockDelete = jest.fn();
 const mockOnChange = jest.fn();
-const mockValue = {
+const mockValue: IPrefillAttributes = {
     prefillMode: "Previous source",
     actionId: "mockId",
     path: "mockPath",
 };
 
-const mockEmptyValue = {
-    prefillMode: "",
+const mockEmptyValue: IPrefillAttributes = {
+    prefillMode: null,
     path: "",
 };
 const mockIndex = 0;

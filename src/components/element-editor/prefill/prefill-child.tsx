@@ -16,7 +16,7 @@ export const PrefillChild = ({ onDelete, onChange, value, index }: IProps) => {
     // =============================================================================
     // CONST, STATE, REFS
     // =============================================================================
-    const options = ["myInfo", "Previous source"];
+    const options = ["Myinfo", "Previous source"];
     const {
         formState: { errors },
         control,

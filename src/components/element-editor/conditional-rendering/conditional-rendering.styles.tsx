@@ -10,7 +10,7 @@ export const FieldWrapper = styled.div`
 
 export const SelectFieldContainer = styled.div`
     display: grid;
-    grid-template-columns: 6fr 3fr;
+    grid-template-columns: 5fr 4.5fr;
     gap: 1rem;
 `;
 
