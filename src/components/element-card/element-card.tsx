@@ -74,7 +74,6 @@ export const ElementCard = ({ element, onClick }: IProps) => {
         if (disableDuplicate) {
             event.preventDefault();
         }
-        // TODO: Add handling
         duplicateElement(focusedElement.element);
     };
 

@@ -101,6 +101,7 @@ describe("ElementCard", () => {
             const duplicateButton = getDuplicateButton();
             fireEvent.click(duplicateButton);
             expect(mockDuplicateElement).toBeCalled();
+            expect(mockDuplicateElement).toHaveBeenCalledWith(MOCK_ELEMENT);
         });
     });
 

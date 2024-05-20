@@ -105,14 +105,6 @@ export interface IUpdateFocusedElementAction {
     };
 }
 
-export interface IDuplicateElement {
-    type: "duplicate-element";
-    payload: {
-        element?: TElement;
-        orderedIdentifiers: IElementIdentifier[];
-    };
-}
-
 export type TBuilderAction =
     | ITogglePanelAction
     | IUpdateOrderedIdentifiersAction
@@ -122,8 +114,7 @@ export type TBuilderAction =
     | IFocusElementAction
     | IRemoveFocusedElementAction
     | IUpdateElementAction
-    | IUpdateFocusedElementAction
-    | IDuplicateElement;
+    | IUpdateFocusedElementAction;
 
 // =============================================================================
 // CONTEXT

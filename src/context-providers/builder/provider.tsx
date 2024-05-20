@@ -85,12 +85,6 @@ export const builderReducer = (
             }
             break;
         }
-        case "duplicate-element": {
-            const element = action.payload.element;
-            state.elements[element.internalId] = element;
-            state.orderedIdentifiers = action.payload.orderedIdentifiers;
-            break;
-        }
     }
 
     return state;

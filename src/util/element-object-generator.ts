@@ -48,28 +48,40 @@ export namespace ElementObjectGenerator {
             internalId = SimpleIdGenerator.generate();
         }
 
+        const generateNewCopyId = (id: string) => {
+            const parts = id.split("-");
+            const number = parseInt(parts[parts.length - 1], 10);
+            const incrementedNumber = number + 1;
+            let newId = null;
+            if (!existingIds.includes(`${id}-${incrementedNumber}`)) {
+                newId = parts.slice(0, -1).join("-") + "-" + incrementedNumber;
+            } else {
+                newId =
+                    parts.slice(0, -1).join("-") +
+                    "-" +
+                    (incrementedNumber + 1);
+            }
+            return newId;
+        };
+
         const generateId = (id: string) => {
             switch (true) {
                 case id.includes("-copy-"): {
-                    const parts = id.split("-");
-                    const number = parseInt(parts[parts.length - 1], 10);
-                    const incrementedNumber = number + 1;
-                    const newId =
-                        parts.slice(0, -1).join("-") + "-" + incrementedNumber;
-                    return newId;
+                    return generateNewCopyId(id);
                 }
-                case id.includes("-copy"):
+                case id.includes("-copy") &&
+                    !existingIds.includes(`${id}-copy`):
                     return id + "-2";
                 default:
                     return id + "-copy";
             }
         };
 
-        const baseAttributes: IBaseAttributes = {
+        const duplicatedElement: TElement = {
             ...element,
             internalId,
             id: generateId(element.id),
         };
-        return baseAttributes;
+        return duplicatedElement;
     };
 }

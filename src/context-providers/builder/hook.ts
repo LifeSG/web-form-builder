@@ -63,19 +63,19 @@ export const useBuilder = () => {
             const existingIdentifiers = state.orderedIdentifiers.map(
                 (elementId) => elementId.internalId
             );
-            const newElement = ElementObjectGenerator.duplicate(
+            const duplicatedElement = ElementObjectGenerator.duplicate(
                 element,
                 existingIdentifiers
             );
             const newOrderedIdentifiers = [
                 ...state.orderedIdentifiers,
-                { internalId: newElement.internalId },
+                { internalId: duplicatedElement.internalId },
             ];
 
             dispatch({
-                type: "duplicate-element",
+                type: "add-element",
                 payload: {
-                    element: newElement as TElement,
+                    element: duplicatedElement,
                     orderedIdentifiers: newOrderedIdentifiers,
                 },
             });
@@ -83,7 +83,7 @@ export const useBuilder = () => {
             dispatch({
                 type: "focus-element",
                 payload: {
-                    element: newElement as TElement,
+                    element: duplicatedElement as TElement,
                     isDirty: true,
                 },
             });
