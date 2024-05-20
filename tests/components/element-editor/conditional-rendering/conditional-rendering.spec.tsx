@@ -1,7 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import "jest-canvas-mock";
-import { useForm, FormProvider } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { ConditionalRendering } from "src/components/element-editor/conditional-rendering";
 import { EElementType } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data";
