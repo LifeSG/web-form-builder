@@ -17,6 +17,11 @@ export const SelectFieldContainer = styled.div`
 export const SelectFieldWrapper = styled(Form.Select)`
     [data-testid="dropdown-list"] {
         max-height: 10rem;
+        white-space: nowrap;
+    }
+
+    [data-testid="form-select-base"] {
+        white-space: nowrap;
     }
 `;
 
