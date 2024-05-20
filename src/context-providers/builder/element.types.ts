@@ -40,6 +40,12 @@ export interface IPrefill {
     path?: string;
 }
 
+export enum EPopoverReason {
+    MAX_ENTRY = "max-entry",
+    EMPTY_OR_INVALID = "empty-or-invalid",
+    NO_CONDITION = "no-condition",
+}
+
 export interface IBaseFieldAttributes extends IBaseAttributes {
     label: string | undefined;
     required: boolean;

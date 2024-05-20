@@ -1,10 +1,11 @@
+import { PopoverTrigger } from "@lifesg/react-design-system/popover-v2";
 import { PlusIcon } from "@lifesg/react-icons/plus";
+import { EPopoverReason } from "src/context-providers";
 import {
     AddMultiEntryButton,
     MultiEntryAccordionItem,
     SubtitleText,
 } from "./multi-entry.styles";
-import { PopoverTrigger } from "@lifesg/react-design-system/popover-v2";
 
 interface IProps {
     title?: string;
@@ -31,10 +32,12 @@ export const MultiEntry = ({
 
     const renderPopoverContent = () => {
         switch (popoverReason) {
-            case "maxEntry":
+            case EPopoverReason.MAX_ENTRY:
                 return `Limit reached. To add new ${buttonLabel}, remove existing ones first`;
-            case "emptyOrInvalid":
+            case EPopoverReason.EMPTY_OR_INVALID:
                 return `To add new ${buttonLabel}, fill up existing ${buttonLabel} first.`;
+            case EPopoverReason.NO_CONDITION:
+                return `No conditional rendering available.`;
         }
     };
 

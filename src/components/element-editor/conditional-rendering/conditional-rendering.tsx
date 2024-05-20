@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
+import { useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
-import { IConditionalRendering, useBuilder } from "src/context-providers";
+import {
+    EPopoverReason,
+    IConditionalRendering,
+    useBuilder,
+} from "src/context-providers";
+import { IBaseTextBasedFieldValues } from "src/schemas";
 import {
     ConditionalRenderingChild,
     IOnChangeProps,
 } from "./conditional-rendering-child";
-import { useFormContext } from "react-hook-form";
-import { IBaseTextBasedFieldValues } from "src/schemas";
 
 interface IOptions {
     label: string;
@@ -25,7 +29,8 @@ export const ConditionalRendering = () => {
         useState<IConditionalRendering[]>();
     const {
         setValue,
-        formState: { isDirty },
+        formState: { isDirty, errors, touchedFields },
+        getValues,
     } = useFormContext<IBaseTextBasedFieldValues>();
     // =====================================================================
     // HELPER FUNCTIONS
@@ -45,6 +50,47 @@ export const ConditionalRendering = () => {
         });
         return options;
     };
+
+    function getTouchedAndErrorsFields() {
+        let count = 0;
+        let hasEmptyField = false;
+        const conditionalRenderingFields = getValues("conditionalRendering");
+
+        if (touchedFields?.conditionalRendering?.length > 0) {
+            touchedFields.conditionalRendering.forEach((field) => {
+                count += Object.keys(field).length;
+            });
+
+            conditionalRenderingFields?.forEach((field) => {
+                if (Object.values(field).includes("")) {
+                    hasEmptyField = true;
+                }
+            });
+
+            const hasErrors = errors?.conditionalRendering?.length > 0;
+            const incompleteFields =
+                count !== childEntryValues.length * 3 &&
+                hasEmptyField &&
+                childEntryValues?.length > 0;
+
+            return hasErrors || incompleteFields;
+        } else {
+            const hasErrors = errors?.conditionalRendering?.length !== 0;
+            const noTouchedFields =
+                touchedFields?.conditionalRendering?.length === undefined;
+            const hasChildEntries = childEntryValues?.length > 0;
+
+            return hasErrors && noTouchedFields && hasChildEntries;
+        }
+    }
+
+    function getPopoverReason() {
+        if (getTouchedAndErrorsFields()) {
+            return EPopoverReason.EMPTY_OR_INVALID;
+        } else if (getElementOptions().length === 0) {
+            return EPopoverReason.NO_CONDITION;
+        }
+    }
 
     // =============================================================================
     // EVENT HANDLERS
@@ -95,14 +141,6 @@ export const ConditionalRendering = () => {
         );
         setValue("conditionalRendering", updatedChildEntries);
         setChildEntryValues(updatedChildEntries);
-    }, [focusedElement]);
-
-    useEffect(() => {
-        setChildEntryValues(
-            element?.conditionalRendering !== undefined
-                ? element?.conditionalRendering
-                : []
-        );
     }, [element]);
 
     useEffect(() => {
@@ -141,7 +179,10 @@ export const ConditionalRendering = () => {
             onAdd={handleAddButtonClick}
             title="Conditional Rendering"
             buttonLabel="condition"
-            disabledButton={getElementOptions().length === 0}
+            disabledButton={
+                getElementOptions().length === 0 || getTouchedAndErrorsFields()
+            }
+            popoverReason={getPopoverReason()}
         >
             {renderChildren()}
         </MultiEntry>

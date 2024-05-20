@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
-import { EElementType, IValidation, useBuilder } from "src/context-providers";
+import {
+    EElementType,
+    EPopoverReason,
+    IValidation,
+    useBuilder,
+} from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import { IBaseTextBasedFieldValues } from "src/schemas";
 import { ValidationChild } from "./validation-child";
@@ -16,29 +21,8 @@ export const Validation = () => {
     const {
         setValue,
         formState: { isDirty, errors, touchedFields },
+        getValues,
     } = useFormContext<IBaseTextBasedFieldValues>();
-
-    const getTouchedAndErrorsFields = () => {
-        let count = 0;
-        if (touchedFields?.validation?.length > 0) {
-            touchedFields?.validation?.forEach((value) => {
-                Object.keys(value).map(() => {
-                    count++;
-                });
-            });
-            return (
-                errors?.validation?.length !== 0 &&
-                count !== childEntryValues.length * 3 &&
-                childEntryValues?.length > 0
-            );
-        } else {
-            return (
-                errors?.validation?.length !== 0 &&
-                touchedFields?.validation?.length === undefined &&
-                childEntryValues?.length > 0
-            );
-        }
-    };
 
     // =========================================================================
     // HELPER FUNCTIONS
@@ -65,11 +49,48 @@ export const Validation = () => {
         }
     }
 
-    function getPopoverReason() {
-        if (childEntryValues?.length === getMaxEntries(element.type)) {
-            return "maxEntry";
+    function getTouchedAndErrorsFields() {
+        let count = 0;
+        let hasEmptyField = false;
+        const validationFields = getValues("validation");
+
+        if (touchedFields?.validation?.length > 0) {
+            touchedFields.validation.forEach((field) => {
+                count += Object.keys(field).length;
+            });
+
+            validationFields?.forEach((field) => {
+                if (Object.values(field).includes("")) {
+                    hasEmptyField = true;
+                }
+            });
+
+            const hasValidationErrors = errors?.validation?.length > 0;
+            const hasIncompleteFields =
+                count !== childEntryValues.length * 3 &&
+                hasEmptyField &&
+                childEntryValues?.length > 0;
+
+            return hasValidationErrors || hasIncompleteFields;
         } else {
-            return "emptyOrInvalid";
+            const hasValidationErrors = errors?.validation?.length !== 0;
+            const noTouchedFieldsDefined =
+                touchedFields?.validation?.length === undefined;
+            const hasChildEntryValues = childEntryValues?.length > 0;
+
+            return (
+                hasValidationErrors &&
+                noTouchedFieldsDefined &&
+                hasChildEntryValues
+            );
+        }
+    }
+
+    function getPopoverReason() {
+        if (getTouchedAndErrorsFields()) {
+            return EPopoverReason.EMPTY_OR_INVALID;
+        } else if (childEntryValues?.length === getMaxEntries(element.type)) {
+            return EPopoverReason.MAX_ENTRY;
         }
     }
 

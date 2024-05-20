@@ -164,6 +164,7 @@ export const ConditionalRenderingChild = ({
                                                 ?.fieldKey?.message) ||
                                         ""
                                     }
+                                    {...field}
                                 />
                             )}
                             shouldUnregister={true}
@@ -204,6 +205,7 @@ export const ConditionalRenderingChild = ({
                                                 ?.comparator?.message) ||
                                         ""
                                     }
+                                    {...field}
                                 />
                             )}
                             shouldUnregister={true}
@@ -236,6 +238,7 @@ export const ConditionalRenderingChild = ({
                                     errors?.conditionalRendering[index]?.value
                                         ?.message
                                 }
+                                {...field}
                             />
                         )}
                         shouldUnregister={true}
