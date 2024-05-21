@@ -3,17 +3,11 @@ import { Accordion } from "@lifesg/react-design-system/accordion";
 import { ButtonWithIcon } from "@lifesg/react-design-system/button-with-icon";
 import { Color } from "@lifesg/react-design-system/color";
 import styled from "styled-components";
+import { PopoverTrigger } from "@lifesg/react-design-system";
 
-// =============================================================================
-// STYLE INTERFACE
-// =============================================================================
-interface IMultiEntryAccordionItemStyleProps {
+interface MultiEntryAccordionItemProps {
     $hasSubtitle: boolean;
 }
-
-// =============================================================================
-// STYLING
-// =============================================================================
 
 export const SubtitleText = styled(Text.Body)`
     margin-bottom: 2rem;
@@ -21,10 +15,11 @@ export const SubtitleText = styled(Text.Body)`
 
 export const MultiEntryAccordionItem = styled(
     Accordion.Item
-)<IMultiEntryAccordionItemStyleProps>`
+)<MultiEntryAccordionItemProps>`
     width: 100%;
     border-top: 0;
     border-bottom: 1px solid ${Color.Neutral[6]};
+    padding-bottom: ${({ $hasSubtitle }) => ($hasSubtitle ? `0.5rem` : "0")};
 
     #content-container {
         padding: 0;
@@ -32,7 +27,6 @@ export const MultiEntryAccordionItem = styled(
 
     ${SubtitleText} {
         font-size: 0.875rem !important;
-        margin-top: -0.5rem;
     }
 
     [data-testid="accordion-item-expandable-container"] {
@@ -46,7 +40,8 @@ export const MultiEntryAccordionItem = styled(
     }
 
     [data-testid="accordion-item-title"] {
-        margin: 1rem 0 1rem 1rem;
+        margin: ${({ $hasSubtitle }) =>
+            $hasSubtitle ? `1rem 0 0.5rem 1rem` : "1rem 0 1rem 1rem"};
     }
 `;
 
