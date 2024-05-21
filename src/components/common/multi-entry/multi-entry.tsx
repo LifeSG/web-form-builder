@@ -1,6 +1,5 @@
 import { PopoverTrigger } from "@lifesg/react-design-system/popover-v2";
 import { PlusIcon } from "@lifesg/react-icons/plus";
-import { EPopoverReason } from "src/context-providers";
 import {
     AddMultiEntryButton,
     MultiEntryAccordionItem,
@@ -13,7 +12,7 @@ interface IProps {
     onAdd: () => void;
     children: React.ReactNode;
     disabledButton?: boolean;
-    popoverReason?: string;
+    popoverMessage?: string | React.ReactNode;
     subtitle?: string;
 }
 
@@ -23,29 +22,18 @@ export const MultiEntry = ({
     onAdd,
     children,
     disabledButton,
-    popoverReason,
+    popoverMessage,
     subtitle,
 }: IProps) => {
     // =============================================================================
     // RENDER FUNCTIONS
     // =============================================================================
 
-    const renderPopoverContent = () => {
-        switch (popoverReason) {
-            case EPopoverReason.MAX_ENTRY:
-                return `Limit reached. To add new ${buttonLabel}, remove existing ones first`;
-            case EPopoverReason.EMPTY_OR_INVALID:
-                return `To add new ${buttonLabel}, fill up existing ${buttonLabel} first.`;
-            case EPopoverReason.NO_CONDITION:
-                return `No conditional rendering available.`;
-        }
-    };
-
     const renderButton = () => {
-        if (disabledButton && popoverReason) {
+        if (disabledButton && popoverMessage) {
             return (
                 <PopoverTrigger
-                    popoverContent={renderPopoverContent()}
+                    popoverContent={popoverMessage as JSX.Element}
                     trigger="hover"
                     data-testid="add-button-popover"
                 >

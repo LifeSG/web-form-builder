@@ -2,15 +2,16 @@ import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
 import {
-    EPopoverReason,
+    EElementType,
     IConditionalRendering,
     useBuilder,
 } from "src/context-providers";
-import { IBaseTextBasedFieldValues } from "src/schemas";
+import { IBaseTextBasedFieldValues, SchemaHelper } from "src/schemas";
 import {
     ConditionalRenderingChild,
     IOnChangeProps,
 } from "./conditional-rendering-child";
+import { Text } from "@lifesg/react-design-system/text";
 
 interface IOptions {
     label: string;
@@ -29,9 +30,11 @@ export const ConditionalRendering = () => {
         useState<IConditionalRendering[]>();
     const {
         setValue,
-        formState: { isDirty, errors, touchedFields },
+        formState: { isDirty },
         getValues,
     } = useFormContext<IBaseTextBasedFieldValues>();
+    const invalidAndEmptyFields = getTouchedAndErrorsFields();
+    const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
     // =====================================================================
     // HELPER FUNCTIONS
     // =====================================================================
@@ -52,43 +55,31 @@ export const ConditionalRendering = () => {
     };
 
     function getTouchedAndErrorsFields() {
-        let count = 0;
-        let hasEmptyField = false;
-        const conditionalRenderingFields = getValues("conditionalRendering");
-
-        if (touchedFields?.conditionalRendering?.length > 0) {
-            touchedFields.conditionalRendering.forEach((field) => {
-                count += Object.keys(field).length;
-            });
-
-            conditionalRenderingFields?.forEach((field) => {
-                if (Object.values(field).includes("")) {
-                    hasEmptyField = true;
-                }
-            });
-
-            const hasErrors = errors?.conditionalRendering?.length > 0;
-            const incompleteFields =
-                count !== childEntryValues.length * 3 &&
-                hasEmptyField &&
-                childEntryValues?.length > 0;
-
-            return hasErrors || incompleteFields;
+        console.log(childEntryValues, childEntryValues?.length > 0);
+        if (childEntryValues && childEntryValues?.length > 0) {
+            try {
+                const validationSchema = schema.pick(["conditionalRendering"]);
+                const validationResult =
+                    validationSchema.validate(childEntryValues);
+                return !!validationResult; // Cast the result to boolean
+            } catch (error) {
+                console.error("Error during schema validation:", error);
+                return false;
+            }
         } else {
-            const hasErrors = errors?.conditionalRendering?.length !== 0;
-            const noTouchedFields =
-                touchedFields?.conditionalRendering?.length === undefined;
-            const hasChildEntries = childEntryValues?.length > 0;
-
-            return hasErrors && noTouchedFields && hasChildEntries;
+            return false; // Return false when there are no childEntryValues
         }
     }
 
-    function getPopoverReason() {
-        if (getTouchedAndErrorsFields()) {
-            return EPopoverReason.EMPTY_OR_INVALID;
+    function getPopoverMessage() {
+        if (invalidAndEmptyFields) {
+            return (
+                <Text.Body>
+                    To add new condition, fill up existing condition first.
+                </Text.Body>
+            );
         } else if (getElementOptions().length === 0) {
-            return EPopoverReason.NO_CONDITION;
+            return <Text.Body>No conditional rendering available.</Text.Body>;
         }
     }
 
@@ -180,9 +171,9 @@ export const ConditionalRendering = () => {
             title="Conditional Rendering"
             buttonLabel="condition"
             disabledButton={
-                getElementOptions().length === 0 || getTouchedAndErrorsFields()
+                getElementOptions().length === 0 || invalidAndEmptyFields
             }
-            popoverReason={getPopoverReason()}
+            popoverMessage={getPopoverMessage()}
         >
             {renderChildren()}
         </MultiEntry>

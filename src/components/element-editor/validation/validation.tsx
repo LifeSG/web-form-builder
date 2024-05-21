@@ -1,15 +1,11 @@
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
-import {
-    EElementType,
-    EPopoverReason,
-    IValidation,
-    useBuilder,
-} from "src/context-providers";
+import { EElementType, IValidation, useBuilder } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import { IBaseTextBasedFieldValues } from "src/schemas";
 import { ValidationChild } from "./validation-child";
+import { Text } from "@lifesg/react-design-system";
 
 export const Validation = () => {
     // =========================================================================
@@ -86,11 +82,23 @@ export const Validation = () => {
         }
     }
 
-    function getPopoverReason() {
+    function getPopoverMessage() {
         if (getTouchedAndErrorsFields()) {
-            return EPopoverReason.EMPTY_OR_INVALID;
+            if (getTouchedAndErrorsFields()) {
+                return (
+                    <Text.Body>
+                        To add new validation, fill up existing validation
+                        first.
+                    </Text.Body>
+                );
+            }
         } else if (childEntryValues?.length === getMaxEntries(element.type)) {
-            return EPopoverReason.MAX_ENTRY;
+            return (
+                <Text.Body>
+                    Limit reached. To add new validation, remove existing ones
+                    first.
+                </Text.Body>
+            );
         }
     }
 
@@ -178,7 +186,7 @@ export const Validation = () => {
                 childEntryValues?.length === getMaxEntries(element.type) ||
                 getTouchedAndErrorsFields()
             }
-            popoverReason={getPopoverReason()}
+            popoverMessage={getPopoverMessage()}
         >
             {renderChildren()}
         </MultiEntry>
