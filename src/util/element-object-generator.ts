@@ -42,46 +42,47 @@ export namespace ElementObjectGenerator {
         }
     };
 
-    export const duplicate = (element: TElement, existingIds: string[]) => {
+    export const duplicate = (
+        element: TElement,
+        existingInternalIds: string[],
+        existingIds: string[]
+    ) => {
         let internalId: string;
-        while (!internalId || existingIds.includes(internalId)) {
+        while (!internalId || existingInternalIds.includes(internalId)) {
             internalId = SimpleIdGenerator.generate();
         }
 
-        const generateNewCopyId = (id: string) => {
-            const parts = id.split("-");
-            const number = parseInt(parts[parts.length - 1], 10);
-            const incrementedNumber = number + 1;
-            let newId = null;
-            if (!existingIds.includes(`${id}-${incrementedNumber}`)) {
-                newId = parts.slice(0, -1).join("-") + "-" + incrementedNumber;
-            } else {
-                newId =
-                    parts.slice(0, -1).join("-") +
-                    "-" +
-                    (incrementedNumber + 1);
-            }
-            return newId;
+        const extractBaseId = (id: string) => {
+            const match = id.match(/^(.*?)(-copy(?:-\d+)?)?$/);
+            return match ? match[1] : id;
         };
 
-        const generateId = (id: string) => {
-            switch (true) {
-                case id.includes("-copy-"): {
-                    return generateNewCopyId(id);
+        const generateNewId = (baseId: string, existingIds: string[]) => {
+            const regex = new RegExp(`^${baseId}-copy(?:-(\\d+))?$`);
+            let maxSuffix = 0;
+
+            existingIds.forEach((existingId) => {
+                const match = existingId?.match(regex);
+                if (match) {
+                    const suffix = match[1] ? parseInt(match[1], 10) : 1;
+                    if (suffix > maxSuffix) {
+                        maxSuffix = suffix;
+                    }
                 }
-                case id.includes("-copy") &&
-                    !existingIds.includes(`${id}-copy`):
-                    return id + "-2";
-                default:
-                    return id + "-copy";
-            }
+            });
+
+            return `${baseId}-copy${maxSuffix + 1 > 1 ? `-${maxSuffix + 1}` : ""}`;
         };
+
+        const baseId = extractBaseId(element.id);
+        const newId = generateNewId(baseId, existingIds);
 
         const duplicatedElement: TElement = {
             ...element,
             internalId,
-            id: generateId(element.id),
+            id: newId,
         };
+
         return duplicatedElement;
     };
 }

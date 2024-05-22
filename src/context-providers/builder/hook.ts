@@ -63,9 +63,14 @@ export const useBuilder = () => {
             const existingIdentifiers = state.orderedIdentifiers.map(
                 (elementId) => elementId.internalId
             );
+            const existingIds = Object.values(state.elements).map(
+                (element) => element.id
+            );
+
             const duplicatedElement = ElementObjectGenerator.duplicate(
                 element,
-                existingIdentifiers
+                existingIdentifiers,
+                existingIds
             );
             const newOrderedIdentifiers = [
                 ...state.orderedIdentifiers,
