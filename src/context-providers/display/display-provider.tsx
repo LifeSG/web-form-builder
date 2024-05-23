@@ -23,18 +23,11 @@ export const displayReducer = (
             break;
         }
         case "dismiss-toast": {
-            const index = state.toast.findIndex(
-                (toast) => toast.id === action.payload
+            const toastQueue = [...state.toast];
+            const newToastQueue = toastQueue.filter(
+                (toast) => toast.id !== action.payload
             );
-            if (index !== -1) {
-                const toastQueue = [
-                    ...state.toast.slice(0, index),
-                    ...state.toast.slice(index + 1),
-                ];
-
-                state.toast = toastQueue;
-            }
-            break;
+            state.toast = newToastQueue;
         }
     }
 
