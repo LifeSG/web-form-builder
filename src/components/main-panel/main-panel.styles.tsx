@@ -194,3 +194,14 @@ export const ElementItemWrapper = styled.li<IElementItemWrapperProps>`
         }
     }}
 `;
+
+export const ToastWrapper = styled.div`
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1rem;
+`;

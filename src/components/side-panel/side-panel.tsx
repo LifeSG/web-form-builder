@@ -1,12 +1,8 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useCallback, useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import {
-    EElementType,
-    IBaseTextBasedFieldAttributes,
-    TElement,
-} from "src/context-providers";
-import { IBaseTextBasedFieldValues, SchemaHelper } from "src/schemas";
+import { EElementType, EToastTypes, useDisplay } from "src/context-providers";
+import { SchemaHelper } from "src/schemas";
 import { EBuilderMode, useBuilder } from "../../context-providers";
 import { ElementEditor } from "../element-editor";
 import { AddElementsPanel } from "./add-elements-panel";
@@ -25,6 +21,7 @@ export const SidePanel = () => {
         updateElement,
         updateFocusedElement,
     } = useBuilder();
+    const { showToast } = useDisplay();
     const methods = useForm({
         mode: "onTouched",
         // TODO: insert proper type; email is a placeholder
@@ -36,8 +33,13 @@ export const SidePanel = () => {
     // =========================================================================
     const onSubmit = useCallback(
         (values) => {
+            const newToast = {
+                message: "Changes are saved successfully.",
+                type: EToastTypes.SUCCESS_TOAST,
+            };
             updateElement(values);
             updateFocusedElement(false, values);
+            showToast(newToast);
         },
         [updateElement, updateFocusedElement]
     );
