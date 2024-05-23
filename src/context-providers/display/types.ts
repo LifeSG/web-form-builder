@@ -9,12 +9,14 @@ export enum EToastTypes {
 }
 
 export interface IToast {
+    id?: string;
     type?: EToastTypes;
     message?: string;
+    toastFunction?: () => void;
 }
 
 export interface IDisplayState {
-    toast: IToast;
+    toast: IToast[];
 }
 
 // =============================================================================
@@ -26,6 +28,7 @@ export interface IShowToast {
 }
 export interface IDismissToast {
     type: "dismiss-toast";
+    payload: string;
 }
 export type TDisplayAction = IShowToast | IDismissToast;
 

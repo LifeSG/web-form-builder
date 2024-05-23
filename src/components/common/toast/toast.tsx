@@ -1,18 +1,56 @@
 import { Toast } from "@lifesg/react-design-system/toast";
-import { EToastTypes, IToast } from "src/context-providers";
-import { FunctionText } from "./toast.styles";
+import { useEffect, useRef } from "react";
+import { EToastTypes, IToast, useDisplay } from "src/context-providers";
+import { ToastWrapper } from "./toast.styles";
 
 interface IProps {
     toast?: IToast;
     toastFunction?: () => void;
+    index?: number;
 }
 
-export const DisplayToast = ({ toast, toastFunction }: IProps) => {
+export const DisplayToast = ({ toast, toastFunction, index }: IProps) => {
+    // =========================================================================
+    // CONST, STATE, REF
+    // =========================================================================
+    const { dismissToast } = useDisplay();
+    const timeoutRef = useRef(null);
+
+    // =============================================================================
+    // HELPER FUNCTIONS
+    // =============================================================================
+    function startDismissTimer(id: string) {
+        return setTimeout(() => {
+            dismissToast(id);
+        }, 4500);
+    }
+
+    // =========================================================================
+    // EFFECTS
+    // =========================================================================
+    useEffect(() => {
+        if (toast.id !== undefined) {
+            timeoutRef.current = startDismissTimer(toast.id);
+
+            return () => {
+                clearTimeout(timeoutRef.current);
+            };
+        }
+    }, [toast, dismissToast]);
+
+    // =============================================================================
+    // RENDER FUNCTIONS
+    // =============================================================================
     const renderToast = () => {
         switch (toast.type) {
             case EToastTypes.SUCCESS_TOAST: {
                 return (
-                    <Toast type={"success"} label={toast.message} autoDismiss />
+                    <ToastWrapper
+                        type={"success"}
+                        label={toast.message}
+                        autoDismiss
+                        fixed={false}
+                    />
                 );
             }
 
@@ -23,10 +61,8 @@ export const DisplayToast = ({ toast, toastFunction }: IProps) => {
                             type={"success"}
                             label={toast.message}
                             autoDismiss
+                            fixed={false}
                         />
-                        {/* <FunctionText onClick={toastFunction} weight={600}>
-                            Undo
-                        </FunctionText> */}
                     </>
                 );
             }

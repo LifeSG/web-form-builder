@@ -1,20 +1,25 @@
 import { useCallback, useContext } from "react";
+import { SimpleIdGenerator } from "src/util/simple-id-generator";
 import { DisplayContext } from "./display-provider";
-import { IToast } from "./types";
 
 export const useDisplay = () => {
     const { state, dispatch } = useContext(DisplayContext);
 
-    const showToast = useCallback((toast: IToast) => {
-        dispatch({
-            type: "show-toast",
-            payload: toast,
-        });
-    }, []);
+    const showToast = useCallback(
+        (toast) => {
+            const newId = SimpleIdGenerator.generate();
+            dispatch({
+                type: "show-toast",
+                payload: { ...toast, id: newId },
+            });
+        },
+        [dispatch, state.toast]
+    );
 
-    const dismissToast = useCallback(() => {
+    const dismissToast = useCallback((id: string) => {
         dispatch({
             type: "dismiss-toast",
+            payload: id,
         });
     }, []);
 
