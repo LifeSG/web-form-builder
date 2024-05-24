@@ -1,3 +1,4 @@
+import { Text } from "@lifesg/react-design-system/text";
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
@@ -11,7 +12,6 @@ import {
     ConditionalRenderingChild,
     IOnChangeProps,
 } from "./conditional-rendering-child";
-import { Text } from "@lifesg/react-design-system/text";
 
 interface IOptions {
     label: string;
@@ -33,8 +33,8 @@ export const ConditionalRendering = () => {
         formState: { isDirty },
         getValues,
     } = useFormContext<IBaseTextBasedFieldValues>();
-    const invalidAndEmptyFields = getTouchedAndErrorsFields();
     const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
+    const invalidAndEmptyFields = getTouchedAndErrorsFields();
     // =====================================================================
     // HELPER FUNCTIONS
     // =====================================================================
@@ -55,19 +55,30 @@ export const ConditionalRendering = () => {
     };
 
     function getTouchedAndErrorsFields() {
-        console.log(childEntryValues, childEntryValues?.length > 0);
-        if (childEntryValues && childEntryValues?.length > 0) {
+        if (childEntryValues && childEntryValues.length > 0) {
             try {
                 const validationSchema = schema.pick(["conditionalRendering"]);
-                const validationResult =
-                    validationSchema.validate(childEntryValues);
-                return !!validationResult; // Cast the result to boolean
+                const conditionalRenderingValues = getValues(
+                    "conditionalRendering"
+                );
+                const validationResult = validationSchema.validateSync({
+                    conditionalRendering: conditionalRenderingValues,
+                    abortEarly: false,
+                });
+                return !!validationResult ? false : true;
             } catch (error) {
-                console.error("Error during schema validation:", error);
-                return false;
+                if (
+                    error.errors.some((errorMessage: string | string[]) =>
+                        errorMessage.includes("required")
+                    )
+                ) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
         } else {
-            return false; // Return false when there are no childEntryValues
+            return false;
         }
     }
 
@@ -91,12 +102,10 @@ export const ConditionalRendering = () => {
         index: number,
         newValue: IConditionalRendering
     ) => {
-        setChildEntryValues((prevValues) => {
-            const updatedValues = [...prevValues];
-            updatedValues[index] = newValue;
-            setValue("conditionalRendering", updatedValues);
-            return updatedValues;
-        });
+        const updatedValues = [...childEntryValues];
+        updatedValues[index] = newValue;
+        setChildEntryValues(updatedValues);
+        setValue("conditionalRendering", updatedValues);
     };
 
     const handleAddButtonClick = () => {
@@ -106,19 +115,16 @@ export const ConditionalRendering = () => {
             value: "",
             internalId: "",
         };
-        setChildEntryValues((prevValues) => {
-            const updatedValues = [...prevValues, conditionalRenderingChild];
-            setValue("conditionalRendering", updatedValues);
-            return updatedValues;
-        });
+        const updatedValues = [...childEntryValues, conditionalRenderingChild];
+        setChildEntryValues(updatedValues);
+        setValue("conditionalRendering", updatedValues);
     };
 
     const handleDelete = (index: number) => {
-        setChildEntryValues((prevValues) => {
-            const updatedValues = prevValues.filter((_, i) => i !== index);
-            setValue("conditionalRendering", updatedValues);
-            return updatedValues;
-        });
+        const currentValues = [...childEntryValues];
+        const updatedValues = currentValues.filter((_, i) => i !== index);
+        setChildEntryValues(updatedValues);
+        setValue("conditionalRendering", updatedValues);
     };
 
     // =========================================================================

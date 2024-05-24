@@ -1,11 +1,11 @@
+import { Text } from "@lifesg/react-design-system";
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
 import { EElementType, IValidation, useBuilder } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
-import { IBaseTextBasedFieldValues } from "src/schemas";
+import { IBaseTextBasedFieldValues, SchemaHelper } from "src/schemas";
 import { ValidationChild } from "./validation-child";
-import { Text } from "@lifesg/react-design-system";
 
 export const Validation = () => {
     // =========================================================================
@@ -16,9 +16,11 @@ export const Validation = () => {
     const [childEntryValues, setChildEntryValues] = useState<IValidation[]>([]);
     const {
         setValue,
-        formState: { isDirty, errors, touchedFields },
+        formState: { isDirty },
         getValues,
     } = useFormContext<IBaseTextBasedFieldValues>();
+    const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
+    const invalidAndEmptyFields = getTouchedAndErrorsFields();
 
     // =========================================================================
     // HELPER FUNCTIONS
@@ -46,52 +48,41 @@ export const Validation = () => {
     }
 
     function getTouchedAndErrorsFields() {
-        let count = 0;
-        let hasEmptyField = false;
-        const validationFields = getValues("validation");
+        if (childEntryValues && childEntryValues.length > 0) {
+            try {
+                const validationSchema = schema.pick(["validation"]);
+                const validationValues = getValues("validation");
 
-        if (touchedFields?.validation?.length > 0) {
-            touchedFields.validation.forEach((field) => {
-                count += Object.keys(field).length;
-            });
-
-            validationFields?.forEach((field) => {
-                if (Object.values(field).includes("")) {
-                    hasEmptyField = true;
+                const validationResult = validationSchema.validateSync({
+                    validation: validationValues,
+                    abortEarly: false,
+                });
+                return !!validationResult ? false : true;
+            } catch (error) {
+                if (
+                    error.errors.some(
+                        (errorMessage: string | string[]) =>
+                            errorMessage.includes("required") ||
+                            errorMessage.includes("Invalid")
+                    )
+                ) {
+                    return true;
+                } else {
+                    return false;
                 }
-            });
-
-            const hasValidationErrors = errors?.validation?.length > 0;
-            const hasIncompleteFields =
-                count !== childEntryValues.length * 3 &&
-                hasEmptyField &&
-                childEntryValues?.length > 0;
-
-            return hasValidationErrors || hasIncompleteFields;
+            }
         } else {
-            const hasValidationErrors = errors?.validation?.length !== 0;
-            const noTouchedFieldsDefined =
-                touchedFields?.validation?.length === undefined;
-            const hasChildEntryValues = childEntryValues?.length > 0;
-
-            return (
-                hasValidationErrors &&
-                noTouchedFieldsDefined &&
-                hasChildEntryValues
-            );
+            return false;
         }
     }
 
     function getPopoverMessage() {
-        if (getTouchedAndErrorsFields()) {
-            if (getTouchedAndErrorsFields()) {
-                return (
-                    <Text.Body>
-                        To add new validation, fill up existing validation
-                        first.
-                    </Text.Body>
-                );
-            }
+        if (invalidAndEmptyFields) {
+            return (
+                <Text.Body>
+                    To add new validation, fill up existing validation first.
+                </Text.Body>
+            );
         } else if (childEntryValues?.length === getMaxEntries(element.type)) {
             return (
                 <Text.Body>
@@ -107,12 +98,10 @@ export const Validation = () => {
     // =========================================================================
 
     const handleChildChange = (index: number, newValue: IValidation) => {
-        setChildEntryValues((prevValues) => {
-            const updatedValues = [...prevValues];
-            updatedValues[index] = newValue;
-            setValue("validation", updatedValues);
-            return updatedValues;
-        });
+        const updatedValues = [...childEntryValues];
+        updatedValues[index] = newValue;
+        setChildEntryValues(updatedValues);
+        setValue("validation", updatedValues);
     };
 
     const handleAddButtonClick = () => {
@@ -122,19 +111,16 @@ export const Validation = () => {
             validationErrorMessage: "",
         };
 
-        setChildEntryValues((prevValues) => {
-            const updatedValues = [...prevValues, validationChild];
-            setValue("validation", updatedValues);
-            return updatedValues;
-        });
+        const updatedValues = [...childEntryValues, validationChild];
+        setChildEntryValues(updatedValues);
+        setValue("validation", updatedValues);
     };
 
     const handleDelete = (index: number) => {
-        setChildEntryValues((prevValues) => {
-            const updatedValues = prevValues.filter((_, i) => i !== index);
-            setValue("validation", updatedValues);
-            return updatedValues;
-        });
+        const currentValues = [...childEntryValues];
+        const updatedValues = currentValues.filter((_, i) => i !== index);
+        setChildEntryValues(updatedValues);
+        setValue("validation", updatedValues);
     };
 
     // =========================================================================
@@ -184,7 +170,7 @@ export const Validation = () => {
             buttonLabel="validation"
             disabledButton={
                 childEntryValues?.length === getMaxEntries(element.type) ||
-                getTouchedAndErrorsFields()
+                invalidAndEmptyFields
             }
             popoverMessage={getPopoverMessage()}
         >
