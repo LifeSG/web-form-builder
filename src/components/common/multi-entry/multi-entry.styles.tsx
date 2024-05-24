@@ -3,6 +3,7 @@ import { Accordion } from "@lifesg/react-design-system/accordion";
 import { ButtonWithIcon } from "@lifesg/react-design-system/button-with-icon";
 import { Color } from "@lifesg/react-design-system/color";
 import styled from "styled-components";
+import { PopoverTrigger } from "@lifesg/react-design-system";
 
 interface MultiEntryAccordionItemProps {
     $hasSubtitle: boolean;
@@ -18,6 +19,7 @@ export const MultiEntryAccordionItem = styled(
     width: 100%;
     border-top: 0;
     border-bottom: 1px solid ${Color.Neutral[6]};
+    padding-bottom: ${({ $hasSubtitle }) => ($hasSubtitle ? `0.5rem` : "0")};
 
     #content-container {
         padding: 0;
