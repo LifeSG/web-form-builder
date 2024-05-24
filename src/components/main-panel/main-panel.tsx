@@ -16,8 +16,7 @@ import {
     verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { ErrorDisplay } from "@lifesg/react-design-system/error-display";
-import { TElement, useBuilder, useDisplay } from "src/context-providers";
-import { DisplayToast } from "../common/toast/toast";
+import { TElement, useBuilder } from "src/context-providers";
 import { ElementCard } from "../element-card";
 import {
     ElementItemWrapper,
@@ -25,7 +24,6 @@ import {
     EmptyDisplayDescription,
     EmptyDisplayTitle,
     EmptyDisplayWrapper,
-    ToastWrapper,
     Wrapper,
 } from "./main-panel.styles";
 
@@ -41,8 +39,6 @@ export const MainPanel = () => {
         focusedElement,
         updateOrderedIdentifiers,
     } = useBuilder();
-
-    const { toast } = useDisplay();
 
     const finalMode = focusedElement ? true : showSidePanel;
     const renderMode = finalMode ? "minimised" : "expanded";
@@ -140,25 +136,8 @@ export const MainPanel = () => {
         );
     }
 
-    const renderToast = () => {
-        if (toast && toast.length > 0) {
-            return toast.map((value) => {
-                return (
-                    <DisplayToast
-                        key={value.id}
-                        toast={value}
-                        toastFunction={value?.toastFunction}
-                    />
-                );
-            });
-        } else {
-            return null;
-        }
-    };
-
     return (
         <Wrapper $mode={renderMode}>
-            <ToastWrapper>{renderToast()}</ToastWrapper>
             <DndContext
                 sensors={sensors}
                 onDragEnd={handleDragEnd}

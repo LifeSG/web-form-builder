@@ -1,5 +1,5 @@
-import { Text } from "@lifesg/react-design-system/text";
 import { MediaQuery } from "@lifesg/react-design-system/media";
+import { Text } from "@lifesg/react-design-system/text";
 import styled, { css } from "styled-components";
 
 // =============================================================================
@@ -193,15 +193,4 @@ export const ElementItemWrapper = styled.li<IElementItemWrapperProps>`
                 `;
         }
     }}
-`;
-
-export const ToastWrapper = styled.div`
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 9999;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 1rem;
 `;

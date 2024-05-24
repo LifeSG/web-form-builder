@@ -1,4 +1,4 @@
-import { noop } from "lodash";
+import noop from "lodash/noop";
 import { createContext } from "react";
 import { useImmerReducer } from "use-immer";
 import { IDisplayState, TDisplayAction, TDisplayContext } from "./types";

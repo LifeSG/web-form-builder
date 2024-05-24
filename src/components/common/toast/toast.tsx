@@ -1,15 +1,13 @@
 import { Toast } from "@lifesg/react-design-system/toast";
 import { useEffect, useRef } from "react";
 import { EToastTypes, IToast, useDisplay } from "src/context-providers";
-import { ToastWrapper } from "./toast.styles";
 
 interface IProps {
-    toast?: IToast;
+    toast: IToast;
     toastFunction?: () => void;
-    index?: number;
 }
 
-export const DisplayToast = ({ toast, toastFunction, index }: IProps) => {
+export const DisplayToast = ({ toast, toastFunction }: IProps) => {
     // =========================================================================
     // CONST, STATE, REF
     // =========================================================================
@@ -29,13 +27,11 @@ export const DisplayToast = ({ toast, toastFunction, index }: IProps) => {
     // EFFECTS
     // =========================================================================
     useEffect(() => {
-        if (toast.id !== undefined) {
-            timeoutRef.current = startDismissTimer(toast.id);
+        timeoutRef.current = startDismissTimer(toast.id);
 
-            return () => {
-                clearTimeout(timeoutRef.current);
-            };
-        }
+        return () => {
+            clearTimeout(timeoutRef.current);
+        };
     }, [toast, dismissToast]);
 
     // =============================================================================
@@ -43,9 +39,10 @@ export const DisplayToast = ({ toast, toastFunction, index }: IProps) => {
     // =============================================================================
     const renderToast = () => {
         switch (toast.type) {
-            case EToastTypes.SUCCESS_TOAST: {
+            case EToastTypes.SUCCESS_TOAST:
+            case EToastTypes.DELETE_TOAST: {
                 return (
-                    <ToastWrapper
+                    <Toast
                         type={"success"}
                         label={toast.message}
                         autoDismiss
@@ -53,17 +50,14 @@ export const DisplayToast = ({ toast, toastFunction, index }: IProps) => {
                     />
                 );
             }
-
-            case EToastTypes.DELETE_TOAST: {
+            default: {
                 return (
-                    <>
-                        <Toast
-                            type={"success"}
-                            label={toast.message}
-                            autoDismiss
-                            fixed={false}
-                        />
-                    </>
+                    <Toast
+                        type={"error"}
+                        label={"Unable to render toast required."}
+                        autoDismiss
+                        fixed={false}
+                    />
                 );
             }
         }
