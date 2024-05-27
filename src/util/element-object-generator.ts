@@ -8,16 +8,56 @@ import { ELEMENT_BUTTON_LABELS } from "src/data";
 import { SimpleIdGenerator } from "./simple-id-generator";
 
 export namespace ElementObjectGenerator {
-    export const generate = (type: EElementType, existingIds: string[]) => {
+    export const generate = (
+        type: EElementType,
+        existingIds: string[],
+        existingElementIds: string[]
+    ) => {
         let internalId: string;
         while (!internalId || existingIds.includes(internalId)) {
             internalId = SimpleIdGenerator.generate();
         }
+        const generateNewId = (
+            type: EElementType,
+            existingElementIds: string[]
+        ) => {
+            const generateId = (prefix: string) => {
+                const regex = new RegExp(`^${prefix}(?:-(\\d+))?$`);
+                let maxSuffix = -1;
+
+                existingElementIds.forEach((existingElementId) => {
+                    const match = existingElementId?.match(regex);
+                    if (match) {
+                        const suffix = match[1] ? parseInt(match[1], 10) : 0;
+                        if (suffix > maxSuffix) {
+                            maxSuffix = suffix;
+                        }
+                    }
+                });
+
+                return `${prefix}${maxSuffix + 1 > 0 ? `-${maxSuffix + 1}` : ""}`;
+            };
+
+            switch (type) {
+                case EElementType.EMAIL:
+                    return generateId("email-field");
+                case EElementType.NUMERIC:
+                    return generateId("numeric-field");
+                case EElementType.CONTACT:
+                    return generateId("contact-field");
+                case EElementType.TEXT:
+                    return generateId("short-text-field");
+                case EElementType.TEXTAREA:
+                    return generateId("long-text-field");
+                default:
+                    return null;
+            }
+        };
 
         const baseAttributes: IBaseAttributes = {
             internalId,
             type,
-            id: undefined,
+            id: generateNewId(type, existingElementIds),
         };
 
         switch (type) {

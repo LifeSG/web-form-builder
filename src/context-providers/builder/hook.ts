@@ -28,9 +28,13 @@ export const useBuilder = () => {
             const existingIdentifiers = state.orderedIdentifiers.map(
                 (elementId) => elementId.internalId
             );
+            const existingIds = Object.values(state.elements).map(
+                (element) => element.id
+            );
             const newElement: TElement = ElementObjectGenerator.generate(
                 type,
-                existingIdentifiers
+                existingIdentifiers,
+                existingIds
             );
             const newOrderedIdentifiers = [
                 ...state.orderedIdentifiers,
