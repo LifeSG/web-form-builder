@@ -1,6 +1,6 @@
 import { Form } from "@lifesg/react-design-system/form";
 import { Text } from "@lifesg/react-design-system/text";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { ChildEntry } from "src/components/common";
 import { IConditionalRendering } from "src/context-providers";
@@ -54,9 +54,15 @@ export const ConditionalRenderingChild = ({
     const {
         formState: { errors },
         control,
-        trigger,
     } = useFormContext<IBaseTextBasedFieldValues>();
 
+    const [fieldKey, setFieldKey] = useState<string>(value.fieldKey || "");
+    const [comparator, setComparator] = useState<string>(
+        value.comparator || ""
+    );
+    const [refValue, setRefValue] = useState<string | number>(
+        value?.value || ""
+    );
     // =============================================================================
     // EVENT HANLDERS
     // =============================================================================
@@ -68,13 +74,16 @@ export const ConditionalRenderingChild = ({
         const updatedValue = { ...value };
         switch (changeType) {
             case "fieldKey":
+                setFieldKey(newValue);
                 updatedValue.fieldKey = newValue;
                 updatedValue.internalId = internalId;
                 break;
             case "comparator":
+                setComparator(newValue);
                 updatedValue.comparator = newValue;
                 break;
             case "value":
+                setRefValue(newValue);
                 updatedValue.value = newValue;
                 break;
             default:
@@ -107,65 +116,62 @@ export const ConditionalRenderingChild = ({
                         <Controller
                             name={`conditionalRendering.${index}.fieldKey`}
                             control={control}
-                            defaultValue={value?.fieldKey || ""}
-                            render={({ field }) => (
-                                <SelectFieldWrapper
-                                    placeholder="Select"
-                                    selectedOption={
-                                        value?.fieldKey
-                                            ? options.find(
-                                                  (option) =>
-                                                      option.id ===
-                                                      value.fieldKey
-                                              )
-                                            : null
-                                    }
-                                    onSelectOption={(option: IOptions) => {
-                                        handleChange(
-                                            "fieldKey",
-                                            option?.id,
-                                            option?.internalId
-                                        );
-                                        trigger(
-                                            `conditionalRendering.${index}.fieldKey`
-                                        );
-                                    }}
-                                    options={options}
-                                    renderCustomSelectedOption={(
-                                        option: IOptions
-                                    ) => {
-                                        return (
-                                            <Text.Body>
-                                                {option?.label}
-                                            </Text.Body>
-                                        );
-                                    }}
-                                    renderListItem={(option: IOptions) => {
-                                        return (
-                                            <div>
+                            defaultValue={fieldKey}
+                            render={({ field }) => {
+                                const { ref, ...fieldWithoutRef } = field;
+                                return (
+                                    <SelectFieldWrapper
+                                        {...fieldWithoutRef}
+                                        placeholder="Select"
+                                        selectedOption={
+                                            fieldKey
+                                                ? options.find(
+                                                      (option) =>
+                                                          option.id === fieldKey
+                                                  )
+                                                : null
+                                        }
+                                        onSelectOption={(option: IOptions) => {
+                                            handleChange(
+                                                "fieldKey",
+                                                option?.id,
+                                                option?.internalId
+                                            );
+                                            fieldWithoutRef.onChange(option.id);
+                                        }}
+                                        options={options}
+                                        renderCustomSelectedOption={(
+                                            option: IOptions
+                                        ) => {
+                                            return (
                                                 <Text.Body>
                                                     {option?.label}
                                                 </Text.Body>
-                                                <OptionIDText>
-                                                    ID: {option?.id}
-                                                </OptionIDText>
-                                            </div>
-                                        );
-                                    }}
-                                    onBlur={() =>
-                                        trigger(
-                                            `conditionalRendering.${index}.fieldKey`
-                                        )
-                                    }
-                                    errorMessage={
-                                        (errors &&
-                                            errors.conditionalRendering &&
-                                            errors?.conditionalRendering[index]
-                                                ?.fieldKey?.message) ||
-                                        ""
-                                    }
-                                />
-                            )}
+                                            );
+                                        }}
+                                        renderListItem={(option: IOptions) => {
+                                            return (
+                                                <div>
+                                                    <Text.Body>
+                                                        {option?.label}
+                                                    </Text.Body>
+                                                    <OptionIDText>
+                                                        ID: {option?.id}
+                                                    </OptionIDText>
+                                                </div>
+                                            );
+                                        }}
+                                        errorMessage={
+                                            (errors &&
+                                                errors.conditionalRendering &&
+                                                errors?.conditionalRendering[
+                                                    index
+                                                ]?.fieldKey?.message) ||
+                                            ""
+                                        }
+                                    />
+                                );
+                            }}
                             shouldUnregister={true}
                         />
                     </div>
@@ -173,39 +179,29 @@ export const ConditionalRenderingChild = ({
                         <Controller
                             name={`conditionalRendering.${index}.comparator`}
                             control={control}
-                            defaultValue={
-                                (value?.comparator !== "" &&
-                                    value?.comparator) ||
-                                comparatorOptions[0]
-                            }
-                            render={({ field }) => (
-                                <SelectFieldWrapper
-                                    selectedOption={
-                                        value?.comparator
-                                            ? value?.comparator
-                                            : comparatorOptions[0]
-                                    }
-                                    onSelectOption={(option: string) => {
-                                        handleChange("comparator", option);
-                                        trigger(
-                                            `conditionalRendering.${index}.comparator`
-                                        );
-                                    }}
-                                    onBlur={() =>
-                                        trigger(
-                                            `conditionalRendering.${index}.comparator`
-                                        )
-                                    }
-                                    options={comparatorOptions}
-                                    errorMessage={
-                                        (errors &&
-                                            errors.conditionalRendering &&
-                                            errors?.conditionalRendering[index]
-                                                ?.comparator?.message) ||
-                                        ""
-                                    }
-                                />
-                            )}
+                            defaultValue={comparator}
+                            render={({ field }) => {
+                                const { ref, ...fieldWithoutRef } = field;
+                                return (
+                                    <SelectFieldWrapper
+                                        {...fieldWithoutRef}
+                                        selectedOption={comparator}
+                                        onSelectOption={(option: string) => {
+                                            handleChange("comparator", option);
+                                            fieldWithoutRef.onChange(option);
+                                        }}
+                                        options={comparatorOptions}
+                                        errorMessage={
+                                            (errors &&
+                                                errors.conditionalRendering &&
+                                                errors?.conditionalRendering[
+                                                    index
+                                                ]?.comparator?.message) ||
+                                            ""
+                                        }
+                                    />
+                                );
+                            }}
                             shouldUnregister={true}
                         />
                     </div>
@@ -214,30 +210,33 @@ export const ConditionalRenderingChild = ({
                     <Controller
                         name={`conditionalRendering.${index}.value`}
                         control={control}
-                        defaultValue={value?.value || ""}
-                        render={({ field }) => (
-                            <Form.Input
-                                placeholder="Set value"
-                                defaultValue={value?.value}
-                                onChange={(event) => {
-                                    handleChange("value", event.target.value);
-                                    trigger(
-                                        `conditionalRendering.${index}.value`
-                                    );
-                                }}
-                                onBlur={() =>
-                                    trigger(
-                                        `conditionalRendering.${index}.value`
-                                    )
-                                }
-                                errorMessage={
-                                    errors &&
-                                    errors?.conditionalRendering &&
-                                    errors?.conditionalRendering[index]?.value
-                                        ?.message
-                                }
-                            />
-                        )}
+                        defaultValue={refValue}
+                        render={({ field }) => {
+                            const { ref, ...fieldWithoutRef } = field;
+                            return (
+                                <Form.Input
+                                    {...fieldWithoutRef}
+                                    placeholder="Set value"
+                                    defaultValue={refValue}
+                                    value={refValue}
+                                    onChange={(event) => {
+                                        handleChange(
+                                            "value",
+                                            event.target.value
+                                        );
+                                        fieldWithoutRef.onChange(
+                                            event.target.value
+                                        );
+                                    }}
+                                    errorMessage={
+                                        errors &&
+                                        errors?.conditionalRendering &&
+                                        errors?.conditionalRendering[index]
+                                            ?.value?.message
+                                    }
+                                />
+                            );
+                        }}
                         shouldUnregister={true}
                     />
                 </div>

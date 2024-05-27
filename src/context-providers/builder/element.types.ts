@@ -35,7 +35,7 @@ export interface IConditionalRendering {
 }
 
 export interface IPrefillAttributes {
-    prefillMode?: "Myinfo" | "Previous source";
+    prefillMode?: "Myinfo" | "Previous source" | "";
     actionId?: string;
     path?: string;
 }

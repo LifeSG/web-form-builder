@@ -1,10 +1,10 @@
 import { Form } from "@lifesg/react-design-system/form";
 import { Text } from "@lifesg/react-design-system/text";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { IconDropdown } from "src/components/common/icon-dropdown";
 import { TogglePair } from "src/components/common/toggle-pair/toggle-pair";
-import { useBuilder } from "src/context-providers";
+import { EElementType, useBuilder } from "src/context-providers";
 import { IBaseTextBasedFieldValues } from "src/schemas";
 import {
     FieldEditorAccordionItem,
@@ -24,6 +24,14 @@ export const BasicDetails = () => {
         watch,
     } = useFormContext<IBaseTextBasedFieldValues>();
     const element = focusedElement.element;
+    const [elementType, setElementType] = useState<EElementType>(element.type);
+    const [elementName, setElementName] = useState<string>(element.label);
+    const [required, setRequired] = useState<boolean>(element.required || true);
+    const [requiredErrorMsg, setRequiredErrorMsg] = useState<string>(
+        element.requiredErrorMsg || ""
+    );
+    const [id, setId] = useState<string>(element.id || "");
+    const [placeholder, setPlaceholder] = useState(element.placeholder || "");
 
     // =========================================================================
     // HELPER FUNCTIONS
@@ -57,15 +65,16 @@ export const BasicDetails = () => {
                 <Controller
                     name="type"
                     control={control}
-                    defaultValue={element?.type}
+                    defaultValue={elementType}
                     render={({ field }) => (
                         <IconDropdown
-                            type={element?.type}
+                            type={elementType}
                             id={element?.id}
+                            onChange={(value: EElementType) => {
+                                setElementType(value);
+                                field.onChange({ target: { value: value } });
+                            }}
                             errorMessage={errors.type?.message}
-                            onChange={(value) =>
-                                field.onChange({ target: { value: value } })
-                            }
                         />
                     )}
                     shouldUnregister={true}
@@ -75,7 +84,7 @@ export const BasicDetails = () => {
                     <Controller
                         name="label"
                         control={control}
-                        defaultValue={element?.label}
+                        defaultValue={elementName}
                         render={({ field }) => (
                             <Form.Textarea
                                 {...field}
@@ -83,6 +92,11 @@ export const BasicDetails = () => {
                                 label="Element Name"
                                 rows={1}
                                 placeholder="Element Name"
+                                value={elementName}
+                                onChange={(e) => {
+                                    setElementName(e.target.value);
+                                    field.onChange(e.target.value);
+                                }}
                                 errorMessage={errors.label?.message}
                                 maxLength={40}
                             />
@@ -95,13 +109,16 @@ export const BasicDetails = () => {
                     <Controller
                         name="required"
                         control={control}
-                        defaultValue={element.required}
+                        defaultValue={required}
                         render={({ field }) => (
                             <TogglePair
                                 label="Mandatory field"
-                                defaultValue={element.required}
+                                defaultValue={required}
+                                onChange={(value) => {
+                                    setRequired(value);
+                                    field.onChange(value);
+                                }}
                                 id={element.internalId}
-                                onChange={(value) => field.onChange(value)}
                             />
                         )}
                         shouldUnregister={true}
@@ -111,12 +128,17 @@ export const BasicDetails = () => {
                         <Controller
                             name="requiredErrorMsg"
                             control={control}
-                            defaultValue={element.requiredErrorMsg}
+                            defaultValue={requiredErrorMsg}
                             render={({ field }) => (
                                 <Form.Input
                                     {...field}
                                     label="Error message"
                                     defaultValue={element.requiredErrorMsg}
+                                    value={requiredErrorMsg}
+                                    onChange={(e) => {
+                                        setRequiredErrorMsg(e.target.value);
+                                        field.onChange(e.target.value);
+                                    }}
                                     errorMessage={
                                         errors.requiredErrorMsg?.message
                                     }
@@ -130,7 +152,7 @@ export const BasicDetails = () => {
                 <Controller
                     name="id"
                     control={control}
-                    defaultValue={element?.id}
+                    defaultValue={id}
                     render={({ field }) => (
                         <Form.Input
                             {...field}
@@ -144,6 +166,11 @@ export const BasicDetails = () => {
                                 ),
                             }}
                             placeholder="Create an ID"
+                            value={id}
+                            onChange={(e) => {
+                                setId(e.target.value);
+                                field.onChange(e.target.value);
+                            }}
                             errorMessage={errors.id?.message}
                         />
                     )}
@@ -154,12 +181,17 @@ export const BasicDetails = () => {
                     <Controller
                         name="placeholder"
                         control={control}
-                        defaultValue={element?.placeholder}
+                        defaultValue={placeholder}
                         render={({ field }) => (
                             <Form.Input
                                 {...field}
                                 label="Placeholder text (optional)"
                                 placeholder="Enter placeholder text"
+                                value={placeholder}
+                                onChange={(e) => {
+                                    setPlaceholder(e.target.value);
+                                    field.onChange(e.target.value);
+                                }}
                                 errorMessage={errors.placeholder?.message}
                             />
                         )}

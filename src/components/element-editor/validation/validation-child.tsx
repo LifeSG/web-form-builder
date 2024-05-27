@@ -2,7 +2,7 @@ import { Form } from "@lifesg/react-design-system/form";
 import { useEffect, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { ChildEntry } from "src/components/common";
-import { EElementType, IValidation } from "src/context-providers/builder";
+import { IValidation } from "src/context-providers/builder";
 import { IBaseTextBasedFieldValues } from "src/schemas";
 import { FieldWrapper } from "./validation.styles";
 
@@ -24,10 +24,14 @@ export const ValidationChild = ({
     const {
         formState: { errors },
         control,
-        trigger,
     } = useFormContext<IBaseTextBasedFieldValues>();
     const [validationRulePlaceHolder, setValidationRulePlaceHolder] =
         useState<string>();
+    const [type, setType] = useState<string>(value.validationType || "");
+    const [rule, setRule] = useState<string>(value.validationRule || "");
+    const [errorMsg, setErrorMsg] = useState<string>(
+        value.validationErrorMessage || ""
+    );
 
     // =============================================================================
     // EVENT HANDLERS
@@ -36,12 +40,15 @@ export const ValidationChild = ({
         const updatedValue = { ...value };
         switch (changeType) {
             case "type":
+                setType(newValue);
                 updatedValue.validationType = newValue;
                 break;
             case "rule":
+                setRule(newValue);
                 updatedValue.validationRule = newValue;
                 break;
             case "errorMessage":
+                setErrorMsg(newValue);
                 updatedValue.validationErrorMessage = newValue;
                 break;
             default:
@@ -75,26 +82,27 @@ export const ValidationChild = ({
                     <Controller
                         name={`validation.${index}.validationType`}
                         control={control}
-                        defaultValue={value?.validationType || ""}
-                        render={({ field }) => (
-                            <Form.Select
-                                {...field}
-                                placeholder="Select"
-                                selectedOption={value?.validationType}
-                                options={options}
-                                disabled={options.length === 1}
-                                onSelectOption={(option) => {
-                                    handleChange("type", option);
-                                    trigger(
-                                        `validation.${index}.validationType`
-                                    );
-                                }}
-                                errorMessage={
-                                    errors?.validation?.[index]?.validationType
-                                        ?.message
-                                }
-                            />
-                        )}
+                        defaultValue={type}
+                        render={({ field }) => {
+                            const { ref, ...fieldWithoutRef } = field;
+                            return (
+                                <Form.Select
+                                    {...fieldWithoutRef}
+                                    placeholder="Select"
+                                    selectedOption={type}
+                                    options={options}
+                                    disabled={options.length === 1}
+                                    onSelectOption={(option) => {
+                                        handleChange("type", option);
+                                        fieldWithoutRef.onChange(option);
+                                    }}
+                                    errorMessage={
+                                        errors?.validation?.[index]
+                                            ?.validationType?.message
+                                    }
+                                />
+                            );
+                        }}
                         shouldUnregister={true}
                     />
                 </div>
@@ -102,27 +110,33 @@ export const ValidationChild = ({
                     <Controller
                         name={`validation.${index}.validationRule`}
                         control={control}
-                        defaultValue={value?.validationRule || ""}
-                        render={({ field }) => (
-                            <Form.Textarea
-                                {...field}
-                                placeholder={
-                                    validationRulePlaceHolder
-                                        ? validationRulePlaceHolder
-                                        : "Enter rule"
-                                }
-                                onChange={(event) => {
-                                    handleChange("rule", event.target.value);
-                                    trigger(
-                                        `validation.${index}.validationRule`
-                                    );
-                                }}
-                                errorMessage={
-                                    errors?.validation?.[index]?.validationRule
-                                        ?.message
-                                }
-                            />
-                        )}
+                        defaultValue={rule}
+                        render={({ field }) => {
+                            const { ref, ...fieldWithoutRef } = field;
+                            return (
+                                <Form.Textarea
+                                    {...fieldWithoutRef}
+                                    placeholder={
+                                        validationRulePlaceHolder
+                                            ? validationRulePlaceHolder
+                                            : "Enter rule"
+                                    }
+                                    onChange={(event) => {
+                                        handleChange(
+                                            "rule",
+                                            event.target.value
+                                        );
+                                        fieldWithoutRef.onChange(
+                                            event.target.value
+                                        );
+                                    }}
+                                    errorMessage={
+                                        errors?.validation?.[index]
+                                            ?.validationRule?.message
+                                    }
+                                />
+                            );
+                        }}
                         shouldUnregister={true}
                     />
                 </div>
@@ -130,27 +144,30 @@ export const ValidationChild = ({
                     <Controller
                         name={`validation.${index}.validationErrorMessage`}
                         control={control}
-                        defaultValue={value?.validationErrorMessage || ""}
-                        render={({ field }) => (
-                            <Form.Input
-                                {...field}
-                                placeholder="Set error message"
-                                defaultValue={value?.validationErrorMessage}
-                                onChange={(event) => {
-                                    handleChange(
-                                        "errorMessage",
-                                        event.target.value
-                                    );
-                                    trigger(
-                                        `validation.${index}.validationErrorMessage`
-                                    );
-                                }}
-                                errorMessage={
-                                    errors?.validation?.[index]
-                                        ?.validationErrorMessage?.message
-                                }
-                            />
-                        )}
+                        defaultValue={errorMsg}
+                        render={({ field }) => {
+                            const { ref, ...fieldWithoutRef } = field;
+                            return (
+                                <Form.Input
+                                    {...fieldWithoutRef}
+                                    placeholder="Set error message"
+                                    defaultValue={errorMsg}
+                                    onChange={(event) => {
+                                        handleChange(
+                                            "errorMessage",
+                                            event.target.value
+                                        );
+                                        fieldWithoutRef.onChange(
+                                            event.target.value
+                                        );
+                                    }}
+                                    errorMessage={
+                                        errors?.validation?.[index]
+                                            ?.validationErrorMessage?.message
+                                    }
+                                />
+                            );
+                        }}
                         shouldUnregister={true}
                     />
                 </div>
