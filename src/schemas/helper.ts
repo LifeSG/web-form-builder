@@ -6,17 +6,24 @@ import { EMAIL_SCHEMA } from "./text-based-fields";
 
 export namespace SchemaHelper {
     export const buildSchema = (type: EElementType) => {
-        const { elements, focusedElement } = useBuilder();
+        try {
+            const { elements, focusedElement } = useBuilder();
 
-        const baseTextFieldBasedSchema =
-            BaseSchemaHelper.getTextFieldBasedSchema(elements, focusedElement);
+            const baseTextFieldBasedSchema =
+                BaseSchemaHelper.getTextFieldBasedSchema(
+                    elements,
+                    focusedElement
+                );
 
-        switch (type) {
-            case EElementType.EMAIL:
-                return yup
-                    .object()
-                    .concat(baseTextFieldBasedSchema)
-                    .concat(EMAIL_SCHEMA);
+            switch (type) {
+                case EElementType.EMAIL:
+                    return yup
+                        .object()
+                        .concat(baseTextFieldBasedSchema)
+                        .concat(EMAIL_SCHEMA);
+            }
+        } catch (error) {
+            console.error("Error in schema helper:", error);
         }
     };
 }
