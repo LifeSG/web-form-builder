@@ -5,7 +5,7 @@ import {
 } from "src/context-providers";
 import * as yup from "yup";
 
-const CAMEL_CASE_REGEX = /^[a-z]+((\d)|([A-Z0-9][a-z0-9]+))*([A-Z])?$/gm;
+const ID_REGEX = /^[a-z]+(?:[A-Z0-9][a-z0-9]*)*(?:[-_][a-z0-9]+)*$/gm;
 
 export namespace BaseSchemaHelper {
     export const getTextFieldBasedSchema = (
@@ -20,7 +20,7 @@ export namespace BaseSchemaHelper {
             id: yup
                 .string()
                 .required("ID required.")
-                .matches(CAMEL_CASE_REGEX, { message: "ID must be camelCase." })
+                .matches(ID_REGEX, { message: "ID must be camelCase." })
                 .notOneOf(
                     Object.values(elements)
                         .map((e) => e.id)
