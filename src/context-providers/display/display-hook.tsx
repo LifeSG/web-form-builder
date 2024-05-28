@@ -13,7 +13,7 @@ export const useDisplay = () => {
                 payload: { ...toast, id: newId },
             });
         },
-        [dispatch, state.toast]
+        [dispatch, state.toasts]
     );
 
     const dismissToast = useCallback((id: string) => {
@@ -26,6 +26,6 @@ export const useDisplay = () => {
     return {
         showToast,
         dismissToast,
-        toast: state.toast,
+        toasts: state.toasts,
     };
 };

@@ -1,17 +1,17 @@
 import { useDisplay } from "../../../context-providers";
-import { DisplayToast } from "./toast";
+import { Toasts } from "./toasts";
 
 export const RenderToasts = () => {
-    const { toast } = useDisplay();
+    const { toasts } = useDisplay();
 
-    if (!toast || toast.length === 0) {
+    if (!toasts || toasts.length === 0) {
         return <></>;
     }
 
     return (
         <>
-            {toast.map((value) => (
-                <DisplayToast
+            {toasts.map((value) => (
+                <Toasts
                     key={value.id}
                     toast={value}
                     toastFunction={value.toastFunction}

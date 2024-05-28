@@ -7,7 +7,7 @@ import { IDisplayState, TDisplayAction, TDisplayContext } from "./types";
 // DEFAULT VALUES
 // =============================================================================
 const DEFAULT_DISPLAY_VALUES: IDisplayState = {
-    toast: [],
+    toasts: [],
 };
 
 // =============================================================================
@@ -19,15 +19,15 @@ export const displayReducer = (
 ) => {
     switch (action.type) {
         case "show-toast": {
-            state.toast = [...state.toast, action.payload];
+            state.toasts = [...state.toasts, action.payload];
             break;
         }
         case "dismiss-toast": {
-            const toastQueue = [...state.toast];
+            const toastQueue = [...state.toasts];
             const newToastQueue = toastQueue.filter(
                 (toast) => toast.id !== action.payload
             );
-            state.toast = newToastQueue;
+            state.toasts = newToastQueue;
         }
     }
 

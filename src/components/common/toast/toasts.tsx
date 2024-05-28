@@ -7,7 +7,7 @@ interface IProps {
     toastFunction?: () => void;
 }
 
-export const DisplayToast = ({ toast, toastFunction }: IProps) => {
+export const Toasts = ({ toast, toastFunction }: IProps) => {
     // =========================================================================
     // CONST, STATE, REF
     // =========================================================================
@@ -35,33 +35,21 @@ export const DisplayToast = ({ toast, toastFunction }: IProps) => {
     }, [toast, dismissToast]);
 
     // =============================================================================
-    // RENDER FUNCTIONS
+    // RENDER
     // =============================================================================
-    const renderToast = () => {
-        switch (toast.type) {
-            case EToastTypes.SUCCESS_TOAST:
-            case EToastTypes.DELETE_TOAST: {
-                return (
-                    <Toast
-                        type={"success"}
-                        label={toast.message}
-                        autoDismiss
-                        fixed={false}
-                    />
-                );
-            }
-            default: {
-                return (
-                    <Toast
-                        type={"error"}
-                        label={"Unable to render toast required."}
-                        autoDismiss
-                        fixed={false}
-                    />
-                );
-            }
-        }
-    };
-
-    return renderToast();
+    switch (toast.type) {
+        case EToastTypes.SUCCESS_TOAST:
+        case EToastTypes.DELETE_TOAST:
+            return (
+                <Toast
+                    type={"success"}
+                    label={toast.message}
+                    autoDismiss
+                    fixed={false}
+                />
+            );
+        default:
+            console.error("Unable to render toast required.");
+            return null;
+    }
 };

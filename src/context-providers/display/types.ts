@@ -16,7 +16,7 @@ export interface IToast {
 }
 
 export interface IDisplayState {
-    toast: IToast[];
+    toasts: IToast[];
 }
 
 // =============================================================================
