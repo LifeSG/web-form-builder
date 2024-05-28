@@ -67,15 +67,9 @@ export const ConditionalRendering = () => {
                 });
                 return !!validationResult ? false : true;
             } catch (error) {
-                if (
-                    error.errors.some((errorMessage: string | string[]) =>
-                        errorMessage.includes("required")
-                    )
-                ) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return error.errors.some((errorMessage: string | string[]) =>
+                    errorMessage.includes("required")
+                );
             }
         } else {
             return false;

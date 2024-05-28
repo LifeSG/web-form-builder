@@ -59,17 +59,9 @@ export const Validation = () => {
                 });
                 return !!validationResult ? false : true;
             } catch (error) {
-                if (
-                    error.errors.some(
-                        (errorMessage: string | string[]) =>
-                            errorMessage.includes("required") ||
-                            errorMessage.includes("Invalid")
-                    )
-                ) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return error.errors.some((errorMessage: string | string[]) =>
+                    errorMessage.includes("required")
+                );
             }
         } else {
             return false;
