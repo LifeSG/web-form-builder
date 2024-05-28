@@ -7,6 +7,29 @@ import {
 import { ELEMENT_BUTTON_LABELS } from "src/data";
 import { SimpleIdGenerator } from "./simple-id-generator";
 
+// =============================================================================
+// HELPER FUNCTIONS
+// =============================================================================
+const extractBaseId = (id: string) => {
+    const match = id.match(/^(.*?)(-copy(?:-\d+)?)?$/);
+    return match ? match[1] : id;
+};
+
+const generateNewId = (baseId: string, existingIds: string[]) => {
+    const regex = new RegExp(`^${baseId}-copy(?:-(\\d+))?$`);
+
+    const suffixes = existingIds.map((existingId) => {
+        const match = existingId?.match(regex);
+        if (match) {
+            return match[1] ? parseInt(match[1], 10) : 1;
+        }
+        return 0;
+    });
+    const maxSuffix = Math.max(0, ...suffixes);
+
+    return `${baseId}-copy${maxSuffix + 1 > 1 ? `-${maxSuffix + 1}` : ""}`;
+};
+
 export namespace ElementObjectGenerator {
     export const generate = (type: EElementType, existingIds: string[]) => {
         let internalId: string;
@@ -52,28 +75,6 @@ export namespace ElementObjectGenerator {
         while (!internalId || existingInternalIds.includes(internalId)) {
             internalId = SimpleIdGenerator.generate();
         }
-
-        const extractBaseId = (id: string) => {
-            const match = id.match(/^(.*?)(-copy(?:-\d+)?)?$/);
-            return match ? match[1] : id;
-        };
-
-        const generateNewId = (baseId: string, existingIds: string[]) => {
-            const regex = new RegExp(`^${baseId}-copy(?:-(\\d+))?$`);
-            let maxSuffix = 0;
-
-            existingIds.forEach((existingId) => {
-                const match = existingId?.match(regex);
-                if (match) {
-                    const suffix = match[1] ? parseInt(match[1], 10) : 1;
-                    if (suffix > maxSuffix) {
-                        maxSuffix = suffix;
-                    }
-                }
-            });
-
-            return `${baseId}-copy${maxSuffix + 1 > 1 ? `-${maxSuffix + 1}` : ""}`;
-        };
 
         const baseId = extractBaseId(element.id);
         const newId = generateNewId(baseId, existingIds);
