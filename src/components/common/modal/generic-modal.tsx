@@ -8,15 +8,21 @@ interface IProps extends ModalBoxProps {
 }
 
 export const GenericModal = ({ type, children, ...otherProps }: IProps) => {
+    // =========================================================================
+    // CONST, STATE, REFS
+    // =========================================================================
     const { hideModal } = useModal();
 
     const handleModalClose = () => {
         hideModal(type);
     };
 
+    // =============================================================================
+    // RENDER FUNCTIONS
+    // =============================================================================
     return (
         <ModalBox onClose={handleModalClose} {...otherProps}>
-            <ModalInner>{children}</ModalInner>
+            <ModalInner data-testid="modal-content">{children}</ModalInner>
         </ModalBox>
     );
 };
