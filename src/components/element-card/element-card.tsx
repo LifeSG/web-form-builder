@@ -6,7 +6,12 @@ import { PlusCircleIcon } from "@lifesg/react-icons";
 import { BinIcon } from "@lifesg/react-icons/bin";
 import { CopyIcon } from "@lifesg/react-icons/copy";
 import { CSSProperties } from "react";
-import { TElement, useBuilder } from "src/context-providers";
+import {
+    EToastTypes,
+    TElement,
+    useBuilder,
+    useDisplay,
+} from "src/context-providers";
 import { CardIcon } from "../common";
 import {
     ActionButton,
@@ -33,6 +38,7 @@ export const ElementCard = ({ element, onClick }: IProps) => {
     // =========================================================================
     const { label, id } = element;
     const { focusedElement, deleteElement, duplicateElement } = useBuilder();
+    const { showToast } = useDisplay();
 
     const { isDragging } = useDraggable({
         id: element.internalId,
@@ -70,11 +76,16 @@ export const ElementCard = ({ element, onClick }: IProps) => {
         event: React.MouseEvent<HTMLButtonElement>
     ) => {
         event.stopPropagation();
+        const newToast = {
+            message: "Element duplicated.",
+            type: EToastTypes.SUCCESS_TOAST,
+        };
 
         if (disableDuplicate) {
             event.preventDefault();
         }
         duplicateElement(focusedElement.element);
+        showToast(newToast);
     };
 
     const handleDeleteClick = (event: React.MouseEvent<HTMLButtonElement>) => {
