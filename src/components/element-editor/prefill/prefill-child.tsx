@@ -1,9 +1,9 @@
 import { Form } from "@lifesg/react-design-system/form";
+import { Controller, useFormContext } from "react-hook-form";
 import { ChildEntry } from "src/components/common";
 import { IPrefillAttributes } from "src/context-providers";
-import { FieldWrapper } from "./prefill.styles";
-import { Controller, useFormContext } from "react-hook-form";
 import { IBaseTextBasedFieldValues } from "src/schemas";
+import { FieldWrapper } from "./prefill.styles";
 
 interface IProps {
     onDelete: () => void;
@@ -79,25 +79,29 @@ export const PrefillChild = ({ onDelete, onChange, value, index }: IProps) => {
                         name={`prefill.${index}.prefillMode`}
                         control={control}
                         defaultValue={value?.prefillMode || null}
-                        render={() => (
-                            <Form.Select
-                                placeholder="Select"
-                                selectedOption={value?.prefillMode}
-                                options={options}
-                                disabled={options.length === 1}
-                                onSelectOption={(option) => {
-                                    handleChange("mode", option);
-                                    trigger(`prefill.${index}.prefillMode`);
-                                }}
-                                onBlur={() =>
-                                    trigger(`prefill.${index}.prefillMode`)
-                                }
-                                errorMessage={
-                                    errors?.prefill?.[index]?.prefillMode
-                                        ?.message
-                                }
-                            />
-                        )}
+                        render={({ field }) => {
+                            const { ref, ...fieldWithoutRef } = field;
+                            return (
+                                <Form.Select
+                                    {...fieldWithoutRef}
+                                    placeholder="Select"
+                                    selectedOption={value?.prefillMode}
+                                    options={options}
+                                    disabled={options.length === 1}
+                                    onSelectOption={(option) => {
+                                        handleChange("mode", option);
+                                        trigger(`prefill.${index}.prefillMode`);
+                                    }}
+                                    onBlur={() =>
+                                        trigger(`prefill.${index}.prefillMode`)
+                                    }
+                                    errorMessage={
+                                        errors?.prefill?.[index]?.prefillMode
+                                            ?.message
+                                    }
+                                />
+                            );
+                        }}
                         shouldUnregister={true}
                     />
                 </div>
@@ -111,28 +115,34 @@ export const PrefillChild = ({ onDelete, onChange, value, index }: IProps) => {
                                 name={`prefill.${index}.actionId`}
                                 control={control}
                                 defaultValue={value?.actionId}
-                                render={() => (
-                                    <Form.Input
-                                        placeholder="Enter an action ID"
-                                        defaultValue={value.actionId}
-                                        onChange={(event) => {
-                                            handleChange(
-                                                "actionId",
-                                                event.target.value
-                                            );
-                                            trigger(
-                                                `prefill.${index}.actionId`
-                                            );
-                                        }}
-                                        onBlur={() =>
-                                            trigger(`prefill.${index}.actionId`)
-                                        }
-                                        errorMessage={
-                                            errors?.prefill?.[index]?.actionId
-                                                ?.message
-                                        }
-                                    />
-                                )}
+                                render={({ field }) => {
+                                    const { ref, ...fieldWithoutRef } = field;
+                                    return (
+                                        <Form.Input
+                                            {...fieldWithoutRef}
+                                            placeholder="Enter an action ID"
+                                            defaultValue={value.actionId}
+                                            onChange={(event) => {
+                                                handleChange(
+                                                    "actionId",
+                                                    event.target.value
+                                                );
+                                                trigger(
+                                                    `prefill.${index}.actionId`
+                                                );
+                                            }}
+                                            onBlur={() =>
+                                                trigger(
+                                                    `prefill.${index}.actionId`
+                                                )
+                                            }
+                                            errorMessage={
+                                                errors?.prefill?.[index]
+                                                    ?.actionId?.message
+                                            }
+                                        />
+                                    );
+                                }}
                                 shouldUnregister={true}
                             />
                         )}
@@ -144,20 +154,29 @@ export const PrefillChild = ({ onDelete, onChange, value, index }: IProps) => {
                         name={`prefill.${index}.path`}
                         control={control}
                         defaultValue={value?.path}
-                        render={() => (
-                            <Form.Input
-                                placeholder="Enter a path"
-                                defaultValue={value?.path}
-                                onChange={(event) => {
-                                    handleChange("path", event.target.value);
-                                    trigger(`prefill.${index}.path`);
-                                }}
-                                errorMessage={
-                                    errors?.prefill?.[index]?.path?.message
-                                }
-                                onBlur={() => trigger(`prefill.${index}.path`)}
-                            />
-                        )}
+                        render={({ field }) => {
+                            const { ref, ...fieldWithoutRef } = field;
+                            return (
+                                <Form.Input
+                                    {...fieldWithoutRef}
+                                    placeholder="Enter a path"
+                                    defaultValue={value?.path}
+                                    onChange={(event) => {
+                                        handleChange(
+                                            "path",
+                                            event.target.value
+                                        );
+                                        trigger(`prefill.${index}.path`);
+                                    }}
+                                    errorMessage={
+                                        errors?.prefill?.[index]?.path?.message
+                                    }
+                                    onBlur={() =>
+                                        trigger(`prefill.${index}.path`)
+                                    }
+                                />
+                            );
+                        }}
                         shouldUnregister={true}
                     />
                 </div>
