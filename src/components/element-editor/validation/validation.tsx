@@ -59,8 +59,10 @@ export const Validation = () => {
                 });
                 return !!validationResult ? false : true;
             } catch (error) {
-                return error.errors.some((errorMessage: string | string[]) =>
-                    errorMessage.includes("required")
+                return error.errors.some(
+                    (errorMessage: string | string[]) =>
+                        errorMessage.includes("required") ||
+                        errorMessage.includes("Invalid")
                 );
             }
         } else {
