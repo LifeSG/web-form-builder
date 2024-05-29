@@ -78,7 +78,7 @@ export const MainPanel = () => {
     // EVENT HANDLERS
     // =========================================================================
     const handleElementCardClick = (element: TElement) => () => {
-        focusElement(element);
+        focusElement(element, false);
     };
 
     const handleDragEnd = (event: DragEndEvent) => {

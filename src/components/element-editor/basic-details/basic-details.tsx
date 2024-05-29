@@ -20,10 +20,12 @@ export const BasicDetails = () => {
     const { focusedElement, updateFocusedElement } = useBuilder();
     const {
         control,
-        formState: { errors, isDirty },
+        formState: { errors, isDirty, touchedFields },
         watch,
     } = useFormContext<IBaseTextBasedFieldValues>();
     const element = focusedElement.element;
+    const shouldUpdateFocusedElement =
+        isDirty && Object.keys(touchedFields)?.length > 0;
 
     // =========================================================================
     // HELPER FUNCTIONS
@@ -36,12 +38,11 @@ export const BasicDetails = () => {
     // =========================================================================
     // USE EFFECTS
     // =========================================================================
-
     useEffect(() => {
-        if (isDirty) {
+        if (shouldUpdateFocusedElement) {
             updateFocusedElement(true);
         }
-    }, [isDirty, updateFocusedElement]);
+    }, [shouldUpdateFocusedElement]);
 
     // =========================================================================
     // RENDER FUNCTIONS

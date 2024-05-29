@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
-import { MultiEntry } from "src/components/common";
+import { ChildEntry, MultiEntry } from "src/components/common";
 import { EElementType, IValidation, useBuilder } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import { IBaseTextBasedFieldValues } from "src/schemas";
@@ -15,8 +15,11 @@ export const Validation = () => {
     const [childEntryValues, setChildEntryValues] = useState<IValidation[]>([]);
     const {
         setValue,
-        formState: { isDirty },
+        formState: { isDirty, touchedFields },
     } = useFormContext<IBaseTextBasedFieldValues>();
+    const shouldUpdateFocusedElement =
+        (isDirty && Object.keys(touchedFields)?.length > 0) ||
+        childEntryValues?.length > focusedElement?.element?.validation?.length;
 
     // =========================================================================
     // HELPER FUNCTIONS
@@ -96,10 +99,10 @@ export const Validation = () => {
     }, [childEntryValues]);
 
     useEffect(() => {
-        if (isDirty) {
+        if (shouldUpdateFocusedElement) {
             updateFocusedElement(true);
         }
-    }, [isDirty, updateFocusedElement]);
+    }, [shouldUpdateFocusedElement]);
 
     // =========================================================================
     // RENDER FUNCTIONS

@@ -25,8 +25,13 @@ export const ConditionalRendering = () => {
         useState<IConditionalRendering[]>();
     const {
         setValue,
-        formState: { isDirty },
+        formState: { isDirty, touchedFields },
     } = useFormContext<IBaseTextBasedFieldValues>();
+    const shouldUpdateFocusedElement =
+        (isDirty && Object.keys(touchedFields)?.length > 0) ||
+        childEntryValues?.length >
+            focusedElement?.element?.conditionalRendering?.length;
+
     // =====================================================================
     // HELPER FUNCTIONS
     // =====================================================================
@@ -104,10 +109,10 @@ export const ConditionalRendering = () => {
     }, [childEntryValues]);
 
     useEffect(() => {
-        if (isDirty) {
+        if (shouldUpdateFocusedElement) {
             updateFocusedElement(true);
         }
-    }, [isDirty, updateFocusedElement]);
+    }, [shouldUpdateFocusedElement]);
 
     // =============================================================================
     // RENDER FUNCTIONS

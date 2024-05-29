@@ -16,8 +16,11 @@ export const Prefill = () => {
     >([]);
     const {
         setValue,
-        formState: { isDirty },
+        formState: { isDirty, touchedFields },
     } = useFormContext<IBaseTextBasedFieldValues>();
+    const shouldUpdateFocusedElement =
+        (isDirty && Object.keys(touchedFields)?.length > 0) ||
+        childEntryValues?.length > focusedElement?.element?.prefill?.length;
 
     // =========================================================================
     // EVENT HANDLERS
@@ -68,10 +71,10 @@ export const Prefill = () => {
     }, [childEntryValues]);
 
     useEffect(() => {
-        if (isDirty) {
+        if (shouldUpdateFocusedElement) {
             updateFocusedElement(true);
         }
-    }, [isDirty, updateFocusedElement]);
+    }, [shouldUpdateFocusedElement]);
 
     // =========================================================================
     // RENDER FUNCTIONS

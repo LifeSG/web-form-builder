@@ -50,7 +50,7 @@ export const useBuilder = () => {
                     type: "focus-element",
                     payload: {
                         element: newElement,
-                        isDirty: true,
+                        isDirty: false,
                     },
                 });
             }
