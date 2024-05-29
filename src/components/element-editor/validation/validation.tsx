@@ -1,9 +1,10 @@
+import { Text } from "@lifesg/react-design-system";
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { ChildEntry, MultiEntry } from "src/components/common";
 import { EElementType, IValidation, useBuilder } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
-import { IBaseTextBasedFieldValues } from "src/schemas";
+import { IBaseTextBasedFieldValues, SchemaHelper } from "src/schemas";
 import { ValidationChild } from "./validation-child";
 
 export const Validation = () => {
@@ -16,10 +17,13 @@ export const Validation = () => {
     const {
         setValue,
         formState: { isDirty, touchedFields },
+        getValues,
     } = useFormContext<IBaseTextBasedFieldValues>();
     const shouldUpdateFocusedElement =
         (isDirty && Object.keys(touchedFields)?.length > 0) ||
         childEntryValues?.length > focusedElement?.element?.validation?.length;
+    const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
+    const invalidAndEmptyFields = getTouchedAndErrorsFields();
 
     // =========================================================================
     // HELPER FUNCTIONS
@@ -46,17 +50,53 @@ export const Validation = () => {
         }
     }
 
+    function getTouchedAndErrorsFields() {
+        if (childEntryValues && childEntryValues.length > 0) {
+            try {
+                const validationSchema = schema.pick(["validation"]);
+                const validationValues = getValues("validation");
+
+                const validationResult = validationSchema.validateSync({
+                    validation: validationValues,
+                    abortEarly: false,
+                });
+                return !!validationResult ? false : true;
+            } catch (error) {
+                return error.errors.some((errorMessage: string | string[]) =>
+                    errorMessage.includes("required")
+                );
+            }
+        } else {
+            return false;
+        }
+    }
+
+    function getPopoverMessage() {
+        if (invalidAndEmptyFields) {
+            return (
+                <Text.Body>
+                    To add new validation, fill up existing validation first.
+                </Text.Body>
+            );
+        } else if (childEntryValues?.length === getMaxEntries(element.type)) {
+            return (
+                <Text.Body>
+                    Limit reached. To add new validation, remove existing ones
+                    first.
+                </Text.Body>
+            );
+        }
+    }
+
     // =========================================================================
     // EVENT HANDLERS
     // =========================================================================
 
     const handleChildChange = (index: number, newValue: IValidation) => {
-        setChildEntryValues((prevValues) => {
-            const updatedValues = [...prevValues];
-            updatedValues[index] = newValue;
-            setValue("validation", updatedValues);
-            return updatedValues;
-        });
+        const updatedValues = [...childEntryValues];
+        updatedValues[index] = newValue;
+        setChildEntryValues(updatedValues);
+        setValue("validation", updatedValues);
     };
 
     const handleAddButtonClick = () => {
@@ -66,19 +106,16 @@ export const Validation = () => {
             validationErrorMessage: "",
         };
 
-        setChildEntryValues((prevValues) => {
-            const updatedValues = [...prevValues, validationChild];
-            setValue("validation", updatedValues);
-            return updatedValues;
-        });
+        const updatedValues = [...childEntryValues, validationChild];
+        setChildEntryValues(updatedValues);
+        setValue("validation", updatedValues);
     };
 
     const handleDelete = (index: number) => {
-        setChildEntryValues((prevValues) => {
-            const updatedValues = prevValues.filter((_, i) => i !== index);
-            setValue("validation", updatedValues);
-            return updatedValues;
-        });
+        const currentValues = [...childEntryValues];
+        const updatedValues = currentValues.filter((_, i) => i !== index);
+        setChildEntryValues(updatedValues);
+        setValue("validation", updatedValues);
     };
 
     // =========================================================================
@@ -127,8 +164,10 @@ export const Validation = () => {
             title="Validation"
             buttonLabel="validation"
             disabledButton={
-                childEntryValues?.length === getMaxEntries(element.type)
+                childEntryValues?.length === getMaxEntries(element.type) ||
+                invalidAndEmptyFields
             }
+            popoverMessage={getPopoverMessage()}
         >
             {renderChildren()}
         </MultiEntry>
