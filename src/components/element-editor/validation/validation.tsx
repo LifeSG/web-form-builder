@@ -1,7 +1,7 @@
 import { Text } from "@lifesg/react-design-system";
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
-import { ChildEntry, MultiEntry } from "src/components/common";
+import { MultiEntry } from "src/components/common";
 import { EElementType, IValidation, useBuilder } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import { IBaseTextBasedFieldValues, SchemaHelper } from "src/schemas";
