@@ -4,7 +4,7 @@ import "jest-canvas-mock";
 import { FormProvider, useForm } from "react-hook-form";
 import { Validation } from "src/components/element-editor/validation/validation";
 import { EElementType } from "src/context-providers";
-import { ELEMENT_BUTTON_LABELS } from "src/data";
+import { ELEMENT_BUTTON_LABELS, ELEMENT_VALIDATION_TYPES } from "src/data";
 import { SchemaHelper } from "src/schemas";
 import { TestHelper } from "src/util/test-helper";
 
@@ -29,7 +29,7 @@ describe("Validation", () => {
             },
         });
         expect(screen.getByText("Validation")).toBeInTheDocument();
-        expect(screen.getByText("Add validation")).toBeInTheDocument();
+        expect(getAddValidationButton()).toBeInTheDocument();
     });
 
     it("should fire onAdd and render the validation-child component when the button is being clicked", () => {
@@ -38,12 +38,7 @@ describe("Validation", () => {
                 focusedElement: { element: MOCK_ELEMENT, isDirty: true },
             },
         });
-        fireEvent.click(
-            screen.getByRole("button", {
-                name: "Add validation",
-            })
-        );
-
+        fireEvent.click(getAddValidationButton());
         expect(
             screen.getByRole("button", {
                 name: "Email domain",
@@ -57,6 +52,62 @@ describe("Validation", () => {
         expect(
             screen.getByPlaceholderText("Set error message")
         ).toBeInTheDocument();
+        expect(getAddValidationButton()).toBeDisabled();
+    });
+
+    it("should disable the button and show a popover when a maximum number of entries is reached when the inputs are filled up", async () => {
+        const MOCK_VAIDATION = [
+            {
+                validationType:
+                    ELEMENT_VALIDATION_TYPES["Text field"][EElementType.EMAIL]
+                        .validationTypes[0],
+                validationRule: "@gmail.com",
+                validationErrorMessage: "error message",
+            },
+        ];
+        renderComponent({
+            builderContext: {
+                focusedElement: {
+                    element: { ...MOCK_ELEMENT, validation: MOCK_VAIDATION },
+                    isDirty: true,
+                },
+            },
+        });
+
+        fireEvent.click(getAddValidationButton());
+        fireEvent.mouseOver(getAddValidationButton());
+
+        const popoverText = await screen.findByTestId("add-button-popover");
+        expect(popoverText).toBeVisible();
+        expect(
+            screen.getByText(
+                "Limit reached. To add new validation, remove existing ones first."
+            )
+        ).toBeInTheDocument();
+        expect(getAddValidationButton()).toBeDisabled();
+    });
+
+    it("should disable the button and show a popover when a maximum number of entries is reached", async () => {
+        renderComponent({
+            builderContext: {
+                focusedElement: {
+                    element: { ...MOCK_ELEMENT, type: EElementType.TEXT },
+                    isDirty: true,
+                },
+            },
+        });
+
+        fireEvent.click(getAddValidationButton());
+        fireEvent.mouseOver(getAddValidationButton());
+
+        const popoverText = await screen.findByTestId("add-button-popover");
+        expect(popoverText).toBeVisible();
+        expect(
+            screen.getByText(
+                "To add new validation, fill up existing validation first."
+            )
+        ).toBeInTheDocument();
+        expect(getAddValidationButton()).toBeDisabled();
     });
 });
 
@@ -81,6 +132,9 @@ const renderComponent = (overrideOptions?: TestHelper.RenderOptions) => {
         TestHelper.withProviders(overrideOptions, <MyTestComponent />)
     );
 };
+
+const getAddValidationButton: () => HTMLElement = () =>
+    screen.getByRole("button", { name: "Add validation" });
 
 // =============================================================================
 // MOCKS
