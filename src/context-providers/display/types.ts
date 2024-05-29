@@ -17,7 +17,49 @@ export interface IToast {
 
 export interface IDisplayState {
     toasts: IToast[];
+    modalState: TModalProps[];
 }
+
+export type TModalProps =
+    | IDiscardChangesModalProps
+    | IBulkEditModalProps
+    | ICustomModalProps;
+
+// =============================================================================
+// MODAL STATE
+// =============================================================================
+export enum EModalType {
+    DiscardChanges = "discard-changes",
+    BulkEdit = "bulk-edit",
+    Custom = "custom",
+}
+
+export interface IDiscardChangesModalProps {
+    type: EModalType.DiscardChanges;
+}
+
+export interface IBulkEditModalProps {
+    type: EModalType.BulkEdit;
+}
+
+export interface ICustomModalProps {
+    type: EModalType.Custom;
+}
+
+// =============================================================================
+// MODAL ACTIONS
+// =============================================================================
+
+export interface ISetModalAction {
+    type: "set-modal";
+    payload: TModalProps;
+}
+
+export interface IHideModalAction {
+    type: "hide-modal";
+    payload?: EModalType;
+}
+export type TModalAction = ISetModalAction | IHideModalAction;
 
 // =============================================================================
 // ACTIONS
@@ -30,7 +72,7 @@ export interface IDismissToast {
     type: "dismiss-toast";
     payload: string;
 }
-export type TDisplayAction = IShowToast | IDismissToast;
+export type TDisplayAction = IShowToast | IDismissToast | TModalAction;
 
 //=============================================================================
 // CONTEXT

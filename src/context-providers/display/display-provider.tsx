@@ -8,6 +8,7 @@ import { IDisplayState, TDisplayAction, TDisplayContext } from "./types";
 // =============================================================================
 const DEFAULT_DISPLAY_VALUES: IDisplayState = {
     toasts: [],
+    modalState: [],
 };
 
 // =============================================================================
@@ -18,16 +19,35 @@ export const displayReducer = (
     action: TDisplayAction
 ) => {
     switch (action.type) {
+        case "set-modal": {
+            state.modalState.push(action.payload);
+            break;
+        }
+
         case "show-toast": {
             state.toasts = [...state.toasts, action.payload];
             break;
         }
+
         case "dismiss-toast": {
             const toastQueue = [...state.toasts];
             const newToastQueue = toastQueue.filter(
                 (toast) => toast.id !== action.payload
             );
             state.toasts = newToastQueue;
+            break;
+        }
+
+        case "hide-modal": {
+            state = {
+                ...state,
+                modalState: action.payload
+                    ? state.modalState.filter(
+                          (modal) => modal.type !== action.payload
+                      )
+                    : [],
+            };
+            break;
         }
     }
 
