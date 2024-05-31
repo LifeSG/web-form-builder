@@ -81,9 +81,6 @@ export const ElementCard = ({ element, onClick }: IProps) => {
             type: EToastTypes.SUCCESS_TOAST,
         };
 
-        if (disableDuplicate) {
-            event.preventDefault();
-        }
         duplicateElement(focusedElement.element);
         showToast(newToast);
     };
