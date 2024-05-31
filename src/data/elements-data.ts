@@ -32,6 +32,16 @@ export const ELEMENT_BUTTON_LABELS: { [key in EElementType]: string } = {
     [EElementType.RADIO]: "Radio Button",
 };
 
+export const ELEMENT_ID_PREFIX: Record<EElementType, string> = {
+    [EElementType.EMAIL]: "email-field",
+    [EElementType.NUMERIC]: "numeric-field",
+    [EElementType.CONTACT]: "contact-field",
+    [EElementType.TEXT]: "short-text-field",
+    [EElementType.TEXTAREA]: "long-text-field",
+    [EElementType.CHECKBOX]: "checkbox-field",
+    [EElementType.RADIO]: "radion-field",
+};
+
 export const ELEMENT_VALIDATION_TYPES = {
     "Text field": {
         [EElementType.EMAIL]: {
