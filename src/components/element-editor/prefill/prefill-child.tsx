@@ -1,5 +1,5 @@
 import { Form } from "@lifesg/react-design-system/form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { ChildEntry } from "src/components/common";
 import { IPrefillAttributes } from "src/context-providers";
@@ -22,10 +22,9 @@ export const PrefillChild = ({ onDelete, onChange, value, index }: IProps) => {
         formState: { errors },
         control,
         watch,
+        setValue,
     } = useFormContext<IBaseTextBasedFieldValues>();
-    const [prefill, setPrefill] = useState<IPrefillAttributes>(
-        value || { prefillMode: "", path: "" }
-    );
+    const [prefill, setPrefill] = useState<IPrefillAttributes>(value);
 
     // =========================================================================
     // HELPER FUNCTIONS
@@ -38,7 +37,6 @@ export const PrefillChild = ({ onDelete, onChange, value, index }: IProps) => {
         } else if (newValue === "Myinfo" && prefill.actionId !== undefined) {
             delete updatedPrefill.actionId;
         }
-
         setPrefill(updatedPrefill);
         onChange(updatedPrefill);
     };
@@ -56,14 +54,26 @@ export const PrefillChild = ({ onDelete, onChange, value, index }: IProps) => {
             (newValue === "Myinfo" || newValue === "Previous source")
         ) {
             handleModeChange(newValue as "Myinfo" | "Previous source");
+            field?.onChange(newValue);
         } else {
             const updatedPrefill = { ...prefill, [changeType]: newValue };
             setPrefill(updatedPrefill);
             onChange(updatedPrefill);
+            field?.onChange(newValue);
         }
-
-        field?.onChange(newValue);
     };
+
+    // =============================================================================
+    // USE EFFECTS
+    // =============================================================================
+
+    useEffect(() => {
+        if (value) {
+            setValue(`prefill.${index}.prefillMode`, value.prefillMode);
+            setValue(`prefill.${index}.actionId`, value.actionId);
+            setValue(`prefill.${index}.path`, value.path);
+        }
+    }, []);
 
     // =========================================================================
     // RENDER FUNCTIONS
@@ -102,39 +112,34 @@ export const PrefillChild = ({ onDelete, onChange, value, index }: IProps) => {
                         shouldUnregister={true}
                     />
                 </div>
-                {value?.prefillMode === "Previous source" && (
+                {watch(`prefill.${index}.prefillMode`, "Previous source") && (
                     <div>
-                        {watch(
-                            `prefill.${index}.prefillMode`,
-                            "Previous source"
-                        ) && (
-                            <Controller
-                                name={`prefill.${index}.actionId`}
-                                control={control}
-                                render={({ field }) => {
-                                    const { ref, ...fieldWithoutRef } = field;
-                                    return (
-                                        <Form.Input
-                                            {...fieldWithoutRef}
-                                            placeholder="Enter an action ID"
-                                            defaultValue={prefill.actionId}
-                                            onChange={(event) => {
-                                                handleChange(
-                                                    "actionId",
-                                                    event.target.value,
-                                                    fieldWithoutRef
-                                                );
-                                            }}
-                                            errorMessage={
-                                                errors?.prefill?.[index]
-                                                    ?.actionId?.message
-                                            }
-                                        />
-                                    );
-                                }}
-                                shouldUnregister={true}
-                            />
-                        )}
+                        <Controller
+                            name={`prefill.${index}.actionId`}
+                            control={control}
+                            render={({ field }) => {
+                                const { ref, ...fieldWithoutRef } = field;
+                                return (
+                                    <Form.Input
+                                        {...fieldWithoutRef}
+                                        placeholder="Enter an action ID"
+                                        value={prefill.actionId}
+                                        onChange={(event) => {
+                                            handleChange(
+                                                "actionId",
+                                                event.target.value,
+                                                fieldWithoutRef
+                                            );
+                                        }}
+                                        errorMessage={
+                                            errors?.prefill?.[index]?.actionId
+                                                ?.message
+                                        }
+                                    />
+                                );
+                            }}
+                            shouldUnregister={true}
+                        />
                     </div>
                 )}
 
@@ -148,7 +153,7 @@ export const PrefillChild = ({ onDelete, onChange, value, index }: IProps) => {
                                 <Form.Input
                                     {...fieldWithoutRef}
                                     placeholder="Enter a path"
-                                    defaultValue={prefill.path}
+                                    value={prefill.path}
                                     onChange={(event) => {
                                         handleChange(
                                             "path",

@@ -24,6 +24,7 @@ export const ValidationChild = ({
     const {
         formState: { errors },
         control,
+        setValue,
     } = useFormContext<IBaseTextBasedFieldValues>();
     const [validationRulePlaceHolder, setValidationRulePlaceHolder] =
         useState<string>();
@@ -40,7 +41,7 @@ export const ValidationChild = ({
         newValue: string,
         field?: { onChange: (arg0: string) => void }
     ) => {
-        const updatedValue = { ...validation, [changeType]: newValue };
+        const updatedValue = { ...value, [changeType]: newValue };
 
         setValidation(updatedValue);
         onChange(updatedValue);
@@ -60,6 +61,27 @@ export const ValidationChild = ({
             );
         }
     }, [options, value?.validationType]);
+
+    // =============================================================================
+    // USE EFFECTS
+    // =============================================================================
+
+    useEffect(() => {
+        if (value) {
+            setValue(
+                `validation.${index}.validationType`,
+                value.validationType
+            );
+            setValue(
+                `validation.${index}.validationRule`,
+                value.validationRule
+            );
+            setValue(
+                `validation.${index}.validationErrorMessage`,
+                value.validationErrorMessage
+            );
+        }
+    }, []);
 
     // =========================================================================
     // RENDER FUNCTIONS
@@ -112,6 +134,7 @@ export const ValidationChild = ({
                                             ? validationRulePlaceHolder
                                             : "Enter rule"
                                     }
+                                    value={validation.validationRule}
                                     onChange={(event) => {
                                         handleChange(
                                             "validationRule",
