@@ -5,23 +5,27 @@ import { Row } from "./toggle-pair.styles";
 
 interface Props {
     label?: string;
-    defaultValue?: boolean;
+    value?: boolean;
     id?: string;
     onChange: (value: boolean) => void;
 }
 
-export const TogglePair = ({ onChange, defaultValue, label, id }: Props) => {
+export const TogglePair = ({
+    onChange,
+    value: defaultValue,
+    label,
+    id,
+}: Props) => {
     const [value, setValue] = useState(defaultValue);
-
     useEffect(() => {
         if (value !== defaultValue) {
             setValue(defaultValue);
         }
     }, [defaultValue, id]);
 
-    const handleChange = () => {
-        setValue(!value);
-        onChange(!value);
+    const handleChange = (value: boolean) => {
+        setValue(value);
+        onChange(value);
     };
 
     return (
@@ -30,16 +34,16 @@ export const TogglePair = ({ onChange, defaultValue, label, id }: Props) => {
             <Row>
                 <Toggle
                     type="yes"
-                    checked={value}
-                    onChange={handleChange}
+                    checked={value === true}
+                    onChange={() => handleChange(true)}
                     indicator
                 >
                     Yes
                 </Toggle>
                 <Toggle
                     type="no"
-                    checked={!value}
-                    onChange={handleChange}
+                    checked={value === false}
+                    onChange={() => handleChange(false)}
                     indicator
                 >
                     No

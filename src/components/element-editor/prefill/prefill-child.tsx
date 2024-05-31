@@ -23,58 +23,46 @@ export const PrefillChild = ({ onDelete, onChange, value, index }: IProps) => {
         control,
         watch,
     } = useFormContext<IBaseTextBasedFieldValues>();
-    const [prefillMode, setPrefillMode] = useState<
-        "Myinfo" | "Previous source" | ""
-    >(value.prefillMode || "");
-    const [actionId, setActionId] = useState<string>(value.actionId || "");
-    const [path, setPath] = useState<string>(value.path || "");
+    const [prefill, setPrefill] = useState<IPrefillAttributes>(
+        value || { prefillMode: "", path: "" }
+    );
+
+    // =========================================================================
+    // HELPER FUNCTIONS
+    // =========================================================================
+    const handleModeChange = (newValue: "Myinfo" | "Previous source") => {
+        const updatedPrefill = { ...prefill, prefillMode: newValue };
+
+        if (newValue === "Previous source") {
+            updatedPrefill.actionId = "";
+        } else if (newValue === "Myinfo" && prefill.actionId !== undefined) {
+            delete updatedPrefill.actionId;
+        }
+
+        setPrefill(updatedPrefill);
+        onChange(updatedPrefill);
+    };
 
     // =============================================================================
     // EVENT HANDLERS
     // =============================================================================
     const handleChange = (
-        changeType: string,
-        newValue: "Myinfo" | "Previous source" | string
+        changeType: "mode" | "actionId" | "path",
+        newValue: string,
+        field?: { onChange: (arg0: string) => void }
     ) => {
-        const updatedValue: IPrefillAttributes = { ...value };
-
-        const handleModeChange = (
-            updatedValue: IPrefillAttributes,
-            newValue: "Myinfo" | "Previous source"
-        ) => {
-            setPrefillMode(newValue);
-            updatedValue.prefillMode = newValue;
-
-            if (newValue === "Previous source") {
-                setActionId("");
-                updatedValue.actionId = "";
-            } else if (
-                newValue === "Myinfo" &&
-                updatedValue.hasOwnProperty("actionId")
-            ) {
-                setActionId("");
-                delete updatedValue.actionId;
-            }
-        };
-
-        switch (changeType) {
-            case "mode":
-                if (newValue === "Myinfo" || newValue === "Previous source") {
-                    handleModeChange(updatedValue, newValue);
-                }
-                break;
-            case "actionId":
-                setActionId(newValue);
-                updatedValue.actionId = newValue;
-                break;
-            case "path":
-                setPath(newValue);
-                updatedValue.path = newValue;
-                break;
-            default:
-                break;
+        if (
+            changeType === "mode" &&
+            (newValue === "Myinfo" || newValue === "Previous source")
+        ) {
+            handleModeChange(newValue as "Myinfo" | "Previous source");
+        } else {
+            const updatedPrefill = { ...prefill, [changeType]: newValue };
+            setPrefill(updatedPrefill);
+            onChange(updatedPrefill);
         }
-        onChange(updatedValue);
+
+        field?.onChange(newValue);
     };
 
     // =========================================================================
@@ -88,19 +76,21 @@ export const PrefillChild = ({ onDelete, onChange, value, index }: IProps) => {
                     <Controller
                         name={`prefill.${index}.prefillMode`}
                         control={control}
-                        defaultValue={prefillMode}
                         render={({ field }) => {
                             const { ref, ...fieldWithoutRef } = field;
                             return (
                                 <Form.Select
                                     {...fieldWithoutRef}
                                     placeholder="Select"
-                                    selectedOption={prefillMode}
+                                    selectedOption={prefill.prefillMode}
                                     options={options}
                                     disabled={options.length === 1}
                                     onSelectOption={(option) => {
-                                        handleChange("mode", option);
-                                        fieldWithoutRef.onChange(option);
+                                        handleChange(
+                                            "mode",
+                                            option,
+                                            fieldWithoutRef
+                                        );
                                     }}
                                     errorMessage={
                                         errors?.prefill?.[index]?.prefillMode
@@ -121,21 +111,18 @@ export const PrefillChild = ({ onDelete, onChange, value, index }: IProps) => {
                             <Controller
                                 name={`prefill.${index}.actionId`}
                                 control={control}
-                                defaultValue={actionId}
                                 render={({ field }) => {
                                     const { ref, ...fieldWithoutRef } = field;
                                     return (
                                         <Form.Input
                                             {...fieldWithoutRef}
                                             placeholder="Enter an action ID"
-                                            defaultValue={actionId}
+                                            defaultValue={prefill.actionId}
                                             onChange={(event) => {
                                                 handleChange(
                                                     "actionId",
-                                                    event.target.value
-                                                );
-                                                fieldWithoutRef.onChange(
-                                                    event.target.value
+                                                    event.target.value,
+                                                    fieldWithoutRef
                                                 );
                                             }}
                                             errorMessage={
@@ -155,21 +142,18 @@ export const PrefillChild = ({ onDelete, onChange, value, index }: IProps) => {
                     <Controller
                         name={`prefill.${index}.path`}
                         control={control}
-                        defaultValue={path}
                         render={({ field }) => {
                             const { ref, ...fieldWithoutRef } = field;
                             return (
                                 <Form.Input
                                     {...fieldWithoutRef}
                                     placeholder="Enter a path"
-                                    defaultValue={path}
+                                    defaultValue={prefill.path}
                                     onChange={(event) => {
                                         handleChange(
                                             "path",
-                                            event.target.value
-                                        );
-                                        fieldWithoutRef.onChange(
-                                            event.target.value
+                                            event.target.value,
+                                            fieldWithoutRef
                                         );
                                     }}
                                     errorMessage={

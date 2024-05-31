@@ -12,6 +12,15 @@ import {
     Wrapper,
 } from "./basic-details.styles";
 
+interface BasicDetailsProps {
+    elementType: EElementType;
+    elementName: string;
+    required: boolean;
+    requiredErrorMsg?: string;
+    id?: string;
+    placeholder?: string;
+}
+
 export const BasicDetails = () => {
     // =========================================================================
     // CONST, STATE, REFS
@@ -24,14 +33,14 @@ export const BasicDetails = () => {
         watch,
     } = useFormContext<IBaseTextBasedFieldValues>();
     const element = focusedElement.element;
-    const [elementType, setElementType] = useState<EElementType>(element.type);
-    const [elementName, setElementName] = useState<string>(element.label);
-    const [required, setRequired] = useState<boolean>(element.required || true);
-    const [requiredErrorMsg, setRequiredErrorMsg] = useState<string>(
-        element.requiredErrorMsg || ""
-    );
-    const [id, setId] = useState<string>(element.id || "");
-    const [placeholder, setPlaceholder] = useState(element.placeholder || "");
+    const [basicDetails, setBasicDetails] = useState<BasicDetailsProps>({
+        elementType: element?.type || EElementType.EMAIL,
+        elementName: element?.label || "",
+        required: element?.required,
+        requiredErrorMsg: element?.requiredErrorMsg || "",
+        id: element?.id || "",
+        placeholder: element?.placeholder || "",
+    });
 
     // =========================================================================
     // HELPER FUNCTIONS
@@ -39,6 +48,16 @@ export const BasicDetails = () => {
 
     const hasProperty = (key: string) => {
         return key in element;
+    };
+
+    const onChangeField = (
+        value: string | EElementType | boolean,
+        fieldType: string,
+        field?: { onChange: (arg0: string | boolean) => void }
+    ) => {
+        const updatedValue = { ...basicDetails, [fieldType]: value };
+        setBasicDetails(updatedValue as BasicDetailsProps);
+        field?.onChange(value);
     };
 
     // =========================================================================
@@ -65,14 +84,12 @@ export const BasicDetails = () => {
                 <Controller
                     name="type"
                     control={control}
-                    defaultValue={elementType}
                     render={({ field }) => (
                         <IconDropdown
-                            type={elementType}
+                            type={basicDetails.elementType}
                             id={element?.id}
                             onChange={(value: EElementType) => {
-                                setElementType(value);
-                                field.onChange({ target: { value: value } });
+                                onChangeField(value, "elementType", field);
                             }}
                             errorMessage={errors.type?.message}
                         />
@@ -84,7 +101,6 @@ export const BasicDetails = () => {
                     <Controller
                         name="label"
                         control={control}
-                        defaultValue={elementName}
                         render={({ field }) => (
                             <Form.Textarea
                                 {...field}
@@ -92,10 +108,13 @@ export const BasicDetails = () => {
                                 label="Element Name"
                                 rows={1}
                                 placeholder="Element Name"
-                                value={elementName}
+                                value={basicDetails.elementName}
                                 onChange={(e) => {
-                                    setElementName(e.target.value);
-                                    field.onChange(e.target.value);
+                                    onChangeField(
+                                        e.target.value,
+                                        "elementName",
+                                        field
+                                    );
                                 }}
                                 errorMessage={errors.label?.message}
                                 maxLength={40}
@@ -109,14 +128,12 @@ export const BasicDetails = () => {
                     <Controller
                         name="required"
                         control={control}
-                        defaultValue={required}
                         render={({ field }) => (
                             <TogglePair
                                 label="Mandatory field"
-                                defaultValue={required}
+                                value={basicDetails.required}
                                 onChange={(value) => {
-                                    setRequired(value);
-                                    field.onChange(value);
+                                    onChangeField(value, "required", field);
                                 }}
                                 id={element.internalId}
                             />
@@ -128,16 +145,17 @@ export const BasicDetails = () => {
                         <Controller
                             name="requiredErrorMsg"
                             control={control}
-                            defaultValue={requiredErrorMsg}
                             render={({ field }) => (
                                 <Form.Input
                                     {...field}
                                     label="Error message"
-                                    defaultValue={element.requiredErrorMsg}
-                                    value={requiredErrorMsg}
+                                    value={basicDetails.requiredErrorMsg}
                                     onChange={(e) => {
-                                        setRequiredErrorMsg(e.target.value);
-                                        field.onChange(e.target.value);
+                                        onChangeField(
+                                            e.target.value,
+                                            "requiredErrorMsg",
+                                            field
+                                        );
                                     }}
                                     errorMessage={
                                         errors.requiredErrorMsg?.message
@@ -152,7 +170,6 @@ export const BasicDetails = () => {
                 <Controller
                     name="id"
                     control={control}
-                    defaultValue={id}
                     render={({ field }) => (
                         <Form.Input
                             {...field}
@@ -166,10 +183,9 @@ export const BasicDetails = () => {
                                 ),
                             }}
                             placeholder="Create an ID"
-                            value={id}
+                            value={basicDetails.id}
                             onChange={(e) => {
-                                setId(e.target.value);
-                                field.onChange(e.target.value);
+                                onChangeField(e.target.value, "id", field);
                             }}
                             errorMessage={errors.id?.message}
                         />
@@ -177,20 +193,22 @@ export const BasicDetails = () => {
                     shouldUnregister={true}
                 />
 
-                {hasProperty("placeholder") && (
+                {element?.hasOwnProperty("placeholder") && (
                     <Controller
                         name="placeholder"
                         control={control}
-                        defaultValue={placeholder}
                         render={({ field }) => (
                             <Form.Input
                                 {...field}
                                 label="Placeholder text (optional)"
                                 placeholder="Enter placeholder text"
-                                value={placeholder}
+                                value={basicDetails.placeholder}
                                 onChange={(e) => {
-                                    setPlaceholder(e.target.value);
-                                    field.onChange(e.target.value);
+                                    onChangeField(
+                                        e.target.value,
+                                        "placeholder",
+                                        field
+                                    );
                                 }}
                                 errorMessage={errors.placeholder?.message}
                             />
