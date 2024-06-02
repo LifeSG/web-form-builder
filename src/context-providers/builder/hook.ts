@@ -120,7 +120,7 @@ export const useBuilder = () => {
         [state.orderedIdentifiers, state.elements, state.mode]
     );
 
-    const focusElement = useCallback((element: TElement, isDirty?: boolean) => {
+    const focusElement = useCallback((element: TElement, isDirty = false) => {
         dispatch({
             type: "focus-element",
             payload: {

@@ -30,11 +30,11 @@ export const ConditionalRendering = () => {
         useState<IConditionalRendering[]>();
     const {
         setValue,
-        formState: { isDirty, touchedFields },
+        formState: { isDirty },
         getValues,
     } = useFormContext<IBaseTextBasedFieldValues>();
     const shouldUpdateFocusedElement =
-        (isDirty && Object.keys(touchedFields)?.length > 0) ||
+        isDirty ||
         childEntryValues?.length >
             focusedElement?.element?.conditionalRendering?.length;
 
