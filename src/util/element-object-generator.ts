@@ -74,7 +74,6 @@ export namespace ElementObjectGenerator {
                     conditionalRendering: [],
                     prefill: [],
                 };
-                console.log(attributes);
                 return attributes;
             }
             default:
