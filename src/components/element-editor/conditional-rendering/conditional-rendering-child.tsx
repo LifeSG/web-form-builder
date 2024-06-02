@@ -63,7 +63,7 @@ export const ConditionalRenderingChild = ({
     const handleChange = (
         changeType: "fieldKey" | "comparator" | "value",
         newValue: string,
-        field?: { onChange: (arg0: string) => void },
+        field?: (value: string) => void,
         internalId?: string
     ) => {
         const updatedValue = {
@@ -76,7 +76,7 @@ export const ConditionalRenderingChild = ({
         }
 
         setConditionRendering(updatedValue);
-        field?.onChange(newValue);
+        field(newValue);
         onChange(updatedValue);
     };
 
@@ -122,7 +122,7 @@ export const ConditionalRenderingChild = ({
                                             handleChange(
                                                 "fieldKey",
                                                 option?.id,
-                                                fieldWithoutRef,
+                                                fieldWithoutRef.onChange,
                                                 option?.internalId
                                             );
                                         }}
@@ -178,7 +178,7 @@ export const ConditionalRenderingChild = ({
                                             handleChange(
                                                 "comparator",
                                                 option,
-                                                fieldWithoutRef
+                                                fieldWithoutRef.onChange
                                             );
                                         }}
                                         options={comparatorOptions}
@@ -212,7 +212,7 @@ export const ConditionalRenderingChild = ({
                                         handleChange(
                                             "value",
                                             event.target.value,
-                                            fieldWithoutRef
+                                            fieldWithoutRef.onChange
                                         );
                                     }}
                                     errorMessage={

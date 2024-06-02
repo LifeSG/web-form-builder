@@ -39,13 +39,13 @@ export const ValidationChild = ({
             | "validationRule"
             | "validationErrorMessage",
         newValue: string,
-        field?: { onChange: (arg0: string) => void }
+        field?: (value: string) => void
     ) => {
         const updatedValue = { ...value, [changeType]: newValue };
 
         setValidation(updatedValue);
         onChange(updatedValue);
-        field?.onChange(newValue);
+        field(newValue);
     };
 
     // =========================================================================
@@ -107,7 +107,7 @@ export const ValidationChild = ({
                                         handleChange(
                                             "validationType",
                                             option,
-                                            fieldWithoutRef
+                                            fieldWithoutRef.onChange
                                         );
                                     }}
                                     errorMessage={
@@ -139,7 +139,7 @@ export const ValidationChild = ({
                                         handleChange(
                                             "validationRule",
                                             event.target.value,
-                                            fieldWithoutRef
+                                            fieldWithoutRef.onChange
                                         );
                                     }}
                                     errorMessage={
@@ -167,7 +167,7 @@ export const ValidationChild = ({
                                         handleChange(
                                             "validationErrorMessage",
                                             event.target.value,
-                                            fieldWithoutRef
+                                            fieldWithoutRef.onChange
                                         );
                                     }}
                                     errorMessage={

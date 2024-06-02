@@ -47,19 +47,19 @@ export const PrefillChild = ({ onDelete, onChange, value, index }: IProps) => {
     const handleChange = (
         changeType: "mode" | "actionId" | "path",
         newValue: string,
-        field?: { onChange: (arg0: string) => void }
+        field?: (value: string) => void
     ) => {
         if (
             changeType === "mode" &&
             (newValue === "Myinfo" || newValue === "Previous source")
         ) {
             handleModeChange(newValue as "Myinfo" | "Previous source");
-            field?.onChange(newValue);
+            field(newValue);
         } else {
             const updatedPrefill = { ...prefill, [changeType]: newValue };
             setPrefill(updatedPrefill);
             onChange(updatedPrefill);
-            field?.onChange(newValue);
+            field(newValue);
         }
     };
 
@@ -99,7 +99,7 @@ export const PrefillChild = ({ onDelete, onChange, value, index }: IProps) => {
                                         handleChange(
                                             "mode",
                                             option,
-                                            fieldWithoutRef
+                                            fieldWithoutRef.onChange
                                         );
                                     }}
                                     errorMessage={
@@ -128,7 +128,7 @@ export const PrefillChild = ({ onDelete, onChange, value, index }: IProps) => {
                                             handleChange(
                                                 "actionId",
                                                 event.target.value,
-                                                fieldWithoutRef
+                                                fieldWithoutRef.onChange
                                             );
                                         }}
                                         errorMessage={
@@ -158,7 +158,7 @@ export const PrefillChild = ({ onDelete, onChange, value, index }: IProps) => {
                                         handleChange(
                                             "path",
                                             event.target.value,
-                                            fieldWithoutRef
+                                            fieldWithoutRef.onChange
                                         );
                                     }}
                                     errorMessage={

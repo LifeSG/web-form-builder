@@ -3,7 +3,7 @@ import { Toggle } from "@lifesg/react-design-system/toggle";
 import { useEffect, useState } from "react";
 import { Row } from "./toggle-pair.styles";
 
-interface Props {
+interface IProps {
     label?: string;
     value?: boolean;
     id?: string;
@@ -15,18 +15,32 @@ export const TogglePair = ({
     value: defaultValue,
     label,
     id,
-}: Props) => {
+}: IProps) => {
+    // =========================================================================
+    // CONST, STATE, REFS
+    // =========================================================================
     const [value, setValue] = useState(defaultValue);
+
+    // =============================================================================
+    // HELPER FUNCTIONS
+    // =============================================================================
+    const handleChange = (value: boolean) => {
+        setValue(value);
+        onChange(value);
+    };
+
+    // =========================================================================
+    // EFFECTS
+    // =========================================================================
     useEffect(() => {
         if (value !== defaultValue) {
             setValue(defaultValue);
         }
     }, [defaultValue, id]);
 
-    const handleChange = (value: boolean) => {
-        setValue(value);
-        onChange(value);
-    };
+    // =========================================================================
+    // RENDER FUNCTIONS
+    // =========================================================================
 
     return (
         <div>
