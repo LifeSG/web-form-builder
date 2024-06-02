@@ -27,7 +27,7 @@ export const useModal = () => {
     );
 
     return {
-        modals: state.modalState,
+        modals: state.modals,
         showModal,
         hideModal,
     };

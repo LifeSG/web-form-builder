@@ -20,7 +20,7 @@ const mockBuilderState: IBuilderState = {
 
 const mockDisplayState: IDisplayState = {
     toasts: [],
-    modalState: [],
+    modals: [],
 };
 
 export namespace TestHelper {

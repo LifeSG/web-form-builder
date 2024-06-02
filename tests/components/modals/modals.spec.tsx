@@ -39,7 +39,7 @@ describe("Modals", () => {
     it("should render a modal when there is a modal in modal state", () => {
         renderComponent({
             displayContext: {
-                modalState: [{ type: EModalType.Custom }],
+                modals: [{ type: EModalType.Custom }],
             },
         });
         const getModal = screen.getByTestId("modal-content");
@@ -49,7 +49,7 @@ describe("Modals", () => {
     it("should run the hideModal function when the cross button clicks", () => {
         renderComponent({
             displayContext: {
-                modalState: [{ type: EModalType.Custom }],
+                modals: [{ type: EModalType.Custom }],
             },
         });
         const getModalCloseButton = screen.getByTestId("close-button");

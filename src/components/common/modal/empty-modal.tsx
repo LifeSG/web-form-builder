@@ -1,6 +1,5 @@
-import { EModalType, TModalProps } from "src/context-providers";
-import { useModal } from "src/context-providers/display/modal-hook";
-import { GrowContainer, ScrollableModal } from "./empty-modal.styles";
+import { TModalProps } from "src/context-providers";
+import { GrowContainer } from "./empty-modal.styles";
 import { GenericModal } from "./generic-modal";
 
 interface IProps {
@@ -9,21 +8,11 @@ interface IProps {
 }
 
 export const EmptyModal = ({ modal, index }: IProps) => {
-    const { modals, hideModal } = useModal();
-
-    const handleBackDropClick = (type: EModalType) => {
-        hideModal(type);
-    };
     return (
-        <ScrollableModal
-            show={modals.length > 0}
-            onClick={() => handleBackDropClick(modal.type)}
-        >
-            <GrowContainer>
-                <GenericModal key={index} type={modal.type}>
-                    <></>
-                </GenericModal>
-            </GrowContainer>
-        </ScrollableModal>
+        <GrowContainer>
+            <GenericModal key={index} type={modal.type}>
+                <></>
+            </GenericModal>
+        </GrowContainer>
     );
 };

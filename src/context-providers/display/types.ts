@@ -17,7 +17,7 @@ export interface IToast {
 
 export interface IDisplayState {
     toasts: IToast[];
-    modalState: TModalProps[];
+    modals: TModalProps[];
 }
 
 export type TModalProps =
