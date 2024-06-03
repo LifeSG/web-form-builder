@@ -2,87 +2,45 @@ import { Form } from "@lifesg/react-design-system/form";
 import { useEffect, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { ChildEntry } from "src/components/common";
-import { IValidation } from "src/context-providers/builder";
-import { IValidation } from "src/context-providers/builder";
+import {
+    EElementType,
+    IValidation,
+    useBuilder,
+} from "src/context-providers/builder";
 import { IBaseTextBasedFieldValues } from "src/schemas";
 import { FieldWrapper } from "./validation.styles";
 
 interface IProps {
     onDelete: () => void;
     options: string[];
-    onChange: (newValue: any) => void;
-    value?: IValidation;
     index?: number;
 }
 
-export const ValidationChild = ({
-    onDelete,
-    options,
-    onChange,
-    value,
-    index,
-}: IProps) => {
+export const ValidationChild = ({ onDelete, options, index }: IProps) => {
     const {
         formState: { errors },
         control,
         setValue,
+        getValues,
     } = useFormContext<IBaseTextBasedFieldValues>();
+    const { focusedElement } = useBuilder();
     const [validationRulePlaceHolder, setValidationRulePlaceHolder] =
         useState<string>();
-    const [validation, setValidation] = useState<IValidation>(value);
-
-    // =============================================================================
-    // EVENT HANDLERS
-    // =============================================================================
-    const handleChange = (
-        changeType:
-            | "validationType"
-            | "validationRule"
-            | "validationErrorMessage",
-        newValue: string,
-        field?: (value: string) => void
-    ) => {
-        const updatedValue = { ...value, [changeType]: newValue };
-
-        setValidation(updatedValue);
-        onChange(updatedValue);
-        field && field(newValue);
-    };
+    const element = focusedElement?.element;
 
     // =========================================================================
     // USE EFFECTS
     // =========================================================================
 
     useEffect(() => {
-        if (options.length === 1 && !value.validationType) {
-            handleChange("validationType", options[0]);
-        } else if (options.length === 1 && options[0] === "Email domain") {
+        if (options.length === 1 && options[0] === "Email domain") {
             setValidationRulePlaceHolder(
-                "Enter email domain, seperating with a comma"
-            );
-        }
-    }, [options, value?.validationType]);
-
-    // =============================================================================
-    // USE EFFECTS
-    // =============================================================================
-
-    useEffect(() => {
-        if (value) {
-            setValue(
-                `validation.${index}.validationType`,
-                value.validationType
-            );
-            setValue(
-                `validation.${index}.validationRule`,
-                value.validationRule
-            );
-            setValue(
-                `validation.${index}.validationErrorMessage`,
-                value.validationErrorMessage
+                "Enter email domain, separating with a comma"
             );
         }
     }, []);
+
+    console.log(getValues("validation"));
 
     // =========================================================================
     // RENDER FUNCTIONS
@@ -101,15 +59,11 @@ export const ValidationChild = ({
                                 <Form.Select
                                     {...fieldWithoutRef}
                                     placeholder="Select"
-                                    selectedOption={validation?.validationType}
+                                    selectedOption={fieldWithoutRef.value}
                                     options={options}
                                     disabled={options.length === 1}
                                     onSelectOption={(option) => {
-                                        handleChange(
-                                            "validationType",
-                                            option,
-                                            fieldWithoutRef.onChange
-                                        );
+                                        field.onChange(option);
                                     }}
                                     errorMessage={
                                         errors?.validation?.[index]
@@ -135,12 +89,10 @@ export const ValidationChild = ({
                                             ? validationRulePlaceHolder
                                             : "Enter rule"
                                     }
-                                    value={validation.validationRule}
+                                    value={fieldWithoutRef.value}
                                     onChange={(event) => {
-                                        handleChange(
-                                            "validationRule",
-                                            event.target.value,
-                                            fieldWithoutRef.onChange
+                                        fieldWithoutRef.onChange(
+                                            event.target.value
                                         );
                                     }}
                                     errorMessage={
@@ -163,13 +115,9 @@ export const ValidationChild = ({
                                 <Form.Input
                                     {...fieldWithoutRef}
                                     placeholder="Set error message"
-                                    value={validation?.validationErrorMessage}
+                                    value={fieldWithoutRef.value}
                                     onChange={(event) => {
-                                        handleChange(
-                                            "validationErrorMessage",
-                                            event.target.value,
-                                            fieldWithoutRef.onChange
-                                        );
+                                        field.onChange(event.target.value);
                                     }}
                                     errorMessage={
                                         errors?.validation?.[index]

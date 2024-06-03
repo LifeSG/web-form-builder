@@ -1,5 +1,5 @@
 import { Text } from "@lifesg/react-design-system/text";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
 import {
@@ -76,17 +76,19 @@ export const ConditionalRendering = () => {
         }
     }
 
-    function getPopoverMessage() {
+    const getPopoverMessage = useCallback(() => {
         if (invalidAndEmptyFields) {
             return (
                 <Text.Body>
-                    To add new condition, fill up existing condition first.
+                    To add a new condition, fill up the existing condition
+                    first.
                 </Text.Body>
             );
         } else if (getElementOptions().length === 0) {
             return <Text.Body>No conditional rendering available.</Text.Body>;
         }
-    }
+        return null;
+    }, [invalidAndEmptyFields, getElementOptions]);
 
     // =============================================================================
     // EVENT HANDLERS

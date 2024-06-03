@@ -1,6 +1,6 @@
 import { Form } from "@lifesg/react-design-system/form";
 import { Text } from "@lifesg/react-design-system/text";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { IconDropdown } from "src/components/common/icon-dropdown";
 import { TogglePair } from "src/components/common/toggle-pair/toggle-pair";
@@ -12,20 +12,10 @@ import {
     Wrapper,
 } from "./basic-details.styles";
 
-interface IBasicDetailsProps {
-    elementType: EElementType;
-    elementName: string;
-    required: boolean;
-    requiredErrorMsg?: string;
-    id?: string;
-    placeholder?: string;
-}
-
 export const BasicDetails = () => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
-
     const { focusedElement, updateFocusedElement } = useBuilder();
     const {
         control,
@@ -33,14 +23,6 @@ export const BasicDetails = () => {
         watch,
     } = useFormContext<IBaseTextBasedFieldValues>();
     const element = focusedElement.element;
-    const [basicDetails, setBasicDetails] = useState<IBasicDetailsProps>({
-        elementType: element?.type || EElementType.EMAIL,
-        elementName: element?.label || "",
-        required: element?.required,
-        requiredErrorMsg: element?.requiredErrorMsg || "",
-        id: element?.id || "",
-        placeholder: element?.placeholder || "",
-    });
 
     // =========================================================================
     // HELPER FUNCTIONS
@@ -48,16 +30,6 @@ export const BasicDetails = () => {
 
     const hasProperty = (key: string) => {
         return key in element;
-    };
-
-    const handleChangeField = (
-        value: string | EElementType | boolean,
-        fieldType: string,
-        field: (value: string | boolean) => void
-    ) => {
-        const updatedValue = { ...basicDetails, [fieldType]: value };
-        setBasicDetails(updatedValue);
-        field(value);
     };
 
     // =========================================================================
@@ -86,14 +58,10 @@ export const BasicDetails = () => {
                     control={control}
                     render={({ field }) => (
                         <IconDropdown
-                            type={basicDetails.elementType}
+                            type={field.value}
                             id={element?.id}
                             onChange={(value: EElementType) => {
-                                handleChangeField(
-                                    value,
-                                    "elementType",
-                                    field.onChange
-                                );
+                                field.onChange(value);
                             }}
                             errorMessage={errors.type?.message}
                         />
@@ -112,13 +80,9 @@ export const BasicDetails = () => {
                                 label="Element Name"
                                 rows={1}
                                 placeholder="Element Name"
-                                value={basicDetails.elementName}
+                                value={field.value}
                                 onChange={(e) => {
-                                    handleChangeField(
-                                        e.target.value,
-                                        "elementName",
-                                        field.onChange
-                                    );
+                                    field.onChange(e.target.value);
                                 }}
                                 errorMessage={errors.label?.message}
                                 maxLength={40}
@@ -135,13 +99,9 @@ export const BasicDetails = () => {
                         render={({ field }) => (
                             <TogglePair
                                 label="Mandatory field"
-                                value={basicDetails.required}
+                                value={field.value}
                                 onChange={(value) => {
-                                    handleChangeField(
-                                        value,
-                                        "required",
-                                        field.onChange
-                                    );
+                                    field.onChange(value);
                                 }}
                                 id={element.internalId}
                             />
@@ -157,13 +117,9 @@ export const BasicDetails = () => {
                                 <Form.Input
                                     {...field}
                                     label="Error message"
-                                    value={basicDetails.requiredErrorMsg}
+                                    value={field.value}
                                     onChange={(e) => {
-                                        handleChangeField(
-                                            e.target.value,
-                                            "requiredErrorMsg",
-                                            field.onChange
-                                        );
+                                        field.onChange(e.target.value);
                                     }}
                                     errorMessage={
                                         errors.requiredErrorMsg?.message
@@ -191,13 +147,9 @@ export const BasicDetails = () => {
                                 ),
                             }}
                             placeholder="Create an ID"
-                            value={basicDetails.id}
+                            value={field.value}
                             onChange={(e) => {
-                                handleChangeField(
-                                    e.target.value,
-                                    "id",
-                                    field.onChange
-                                );
+                                field.onChange(e.target.value);
                             }}
                             errorMessage={errors.id?.message}
                         />
@@ -214,13 +166,9 @@ export const BasicDetails = () => {
                                 {...field}
                                 label="Placeholder text (optional)"
                                 placeholder="Enter placeholder text"
-                                value={basicDetails.placeholder}
+                                value={field.value}
                                 onChange={(e) => {
-                                    handleChangeField(
-                                        e.target.value,
-                                        "placeholder",
-                                        field.onChange
-                                    );
+                                    field.onChange(e.target.value);
                                 }}
                                 errorMessage={errors.placeholder?.message}
                             />

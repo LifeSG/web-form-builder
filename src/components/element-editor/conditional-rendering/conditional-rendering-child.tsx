@@ -54,41 +54,21 @@ export const ConditionalRenderingChild = ({
     const {
         formState: { errors },
         control,
+        getValues,
+        setValue,
     } = useFormContext<IBaseTextBasedFieldValues>();
-    const [conditionalRendering, setConditionRendering] =
-        useState<IConditionalRendering>(value);
-    // =============================================================================
-    // EVENT HANLDERS
-    // =============================================================================
-    const handleChange = (
-        changeType: "fieldKey" | "comparator" | "value",
-        newValue: string,
-        field?: (value: string) => void,
-        internalId?: string
-    ) => {
-        const updatedValue = {
-            ...conditionalRendering,
-            [changeType]: newValue,
-        };
-
-        if (changeType === "fieldKey") {
-            updatedValue.internalId = internalId ?? updatedValue.internalId;
-        }
-
-        setConditionRendering(updatedValue);
-        field && field(newValue);
-        onChange(updatedValue);
-    };
+    const comparator = getValues(`validation.${index}.validationType`) === "";
 
     // =========================================================================
     // USE EFFECT
     // =========================================================================
 
     useEffect(() => {
-        if (value?.comparator) {
-            handleChange("comparator", value?.comparator);
-        } else {
-            handleChange("comparator", comparatorOptions[0]);
+        if (comparator) {
+            setValue(
+                `conditionalRendering.${index}.comparator`,
+                comparatorOptions[0]
+            );
         }
     }, []);
 
@@ -110,20 +90,17 @@ export const ConditionalRenderingChild = ({
                                         {...fieldWithoutRef}
                                         placeholder="Select"
                                         selectedOption={
-                                            conditionalRendering.fieldKey
+                                            fieldWithoutRef.value
                                                 ? options.find(
                                                       (option) =>
                                                           option.id ===
-                                                          conditionalRendering.fieldKey
+                                                          fieldWithoutRef.value
                                                   )
                                                 : null
                                         }
                                         onSelectOption={(option: IOptions) => {
-                                            handleChange(
-                                                "fieldKey",
-                                                option?.id,
-                                                fieldWithoutRef.onChange,
-                                                option?.internalId
+                                            fieldWithoutRef.onChange(
+                                                option?.id
                                             );
                                         }}
                                         options={options}
@@ -171,15 +148,9 @@ export const ConditionalRenderingChild = ({
                                 return (
                                     <SelectFieldWrapper
                                         {...fieldWithoutRef}
-                                        selectedOption={
-                                            conditionalRendering.comparator
-                                        }
+                                        selectedOption={fieldWithoutRef.value}
                                         onSelectOption={(option: string) => {
-                                            handleChange(
-                                                "comparator",
-                                                option,
-                                                fieldWithoutRef.onChange
-                                            );
+                                            fieldWithoutRef.onChange(option);
                                         }}
                                         options={comparatorOptions}
                                         errorMessage={
@@ -207,12 +178,10 @@ export const ConditionalRenderingChild = ({
                                 <Form.Input
                                     {...fieldWithoutRef}
                                     placeholder="Set value"
-                                    defaultValue={conditionalRendering.value}
+                                    value={fieldWithoutRef.value}
                                     onChange={(event) => {
-                                        handleChange(
-                                            "value",
-                                            event.target.value,
-                                            fieldWithoutRef.onChange
+                                        fieldWithoutRef.onChange(
+                                            event.target.value
                                         );
                                     }}
                                     errorMessage={
