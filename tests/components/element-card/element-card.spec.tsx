@@ -6,6 +6,7 @@ import { ELEMENT_BUTTON_LABELS } from "src/data/elements-data";
 import { TestHelper } from "src/util/test-helper";
 
 const mockDeleteElement = jest.fn();
+const mockDuplicateElement = jest.fn();
 
 jest.mock("src/context-providers/builder/hook.ts", () => {
     const actual = jest.requireActual("src/context-providers/builder/hook.ts");
@@ -13,6 +14,7 @@ jest.mock("src/context-providers/builder/hook.ts", () => {
         useBuilder: () => ({
             ...actual.useBuilder(),
             deleteElement: mockDeleteElement,
+            duplicateElement: mockDuplicateElement,
         }),
     };
 });
@@ -82,6 +84,24 @@ describe("ElementCard", () => {
             const deleteButton = getDeleteButton();
             fireEvent.click(deleteButton);
             expect(mockDeleteElement).toBeCalled();
+        });
+
+        it("should run the duplicateElement hook when clicking the duplicate button", () => {
+            renderComponent(
+                { element: MOCK_ELEMENT },
+                {
+                    builderContext: {
+                        focusedElement: {
+                            element: MOCK_ELEMENT,
+                            isDirty: false,
+                        },
+                    },
+                }
+            );
+            const duplicateButton = getDuplicateButton();
+            fireEvent.click(duplicateButton);
+            expect(mockDuplicateElement).toBeCalled();
+            expect(mockDuplicateElement).toHaveBeenCalledWith(MOCK_ELEMENT);
         });
     });
 
