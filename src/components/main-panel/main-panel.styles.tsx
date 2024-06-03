@@ -1,5 +1,5 @@
-import { Text } from "@lifesg/react-design-system/text";
 import { MediaQuery } from "@lifesg/react-design-system/media";
+import { Text } from "@lifesg/react-design-system/text";
 import styled, { css } from "styled-components";
 
 // =============================================================================

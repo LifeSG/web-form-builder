@@ -1,9 +1,14 @@
+import { Text } from "@lifesg/react-design-system/text";
 import { useEffect, useState } from "react";
-import { MultiEntry } from "src/components/common";
-import { IPrefillAttributes, useBuilder } from "src/context-providers";
-import { PrefillChild } from "./prefill-child";
 import { useFormContext } from "react-hook-form";
-import { IBaseTextBasedFieldValues } from "src/schemas";
+import { MultiEntry } from "src/components/common";
+import {
+    EElementType,
+    IPrefillAttributes,
+    useBuilder,
+} from "src/context-providers";
+import { IBaseTextBasedFieldValues, SchemaHelper } from "src/schemas";
+import { PrefillChild } from "./prefill-child";
 
 export const Prefill = () => {
     // =========================================================================
@@ -17,19 +22,53 @@ export const Prefill = () => {
     const {
         setValue,
         formState: { isDirty },
+        getValues,
     } = useFormContext<IBaseTextBasedFieldValues>();
+    const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
+    const invalidAndEmptyFields = getTouchedAndErrorsFields();
+
+    // =========================================================================
+    // HELPER FUNCTIONS
+    // =========================================================================
+    function getTouchedAndErrorsFields() {
+        if (childEntryValues && childEntryValues.length > 0) {
+            try {
+                const validationSchema = schema.pick(["prefill"]);
+                const prefillValues = getValues("prefill");
+                const validationResult = validationSchema.validateSync({
+                    prefill: prefillValues,
+                    abortEarly: false,
+                });
+                return !!validationResult ? false : true;
+            } catch (error) {
+                return error.errors.some((errorMessage: string | string[]) =>
+                    errorMessage.includes("required")
+                );
+            }
+        } else {
+            return false;
+        }
+    }
+
+    function getPopoverMessage() {
+        if (invalidAndEmptyFields) {
+            return (
+                <Text.Body>
+                    To add new prefill, fill up existing prefill first.
+                </Text.Body>
+            );
+        }
+    }
 
     // =========================================================================
     // EVENT HANDLERS
     // =========================================================================
 
     const handleChildChange = (index: number, newValue: IPrefillAttributes) => {
-        setChildEntryValues((prevValues) => {
-            const updatedValues = [...prevValues];
-            updatedValues[index] = newValue;
-            setValue("prefill", updatedValues);
-            return updatedValues;
-        });
+        const updatedValues = [...childEntryValues];
+        updatedValues[index] = newValue;
+        setChildEntryValues(updatedValues);
+        setValue("prefill", updatedValues);
     };
 
     const handleAddButtonClick = () => {
@@ -37,20 +76,16 @@ export const Prefill = () => {
             prefillMode: null,
             path: "",
         };
-
-        setChildEntryValues((prevValues) => {
-            const updatedValues = [...prevValues, prefillChild];
-            setValue("prefill", updatedValues);
-            return updatedValues;
-        });
+        const updatedValues = [...childEntryValues, prefillChild];
+        setChildEntryValues(updatedValues);
+        setValue("prefill", updatedValues);
     };
 
     const handleDelete = (index: number) => {
-        setChildEntryValues((prevValues) => {
-            const updatedValues = prevValues.filter((_, i) => i !== index);
-            setValue("prefill", updatedValues);
-            return updatedValues;
-        });
+        const currentValues = [...childEntryValues];
+        const updatedValues = currentValues.filter((_, i) => i !== index);
+        setChildEntryValues(updatedValues);
+        setValue("prefill", updatedValues);
     };
 
     // =========================================================================
@@ -99,6 +134,8 @@ export const Prefill = () => {
             title="Prefill"
             buttonLabel="prefill"
             subtitle="Prefill information from various data sources, for example Myinfo."
+            disabledButton={invalidAndEmptyFields}
+            popoverMessage={getPopoverMessage()}
         >
             {renderChildren()}
         </MultiEntry>

@@ -16,7 +16,6 @@ import {
     verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { ErrorDisplay } from "@lifesg/react-design-system/error-display";
-import { useState } from "react";
 import { TElement, useBuilder } from "src/context-providers";
 import { ElementCard } from "../element-card";
 import {

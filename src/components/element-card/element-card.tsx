@@ -5,8 +5,14 @@ import { Text } from "@lifesg/react-design-system/text";
 import { PlusCircleIcon } from "@lifesg/react-icons";
 import { BinIcon } from "@lifesg/react-icons/bin";
 import { CopyIcon } from "@lifesg/react-icons/copy";
-import { TElement, useBuilder } from "src/context-providers";
-import { BaseCard, CardIcon } from "../common";
+import { CSSProperties } from "react";
+import {
+    EToastTypes,
+    TElement,
+    useBuilder,
+    useDisplay,
+} from "src/context-providers";
+import { CardIcon } from "../common";
 import {
     ActionButton,
     ActionsContainer,
@@ -18,7 +24,6 @@ import {
     ElementBaseCard,
     IdLabel,
 } from "./element-card.styles";
-import { CSSProperties } from "react";
 
 interface IProps {
     element: TElement;
@@ -32,7 +37,8 @@ export const ElementCard = ({ element, onClick }: IProps) => {
     // CONST, STATE, REFS
     // =========================================================================
     const { label, id } = element;
-    const { focusedElement, deleteElement } = useBuilder();
+    const { focusedElement, deleteElement, duplicateElement } = useBuilder();
+    const { showToast } = useDisplay();
 
     const { isDragging } = useDraggable({
         id: element.internalId,
@@ -70,11 +76,13 @@ export const ElementCard = ({ element, onClick }: IProps) => {
         event: React.MouseEvent<HTMLButtonElement>
     ) => {
         event.stopPropagation();
+        const newToast = {
+            message: "Element duplicated.",
+            type: EToastTypes.SUCCESS_TOAST,
+        };
 
-        if (disableDuplicate) {
-            event.preventDefault();
-        }
-        // TODO: Add handling
+        duplicateElement(focusedElement.element);
+        showToast(newToast);
     };
 
     const handleDeleteClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -94,10 +102,7 @@ export const ElementCard = ({ element, onClick }: IProps) => {
     }
 
     function shouldDisableDuplicate() {
-        return (
-            checkIsFocused() &&
-            (focusedElement.isDirty || !focusedElement.isValid)
-        );
+        return checkIsFocused() && focusedElement.isDirty;
     }
 
     // =========================================================================
