@@ -7,7 +7,7 @@ import {
 import { ELEMENT_BUTTON_LABELS, ELEMENT_ID_PREFIX } from "src/data";
 import { SimpleIdGenerator } from "./simple-id-generator";
 
-const generateNewId = (
+const generateNewElementId = (
     prefix: string,
     existingIds: string[],
     duplicate: boolean
@@ -51,7 +51,7 @@ export namespace ElementObjectGenerator {
         const baseAttributes: IBaseAttributes = {
             internalId: generateNewInternalId(existingIds),
             type,
-            id: generateNewId(
+            id: generateNewElementId(
                 ELEMENT_ID_PREFIX[type],
                 existingElementIds,
                 false
@@ -92,7 +92,7 @@ export namespace ElementObjectGenerator {
         };
 
         const baseId = extractBaseId(element.id);
-        const newId = generateNewId(baseId, existingIds, true);
+        const newId = generateNewElementId(baseId, existingIds, true);
 
         const duplicatedElement: TElement = {
             ...element,
