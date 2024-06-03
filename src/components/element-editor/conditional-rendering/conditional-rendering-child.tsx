@@ -76,7 +76,7 @@ export const ConditionalRenderingChild = ({
         }
 
         setConditionRendering(updatedValue);
-        field(newValue);
+        field && field(newValue);
         onChange(updatedValue);
     };
 

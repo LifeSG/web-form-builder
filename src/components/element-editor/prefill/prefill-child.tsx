@@ -59,7 +59,7 @@ export const PrefillChild = ({ onDelete, onChange, value, index }: IProps) => {
             const updatedPrefill = { ...prefill, [changeType]: newValue };
             setPrefill(updatedPrefill);
             onChange(updatedPrefill);
-            field(newValue);
+            field && field(newValue);
         }
     };
 

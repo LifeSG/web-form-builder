@@ -45,7 +45,7 @@ export const ValidationChild = ({
 
         setValidation(updatedValue);
         onChange(updatedValue);
-        field(newValue);
+        field && field(newValue);
     };
 
     // =========================================================================
