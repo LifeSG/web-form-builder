@@ -8,6 +8,7 @@ import {
     useBuilder,
 } from "src/context-providers";
 import { IBaseTextBasedFieldValues, SchemaHelper } from "src/schemas";
+import * as Yup from "yup";
 import { PrefillChild } from "./prefill-child";
 
 export const Prefill = () => {
@@ -35,15 +36,13 @@ export const Prefill = () => {
             try {
                 const validationSchema = schema.pick(["prefill"]);
                 const prefillValues = getValues("prefill");
-                const validationResult = validationSchema.validateSync({
+                validationSchema.validateSync({
                     prefill: prefillValues,
                     abortEarly: false,
                 });
-                return !!validationResult ? false : true;
+                return false;
             } catch (error) {
-                return error.errors.some((errorMessage: string | string[]) =>
-                    errorMessage.includes("required")
-                );
+                return Yup.ValidationError.isError(error);
             }
         } else {
             return false;

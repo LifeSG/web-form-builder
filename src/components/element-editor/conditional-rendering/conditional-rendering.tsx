@@ -8,6 +8,7 @@ import {
     useBuilder,
 } from "src/context-providers";
 import { IBaseTextBasedFieldValues, SchemaHelper } from "src/schemas";
+import * as Yup from "yup";
 import {
     ConditionalRenderingChild,
     IOnChangeProps,
@@ -61,15 +62,13 @@ export const ConditionalRendering = () => {
                 const conditionalRenderingValues = getValues(
                     "conditionalRendering"
                 );
-                const validationResult = validationSchema.validateSync({
+                validationSchema.validateSync({
                     conditionalRendering: conditionalRenderingValues,
                     abortEarly: false,
                 });
-                return !!validationResult ? false : true;
+                return false;
             } catch (error) {
-                return error.errors.some((errorMessage: string | string[]) =>
-                    errorMessage.includes("required")
-                );
+                return Yup.ValidationError.isError(error);
             }
         } else {
             return false;
