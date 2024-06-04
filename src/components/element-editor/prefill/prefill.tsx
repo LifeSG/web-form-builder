@@ -36,7 +36,7 @@ export const Prefill = () => {
             try {
                 const validationSchema = schema.pick(["prefill"]);
                 const prefillValues = getValues("prefill");
-                const validationResult = validationSchema.validateSync({
+                validationSchema.validateSync({
                     prefill: prefillValues,
                     abortEarly: false,
                 });

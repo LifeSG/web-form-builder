@@ -54,7 +54,7 @@ export const Validation = () => {
                 const validationSchema = schema.pick(["validation"]);
                 const validationValues = getValues("validation");
 
-                const validationResult = validationSchema.validateSync({
+                validationSchema.validateSync({
                     validation: validationValues,
                     abortEarly: false,
                 });

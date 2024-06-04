@@ -62,7 +62,7 @@ export const ConditionalRendering = () => {
                 const conditionalRenderingValues = getValues(
                     "conditionalRendering"
                 );
-                const validationResult = validationSchema.validateSync({
+                validationSchema.validateSync({
                     conditionalRendering: conditionalRenderingValues,
                     abortEarly: false,
                 });
