@@ -15,15 +15,14 @@ export const Prefill = () => {
     // =========================================================================
     // CONST, STATES, REFS
     // =========================================================================
-    const { focusedElement, updateFocusedElement } = useBuilder();
-    const element = focusedElement?.element;
+    const { updateFocusedElement } = useBuilder();
     const [childEntryValues, setChildEntryValues] = useState<
         IPrefillAttributes[]
     >([]);
     const {
         setValue,
         formState: { isDirty },
-        getValues,
+        watch,
     } = useFormContext<IBaseTextBasedFieldValues>();
     const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
     const invalidAndEmptyFields = getTouchedAndErrorsFields();
@@ -35,9 +34,8 @@ export const Prefill = () => {
         if (childEntryValues && childEntryValues.length > 0) {
             try {
                 const validationSchema = schema.pick(["prefill"]);
-                const prefillValues = getValues("prefill");
                 validationSchema.validateSync({
-                    prefill: prefillValues,
+                    prefill: childEntryValues,
                     abortEarly: false,
                 });
                 return false;
@@ -63,27 +61,18 @@ export const Prefill = () => {
     // EVENT HANDLERS
     // =========================================================================
 
-    const handleChildChange = (index: number, newValue: IPrefillAttributes) => {
-        const updatedValues = [...childEntryValues];
-        updatedValues[index] = newValue;
-        setChildEntryValues(updatedValues);
-        setValue("prefill", updatedValues);
-    };
-
     const handleAddButtonClick = () => {
         const prefillChild = {
             prefillMode: null,
             path: "",
         };
         const updatedValues = [...childEntryValues, prefillChild];
-        setChildEntryValues(updatedValues);
         setValue("prefill", updatedValues);
     };
 
     const handleDelete = (index: number) => {
         const currentValues = [...childEntryValues];
         const updatedValues = currentValues.filter((_, i) => i !== index);
-        setChildEntryValues(updatedValues);
         setValue("prefill", updatedValues);
     };
 
@@ -92,14 +81,15 @@ export const Prefill = () => {
     // =========================================================================
 
     useEffect(() => {
-        setChildEntryValues(element?.prefill);
-    }, [focusedElement.element]);
-
-    useEffect(() => {
-        setValue("prefill", childEntryValues, {
-            shouldDirty: true,
+        const subscription = watch((values, { name }) => {
+            if (name?.startsWith("prefill")) {
+                setChildEntryValues(
+                    ([...values?.prefill] as IPrefillAttributes[]) || []
+                );
+            }
         });
-    }, [childEntryValues]);
+        return () => subscription.unsubscribe();
+    }, []);
 
     useEffect(() => {
         if (isDirty) {
@@ -115,12 +105,10 @@ export const Prefill = () => {
         if (childEntryValues?.length === 0) {
             return;
         } else {
-            return childEntryValues?.map((child, index) => (
+            return childEntryValues?.map((_, index) => (
                 <PrefillChild
                     key={`prefill-entry-${index}`}
                     onDelete={() => handleDelete(index)}
-                    onChange={(newValue) => handleChildChange(index, newValue)}
-                    value={child}
                     index={index}
                 />
             ));

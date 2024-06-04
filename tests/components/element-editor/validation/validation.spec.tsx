@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
 import { FormProvider, useForm } from "react-hook-form";
 import { Validation } from "src/components/element-editor/validation/validation";
-import { EElementType } from "src/context-providers";
+import { EElementType, TElement } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS, ELEMENT_VALIDATION_TYPES } from "src/data";
 import { SchemaHelper } from "src/schemas";
 import { TestHelper } from "src/util/test-helper";
@@ -46,7 +46,7 @@ describe("Validation", () => {
         ).toBeInTheDocument();
         expect(
             screen.getByPlaceholderText(
-                "Enter email domain, seperating with a comma"
+                "Enter email domain, separating with a comma"
             )
         ).toBeInTheDocument();
         expect(
@@ -56,25 +56,22 @@ describe("Validation", () => {
     });
 
     it("should disable the button and show a popover when a maximum number of entries is reached when the inputs are filled up", async () => {
-        const MOCK_VAIDATION = [
-            {
-                validationType:
-                    ELEMENT_VALIDATION_TYPES["Text field"][EElementType.EMAIL]
-                        .validationTypes[0],
-                validationRule: "@gmail.com",
-                validationErrorMessage: "error message",
-            },
-        ];
         renderComponent({
             builderContext: {
                 focusedElement: {
-                    element: { ...MOCK_ELEMENT, validation: MOCK_VAIDATION },
+                    element: MOCK_ELEMENT,
                     isDirty: true,
                 },
             },
         });
-
         fireEvent.click(getAddValidationButton());
+        const inputName = screen.getByPlaceholderText(
+            "Enter email domain, separating with a comma"
+        );
+        const inputValue = screen.getByPlaceholderText("Set error message");
+
+        fireEvent.change(inputName, { target: { value: "@gmail.com" } });
+        fireEvent.change(inputValue, { target: { value: "Test Value" } });
         fireEvent.mouseOver(getAddValidationButton());
 
         const popoverText = await screen.findByTestId("add-button-popover");
@@ -87,7 +84,7 @@ describe("Validation", () => {
         expect(getAddValidationButton()).toBeDisabled();
     });
 
-    it("should disable the button and show a popover when a maximum number of entries is reached", async () => {
+    it("should disable the button and show a popover when a maximum number of entries is reached for other element types", async () => {
         renderComponent({
             builderContext: {
                 focusedElement: {
@@ -120,6 +117,7 @@ const MyTestComponent = () => {
         mode: "onTouched",
         resolver: yupResolver(SchemaHelper.buildSchema(EElementType.EMAIL)),
     });
+
     return (
         <FormProvider {...methods}>
             <Validation />

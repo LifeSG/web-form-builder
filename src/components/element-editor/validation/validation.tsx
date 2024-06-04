@@ -5,8 +5,8 @@ import { MultiEntry } from "src/components/common";
 import { EElementType, IValidation, useBuilder } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import { IBaseTextBasedFieldValues, SchemaHelper } from "src/schemas";
-import { ValidationChild } from "./validation-child";
 import * as Yup from "yup";
+import { ValidationChild } from "./validation-child";
 
 export const Validation = () => {
     // =========================================================================
@@ -18,7 +18,7 @@ export const Validation = () => {
     const {
         setValue,
         formState: { isDirty },
-        getValues,
+        watch,
     } = useFormContext<IBaseTextBasedFieldValues>();
     const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
     const invalidAndEmptyFields = getTouchedAndErrorsFields();
@@ -49,13 +49,14 @@ export const Validation = () => {
     }
 
     function getTouchedAndErrorsFields() {
-        if (element?.validation && element?.validation.length > 0) {
+        console.log("am i here....", childEntryValues);
+        if (childEntryValues && childEntryValues.length > 0) {
+            console.log("entered here....", childEntryValues);
             try {
                 const validationSchema = schema.pick(["validation"]);
-                const validationValues = getValues("validation");
 
                 validationSchema.validateSync({
-                    validation: validationValues,
+                    validation: childEntryValues,
                     abortEarly: false,
                 });
                 return false;
@@ -74,9 +75,7 @@ export const Validation = () => {
                     To add new validation, fill up existing validation first.
                 </Text.Body>
             );
-        } else if (
-            element?.validation?.length === getMaxEntries(element.type)
-        ) {
+        } else if (childEntryValues?.length === getMaxEntries(element.type)) {
             return (
                 <Text.Body>
                     Limit reached. To add new validation, remove existing ones
@@ -101,13 +100,6 @@ export const Validation = () => {
     // EVENT HANDLERS
     // =========================================================================
 
-    // const handleChildChange = (index: number, newValue: IValidation) => {
-    //     const updatedValues = [...childEntryValues];
-    //     updatedValues[index] = newValue;
-    //     setChildEntryValues(updatedValues);
-    //     setValue("validation", updatedValues);
-    // };
-
     const handleAddButtonClick = () => {
         const validationChild = {
             validationType: setDefaultValidationType(),
@@ -115,34 +107,32 @@ export const Validation = () => {
             validationErrorMessage: "",
         };
 
-        const updatedValues = [...element?.validation, validationChild];
-        setChildEntryValues(updatedValues);
+        const updatedValues = [...childEntryValues, validationChild];
         setValue("validation", updatedValues);
     };
 
     const handleDelete = (index: number) => {
-        const currentValues = [...element?.validation];
+        const currentValues = [...childEntryValues];
         const updatedValues = currentValues.filter((_, i) => i !== index);
-        setChildEntryValues(updatedValues);
         setValue("validation", updatedValues);
     };
 
+    console.log("validation:", childEntryValues);
     // =========================================================================
     // USE EFFECTS
     // =========================================================================
 
     useEffect(() => {
-        const element = focusedElement?.element;
-        setChildEntryValues(
-            element?.validation !== undefined ? element?.validation : []
-        );
-    }, [focusedElement.element]);
-
-    useEffect(() => {
-        setValue("validation", element?.validation, {
-            shouldDirty: true,
+        const subscription = watch((values, { name }) => {
+            console.log("name:", name);
+            if (name?.startsWith("validation")) {
+                setChildEntryValues(
+                    ([...values?.validation] as IValidation[]) || []
+                );
+            }
         });
-    }, [element?.validation]);
+        return () => subscription.unsubscribe();
+    }, []);
 
     useEffect(() => {
         if (isDirty) {
@@ -155,7 +145,7 @@ export const Validation = () => {
     // =========================================================================
 
     const renderChildren = () => {
-        return childEntryValues?.map((child, index) => (
+        return childEntryValues?.map((_, index) => (
             <ValidationChild
                 key={`validation-entry-${index}`}
                 onDelete={() => handleDelete(index)}
@@ -171,7 +161,7 @@ export const Validation = () => {
             title="Validation"
             buttonLabel="validation"
             disabledButton={
-                element?.validation?.length === getMaxEntries(element.type) ||
+                childEntryValues?.length === getMaxEntries(element.type) ||
                 invalidAndEmptyFields
             }
             popoverMessage={getPopoverMessage()}

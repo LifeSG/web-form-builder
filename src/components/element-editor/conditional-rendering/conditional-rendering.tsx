@@ -9,10 +9,7 @@ import {
 } from "src/context-providers";
 import { IBaseTextBasedFieldValues, SchemaHelper } from "src/schemas";
 import * as Yup from "yup";
-import {
-    ConditionalRenderingChild,
-    IOnChangeProps,
-} from "./conditional-rendering-child";
+import { ConditionalRenderingChild } from "./conditional-rendering-child";
 
 interface IOptions {
     label: string;
@@ -27,12 +24,13 @@ export const ConditionalRendering = () => {
 
     const { focusedElement, elements, updateFocusedElement } = useBuilder();
     const element = focusedElement.element;
-    const [childEntryValues, setChildEntryValues] =
-        useState<IConditionalRendering[]>();
+    const [childEntryValues, setChildEntryValues] = useState<
+        IConditionalRendering[]
+    >([]);
     const {
         setValue,
         formState: { isDirty },
-        getValues,
+        watch,
     } = useFormContext<IBaseTextBasedFieldValues>();
     const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
     const invalidAndEmptyFields = getTouchedAndErrorsFields();
@@ -59,11 +57,8 @@ export const ConditionalRendering = () => {
         if (childEntryValues && childEntryValues.length > 0) {
             try {
                 const validationSchema = schema.pick(["conditionalRendering"]);
-                const conditionalRenderingValues = getValues(
-                    "conditionalRendering"
-                );
                 validationSchema.validateSync({
-                    conditionalRendering: conditionalRenderingValues,
+                    conditionalRendering: childEntryValues,
                     abortEarly: false,
                 });
                 return false;
@@ -91,34 +86,22 @@ export const ConditionalRendering = () => {
 
     // =============================================================================
     // EVENT HANDLERS
-    // =============================================================================
-
-    const handleChildChange = (
-        index: number,
-        newValue: IConditionalRendering
-    ) => {
-        const updatedValues = [...childEntryValues];
-        updatedValues[index] = newValue;
-        setChildEntryValues(updatedValues);
-        setValue("conditionalRendering", updatedValues);
-    };
+    // ============================================================================
 
     const handleAddButtonClick = () => {
         const conditionalRenderingChild = {
             fieldKey: "",
-            comparator: "",
+            comparator: "Equals",
             value: "",
             internalId: "",
         };
         const updatedValues = [...childEntryValues, conditionalRenderingChild];
-        setChildEntryValues(updatedValues);
         setValue("conditionalRendering", updatedValues);
     };
 
     const handleDelete = (index: number) => {
         const currentValues = [...childEntryValues];
         const updatedValues = currentValues.filter((_, i) => i !== index);
-        setChildEntryValues(updatedValues);
         setValue("conditionalRendering", updatedValues);
     };
 
@@ -126,20 +109,26 @@ export const ConditionalRendering = () => {
     // EFFECTS
     // =========================================================================
     useEffect(() => {
+        const subscription = watch((values, { name }) => {
+            if (name?.startsWith("conditionalRendering")) {
+                setChildEntryValues(
+                    ([
+                        ...values?.conditionalRendering,
+                    ] as IConditionalRendering[]) || []
+                );
+            }
+        });
+        return () => subscription.unsubscribe();
+    }, []);
+
+    useEffect(() => {
         const updatedChildEntries = element.conditionalRendering?.filter(
             (child) => {
                 return elements?.hasOwnProperty(child.internalId);
             }
         );
         setValue("conditionalRendering", updatedChildEntries);
-        setChildEntryValues(updatedChildEntries);
     }, [element]);
-
-    useEffect(() => {
-        setValue("conditionalRendering", childEntryValues, {
-            shouldDirty: true,
-        });
-    }, [childEntryValues]);
 
     useEffect(() => {
         if (isDirty) {
@@ -151,15 +140,11 @@ export const ConditionalRendering = () => {
     // RENDER FUNCTIONS
     // =============================================================================
     const renderChildren = () => {
-        return childEntryValues?.map((child, index) => (
+        return childEntryValues?.map((_, index) => (
             <ConditionalRenderingChild
                 key={`conditional-rendering-entry-${index}`}
                 onDelete={() => handleDelete(index)}
-                onChange={(newValue) =>
-                    handleChildChange(index, newValue as IOnChangeProps)
-                }
                 options={getElementOptions()}
-                value={child}
                 index={index}
             />
         ));

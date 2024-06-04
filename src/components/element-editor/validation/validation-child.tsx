@@ -2,11 +2,6 @@ import { Form } from "@lifesg/react-design-system/form";
 import { useEffect, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { ChildEntry } from "src/components/common";
-import {
-    EElementType,
-    IValidation,
-    useBuilder,
-} from "src/context-providers/builder";
 import { IBaseTextBasedFieldValues } from "src/schemas";
 import { FieldWrapper } from "./validation.styles";
 
@@ -20,13 +15,10 @@ export const ValidationChild = ({ onDelete, options, index }: IProps) => {
     const {
         formState: { errors },
         control,
-        setValue,
         getValues,
     } = useFormContext<IBaseTextBasedFieldValues>();
-    const { focusedElement } = useBuilder();
     const [validationRulePlaceHolder, setValidationRulePlaceHolder] =
         useState<string>();
-    const element = focusedElement?.element;
 
     // =========================================================================
     // USE EFFECTS

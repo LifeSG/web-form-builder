@@ -1,9 +1,7 @@
 import { Form } from "@lifesg/react-design-system/form";
 import { Text } from "@lifesg/react-design-system/text";
-import { useEffect, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { ChildEntry } from "src/components/common";
-import { IConditionalRendering } from "src/context-providers";
 import { IBaseTextBasedFieldValues } from "src/schemas";
 import {
     FieldWrapper,
@@ -28,16 +26,12 @@ export interface IOnChangeProps {
 interface IProps {
     onDelete: () => void;
     options: IOptions[];
-    onChange: (newValue: IOnChangeProps | {}) => void;
-    value?: IConditionalRendering;
     index?: number;
 }
 
 export const ConditionalRenderingChild = ({
     onDelete,
     options,
-    onChange,
-    value,
     index,
 }: IProps) => {
     // =========================================================================
@@ -54,23 +48,7 @@ export const ConditionalRenderingChild = ({
     const {
         formState: { errors },
         control,
-        getValues,
-        setValue,
     } = useFormContext<IBaseTextBasedFieldValues>();
-    const comparator = getValues(`validation.${index}.validationType`) === "";
-
-    // =========================================================================
-    // USE EFFECT
-    // =========================================================================
-
-    useEffect(() => {
-        if (comparator) {
-            setValue(
-                `conditionalRendering.${index}.comparator`,
-                comparatorOptions[0]
-            );
-        }
-    }, []);
 
     // =========================================================================
     // RENDER FUNCTIONS

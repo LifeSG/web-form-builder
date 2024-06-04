@@ -1,13 +1,12 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { fireEvent, render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
-import { useForm, FormProvider } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import {
     ConditionalRenderingChild,
     IOptions,
 } from "src/components/element-editor/conditional-rendering";
 import { EElementType, IConditionalRendering } from "src/context-providers";
-import { ELEMENT_BUTTON_LABELS } from "src/data";
 import { SchemaHelper } from "src/schemas";
 import { TestHelper } from "src/util/test-helper";
 
@@ -29,8 +28,8 @@ describe("ConditionalRenderingChild", () => {
         renderComponent({
             onDelete: mockDelete,
             options: mockOptions,
-            onChange: mockOnChange,
             value: mockValue,
+            index: mockIndex,
         });
 
         expect(screen.getByText("Select")).toBeInTheDocument();
@@ -42,8 +41,8 @@ describe("ConditionalRenderingChild", () => {
         renderComponent({
             onDelete: mockDelete,
             options: mockOptions,
-            onChange: mockOnChange,
             value: mockValue,
+            index: mockIndex,
         });
 
         const deleteButton = screen.getByTestId("delete-button");
@@ -51,27 +50,10 @@ describe("ConditionalRenderingChild", () => {
         expect(mockDelete).toBeCalled();
     });
 
-    it("should fire onChange when there is a change in the input fields", () => {
-        renderComponent({
-            onDelete: mockDelete,
-            options: mockOptions,
-            onChange: mockOnChange,
-            value: mockValue,
-        });
-
-        const getValueField = screen.getByPlaceholderText("Set value");
-        fireEvent.focus(getValueField);
-        fireEvent.change(getValueField, {
-            target: { value: "mockValue" },
-        });
-        expect(mockOnChange).toBeCalled();
-    });
-
     it("should render an error message when validation error message field is left empty", async () => {
         renderComponent({
             onDelete: mockDelete,
             options: mockOptions,
-            onChange: mockOnChange,
             value: mockValue,
             index: mockIndex,
         });
@@ -91,16 +73,14 @@ describe("ConditionalRenderingChild", () => {
 interface IConditionalRenderingChildOptions {
     onDelete?: () => void;
     options?: IOptions[];
-    onChange?: (newValue: any) => void;
-    value?: IConditionalRendering;
+    value?: IConditionalRendering[];
     index?: number;
 }
 
 const MyTestComponent = ({
     onDelete,
-    options,
-    onChange,
     value,
+    options,
     index,
 }: IConditionalRenderingChildOptions) => {
     const methods = useForm({
@@ -108,14 +88,13 @@ const MyTestComponent = ({
         resolver: yupResolver(SchemaHelper.buildSchema(EElementType.EMAIL)),
     });
     const onSubmit = jest.fn;
+    methods.setValue("conditionalRendering", value);
     return (
         <FormProvider {...methods}>
             <form onSubmit={methods.handleSubmit(onSubmit)}>
                 <ConditionalRenderingChild
                     onDelete={onDelete}
                     options={options}
-                    onChange={onChange}
-                    value={value}
                     index={index}
                 />
                 <button type="submit">Submit</button>
@@ -141,11 +120,12 @@ const renderComponent = (
 // =============================================================================
 const mockOptions = [{ label: "mockLabel1", id: "mockId1" }];
 const mockDelete = jest.fn();
-const mockOnChange = jest.fn();
-const mockValue = {
-    fieldKey: "",
-    comparator: "Equals",
-    value: "",
-    internalId: "mock123",
-};
+const mockValue: IConditionalRendering[] = [
+    {
+        fieldKey: "",
+        comparator: "Equals",
+        value: String(""),
+        internalId: "mock123",
+    },
+];
 const mockIndex = 0;
