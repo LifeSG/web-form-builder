@@ -4,43 +4,58 @@ import {
     IBaseTextBasedFieldAttributes,
     TElement,
 } from "src/context-providers";
-import { ELEMENT_BUTTON_LABELS } from "src/data";
+import { ELEMENT_BUTTON_LABELS, ELEMENT_ID_PREFIX } from "src/data";
 import { SimpleIdGenerator } from "./simple-id-generator";
 
-// =============================================================================
-// HELPER FUNCTIONS
-// =============================================================================
-const extractBaseId = (id: string) => {
-    const match = id.match(/^(.*?)(-copy(?:-\d+)?)?$/);
-    return match ? match[1] : id;
+const generateNewElementId = (
+    prefix: string,
+    existingIds: string[],
+    duplicate: boolean
+) => {
+    const regex = new RegExp(
+        duplicate ? `^${prefix}-copy(?:-(\\d+))?$` : `^${prefix}(?:-(\\d+))?$`
+    );
+
+    let maxSuffix = duplicate ? 0 : -1;
+    existingIds.forEach((existingElementId) => {
+        const match = existingElementId?.match(regex);
+        if (match) {
+            const suffix = match[1]
+                ? parseInt(match[1], 10)
+                : duplicate
+                  ? 1
+                  : 0;
+            maxSuffix = Math.max(maxSuffix, suffix);
+        }
+    });
+
+    return duplicate
+        ? `${prefix}-copy${maxSuffix + 1 > 1 ? `-${maxSuffix + 1}` : ""}`
+        : `${prefix}${maxSuffix + 1 > 0 ? `-${maxSuffix + 1}` : ""}`;
 };
 
-const generateNewId = (baseId: string, existingIds: string[]) => {
-    const regex = new RegExp(`^${baseId}-copy(?:-(\\d+))?$`);
-
-    const suffixes = existingIds.map((existingId) => {
-        const match = existingId?.match(regex);
-        if (match) {
-            return match[1] ? parseInt(match[1], 10) : 1;
-        }
-        return 0;
-    });
-    const maxSuffix = Math.max(0, ...suffixes);
-
-    return `${baseId}-copy${maxSuffix + 1 > 1 ? `-${maxSuffix + 1}` : ""}`;
+const generateNewInternalId = (existingIds: string[]) => {
+    let internalId: string;
+    while (!internalId || existingIds.includes(internalId)) {
+        internalId = SimpleIdGenerator.generate();
+    }
+    return internalId;
 };
 
 export namespace ElementObjectGenerator {
-    export const generate = (type: EElementType, existingIds: string[]) => {
-        let internalId: string;
-        while (!internalId || existingIds.includes(internalId)) {
-            internalId = SimpleIdGenerator.generate();
-        }
-
+    export const generate = (
+        type: EElementType,
+        existingIds: string[],
+        existingElementIds: string[]
+    ) => {
         const baseAttributes: IBaseAttributes = {
-            internalId,
+            internalId: generateNewInternalId(existingIds),
             type,
-            id: undefined,
+            id: generateNewElementId(
+                ELEMENT_ID_PREFIX[type],
+                existingElementIds,
+                false
+            ),
         };
 
         switch (type) {
@@ -71,17 +86,17 @@ export namespace ElementObjectGenerator {
         existingInternalIds: string[],
         existingIds: string[]
     ) => {
-        let internalId: string;
-        while (!internalId || existingInternalIds.includes(internalId)) {
-            internalId = SimpleIdGenerator.generate();
-        }
+        const extractBaseId = (id: string) => {
+            const match = id.match(/^(.*?)(-copy(?:-\d+)?)?$/);
+            return match ? match[1] : id;
+        };
 
         const baseId = extractBaseId(element.id);
-        const newId = generateNewId(baseId, existingIds);
+        const newId = generateNewElementId(baseId, existingIds, true);
 
         const duplicatedElement: TElement = {
             ...element,
-            internalId,
+            internalId: generateNewInternalId(existingInternalIds),
             id: newId,
         };
 

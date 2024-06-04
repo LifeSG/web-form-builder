@@ -6,6 +6,7 @@ import { EElementType, IValidation, useBuilder } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import { IBaseTextBasedFieldValues, SchemaHelper } from "src/schemas";
 import { ValidationChild } from "./validation-child";
+import * as Yup from "yup";
 
 export const Validation = () => {
     // =========================================================================
@@ -53,15 +54,13 @@ export const Validation = () => {
                 const validationSchema = schema.pick(["validation"]);
                 const validationValues = getValues("validation");
 
-                const validationResult = validationSchema.validateSync({
+                validationSchema.validateSync({
                     validation: validationValues,
                     abortEarly: false,
                 });
-                return !!validationResult ? false : true;
+                return false;
             } catch (error) {
-                return error.errors.some((errorMessage: string | string[]) =>
-                    errorMessage.includes("required")
-                );
+                return Yup.ValidationError.isError(error);
             }
         } else {
             return false;
