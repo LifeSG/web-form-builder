@@ -20,7 +20,7 @@ export const SidePanelHeader = () => {
         removeFocusedElement,
         focusedElement,
     } = useBuilder();
-    const isDirty = focusedElement?.isDirty || false;
+    const { isDirty } = focusedElement || {};
 
     // =========================================================================
     // EVENT HANDLERS
@@ -54,7 +54,7 @@ export const SidePanelHeader = () => {
             return (
                 <>
                     <SaveChangesButton>
-                        {isDirty === false ? "Saved" : "Save Changes"}
+                        {!isDirty ? "Saved" : "Save Changes"}
                     </SaveChangesButton>
                     <IconButton
                         $iconSize="1.5rem"
