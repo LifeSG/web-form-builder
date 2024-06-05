@@ -4,17 +4,13 @@ import { DisplayToast } from "./toast";
 export const Toasts = () => {
     const { toasts } = useDisplay();
 
-    if (!toasts || toasts.length === 0) {
-        return <></>;
-    }
-
     return (
         <>
-            {toasts.map((value) => (
+            {toasts.map((toast) => (
                 <DisplayToast
-                    key={value.id}
-                    toast={value}
-                    toastFunction={value.toastFunction}
+                    key={toast.id}
+                    toast={toast}
+                    toastFunction={toast.toastFunction}
                 />
             ))}
         </>

@@ -12,27 +12,13 @@ export const DisplayToast = ({ toast, toastFunction }: IProps) => {
     // CONST, STATE, REF
     // =========================================================================
     const { dismissToast } = useDisplay();
-    const timeoutRef = useRef(null);
 
     // =============================================================================
     // HELPER FUNCTIONS
     // =============================================================================
-    function startDismissTimer(id: string) {
-        return setTimeout(() => {
-            dismissToast(id);
-        }, 4500);
+    function handleDismissToast(id: string) {
+        dismissToast(id);
     }
-
-    // =========================================================================
-    // EFFECTS
-    // =========================================================================
-    useEffect(() => {
-        timeoutRef.current = startDismissTimer(toast.id);
-
-        return () => {
-            clearTimeout(timeoutRef.current);
-        };
-    }, [toast, dismissToast]);
 
     // =============================================================================
     // RENDER
@@ -46,6 +32,7 @@ export const DisplayToast = ({ toast, toastFunction }: IProps) => {
                     label={toast.message}
                     autoDismiss
                     fixed={false}
+                    onDismiss={() => handleDismissToast(toast.id)}
                 />
             );
         default:
