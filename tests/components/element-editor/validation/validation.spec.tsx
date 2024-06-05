@@ -46,7 +46,7 @@ describe("Validation", () => {
         ).toBeInTheDocument();
         expect(
             screen.getByPlaceholderText(
-                "Enter email domain, seperating with a comma"
+                "Enter email domain, separating with a comma"
             )
         ).toBeInTheDocument();
         expect(
