@@ -25,6 +25,9 @@ export const Prefill = () => {
         formState: { isDirty },
         getValues,
     } = useFormContext<IBaseTextBasedFieldValues>();
+    const shouldUpdateFocusedElement =
+        isDirty ||
+        childEntryValues?.length > focusedElement?.element?.prefill?.length;
     const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
     const invalidAndEmptyFields = getTouchedAndErrorsFields();
 
@@ -102,10 +105,10 @@ export const Prefill = () => {
     }, [childEntryValues]);
 
     useEffect(() => {
-        if (isDirty) {
+        if (shouldUpdateFocusedElement) {
             updateFocusedElement(true);
         }
-    }, [isDirty, updateFocusedElement]);
+    }, [shouldUpdateFocusedElement]);
 
     // =========================================================================
     // RENDER FUNCTIONS

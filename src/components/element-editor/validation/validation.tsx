@@ -20,6 +20,9 @@ export const Validation = () => {
         formState: { isDirty },
         getValues,
     } = useFormContext<IBaseTextBasedFieldValues>();
+    const shouldUpdateFocusedElement =
+        isDirty ||
+        childEntryValues?.length > focusedElement?.element?.validation?.length;
     const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
     const invalidAndEmptyFields = getTouchedAndErrorsFields();
 
@@ -74,7 +77,7 @@ export const Validation = () => {
                     To add new validation, fill up existing validation first.
                 </Text.Body>
             );
-        } else if (childEntryValues?.length === getMaxEntries(element.type)) {
+        } else if (childEntryValues?.length === getMaxEntries(element?.type)) {
             return (
                 <Text.Body>
                     Limit reached. To add new validation, remove existing ones
@@ -130,13 +133,11 @@ export const Validation = () => {
             shouldDirty: true,
         });
     }, [childEntryValues]);
-
     useEffect(() => {
-        if (isDirty) {
+        if (shouldUpdateFocusedElement) {
             updateFocusedElement(true);
         }
-    }, [isDirty, updateFocusedElement]);
-
+    }, [shouldUpdateFocusedElement]);
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
@@ -160,7 +161,7 @@ export const Validation = () => {
             title="Validation"
             buttonLabel="validation"
             disabledButton={
-                childEntryValues?.length === getMaxEntries(element.type) ||
+                childEntryValues?.length === getMaxEntries(element?.type) ||
                 invalidAndEmptyFields
             }
             popoverMessage={getPopoverMessage()}
