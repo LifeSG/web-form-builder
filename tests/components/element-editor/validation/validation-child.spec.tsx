@@ -101,7 +101,7 @@ describe("ValidationChild", () => {
             index: mockIndex,
         });
         const getValidationRuleField = screen.getByPlaceholderText(
-            "Enter email domain, seperating with a comma"
+            "Enter email domain, separating with a comma"
         );
         fireEvent.focus(getValidationRuleField);
         fireEvent.blur(getValidationRuleField);
@@ -122,7 +122,7 @@ describe("ValidationChild", () => {
             index: mockIndex,
         });
         const getValidationRuleField = screen.getByPlaceholderText(
-            "Enter email domain, seperating with a comma"
+            "Enter email domain, separating with a comma"
         );
         fireEvent.focus(getValidationRuleField);
         fireEvent.blur(getValidationRuleField);

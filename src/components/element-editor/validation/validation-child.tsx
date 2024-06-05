@@ -59,7 +59,7 @@ export const ValidationChild = ({
             handleChange("type", options[0]);
         } else if (options.length === 1 && options[0] === "Email domain") {
             setValidationRulePlaceHolder(
-                "Enter email domain, seperating with a comma"
+                "Enter email domain, separating with a comma"
             );
         }
     }, [options, value?.validationType]);
