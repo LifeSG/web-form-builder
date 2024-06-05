@@ -20,7 +20,7 @@ export const displayReducer = (
 ) => {
     switch (action.type) {
         case "set-modal": {
-            state.modals.push(action.payload);
+            state.modals = [action.payload];
             break;
         }
 

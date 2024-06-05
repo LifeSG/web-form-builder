@@ -39,6 +39,8 @@ export const Modals = () => {
     // RENDER FUNCTIONS
     // =========================================================================
     return (
-        <>{modals.map((modal, index) => renderModalContent(modal, index))}</>
+        <ScrollableModal show={!!modals.length}>
+            {renderModalContent(modals[0], 0)}
+        </ScrollableModal>
     );
 };
