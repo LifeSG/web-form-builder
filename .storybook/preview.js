@@ -13,8 +13,6 @@ const preview = {
         }),
     ],
     parameters: {
-        actions: { disable: true },
-        controls: { disable: true },
         layout: "fullscreen",
         viewport: {
             viewports: INITIAL_VIEWPORTS,
