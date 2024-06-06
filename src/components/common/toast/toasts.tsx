@@ -4,15 +4,11 @@ import { DisplayToast } from "./toast";
 export const Toasts = () => {
     const { toasts } = useDisplay();
 
-    return (
-        <>
-            {toasts.map((toast) => (
-                <DisplayToast
-                    key={toast.id}
-                    toast={toast}
-                    toastFunction={toast.toastFunction}
-                />
-            ))}
-        </>
-    );
+    return toasts.map((toast) => (
+        <DisplayToast
+            key={toast.id}
+            toast={toast}
+            onClickActionButton={toast.onClickActionButton}
+        />
+    ));
 };

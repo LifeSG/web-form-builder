@@ -12,7 +12,7 @@ export interface IToast {
     id?: string;
     type?: EToastTypes;
     message?: string;
-    toastFunction?: () => void;
+    onClickActionButton?: () => void;
 }
 
 export interface IDisplayState {

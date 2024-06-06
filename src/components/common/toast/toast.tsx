@@ -1,13 +1,12 @@
 import { Toast } from "@lifesg/react-design-system/toast";
-import { useEffect, useRef } from "react";
 import { EToastTypes, IToast, useDisplay } from "src/context-providers";
 
 interface IProps {
     toast: IToast;
-    toastFunction?: () => void;
+    onClickActionButton?: () => void;
 }
 
-export const DisplayToast = ({ toast, toastFunction }: IProps) => {
+export const DisplayToast = ({ toast, onClickActionButton }: IProps) => {
     // =========================================================================
     // CONST, STATE, REF
     // =========================================================================
