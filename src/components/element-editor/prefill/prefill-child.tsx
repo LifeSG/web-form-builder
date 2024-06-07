@@ -54,7 +54,8 @@ export const PrefillChild = ({ onDelete, index }: IProps) => {
                         shouldUnregister={true}
                     />
                 </div>
-                {watch(`prefill.${index}.prefillMode`, "Previous source") && (
+                {watch(`prefill.${index}.prefillMode`) ===
+                    "Previous source" && (
                     <div>
                         <Controller
                             name={`prefill.${index}.actionId`}

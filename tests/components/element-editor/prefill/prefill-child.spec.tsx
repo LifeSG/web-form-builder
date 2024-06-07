@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import "jest-canvas-mock";
 import { FormProvider, useForm } from "react-hook-form";
 import { PrefillChild } from "src/components/element-editor/prefill";
@@ -23,18 +23,24 @@ describe("PrefillChild", () => {
         expect(screen.getByPlaceholderText("Enter a path")).toBeInTheDocument();
     });
 
-    it("should render fields with prefilled values given the prefill mode is 'Previous source", () => {
+    it("should render fields with prefilled values given the prefill mode is 'Previous source'", async () => {
         renderComponent({
             onDelete: mockDelete,
             value: mockValue,
             index: mockIndex,
         });
-        const getPrefillModeField = screen.getByRole("button", {
-            name: "Previous source",
+
+        const submitButton = screen.getByText("Submit");
+        fireEvent.click(submitButton);
+
+        await waitFor(() => {
+            const getPrefillModeField = screen.getByRole("button", {
+                name: "Previous source",
+            });
+            expect(getPrefillModeField).toBeInTheDocument();
+            expect(screen.getByDisplayValue("mockId")).toBeInTheDocument();
+            expect(screen.getByDisplayValue("mockPath")).toBeInTheDocument();
         });
-        expect(getPrefillModeField).toBeInTheDocument();
-        expect(screen.getByDisplayValue("mockId")).toBeInTheDocument();
-        expect(screen.getByDisplayValue("mockPath")).toBeInTheDocument();
     });
 
     it("should render fields with prefilled values given the prefill mode is 'Myinfo'", () => {
@@ -53,6 +59,9 @@ describe("PrefillChild", () => {
             name: "Myinfo",
         });
         expect(getPrefillModeField).toBeInTheDocument();
+        expect(
+            screen.queryByPlaceholderText("Enter an action ID.")
+        ).not.toBeInTheDocument();
         expect(screen.getByDisplayValue("mockPath")).toBeInTheDocument();
     });
 
@@ -102,13 +111,15 @@ describe("PrefillChild", () => {
             index: mockIndex,
         });
 
-        const getActionIDField =
-            screen.getByPlaceholderText("Enter an action ID");
-        fireEvent.focus(getActionIDField);
-        fireEvent.blur(getActionIDField);
-        const actionIDInvalidError =
-            await screen.findByText("Invalid action ID.");
-        expect(actionIDInvalidError).toHaveTextContent("Invalid action ID.");
+        const submitButton = screen.getByText("Submit");
+        fireEvent.click(submitButton);
+
+        await waitFor(() => {
+            const actionIDInvalidError = screen.getByText("Invalid action ID.");
+            expect(actionIDInvalidError).toHaveTextContent(
+                "Invalid action ID."
+            );
+        });
     });
 
     it("should render an error message when path field input is invalid", async () => {
@@ -140,7 +151,7 @@ const MyTestComponent = ({
         mode: "onTouched",
         resolver: yupResolver(SchemaHelper.buildSchema(EElementType.EMAIL)),
     });
-    const onSubmit = jest.fn;
+    const onSubmit = jest.fn();
     methods.setValue("prefill", value);
 
     return (

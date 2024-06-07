@@ -83,7 +83,7 @@ export const ConditionalRendering = () => {
                     first.
                 </Text.Body>
             );
-        } else if (getElementOptions().length === 0) {
+        } else if (getElementOptions()?.length === 0) {
             return <Text.Body>No conditional rendering available.</Text.Body>;
         }
         return null;
@@ -106,7 +106,7 @@ export const ConditionalRendering = () => {
 
     const handleDelete = (index: number) => {
         const currentValues = [...childEntryValues];
-        const updatedValues = currentValues.filter((_, i) => i !== index);
+        const updatedValues = currentValues?.filter((_, i) => i !== index);
         setValue("conditionalRendering", updatedValues);
     };
 
@@ -116,10 +116,16 @@ export const ConditionalRendering = () => {
     useEffect(() => {
         const subscription = watch((values, { name }) => {
             if (name?.startsWith("conditionalRendering")) {
+                console.log(
+                    "values?.conditionalRendering",
+                    values?.conditionalRendering
+                );
                 setChildEntryValues(
-                    ([
-                        ...values?.conditionalRendering,
-                    ] as IConditionalRendering[]) || []
+                    values?.conditionalRendering
+                        ? ([
+                              ...values.conditionalRendering,
+                          ] as IConditionalRendering[])
+                        : []
                 );
             }
         });
@@ -127,19 +133,19 @@ export const ConditionalRendering = () => {
     }, []);
 
     useEffect(() => {
-        const updatedChildEntries = element.conditionalRendering?.filter(
+        const updatedChildEntries = element?.conditionalRendering?.filter(
             (child) => {
                 return elements?.hasOwnProperty(child.internalId);
             }
         );
         setValue("conditionalRendering", updatedChildEntries);
-    }, [element]);
+    }, [element?.internalId]);
 
     useEffect(() => {
         if (shouldUpdateFocusedElement) {
             updateFocusedElement(true);
         }
-    }, [shouldUpdateFocusedElement]);
+    }, [shouldUpdateFocusedElement, updateFocusedElement]);
 
     // =============================================================================
     // RENDER FUNCTIONS

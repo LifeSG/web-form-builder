@@ -48,6 +48,7 @@ export const ConditionalRenderingChild = ({
     const {
         formState: { errors },
         control,
+        setValue,
     } = useFormContext<IBaseTextBasedFieldValues>();
 
     // =========================================================================
@@ -79,6 +80,10 @@ export const ConditionalRenderingChild = ({
                                         onSelectOption={(option: IOptions) => {
                                             fieldWithoutRef.onChange(
                                                 option?.id
+                                            );
+                                            setValue(
+                                                `conditionalRendering.${index}.internalId`,
+                                                option.internalId
                                             );
                                         }}
                                         options={options}
