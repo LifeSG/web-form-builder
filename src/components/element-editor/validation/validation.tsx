@@ -13,13 +13,16 @@ export const Validation = () => {
     // CONST, STATES, REFS
     // =========================================================================
     const { focusedElement, updateFocusedElement } = useBuilder();
-    const element = focusedElement.element;
+    const element = focusedElement?.element;
     const [childEntryValues, setChildEntryValues] = useState<IValidation[]>([]);
     const {
         setValue,
         formState: { isDirty },
         watch,
     } = useFormContext<IBaseTextBasedFieldValues>();
+    const shouldUpdateFocusedElement =
+        isDirty ||
+        childEntryValues?.length > focusedElement?.element?.validation?.length;
     const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
     const invalidAndEmptyFields = getTouchedAndErrorsFields();
 
@@ -49,9 +52,7 @@ export const Validation = () => {
     }
 
     function getTouchedAndErrorsFields() {
-        console.log("am i here....", childEntryValues);
         if (childEntryValues && childEntryValues.length > 0) {
-            console.log("entered here....", childEntryValues);
             try {
                 const validationSchema = schema.pick(["validation"]);
 
@@ -75,7 +76,7 @@ export const Validation = () => {
                     To add new validation, fill up existing validation first.
                 </Text.Body>
             );
-        } else if (childEntryValues?.length === getMaxEntries(element.type)) {
+        } else if (childEntryValues?.length === getMaxEntries(element?.type)) {
             return (
                 <Text.Body>
                     Limit reached. To add new validation, remove existing ones
@@ -117,14 +118,12 @@ export const Validation = () => {
         setValue("validation", updatedValues);
     };
 
-    console.log("validation:", childEntryValues);
     // =========================================================================
     // USE EFFECTS
     // =========================================================================
 
     useEffect(() => {
         const subscription = watch((values, { name }) => {
-            console.log("name:", name);
             if (name?.startsWith("validation")) {
                 setChildEntryValues(
                     ([...values?.validation] as IValidation[]) || []
@@ -135,11 +134,10 @@ export const Validation = () => {
     }, []);
 
     useEffect(() => {
-        if (isDirty) {
+        if (shouldUpdateFocusedElement) {
             updateFocusedElement(true);
         }
-    }, [isDirty, updateFocusedElement]);
-
+    }, [shouldUpdateFocusedElement]);
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
@@ -161,7 +159,7 @@ export const Validation = () => {
             title="Validation"
             buttonLabel="validation"
             disabledButton={
-                childEntryValues?.length === getMaxEntries(element.type) ||
+                childEntryValues?.length === getMaxEntries(element?.type) ||
                 invalidAndEmptyFields
             }
             popoverMessage={getPopoverMessage()}

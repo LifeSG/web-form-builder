@@ -32,8 +32,6 @@ export const ValidationChild = ({ onDelete, options, index }: IProps) => {
         }
     }, []);
 
-    console.log(getValues("validation"));
-
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================

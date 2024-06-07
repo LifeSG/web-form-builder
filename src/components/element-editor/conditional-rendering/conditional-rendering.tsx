@@ -23,7 +23,7 @@ export const ConditionalRendering = () => {
     // =========================================================================
 
     const { focusedElement, elements, updateFocusedElement } = useBuilder();
-    const element = focusedElement.element;
+    const element = focusedElement?.element;
     const [childEntryValues, setChildEntryValues] = useState<
         IConditionalRendering[]
     >([]);
@@ -32,8 +32,13 @@ export const ConditionalRendering = () => {
         formState: { isDirty },
         watch,
     } = useFormContext<IBaseTextBasedFieldValues>();
+
     const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
     const invalidAndEmptyFields = getTouchedAndErrorsFields();
+    const shouldUpdateFocusedElement =
+        isDirty ||
+        childEntryValues?.length >
+            focusedElement?.element?.conditionalRendering?.length;
     // =====================================================================
     // HELPER FUNCTIONS
     // =====================================================================
@@ -131,10 +136,10 @@ export const ConditionalRendering = () => {
     }, [element]);
 
     useEffect(() => {
-        if (isDirty) {
+        if (shouldUpdateFocusedElement) {
             updateFocusedElement(true);
         }
-    }, [isDirty, updateFocusedElement]);
+    }, [shouldUpdateFocusedElement]);
 
     // =============================================================================
     // RENDER FUNCTIONS
