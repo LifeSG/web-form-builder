@@ -21,14 +21,7 @@ export const Modals = () => {
             case EModalType.BulkEdit:
             case EModalType.Custom:
             case EModalType.DiscardChanges:
-                return (
-                    <ScrollableModal
-                        show={!!modal}
-                        onClick={() => handleBackDropClick(modal.type)}
-                    >
-                        <EmptyModal modal={modal} index={index} />
-                    </ScrollableModal>
-                );
+                return <EmptyModal modal={modal} index={index} />;
             default:
                 console.error("type given is not a modal type!");
                 break;
