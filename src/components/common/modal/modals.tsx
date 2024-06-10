@@ -12,9 +12,6 @@ export const Modals = () => {
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
-    const handleBackDropClick = (type: EModalType) => {
-        hideModal(type);
-    };
 
     const renderModalContent = (modal: TModalProps, index: number) => {
         switch (modal.type) {
