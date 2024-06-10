@@ -16,7 +16,14 @@ import {
     verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { ErrorDisplay } from "@lifesg/react-design-system/error-display";
-import { TElement, useBuilder } from "src/context-providers";
+import {
+    EModalType,
+    EToastTypes,
+    TElement,
+    useBuilder,
+    useDisplay,
+} from "src/context-providers";
+import { useModal } from "src/context-providers/display/modal-hook";
 import { ElementCard } from "../element-card";
 import {
     ElementItemWrapper,
@@ -38,11 +45,15 @@ export const MainPanel = () => {
         focusElement,
         focusedElement,
         updateOrderedIdentifiers,
+        removeFocusedElement,
+        toggleMode,
     } = useBuilder();
-
+    const { isDirty } = focusedElement || {};
     const finalMode = focusedElement ? true : showSidePanel;
     const renderMode = finalMode ? "minimised" : "expanded";
     const items: (UniqueIdentifier | { id: UniqueIdentifier })[] = [];
+    const { showModal, hideModal } = useModal();
+    const { showToast } = useDisplay();
 
     for (const orderedIdentifier of orderedIdentifiers) {
         if ("internalId" in orderedIdentifier) {
@@ -73,11 +84,30 @@ export const MainPanel = () => {
         })
     );
 
+    const handleModalOnClick = (element?: TElement) => {
+        const successToast = {
+            message: "Changes discarded.",
+            type: EToastTypes.SUCCESS_TOAST,
+        };
+        removeFocusedElement();
+        focusElement(element);
+        hideModal();
+        showToast(successToast);
+    };
+
     // =========================================================================
     // EVENT HANDLERS
     // =========================================================================
     const handleElementCardClick = (element: TElement) => () => {
-        focusElement(element);
+        const newModal = {
+            type: EModalType.DiscardChanges,
+            onClickActionButton: () => handleModalOnClick(element),
+        };
+        if (isDirty) {
+            showModal(newModal);
+        } else {
+            focusElement(element);
+        }
     };
 
     const handleDragEnd = (event: DragEndEvent) => {

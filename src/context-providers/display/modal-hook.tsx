@@ -1,6 +1,6 @@
 import { useCallback, useContext } from "react";
 import { DisplayContext } from "./display-provider";
-import { EModalType } from "./types";
+import { EModalType, IModalProps, TModalProps } from "./types";
 // =============================================================================
 // HOOK
 // =============================================================================
@@ -8,7 +8,7 @@ export const useModal = () => {
     const { state, dispatch } = useContext(DisplayContext);
 
     const showModal = useCallback(
-        (modal) => {
+        (modal: TModalProps) => {
             dispatch({
                 type: "set-modal",
                 payload: modal,

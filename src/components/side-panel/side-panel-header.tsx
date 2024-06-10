@@ -1,6 +1,13 @@
 import { Color } from "@lifesg/react-design-system/color";
 import { CrossIcon } from "@lifesg/react-icons/cross";
-import { EBuilderMode, useBuilder } from "../../context-providers";
+import { useModal } from "src/context-providers/display/modal-hook";
+import {
+    EBuilderMode,
+    EModalType,
+    EToastTypes,
+    useBuilder,
+    useDisplay,
+} from "../../context-providers";
 import { IconButton } from "../common";
 import {
     HeaderChevronIcon,
@@ -19,16 +26,11 @@ export const SidePanelHeader = () => {
         togglePanel,
         removeFocusedElement,
         focusedElement,
+        toggleMode,
     } = useBuilder();
     const { isDirty } = focusedElement || {};
-
-    // =========================================================================
-    // EVENT HANDLERS
-    // =========================================================================
-
-    const handleCrossButtonClick = () => {
-        removeFocusedElement();
-    };
+    const { showModal, hideModal } = useModal();
+    const { showToast } = useDisplay();
 
     // =========================================================================
     // HELPER FUNCTIONS
@@ -46,6 +48,33 @@ export const SidePanelHeader = () => {
         }
     };
 
+    const handleModalOnClick = () => {
+        const successToast = {
+            message: "Changes discarded.",
+            type: EToastTypes.SUCCESS_TOAST,
+        };
+        removeFocusedElement();
+        toggleMode(EBuilderMode.ADD_ELEMENT);
+        hideModal();
+        showToast(successToast);
+    };
+
+    // =========================================================================
+    // EVENT HANDLERS
+    // =========================================================================
+
+    const handleCrossButtonClick = () => {
+        const newModal = {
+            type: EModalType.DiscardChanges,
+            onClickActionButton: handleModalOnClick,
+        };
+        if (isDirty) {
+            showModal(newModal);
+        } else {
+            removeFocusedElement();
+        }
+    };
+
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
@@ -60,6 +89,7 @@ export const SidePanelHeader = () => {
                         $iconSize="1.5rem"
                         $iconColor={Color.Neutral[3]}
                         onClick={handleCrossButtonClick}
+                        type="button"
                     >
                         <CrossIcon data-testid="cross-button" />
                     </IconButton>

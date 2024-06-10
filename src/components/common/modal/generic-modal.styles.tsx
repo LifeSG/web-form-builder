@@ -11,6 +11,15 @@ export const ModalBox = styled(Modal.Box)`
     max-height: none;
 
     margin: auto;
+
+    [data-testid="close-button"] {
+        padding: 1rem;
+    }
+
+    svg {
+        width: 2rem;
+        height: 2rem;
+    }
 `;
 
 export const ModalInner = styled.div`
