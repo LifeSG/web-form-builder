@@ -8,6 +8,7 @@ import {
     useBuilder,
 } from "src/context-providers";
 import { IBaseTextBasedFieldValues, SchemaHelper } from "src/schemas";
+import * as Yup from "yup";
 import { PrefillChild } from "./prefill-child";
 
 export const Prefill = () => {
@@ -24,6 +25,9 @@ export const Prefill = () => {
         formState: { isDirty },
         getValues,
     } = useFormContext<IBaseTextBasedFieldValues>();
+    const shouldUpdateFocusedElement =
+        isDirty ||
+        childEntryValues?.length > focusedElement?.element?.prefill?.length;
     const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
     const invalidAndEmptyFields = getTouchedAndErrorsFields();
 
@@ -35,15 +39,13 @@ export const Prefill = () => {
             try {
                 const validationSchema = schema.pick(["prefill"]);
                 const prefillValues = getValues("prefill");
-                const validationResult = validationSchema.validateSync({
+                validationSchema.validateSync({
                     prefill: prefillValues,
                     abortEarly: false,
                 });
-                return !!validationResult ? false : true;
+                return false;
             } catch (error) {
-                return error.errors.some((errorMessage: string | string[]) =>
-                    errorMessage.includes("required")
-                );
+                return Yup.ValidationError.isError(error);
             }
         } else {
             return false;
@@ -103,10 +105,10 @@ export const Prefill = () => {
     }, [childEntryValues]);
 
     useEffect(() => {
-        if (isDirty) {
+        if (shouldUpdateFocusedElement) {
             updateFocusedElement(true);
         }
-    }, [isDirty, updateFocusedElement]);
+    }, [shouldUpdateFocusedElement]);
 
     // =========================================================================
     // RENDER FUNCTIONS

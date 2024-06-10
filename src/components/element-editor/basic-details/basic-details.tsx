@@ -22,6 +22,7 @@ export const BasicDetails = () => {
         control,
         formState: { errors, isDirty },
         watch,
+        reset,
     } = useFormContext<IBaseTextBasedFieldValues>();
     const element = focusedElement.element;
 
@@ -38,10 +39,15 @@ export const BasicDetails = () => {
     // =========================================================================
 
     useEffect(() => {
-        if (isDirty) {
-            updateFocusedElement(true);
-        }
+        updateFocusedElement(isDirty);
     }, [isDirty, updateFocusedElement]);
+
+    useEffect(() => {
+        reset(element, {
+            keepDirty: true,
+            keepValues: true,
+        });
+    }, []);
 
     // =========================================================================
     // RENDER FUNCTIONS
