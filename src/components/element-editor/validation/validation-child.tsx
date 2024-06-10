@@ -15,7 +15,6 @@ export const ValidationChild = ({ onDelete, options, index }: IProps) => {
     const {
         formState: { errors },
         control,
-        getValues,
     } = useFormContext<IBaseTextBasedFieldValues>();
     const [validationRulePlaceHolder, setValidationRulePlaceHolder] =
         useState<string>();

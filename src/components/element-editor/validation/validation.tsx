@@ -123,11 +123,11 @@ export const Validation = () => {
     // =========================================================================
 
     useEffect(() => {
-        const subscription = watch((values, { name }) => {
-            if (name?.startsWith("validation")) {
-                setChildEntryValues(
-                    ([...values?.validation] as IValidation[]) || []
-                );
+        const subscription = watch((values) => {
+            if (values?.validation) {
+                setChildEntryValues([...values?.validation] as IValidation[]);
+            } else {
+                setChildEntryValues([]);
             }
         });
         return () => subscription.unsubscribe();

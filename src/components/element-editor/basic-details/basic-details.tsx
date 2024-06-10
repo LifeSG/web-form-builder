@@ -125,7 +125,7 @@ export const BasicDetails = () => {
                                 <Form.Input
                                     {...field}
                                     label="Error message"
-                                    value={field.value}
+                                    value={field.value || ""}
                                     onChange={(e) => {
                                         field.onChange(e.target.value);
                                     }}
@@ -155,7 +155,7 @@ export const BasicDetails = () => {
                                 ),
                             }}
                             placeholder="Create an ID"
-                            value={field.value}
+                            value={field.value || ""}
                             onChange={(e) => {
                                 field.onChange(e.target.value);
                             }}
@@ -174,7 +174,7 @@ export const BasicDetails = () => {
                                 {...field}
                                 label="Placeholder text (optional)"
                                 placeholder="Enter placeholder text"
-                                value={field.value}
+                                value={field.value || ""}
                                 onChange={(e) => {
                                     field.onChange(e.target.value);
                                 }}

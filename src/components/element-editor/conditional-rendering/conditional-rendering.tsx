@@ -114,32 +114,17 @@ export const ConditionalRendering = () => {
     // EFFECTS
     // =========================================================================
     useEffect(() => {
-        const subscription = watch((values, { name }) => {
-            if (name?.startsWith("conditionalRendering")) {
-                console.log(
-                    "values?.conditionalRendering",
-                    values?.conditionalRendering
-                );
-                setChildEntryValues(
-                    values?.conditionalRendering
-                        ? ([
-                              ...values.conditionalRendering,
-                          ] as IConditionalRendering[])
-                        : []
-                );
+        const subscription = watch((values) => {
+            if (values?.conditionalRendering) {
+                setChildEntryValues([
+                    ...values?.conditionalRendering,
+                ] as IConditionalRendering[]);
+            } else {
+                setChildEntryValues([]);
             }
         });
         return () => subscription.unsubscribe();
     }, []);
-
-    useEffect(() => {
-        const updatedChildEntries = element?.conditionalRendering?.filter(
-            (child) => {
-                return elements?.hasOwnProperty(child.internalId);
-            }
-        );
-        setValue("conditionalRendering", updatedChildEntries);
-    }, [element?.internalId]);
 
     useEffect(() => {
         if (shouldUpdateFocusedElement) {

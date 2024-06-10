@@ -82,13 +82,14 @@ export const Prefill = () => {
     // =========================================================================
     // EFFECTS
     // =========================================================================
-
     useEffect(() => {
-        const subscription = watch((values, { name }) => {
-            if (name?.startsWith("prefill")) {
-                setChildEntryValues(
-                    ([...values?.prefill] as IPrefillAttributes[]) || []
-                );
+        const subscription = watch((values) => {
+            if (values?.prefill) {
+                setChildEntryValues([
+                    ...values?.prefill,
+                ] as IPrefillAttributes[]);
+            } else {
+                setChildEntryValues([]);
             }
         });
         return () => subscription.unsubscribe();
