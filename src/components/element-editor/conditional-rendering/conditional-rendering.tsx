@@ -31,6 +31,7 @@ export const ConditionalRendering = () => {
         setValue,
         formState: { isDirty },
         watch,
+        getValues,
     } = useFormContext<IBaseTextBasedFieldValues>();
 
     const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
@@ -62,8 +63,11 @@ export const ConditionalRendering = () => {
         if (childEntryValues && childEntryValues.length > 0) {
             try {
                 const validationSchema = schema.pick(["conditionalRendering"]);
+                const conditionalRenderingValues = getValues(
+                    "conditionalRendering"
+                );
                 validationSchema.validateSync({
-                    conditionalRendering: childEntryValues,
+                    conditionalRendering: conditionalRenderingValues,
                     abortEarly: false,
                 });
                 return false;

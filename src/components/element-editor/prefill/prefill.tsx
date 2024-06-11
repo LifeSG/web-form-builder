@@ -23,6 +23,7 @@ export const Prefill = () => {
         setValue,
         formState: { isDirty },
         watch,
+        getValues,
     } = useFormContext<IBaseTextBasedFieldValues>();
     const shouldUpdateFocusedElement =
         isDirty ||
@@ -37,8 +38,9 @@ export const Prefill = () => {
         if (childEntryValues && childEntryValues.length > 0) {
             try {
                 const validationSchema = schema.pick(["prefill"]);
+                const prefillValues = getValues("prefill");
                 validationSchema.validateSync({
-                    prefill: childEntryValues,
+                    prefill: prefillValues,
                     abortEarly: false,
                 });
                 return false;

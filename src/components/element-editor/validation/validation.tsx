@@ -19,6 +19,7 @@ export const Validation = () => {
         setValue,
         formState: { isDirty },
         watch,
+        getValues,
     } = useFormContext<IBaseTextBasedFieldValues>();
     const shouldUpdateFocusedElement =
         isDirty ||
@@ -55,9 +56,10 @@ export const Validation = () => {
         if (childEntryValues && childEntryValues.length > 0) {
             try {
                 const validationSchema = schema.pick(["validation"]);
+                const validationValues = getValues("validation");
 
                 validationSchema.validateSync({
-                    validation: childEntryValues,
+                    validation: validationValues,
                     abortEarly: false,
                 });
                 return false;
