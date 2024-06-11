@@ -36,17 +36,10 @@ export const DiscardChangesModal = ({ modal, index, element }: IProps) => {
     const renderActionButtons = () => {
         return (
             <ButtonWrapper>
-                <ActionButton
-                    onClick={onClickActionButton}
-                    data-testid="discard-changes"
-                >
+                <ActionButton onClick={onClickActionButton}>
                     Discard changes
                 </ActionButton>
-                <ActionButton
-                    onClick={handleKeepEditing}
-                    styleType="light"
-                    data-testid="keep-editing"
-                >
+                <ActionButton onClick={handleKeepEditing} styleType="light">
                     Keep editing
                 </ActionButton>
             </ButtonWrapper>

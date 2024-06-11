@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import "jest-canvas-mock";
 import { Modals } from "src/components";
 import { EModalType } from "src/context-providers";
@@ -57,6 +57,42 @@ describe("Modals", () => {
         fireEvent.click(getModalCloseButton);
         expect(getModal).toBeInTheDocument();
     });
+
+    it("should show the discardModal when discard changes modal type is being passed in", () => {
+        renderComponent({
+            displayContext: {
+                modals: [newModal],
+            },
+        });
+        const getModalTitle = screen.getByText("Discard changes?");
+        const discardChangesButton = getDiscardChangesButton();
+        const keepEditingButton = getKeepEditingButton();
+        expect(getModalTitle).toBeInTheDocument();
+        expect(discardChangesButton).toBeInTheDocument();
+        expect(keepEditingButton).toBeInTheDocument();
+    });
+
+    it("should hide the modal when the 'Keep editing' button is pressed", async () => {
+        renderComponent({
+            displayContext: {
+                modals: [newModal],
+            },
+        });
+        const keepEditingButton = getKeepEditingButton();
+        fireEvent.click(keepEditingButton);
+        expect(mockHideModal).toBeCalled();
+    });
+
+    it("should run the onClickActionButton function when the 'Discard changes' button is clicked", () => {
+        renderComponent({
+            displayContext: {
+                modals: [newModal],
+            },
+        });
+        const discardChangesButton = getDiscardChangesButton();
+        fireEvent.click(discardChangesButton);
+        expect(mockOnClickActionButton).toBeCalled();
+    });
 });
 
 // =============================================================================
@@ -86,6 +122,16 @@ const getButton = () =>
         name: "Add " + mockButtonLabel,
     });
 
+const getDiscardChangesButton = () =>
+    screen.getByRole("button", {
+        name: "Discard changes",
+    });
+
+const getKeepEditingButton = () =>
+    screen.getByRole("button", {
+        name: "Keep editing",
+    });
+
 // =============================================================================
 // MOCKS
 // =============================================================================
@@ -93,3 +139,8 @@ const mockChild = <h1>Children content</h1>;
 const mockOnAdd = jest.fn();
 const mockTitle = "Test title";
 const mockButtonLabel = "button";
+const mockOnClickActionButton = jest.fn();
+const newModal = {
+    type: EModalType.DiscardChanges,
+    onClickActionButton: mockOnClickActionButton,
+};
