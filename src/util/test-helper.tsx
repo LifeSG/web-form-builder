@@ -3,8 +3,10 @@ import { noop } from "lodash";
 import React from "react";
 import {
     BuilderContext,
+    DisplayContext,
     EBuilderMode,
     IBuilderState,
+    IDisplayState,
 } from "src/context-providers";
 import { ThemeProvider } from "styled-components";
 
@@ -16,13 +18,19 @@ const mockBuilderState: IBuilderState = {
     orderedIdentifiers: [],
 };
 
+const mockDisplayState: IDisplayState = {
+    toasts: [],
+    modals: [],
+};
+
 export namespace TestHelper {
     export interface RenderOptions {
         builderContext?: Partial<IBuilderState>;
+        displayContext?: Partial<IDisplayState>;
     }
 
     export const withProviders = (
-        { builderContext }: RenderOptions = {},
+        { builderContext, displayContext }: RenderOptions = {},
         component: React.ReactNode
     ) => {
         return (
@@ -33,7 +41,14 @@ export namespace TestHelper {
                         dispatch: noop,
                     }}
                 >
-                    {component}
+                    <DisplayContext.Provider
+                        value={{
+                            state: { ...mockDisplayState, ...displayContext },
+                            dispatch: noop,
+                        }}
+                    >
+                        {component}
+                    </DisplayContext.Provider>
                 </BuilderContext.Provider>
             </ThemeProvider>
         );
