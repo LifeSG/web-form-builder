@@ -1,3 +1,4 @@
+import { ErrorDisplay } from "@lifesg/react-design-system";
 import { Layout } from "@lifesg/react-design-system/layout";
 import { MediaQuery } from "@lifesg/react-design-system/media";
 import styled from "styled-components";
@@ -30,4 +31,16 @@ export const ToastWrapper = styled.div`
     flex-direction: column;
     align-items: flex-end;
     gap: 1rem;
+`;
+
+export const ErrorWrapper = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+
+    ${MediaQuery.MaxWidth.mobileL} {
+        width: auto;
+        padding: 0 38px 0 38px;
+    }
 `;
