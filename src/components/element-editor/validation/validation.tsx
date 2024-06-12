@@ -14,16 +14,18 @@ export const Validation = () => {
     // =========================================================================
     const { focusedElement, updateFocusedElement } = useBuilder();
     const element = focusedElement?.element;
-    const [childEntryValues, setChildEntryValues] = useState<IValidation[]>([]);
+    const [, setChildEntryValues] = useState<IValidation[]>([]);
     const {
         setValue,
         formState: { isDirty },
         watch,
         getValues,
     } = useFormContext<IBaseTextBasedFieldValues>();
+    const validationValues = getValues("validation") || [];
     const shouldUpdateFocusedElement =
         isDirty ||
-        childEntryValues?.length > focusedElement?.element?.validation?.length;
+        getValues("validation")?.length >
+            focusedElement?.element?.validation?.length;
     const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
     const invalidAndEmptyFields = getTouchedAndErrorsFields();
 
@@ -53,10 +55,9 @@ export const Validation = () => {
     }
 
     function getTouchedAndErrorsFields() {
-        if (childEntryValues && childEntryValues.length > 0) {
+        if (validationValues && validationValues.length > 0) {
             try {
                 const validationSchema = schema.pick(["validation"]);
-                const validationValues = getValues("validation");
 
                 validationSchema.validateSync({
                     validation: validationValues,
@@ -78,7 +79,7 @@ export const Validation = () => {
                     To add new validation, fill up existing validation first.
                 </Text.Body>
             );
-        } else if (childEntryValues?.length === getMaxEntries(element?.type)) {
+        } else if (validationValues?.length === getMaxEntries(element?.type)) {
             return (
                 <Text.Body>
                     Limit reached. To add new validation, remove existing ones
@@ -110,12 +111,12 @@ export const Validation = () => {
             validationErrorMessage: "",
         };
 
-        const updatedValues = [...childEntryValues, validationChild];
+        const updatedValues = [...validationValues, validationChild];
         setValue("validation", updatedValues);
     };
 
     const handleDelete = (index: number) => {
-        const currentValues = [...childEntryValues];
+        const currentValues = [...validationValues];
         const updatedValues = currentValues.filter((_, i) => i !== index);
         setValue("validation", updatedValues);
     };
@@ -138,6 +139,8 @@ export const Validation = () => {
     useEffect(() => {
         if (shouldUpdateFocusedElement) {
             updateFocusedElement(true);
+        } else {
+            updateFocusedElement(false);
         }
     }, [shouldUpdateFocusedElement]);
     // =========================================================================
@@ -145,7 +148,7 @@ export const Validation = () => {
     // =========================================================================
 
     const renderChildren = () => {
-        return childEntryValues?.map((_, index) => (
+        return validationValues?.map((_, index) => (
             <ValidationChild
                 key={`validation-entry-${index}`}
                 onDelete={() => handleDelete(index)}
@@ -161,7 +164,7 @@ export const Validation = () => {
             title="Validation"
             buttonLabel="validation"
             disabledButton={
-                childEntryValues?.length === getMaxEntries(element?.type) ||
+                validationValues?.length === getMaxEntries(element?.type) ||
                 invalidAndEmptyFields
             }
             popoverMessage={getPopoverMessage()}

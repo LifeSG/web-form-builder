@@ -24,9 +24,7 @@ export const ConditionalRendering = () => {
 
     const { focusedElement, elements, updateFocusedElement } = useBuilder();
     const element = focusedElement?.element;
-    const [childEntryValues, setChildEntryValues] = useState<
-        IConditionalRendering[]
-    >([]);
+    const [, setChildEntryValues] = useState<IConditionalRendering[]>([]);
     const {
         setValue,
         formState: { isDirty },
@@ -36,9 +34,10 @@ export const ConditionalRendering = () => {
 
     const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
     const invalidAndEmptyFields = getTouchedAndErrorsFields();
+    const conditionalRenderingValues = getValues("conditionalRendering") || [];
     const shouldUpdateFocusedElement =
         isDirty ||
-        childEntryValues?.length >
+        conditionalRenderingValues?.length >
             focusedElement?.element?.conditionalRendering?.length;
     // =====================================================================
     // HELPER FUNCTIONS
@@ -60,12 +59,12 @@ export const ConditionalRendering = () => {
     };
 
     function getTouchedAndErrorsFields() {
-        if (childEntryValues && childEntryValues.length > 0) {
+        if (
+            conditionalRenderingValues &&
+            conditionalRenderingValues.length > 0
+        ) {
             try {
                 const validationSchema = schema.pick(["conditionalRendering"]);
-                const conditionalRenderingValues = getValues(
-                    "conditionalRendering"
-                );
                 validationSchema.validateSync({
                     conditionalRendering: conditionalRenderingValues,
                     abortEarly: false,
@@ -104,12 +103,15 @@ export const ConditionalRendering = () => {
             value: "",
             internalId: "",
         };
-        const updatedValues = [...childEntryValues, conditionalRenderingChild];
+        const updatedValues = [
+            ...conditionalRenderingValues,
+            conditionalRenderingChild,
+        ];
         setValue("conditionalRendering", updatedValues);
     };
 
     const handleDelete = (index: number) => {
-        const currentValues = [...childEntryValues];
+        const currentValues = [...conditionalRenderingValues];
         const updatedValues = currentValues?.filter((_, i) => i !== index);
         setValue("conditionalRendering", updatedValues);
     };
@@ -133,14 +135,16 @@ export const ConditionalRendering = () => {
     useEffect(() => {
         if (shouldUpdateFocusedElement) {
             updateFocusedElement(true);
+        } else {
+            updateFocusedElement(false);
         }
-    }, [shouldUpdateFocusedElement, updateFocusedElement]);
+    }, [shouldUpdateFocusedElement]);
 
     // =============================================================================
     // RENDER FUNCTIONS
     // =============================================================================
     const renderChildren = () => {
-        return childEntryValues?.map((_, index) => (
+        return conditionalRenderingValues?.map((_, index) => (
             <ConditionalRenderingChild
                 key={`conditional-rendering-entry-${index}`}
                 onDelete={() => handleDelete(index)}
