@@ -40,6 +40,8 @@ export const BasicDetails = () => {
     useEffect(() => {
         if (isDirty) {
             updateFocusedElement(isDirty);
+        } else {
+            updateFocusedElement(false);
         }
     }, [isDirty, updateFocusedElement]);
 

@@ -22,23 +22,15 @@ export const ConditionalRendering = () => {
     // CONST, STATE, REFS
     // =========================================================================
 
-    const { focusedElement, elements, updateFocusedElement } = useBuilder();
+    const { focusedElement, elements } = useBuilder();
     const element = focusedElement?.element;
     const [, setChildEntryValues] = useState<IConditionalRendering[]>([]);
-    const {
-        setValue,
-        formState: { isDirty },
-        watch,
-        getValues,
-    } = useFormContext<IBaseTextBasedFieldValues>();
+    const { setValue, watch, getValues } =
+        useFormContext<IBaseTextBasedFieldValues>();
 
     const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
-    const invalidAndEmptyFields = getTouchedAndErrorsFields();
+    const invalidAndEmptyFields = checkIsValid();
     const conditionalRenderingValues = getValues("conditionalRendering") || [];
-    const shouldUpdateFocusedElement =
-        isDirty ||
-        conditionalRenderingValues?.length >
-            focusedElement?.element?.conditionalRendering?.length;
     // =====================================================================
     // HELPER FUNCTIONS
     // =====================================================================
@@ -58,23 +50,17 @@ export const ConditionalRendering = () => {
         return options;
     };
 
-    function getTouchedAndErrorsFields() {
-        if (
-            conditionalRenderingValues &&
-            conditionalRenderingValues.length > 0
-        ) {
-            try {
-                const validationSchema = schema.pick(["conditionalRendering"]);
-                validationSchema.validateSync({
-                    conditionalRendering: conditionalRenderingValues,
-                    abortEarly: false,
-                });
-                return false;
-            } catch (error) {
-                return Yup.ValidationError.isError(error);
-            }
-        } else {
+    function checkIsValid() {
+        try {
+            const validationSchema = schema.pick(["conditionalRendering"]);
+
+            validationSchema.validateSync({
+                conditionalRendering: conditionalRenderingValues,
+                abortEarly: false,
+            });
             return false;
+        } catch (error) {
+            return Yup.ValidationError.isError(error);
         }
     }
 
@@ -107,13 +93,18 @@ export const ConditionalRendering = () => {
             ...conditionalRenderingValues,
             conditionalRenderingChild,
         ];
-        setValue("conditionalRendering", updatedValues);
+        setValue("conditionalRendering", updatedValues, { shouldDirty: true });
     };
 
     const handleDelete = (index: number) => {
         const currentValues = [...conditionalRenderingValues];
         const updatedValues = currentValues?.filter((_, i) => i !== index);
-        setValue("conditionalRendering", updatedValues);
+        setValue("conditionalRendering", updatedValues, { shouldDirty: true });
+        setTimeout(() => {
+            setValue("conditionalRendering", updatedValues, {
+                shouldDirty: true,
+            });
+        });
     };
 
     // =========================================================================
@@ -131,14 +122,6 @@ export const ConditionalRendering = () => {
         });
         return () => subscription.unsubscribe();
     }, []);
-
-    useEffect(() => {
-        if (shouldUpdateFocusedElement) {
-            updateFocusedElement(true);
-        } else {
-            updateFocusedElement(false);
-        }
-    }, [shouldUpdateFocusedElement]);
 
     // =============================================================================
     // RENDER FUNCTIONS

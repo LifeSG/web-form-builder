@@ -12,22 +12,14 @@ export const Validation = () => {
     // =========================================================================
     // CONST, STATES, REFS
     // =========================================================================
-    const { focusedElement, updateFocusedElement } = useBuilder();
+    const { focusedElement } = useBuilder();
     const element = focusedElement?.element;
     const [, setChildEntryValues] = useState<IValidation[]>([]);
-    const {
-        setValue,
-        formState: { isDirty },
-        watch,
-        getValues,
-    } = useFormContext<IBaseTextBasedFieldValues>();
+    const { setValue, watch, getValues } =
+        useFormContext<IBaseTextBasedFieldValues>();
     const validationValues = getValues("validation") || [];
-    const shouldUpdateFocusedElement =
-        isDirty ||
-        getValues("validation")?.length >
-            focusedElement?.element?.validation?.length;
     const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
-    const invalidAndEmptyFields = getTouchedAndErrorsFields();
+    const invalidAndEmptyFields = checkIsValid();
 
     // =========================================================================
     // HELPER FUNCTIONS
@@ -54,21 +46,17 @@ export const Validation = () => {
         }
     }
 
-    function getTouchedAndErrorsFields() {
-        if (validationValues && validationValues.length > 0) {
-            try {
-                const validationSchema = schema.pick(["validation"]);
+    function checkIsValid() {
+        try {
+            const validationSchema = schema.pick(["validation"]);
 
-                validationSchema.validateSync({
-                    validation: validationValues,
-                    abortEarly: false,
-                });
-                return false;
-            } catch (error) {
-                return Yup.ValidationError.isError(error);
-            }
-        } else {
+            validationSchema.validateSync({
+                validation: validationValues,
+                abortEarly: false,
+            });
             return false;
+        } catch (error) {
+            return Yup.ValidationError.isError(error);
         }
     }
 
@@ -112,13 +100,16 @@ export const Validation = () => {
         };
 
         const updatedValues = [...validationValues, validationChild];
-        setValue("validation", updatedValues);
+        setValue("validation", updatedValues, { shouldDirty: true });
     };
 
     const handleDelete = (index: number) => {
         const currentValues = [...validationValues];
         const updatedValues = currentValues.filter((_, i) => i !== index);
-        setValue("validation", updatedValues);
+        setValue("validation", updatedValues, { shouldDirty: true });
+        setTimeout(() => {
+            setValue("validation", updatedValues, { shouldDirty: true });
+        });
     };
 
     // =========================================================================
@@ -135,14 +126,6 @@ export const Validation = () => {
         });
         return () => subscription.unsubscribe();
     }, []);
-
-    useEffect(() => {
-        if (shouldUpdateFocusedElement) {
-            updateFocusedElement(true);
-        } else {
-            updateFocusedElement(false);
-        }
-    }, [shouldUpdateFocusedElement]);
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================

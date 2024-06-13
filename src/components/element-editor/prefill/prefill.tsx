@@ -15,38 +15,27 @@ export const Prefill = () => {
     // =========================================================================
     // CONST, STATES, REFS
     // =========================================================================
-    const { updateFocusedElement, focusedElement } = useBuilder();
     const [, setChildEntryValues] = useState<IPrefillAttributes[]>([]);
-    const {
-        setValue,
-        formState: { isDirty },
-        watch,
-        getValues,
-    } = useFormContext<IBaseTextBasedFieldValues>();
+    const { setValue, watch, getValues } =
+        useFormContext<IBaseTextBasedFieldValues>();
     const prefillValues = getValues("prefill") || [];
-    const shouldUpdateFocusedElement =
-        isDirty ||
-        prefillValues?.length > focusedElement?.element?.prefill?.length;
     const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
-    const invalidAndEmptyFields = getTouchedAndErrorsFields();
+    const invalidAndEmptyFields = checkIsValid();
 
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
-    function getTouchedAndErrorsFields() {
-        if (prefillValues && prefillValues.length > 0) {
-            try {
-                const validationSchema = schema.pick(["prefill"]);
-                validationSchema.validateSync({
-                    prefill: prefillValues,
-                    abortEarly: false,
-                });
-                return false;
-            } catch (error) {
-                return Yup.ValidationError.isError(error);
-            }
-        } else {
+    function checkIsValid() {
+        try {
+            const validationSchema = schema.pick(["prefill"]);
+
+            validationSchema.validateSync({
+                prefill: prefillValues,
+                abortEarly: false,
+            });
             return false;
+        } catch (error) {
+            return Yup.ValidationError.isError(error);
         }
     }
 
@@ -70,13 +59,16 @@ export const Prefill = () => {
             path: "",
         };
         const updatedValues = [...prefillValues, prefillChild];
-        setValue("prefill", updatedValues);
+        setValue("prefill", updatedValues, { shouldDirty: true });
     };
 
     const handleDelete = (index: number) => {
         const currentValues = [...prefillValues];
         const updatedValues = currentValues.filter((_, i) => i !== index);
-        setValue("prefill", updatedValues);
+        setValue("prefill", updatedValues, { shouldDirty: true });
+        setTimeout(() => {
+            setValue("prefill", updatedValues, { shouldDirty: true });
+        });
     };
 
     // =========================================================================
@@ -94,14 +86,6 @@ export const Prefill = () => {
         });
         return () => subscription.unsubscribe();
     }, []);
-
-    useEffect(() => {
-        if (shouldUpdateFocusedElement) {
-            updateFocusedElement(true);
-        } else {
-            updateFocusedElement(false);
-        }
-    }, [shouldUpdateFocusedElement]);
 
     // =========================================================================
     // RENDER FUNCTIONS
