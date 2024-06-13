@@ -105,26 +105,30 @@ export const AddElementsPanel = () => {
 
     return (
         <Wrapper data-testid="add-elements-panel">
-            <ElementSearch
-                placeholder="Search"
-                addon={{
-                    type: "custom",
-                    attributes: {
-                        children: (
-                            <MagnifierIcon
-                                onClick={handleMagnifierClick}
-                                data-testid="maginfying-glass"
-                            />
-                        ),
-                    },
-                    position: "left",
-                }}
-                allowClear={true}
-                value={searchInput}
-                onClear={handleOnClear}
-                onChange={(event) => generateSearchResults(event.target.value)}
-                ref={inputRef}
-            />
+            <label>
+                <ElementSearch
+                    placeholder="Search"
+                    addon={{
+                        type: "custom",
+                        attributes: {
+                            children: (
+                                <MagnifierIcon
+                                    onClick={handleMagnifierClick}
+                                    data-testid="maginfying-glass"
+                                />
+                            ),
+                        },
+                        position: "left",
+                    }}
+                    allowClear={true}
+                    value={searchInput}
+                    onClear={handleOnClear}
+                    onChange={(event) =>
+                        generateSearchResults(event.target.value)
+                    }
+                    ref={inputRef}
+                />
+            </label>
 
             {renderCategories()}
         </Wrapper>

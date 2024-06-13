@@ -98,6 +98,19 @@ describe("AddElementsPanel", () => {
                 expect(getNoResultsFoundContent).toBeInTheDocument();
             });
         });
+
+        it("should not show the category when input given is not an element name", async () => {
+            renderComponent();
+            const magnifyingGlass = screen.getByTestId("maginfying-glass");
+            fireEvent.click(magnifyingGlass);
+            const searchInput = screen.getByTestId("input");
+            fireEvent.change(searchInput, { target: { value: "abc" } });
+
+            await waitFor(() => {
+                const getCategory = screen.queryByText("Text field");
+                expect(getCategory).not.toBeInTheDocument();
+            });
+        });
     });
 });
 
