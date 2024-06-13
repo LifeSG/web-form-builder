@@ -1,7 +1,7 @@
 import { useDisplay } from "../../../context-providers";
 import { DisplayToast } from "./toast";
 
-export const Toasts = () => {
+export const Toasts: Function = () => {
     const { toasts } = useDisplay();
 
     return toasts.map((toast) => (
