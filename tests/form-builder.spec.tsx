@@ -17,6 +17,9 @@ describe("FormBuilder component", () => {
         mockWindow(1200);
         renderComponent();
         expect(screen.getByText("Form is empty")).toBeInTheDocument();
+        expect(
+            screen.queryByText("Screen size not supported")
+        ).not.toBeInTheDocument();
     });
 
     it("renders small screen content when the screen size is small", () => {
