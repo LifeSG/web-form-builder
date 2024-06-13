@@ -1,8 +1,7 @@
 import { EModalType, TModalProps } from "src/context-providers";
 import { useModal } from "src/context-providers/display/modal-hook";
 import { DiscardChangesModal } from "./discard-changes-modal";
-import { EmptyModal } from "./empty-modal";
-import { ScrollableModal } from "./empty-modal.styles";
+import { ScrollableModal } from "./modals.styles";
 
 export const Modals = () => {
     // =========================================================================
@@ -17,10 +16,7 @@ export const Modals = () => {
     const renderModalContent = (modal: TModalProps, index: number) => {
         switch (modal?.type) {
             case EModalType.DiscardChanges:
-                return <DiscardChangesModal modal={modal} index={index} />;
-            case EModalType.BulkEdit:
-            case EModalType.Custom:
-                return <EmptyModal modal={modal} index={index} />;
+                return <DiscardChangesModal modal={modal} />;
             default:
                 console.error("type given is not a modal type!");
                 break;

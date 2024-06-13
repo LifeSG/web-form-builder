@@ -1,20 +1,18 @@
 import { ErrorDisplay } from "@lifesg/react-design-system/error-display";
-import { TElement, TModalProps } from "src/context-providers";
+import { TModalProps } from "src/context-providers";
 import { useModal } from "../../../context-providers/display/modal-hook";
 import {
     ActionButton,
     ButtonWrapper,
-    GrowContainer,
+    ModalDisplayTitle,
 } from "./discard-changes-modal.styles";
 import { GenericModal } from "./generic-modal";
 
 interface IProps {
     modal: TModalProps;
-    index: number;
-    element?: TElement;
 }
 
-export const DiscardChangesModal = ({ modal, index, element }: IProps) => {
+export const DiscardChangesModal = ({ modal }: IProps) => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
@@ -47,11 +45,16 @@ export const DiscardChangesModal = ({ modal, index, element }: IProps) => {
     };
 
     return (
-        <GrowContainer>
-            <GenericModal key={index} type={modal?.type}>
-                <ErrorDisplay type="confirmation" title="Discard changes?" />
-                {renderActionButtons()}
-            </GenericModal>
-        </GrowContainer>
+        <GenericModal type={modal?.type}>
+            <ErrorDisplay
+                type="confirmation"
+                title={
+                    <ModalDisplayTitle weight={"semibold"}>
+                        Discard changes?
+                    </ModalDisplayTitle>
+                }
+            />
+            {renderActionButtons()}
+        </GenericModal>
     );
 };

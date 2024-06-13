@@ -1,13 +1,7 @@
 import { Color } from "@lifesg/react-design-system/color";
 import { CrossIcon } from "@lifesg/react-icons/cross";
 import { useModal } from "src/context-providers/display/modal-hook";
-import {
-    EBuilderMode,
-    EModalType,
-    EToastTypes,
-    useBuilder,
-    useDisplay,
-} from "../../context-providers";
+import { EBuilderMode, EModalType, useBuilder } from "../../context-providers";
 import { IconButton } from "../common";
 import {
     HeaderChevronIcon,
@@ -26,11 +20,9 @@ export const SidePanelHeader = () => {
         togglePanel,
         removeFocusedElement,
         focusedElement,
-        toggleMode,
     } = useBuilder();
     const { isDirty } = focusedElement || {};
-    const { showModal, hideModal } = useModal();
-    const { showToast } = useDisplay();
+    const { showModal, discardChanges } = useModal();
 
     // =========================================================================
     // HELPER FUNCTIONS
@@ -49,14 +41,8 @@ export const SidePanelHeader = () => {
     };
 
     const handleModalOnClick = () => {
-        const successToast = {
-            message: "Changes discarded.",
-            type: EToastTypes.SUCCESS_TOAST,
-        };
         removeFocusedElement();
-        toggleMode(EBuilderMode.ADD_ELEMENT);
-        hideModal();
-        showToast(successToast);
+        discardChanges();
     };
 
     // =========================================================================
@@ -64,11 +50,11 @@ export const SidePanelHeader = () => {
     // =========================================================================
 
     const handleCrossButtonClick = () => {
-        const newModal = {
-            type: EModalType.DiscardChanges,
-            onClickActionButton: handleModalOnClick,
-        };
         if (isDirty) {
+            const newModal = {
+                type: EModalType.DiscardChanges,
+                onClickActionButton: handleModalOnClick,
+            };
             showModal(newModal);
         } else {
             removeFocusedElement();

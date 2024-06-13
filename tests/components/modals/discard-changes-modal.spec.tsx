@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
 import { Modals } from "src/components";
 import { EModalType } from "src/context-providers";
@@ -22,7 +22,7 @@ jest.mock("src/context-providers/display/modal-hook.tsx", () => {
     };
 });
 
-describe("Modals", () => {
+describe("Discard changes modals", () => {
     beforeEach(() => {
         global.ResizeObserver = jest.fn().mockImplementation(() => ({
             observe: jest.fn(),
@@ -34,28 +34,6 @@ describe("Modals", () => {
     afterEach(() => {
         jest.restoreAllMocks();
         jest.resetAllMocks();
-    });
-
-    it("should render a modal when there is a modal in modal state", () => {
-        renderComponent({
-            displayContext: {
-                modals: [{ type: EModalType.Custom }],
-            },
-        });
-        const getModal = screen.getByTestId("modal-content");
-        expect(getModal).toBeInTheDocument();
-    });
-
-    it("should run the hideModal function when the cross button clicks", () => {
-        renderComponent({
-            displayContext: {
-                modals: [{ type: EModalType.Custom }],
-            },
-        });
-        const getModalCloseButton = screen.getByTestId("close-button");
-        const getModal = screen.getByTestId("modal-content");
-        fireEvent.click(getModalCloseButton);
-        expect(getModal).toBeInTheDocument();
     });
 
     it("should show the discardModal when discard changes modal type is being passed in", () => {
@@ -117,11 +95,6 @@ const renderComponent = (overrideOptions?: TestHelper.RenderOptions) => {
     );
 };
 
-const getButton = () =>
-    screen.getByRole("button", {
-        name: "Add " + mockButtonLabel,
-    });
-
 const getDiscardChangesButton = () =>
     screen.getByRole("button", {
         name: "Discard changes",
@@ -135,9 +108,6 @@ const getKeepEditingButton = () =>
 // =============================================================================
 // MOCKS
 // =============================================================================
-const mockChild = <h1>Children content</h1>;
-const mockOnAdd = jest.fn();
-const mockTitle = "Test title";
 const mockButtonLabel = "button";
 const mockOnClickActionButton = jest.fn();
 const newModal = {

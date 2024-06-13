@@ -10,9 +10,7 @@ export const FormBuilder = () => {
             <DisplayProvider>
                 <Wrapper>
                     <Container type="grid" stretch>
-                        <ToastWrapper>
-                            <Toasts />
-                        </ToastWrapper>
+                        <Toasts />
                         <Modals />
                         <MainPanel />
                         <SidePanel />

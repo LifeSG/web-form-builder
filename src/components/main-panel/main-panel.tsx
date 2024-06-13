@@ -18,7 +18,6 @@ import {
 import { ErrorDisplay } from "@lifesg/react-design-system/error-display";
 import {
     EModalType,
-    EToastTypes,
     TElement,
     useBuilder,
     useDisplay,
@@ -46,13 +45,12 @@ export const MainPanel = () => {
         focusedElement,
         updateOrderedIdentifiers,
         removeFocusedElement,
-        toggleMode,
     } = useBuilder();
     const { isDirty } = focusedElement || {};
     const finalMode = focusedElement ? true : showSidePanel;
     const renderMode = finalMode ? "minimised" : "expanded";
     const items: (UniqueIdentifier | { id: UniqueIdentifier })[] = [];
-    const { showModal, hideModal } = useModal();
+    const { showModal, discardChanges } = useModal();
     const { showToast } = useDisplay();
 
     for (const orderedIdentifier of orderedIdentifiers) {
@@ -85,25 +83,23 @@ export const MainPanel = () => {
     );
 
     const handleModalOnClick = (element?: TElement) => {
-        const successToast = {
-            message: "Changes discarded.",
-            type: EToastTypes.SUCCESS_TOAST,
-        };
         removeFocusedElement();
         focusElement(element);
-        hideModal();
-        showToast(successToast);
+        discardChanges();
     };
 
     // =========================================================================
     // EVENT HANDLERS
     // =========================================================================
     const handleElementCardClick = (element: TElement) => () => {
-        const newModal = {
-            type: EModalType.DiscardChanges,
-            onClickActionButton: () => handleModalOnClick(element),
-        };
-        if (isDirty) {
+        if (
+            isDirty &&
+            element?.internalId !== focusedElement?.element?.internalId
+        ) {
+            const newModal = {
+                type: EModalType.DiscardChanges,
+                onClickActionButton: () => handleModalOnClick(element),
+            };
             showModal(newModal);
         } else {
             focusElement(element);

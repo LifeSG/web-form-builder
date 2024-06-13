@@ -11,15 +11,6 @@ export const ModalBox = styled(Modal.Box)`
     max-height: none;
 
     margin: auto;
-
-    [data-testid="close-button"] {
-        padding: 1rem;
-    }
-
-    svg {
-        width: 2rem;
-        height: 2rem;
-    }
 `;
 
 export const ModalInner = styled.div`
@@ -28,5 +19,15 @@ export const ModalInner = styled.div`
 
     ${MediaQuery.MaxWidth.mobileL} {
         margin: 4rem 1.25rem;
+    }
+`;
+
+export const GrowContainer = styled.div`
+    margin: auto;
+    padding: 5rem 1.25rem;
+    width: 100%;
+
+    ${MediaQuery.MaxWidth.mobileL} {
+        padding: 1rem 1.25rem;
     }
 `;
