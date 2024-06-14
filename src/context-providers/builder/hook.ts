@@ -38,7 +38,10 @@ export const useBuilder = () => {
             );
             const newOrderedIdentifiers = [
                 ...state.orderedIdentifiers,
-                { internalId: newElement.internalId },
+                {
+                    internalId: newElement.internalId,
+                    size: "full",
+                } as IElementIdentifier,
             ];
 
             dispatch({

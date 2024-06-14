@@ -10,7 +10,7 @@ interface IWrapperStyleProps {
 }
 
 interface IElementItemWrapperProps extends IWrapperStyleProps {
-    $size: "full" | "half";
+    $size: "full" | "third-left" | "third-right";
 }
 
 // =============================================================================
@@ -36,7 +36,6 @@ export const Wrapper = styled.div<IWrapperStyleProps>`
                         grid-column: 3 / span 8;
                     }
 
-                    /* To accommodate to desktops of 1024px */
                     ${MediaQuery.MaxWidth.tablet} {
                         grid-column: 2 / span 6;
                     }
@@ -55,7 +54,6 @@ export const Wrapper = styled.div<IWrapperStyleProps>`
                         grid-column: 6 / span 6;
                     }
 
-                    /* To accommodate to desktops of 1024px */
                     ${MediaQuery.MaxWidth.tablet} {
                         grid-column: 5 / span 4;
                     }
@@ -88,7 +86,6 @@ export const EmptyDisplayWrapper = styled.div<IWrapperStyleProps>`
                         grid-column: 3 / span 9;
                     }
 
-                    /* To accommodate to desktops of 1024px */
                     ${MediaQuery.MaxWidth.tablet} {
                         grid-column: 2 / span 7;
                     }
@@ -107,7 +104,6 @@ export const EmptyDisplayWrapper = styled.div<IWrapperStyleProps>`
                         grid-column: 6 / span 7;
                     }
 
-                    /* To accommodate to desktops of 1024px */
                     ${MediaQuery.MaxWidth.tablet} {
                         grid-column: 5 / span 4;
                     }
@@ -191,6 +187,25 @@ export const ElementItemWrapper = styled.li<IElementItemWrapperProps>`
                         grid-column: auto / span ${$size === "full" ? 4 : 2};
                     }
                 `;
+            default:
+                return css`
+                    grid-column: auto / span 3; /* Default span if $mode is not specified */
+                `;
+        }
+    }}
+
+    /* Additional styling based on $size prop */
+    ${({ $size }) => {
+        if ($size === "third-right") {
+            return css`
+                justify-self: flex-start;
+                width: 100%;
+            `;
+        } else if ($size === "third-left") {
+            return css`
+                justify-self: flex-end; /* Align to the start of the grid column (left side) */
+                width: 100%;
+            `;
         }
     }}
 `;

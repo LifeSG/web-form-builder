@@ -11,7 +11,6 @@ import {
 } from "@dnd-kit/core";
 import {
     SortableContext,
-    arrayMove,
     sortableKeyboardCoordinates,
     verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
@@ -42,20 +41,13 @@ export const MainPanel = () => {
 
     const finalMode = focusedElement ? true : showSidePanel;
     const renderMode = finalMode ? "minimised" : "expanded";
-    const items: (UniqueIdentifier | { id: UniqueIdentifier })[] = [];
 
-    for (const orderedIdentifier of orderedIdentifiers) {
-        if ("internalId" in orderedIdentifier) {
-            items.push({ id: orderedIdentifier.internalId });
-        } else {
-            items.push(orderedIdentifier);
-        }
-    }
-
+    const items: UniqueIdentifier[] = orderedIdentifiers.map(
+        (identifier) => identifier.internalId
+    );
     // =========================================================================
     // HELPER FUNCTION
     // =========================================================================
-
     const sensors = useSensors(
         useSensor(MouseSensor, {
             activationConstraint: {
@@ -90,16 +82,51 @@ export const MainPanel = () => {
             const newIndex = orderedIdentifiers.findIndex(
                 (item) => item.internalId === over.id
             );
-            const updatedOrderedIdentifiers = arrayMove(
-                orderedIdentifiers,
-                oldIndex,
-                newIndex
-            );
+
+            let updatedOrderedIdentifiers = [...orderedIdentifiers];
+
+            const activeCenterX =
+                active.rect.current?.translated.left +
+                active.rect.current?.translated.width / 3;
+            const overCenterX = over.rect.left + over.rect.width / 3;
+            console.log(overCenterX, activeCenterX);
+
+            if (activeCenterX > overCenterX) {
+                // when its dragged to the right
+                updatedOrderedIdentifiers[newIndex] = {
+                    ...updatedOrderedIdentifiers[newIndex],
+                    size: "third-right",
+                };
+                updatedOrderedIdentifiers[oldIndex] = {
+                    ...updatedOrderedIdentifiers[oldIndex],
+                    size: "third-left",
+                };
+            }
+
+            if (activeCenterX < overCenterX) {
+                // when its dragged to the left
+                updatedOrderedIdentifiers[newIndex] = {
+                    ...updatedOrderedIdentifiers[newIndex],
+                    size: "third-left",
+                };
+                updatedOrderedIdentifiers[oldIndex] = {
+                    ...updatedOrderedIdentifiers[oldIndex],
+                    size: "third-right",
+                };
+            }
+
+            // TODO: Need to come back cause not sure what can be tracked for this
+            // if (activeCenterX - overCenterX >= 0) {
+            //     // when its dragged to the center
+            //     updatedOrderedIdentifiers[newIndex] = {
+            //         ...updatedOrderedIdentifiers[newIndex],
+            //         size: "full",
+            //     };
+            // }
 
             updateOrderedIdentifiers(updatedOrderedIdentifiers);
         }
     };
-
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
@@ -110,7 +137,7 @@ export const MainPanel = () => {
                 <ElementItemWrapper
                     key={identifier.internalId}
                     $mode={renderMode}
-                    $size="full"
+                    $size={identifier?.size}
                     data-testid="element-content"
                 >
                     <ElementCard

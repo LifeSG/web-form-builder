@@ -3,6 +3,7 @@ import { Text, TextStyleHelper } from "@lifesg/react-design-system/text";
 import { DragHandleIcon } from "@lifesg/react-icons";
 import styled, { css } from "styled-components";
 import { BaseCard, IProps } from "../common";
+import { MediaQuery } from "@lifesg/react-design-system/media";
 
 // =============================================================================
 // STYLE INTERFACES
@@ -12,6 +13,7 @@ interface IActionButtonStyleProps {
 }
 interface IDroppableWrapperProps {
     isOver: boolean;
+    $size: "full" | "third-left" | "third-right";
 }
 
 interface IElementCardProps extends IProps {
@@ -92,34 +94,59 @@ export const ActionButton = styled.button<IActionButtonStyleProps>`
 `;
 
 export const DroppableWrapper = styled.div<IDroppableWrapperProps>`
-    ${({ isOver }) =>
-        isOver
-            ? css`
-                  border: 1px dashed ${Color.Primary};
-                  border-radius: 0.25rem;
-                  background: ${Color.Accent.Light[5]};
-                  height: 100%;
-                  z-index: -1;
-              `
-            : css`
-                  border: 1px solid transparent;
-              `}
-    position: absolute;
-    flex-direction: column;
-    height: auto;
-    width: 100%;
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    height: auto;
+    width: 100%;
     padding: 0.4rem;
     gap: 0.25rem;
+    border: 1px solid transparent;
+    z-index: -1;
+
+    ${({ $size }) => css`
+        ${MediaQuery.MaxWidth.desktop4k} {
+            grid-column: auto / span ${$size === "full" ? 6 : 3};
+        }
+
+        ${MediaQuery.MaxWidth.desktopL} {
+            grid-column: auto / span ${$size === "full" ? 8 : 4};
+        }
+
+        ${MediaQuery.MaxWidth.tablet} {
+            grid-column: auto / span ${$size === "full" ? 6 : 3};
+        }
+    `}
+
+    ${({ isOver }) =>
+        isOver &&
+        css`
+            border: 1px dashed ${Color.Primary};
+            border-radius: 0.25rem;
+            background: ${Color.Accent.Light[5]};
+        `}
 
     svg {
         color: ${Color.Primary};
         height: 2.08rem;
         width: 2.08rem;
     }
+
+    ${({ $size }) => {
+        if ($size === "third-right") {
+            return css`
+                justify-self: flex-start;
+                width: 100%;
+            `;
+        } else if ($size === "third-left") {
+            return css`
+                justify-self: flex-end;
+                width: 100%;
+            `;
+        }
+    }}
 `;
 
 export const DroppableText = styled(Text.Body)`

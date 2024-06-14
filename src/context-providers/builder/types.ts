@@ -24,6 +24,7 @@ export enum ETextFieldMode {
 export interface IElementIdentifier {
     internalId: string;
     parentInternalId?: string;
+    size?: "full" | "third-left" | "third-right";
 }
 
 export interface IFocusedElement {
