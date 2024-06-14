@@ -38,11 +38,7 @@ export const BasicDetails = () => {
     // =========================================================================
 
     useEffect(() => {
-        if (isDirty) {
-            updateFocusedElement(isDirty);
-        } else {
-            updateFocusedElement(false);
-        }
+        updateFocusedElement(!!isDirty);
     }, [isDirty, updateFocusedElement]);
 
     useEffect(() => {

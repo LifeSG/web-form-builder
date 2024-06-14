@@ -99,6 +99,11 @@ export const ConditionalRendering = () => {
     const handleDelete = (index: number) => {
         const currentValues = [...conditionalRenderingValues];
         const updatedValues = currentValues?.filter((_, i) => i !== index);
+
+        /** * shouldDirty will only dirty the field; the dirty state is not propagated to the form level
+         * * workaround is to wait for RHF to register the change and set the value again
+         * * reference: https://github.com/orgs/react-hook-form/discussions/9913#discussioncomment-4936301 */
+
         setValue("conditionalRendering", updatedValues, { shouldDirty: true });
         setTimeout(() => {
             setValue("conditionalRendering", updatedValues, {

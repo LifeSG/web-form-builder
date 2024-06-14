@@ -2,15 +2,10 @@ import { Text } from "@lifesg/react-design-system/text";
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
-import {
-    EElementType,
-    IPrefillAttributes,
-    useBuilder,
-} from "src/context-providers";
+import { EElementType, IPrefillAttributes } from "src/context-providers";
 import { IBaseTextBasedFieldValues, SchemaHelper } from "src/schemas";
 import * as Yup from "yup";
 import { PrefillChild } from "./prefill-child";
-
 export const Prefill = () => {
     // =========================================================================
     // CONST, STATES, REFS
@@ -65,6 +60,11 @@ export const Prefill = () => {
     const handleDelete = (index: number) => {
         const currentValues = [...prefillValues];
         const updatedValues = currentValues.filter((_, i) => i !== index);
+
+        /** * shouldDirty will only dirty the field; the dirty state is not propagated to the form level
+         * * workaround is to wait for RHF to register the change and set the value again
+         * * reference: https://github.com/orgs/react-hook-form/discussions/9913#discussioncomment-4936301 */
+
         setValue("prefill", updatedValues, { shouldDirty: true });
         setTimeout(() => {
             setValue("prefill", updatedValues, { shouldDirty: true });
