@@ -33,11 +33,16 @@ export const FormBuilder = () => {
     // RENDER FUNCTIONS
     // =========================================================================
 
-    return isLargeScreen ? (
+    return (
         <BuilderProvider>
             <DisplayProvider>
                 <Wrapper>
-                    <Container type="grid" stretch>
+                    {!isLargeScreen && <ScreenNotSupportedErrorDisplay />}
+                    <Container
+                        type="grid"
+                        stretch
+                        $isLargeScreen={isLargeScreen}
+                    >
                         <ToastWrapper>
                             <Toasts />
                         </ToastWrapper>
@@ -47,7 +52,5 @@ export const FormBuilder = () => {
                 </Wrapper>
             </DisplayProvider>
         </BuilderProvider>
-    ) : (
-        <ScreenNotSupportedErrorDisplay />
     );
 };

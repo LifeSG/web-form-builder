@@ -2,6 +2,10 @@ import { Layout } from "@lifesg/react-design-system/layout";
 import { MediaQuery } from "@lifesg/react-design-system/media";
 import styled from "styled-components";
 
+export interface IContainerProps {
+    $isLargeScreen: boolean;
+}
+
 export const Wrapper = styled(Layout.Section)`
     height: 100%;
     overflow-x: hidden;
@@ -9,11 +13,11 @@ export const Wrapper = styled(Layout.Section)`
     padding-right: 0 !important;
 `;
 
-export const Container = styled(Layout.Container)`
+export const Container = styled(Layout.Container)<IContainerProps>`
     position: relative;
     height: 100%;
     padding: 2rem 3rem;
-
+    display: ${({ $isLargeScreen }) => ($isLargeScreen ? "block" : "none")};
     /* To accommodate to desktops of 1024px */
     ${MediaQuery.MaxWidth.tablet} {
         max-width: unset;
