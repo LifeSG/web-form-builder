@@ -111,6 +111,20 @@ describe("AddElementsPanel", () => {
                 expect(getCategory).not.toBeInTheDocument();
             });
         });
+
+        /** Will be skipped as Option group is not implemented yet */
+        // it("should not show the category option group when input given is a text field element", async () => {
+        //     renderComponent();
+        //     const magnifyingGlass = screen.getByTestId("maginfying-glass");
+        //     fireEvent.click(magnifyingGlass);
+        //     const searchInput = screen.getByTestId("input");
+        //     fireEvent.change(searchInput, { target: { value: "email" } });
+
+        //     await waitFor(() => {
+        //         const getCategory = screen.queryByText("Option group");
+        //         expect(getCategory).not.toBeInTheDocument();
+        //     });
+        // });
     });
 });
 

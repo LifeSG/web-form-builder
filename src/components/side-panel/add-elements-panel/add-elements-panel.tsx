@@ -23,8 +23,6 @@ export const AddElementsPanel = () => {
         useState(ELEMENTS_CATEGORIES);
     const [searchInput, setSearchInput] = useState("");
 
-    const inputRef = useRef(null);
-
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
@@ -52,10 +50,6 @@ export const AddElementsPanel = () => {
     // =============================================================================
     const handleElementSelectorClick = (type: EElementType) => () => {
         addElement(type, true);
-    };
-
-    const handleMagnifierClick = () => {
-        inputRef.current && inputRef.current.focus();
     };
 
     const handleOnClear = () => {
@@ -112,10 +106,7 @@ export const AddElementsPanel = () => {
                         type: "custom",
                         attributes: {
                             children: (
-                                <MagnifierIcon
-                                    onClick={handleMagnifierClick}
-                                    data-testid="maginfying-glass"
-                                />
+                                <MagnifierIcon data-testid="maginfying-glass" />
                             ),
                         },
                         position: "left",
@@ -126,7 +117,6 @@ export const AddElementsPanel = () => {
                     onChange={(event) =>
                         generateSearchResults(event.target.value)
                     }
-                    ref={inputRef}
                 />
             </label>
 
