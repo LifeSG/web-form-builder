@@ -51,7 +51,6 @@ export const MainPanel = () => {
     const renderMode = finalMode ? "minimised" : "expanded";
     const items: (UniqueIdentifier | { id: UniqueIdentifier })[] = [];
     const { showModal, discardChanges } = useModal();
-    const { showToast } = useDisplay();
 
     for (const orderedIdentifier of orderedIdentifiers) {
         if ("internalId" in orderedIdentifier) {
@@ -101,7 +100,6 @@ export const MainPanel = () => {
                 onClickActionButton: () => handleModalOnClick(element),
             };
             showModal(newModal);
-        } else {
             focusElement(element);
         }
     };

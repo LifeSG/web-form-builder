@@ -70,7 +70,6 @@ describe("SidePanelHeader", () => {
             });
             const crossButton = getCrossButton();
             fireEvent.click(crossButton);
-            screen.debug();
             await waitFor(() => {
                 const getText = screen.getByText("Discard changes?");
                 expect(getText).toBeInTheDocument();
@@ -88,7 +87,6 @@ describe("SidePanelHeader", () => {
             });
             const crossButton = getCrossButton();
             fireEvent.click(crossButton);
-            screen.debug();
             await waitFor(() => {
                 const getText = screen.queryByText("Discard changes?");
                 expect(getText).not.toBeInTheDocument();

@@ -14,12 +14,14 @@ export const Modals = () => {
     // =========================================================================
 
     const renderModalContent = (modal: TModalProps, index: number) => {
-        switch (modal?.type) {
-            case EModalType.DiscardChanges:
-                return <DiscardChangesModal modal={modal} />;
-            default:
-                console.error("type given is not a modal type!");
-                break;
+        if (modal?.type) {
+            switch (modal?.type) {
+                case EModalType.DiscardChanges:
+                    return <DiscardChangesModal modal={modal} />;
+                default:
+                    console.error("type given is not a modal type!");
+                    break;
+            }
         }
     };
 

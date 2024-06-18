@@ -1,4 +1,4 @@
-import { Modal } from "@lifesg/react-design-system";
+import { Modal } from "@lifesg/react-design-system/modal";
 import styled from "styled-components";
 
 export const ScrollableModal = styled(Modal)`

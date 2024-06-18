@@ -1,6 +1,6 @@
-import { ToastWrapper } from "src/form-builder.styles";
 import { useDisplay } from "../../../context-providers";
 import { DisplayToast } from "./toast";
+import { ToastWrapper } from "./toasts.styles";
 
 export const Toasts: Function = () => {
     const { toasts } = useDisplay();
