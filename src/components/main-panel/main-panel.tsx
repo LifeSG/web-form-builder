@@ -100,7 +100,6 @@ export const MainPanel = () => {
                 onClickActionButton: () => handleModalOnClick(element),
             };
             showModal(newModal);
-            focusElement(element);
         }
     };
 
