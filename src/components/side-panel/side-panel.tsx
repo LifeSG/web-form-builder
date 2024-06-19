@@ -55,16 +55,13 @@ export const SidePanel = () => {
 
     useEffect(() => {
         if (focusedElement) {
-            Object.keys(focusedElement.element).forEach((key) => {
-                methods.resetField(key as any, {
-                    defaultValue:
-                        focusedElement.element[key] !== undefined
-                            ? (focusedElement.element[key] as string)
-                            : "",
-                });
+            const newElement = {};
+            Object.entries(focusedElement?.element).forEach(([key, value]) => {
+                newElement[key] = value === undefined ? "" : value;
             });
+            methods.reset(newElement);
         }
-    }, [focusedElement?.element, methods.resetField]);
+    }, [focusedElement?.element, methods.reset]);
 
     // =========================================================================
     // RENDER FUNCTIONS

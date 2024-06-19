@@ -20,14 +20,15 @@ export const ElementEditor = () => {
     // =============================================================================
 
     const renderAlert = () => {
-        if (focusedElement.isDirty === false) {
+        if (!focusedElement?.isDirty) {
             return <></>;
+        } else {
+            return (
+                <SaveChangesAlert type="warning" showIcon>
+                    To reflect changes on preview, save changes first.
+                </SaveChangesAlert>
+            );
         }
-        return (
-            <SaveChangesAlert type="warning" showIcon>
-                To reflect changes on preview, save changes first.
-            </SaveChangesAlert>
-        );
     };
 
     return (
