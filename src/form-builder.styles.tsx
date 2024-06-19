@@ -17,8 +17,7 @@ export const Container = styled(Layout.Container)<IContainerProps>`
     position: relative;
     height: 100%;
     padding: 2rem 3rem;
-    display: ${({ $isLargeScreen }) => ($isLargeScreen ? "block" : "none")};
-    /* To accommodate to desktops of 1024px */
+    display: ${({ $isLargeScreen }) => ($isLargeScreen ? "grid" : "none")};
     ${MediaQuery.MaxWidth.tablet} {
         max-width: unset;
         width: 100%;
