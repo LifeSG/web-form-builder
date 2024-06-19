@@ -2,7 +2,7 @@ import { useCallback, useContext } from "react";
 import { ElementObjectGenerator } from "src/util";
 import { EElementType, TElement } from "./element.types";
 import { BuilderContext } from "./provider";
-import { EBuilderMode, IElementIdentifier } from "./types";
+import { EBuilderMode, IElementIdentifier, TElementMap } from "./types";
 
 export const useBuilder = () => {
     const { state, dispatch } = useContext(BuilderContext);
@@ -108,10 +108,26 @@ export const useBuilder = () => {
                 (identifier) => identifier.internalId !== internalId
             );
 
+            const remainingValues: TElementMap = Object.fromEntries(
+                Object.entries(remaining).map(
+                    ([key, child]: [string, TElement]) => [
+                        key,
+                        {
+                            ...child,
+                            conditionalRendering:
+                                child.conditionalRendering.filter(
+                                    (condition) =>
+                                        condition.internalId !== internalId
+                                ),
+                        },
+                    ]
+                )
+            );
+
             dispatch({
                 type: "delete-element",
                 payload: {
-                    updatedElements: remaining,
+                    updatedElements: remainingValues,
                     orderedIdentifiers: newOrderedIdentifiers,
                 },
             });

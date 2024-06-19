@@ -3,26 +3,44 @@ import { Toggle } from "@lifesg/react-design-system/toggle";
 import { useEffect, useState } from "react";
 import { Row } from "./toggle-pair.styles";
 
-interface Props {
+interface IProps {
     label?: string;
-    defaultValue?: boolean;
+    value?: boolean;
     id?: string;
     onChange: (value: boolean) => void;
 }
 
-export const TogglePair = ({ onChange, defaultValue, label, id }: Props) => {
+export const TogglePair = ({
+    onChange,
+    value: defaultValue,
+    label,
+    id,
+}: IProps) => {
+    // =========================================================================
+    // CONST, STATE, REFS
+    // =========================================================================
     const [value, setValue] = useState(defaultValue);
 
+    // =============================================================================
+    // HELPER FUNCTIONS
+    // =============================================================================
+    const handleChange = (value: boolean) => {
+        setValue(value);
+        onChange(value);
+    };
+
+    // =========================================================================
+    // EFFECTS
+    // =========================================================================
     useEffect(() => {
         if (value !== defaultValue) {
             setValue(defaultValue);
         }
     }, [defaultValue, id]);
 
-    const handleChange = () => {
-        setValue(!value);
-        onChange(!value);
-    };
+    // =========================================================================
+    // RENDER FUNCTIONS
+    // =========================================================================
 
     return (
         <div>
@@ -30,16 +48,16 @@ export const TogglePair = ({ onChange, defaultValue, label, id }: Props) => {
             <Row>
                 <Toggle
                     type="yes"
-                    checked={value}
-                    onChange={handleChange}
+                    checked={value === true}
+                    onChange={() => handleChange(true)}
                     indicator
                 >
                     Yes
                 </Toggle>
                 <Toggle
                     type="no"
-                    checked={!value}
-                    onChange={handleChange}
+                    checked={value === false}
+                    onChange={() => handleChange(false)}
                     indicator
                 >
                     No
