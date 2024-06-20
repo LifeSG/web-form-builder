@@ -14,7 +14,7 @@ export const Modals = () => {
     // =========================================================================
 
     const renderModalContent = (modal: TModalProps, index: number) => {
-        switch (modal.type) {
+        switch (modal?.type) {
             case EModalType.BulkEdit:
             case EModalType.Custom:
             case EModalType.DiscardChanges:
