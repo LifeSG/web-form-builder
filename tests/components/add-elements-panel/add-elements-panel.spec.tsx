@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import "jest-canvas-mock";
 import { AddElementsPanel } from "src/components/side-panel/add-elements-panel";
 import { EElementType } from "src/context-providers";
@@ -51,6 +51,78 @@ describe("AddElementsPanel", () => {
                         screen.getByText(ELEMENT_BUTTON_LABELS[elementType])
                     ).toBeInTheDocument();
                 });
+            });
+        });
+    });
+
+    describe("search elements by name", () => {
+        it("should show search results and cross button on search bar when input is given", async () => {
+            renderComponent();
+            const magnifyingGlass = screen.getByTestId("maginfying-glass");
+            fireEvent.click(magnifyingGlass);
+            const searchInput = screen.getByTestId("input");
+            fireEvent.change(searchInput, { target: { value: "email" } });
+
+            await waitFor(() => {
+                const getEmailAddressButton =
+                    screen.getByText(/email address/i);
+                const getCrossButton = screen.getAllByRole("button");
+                expect(getEmailAddressButton).toBeInTheDocument();
+                expect(getCrossButton[0]).toBeInTheDocument();
+            });
+        });
+        it("should be able to clear input when clicking on the cross button", async () => {
+            renderComponent();
+            const magnifyingGlass = screen.getByTestId("maginfying-glass");
+            fireEvent.click(magnifyingGlass);
+            const searchInput = screen.getByTestId("input");
+            fireEvent.change(searchInput, { target: { value: "email" } });
+            const getCrossButton = screen.getAllByRole("button");
+            fireEvent.click(getCrossButton[0]);
+
+            await waitFor(() => {
+                expect(searchInput).toHaveValue("");
+            });
+        });
+
+        it("should show results not found when input given is not an element name", async () => {
+            renderComponent();
+            const magnifyingGlass = screen.getByTestId("maginfying-glass");
+            fireEvent.click(magnifyingGlass);
+            const searchInput = screen.getByTestId("input");
+            fireEvent.change(searchInput, { target: { value: "abc" } });
+
+            await waitFor(() => {
+                const getNoResultsFoundContent =
+                    screen.getByText("No results found.");
+                expect(getNoResultsFoundContent).toBeInTheDocument();
+            });
+        });
+
+        it("should not show the category when input given is not an element name", async () => {
+            renderComponent();
+            const magnifyingGlass = screen.getByTestId("maginfying-glass");
+            fireEvent.click(magnifyingGlass);
+            const searchInput = screen.getByTestId("input");
+            fireEvent.change(searchInput, { target: { value: "abc" } });
+
+            await waitFor(() => {
+                const getCategory = screen.queryByText("Text field");
+                expect(getCategory).not.toBeInTheDocument();
+            });
+        });
+
+        /** Will be skipped as Option group is not implemented yet */
+        it.skip("should not show the category option group when input given is a text field element", async () => {
+            renderComponent();
+            const magnifyingGlass = screen.getByTestId("maginfying-glass");
+            fireEvent.click(magnifyingGlass);
+            const searchInput = screen.getByTestId("input");
+            fireEvent.change(searchInput, { target: { value: "email" } });
+
+            await waitFor(() => {
+                const getCategory = screen.queryByText("Option group");
+                expect(getCategory).not.toBeInTheDocument();
             });
         });
     });

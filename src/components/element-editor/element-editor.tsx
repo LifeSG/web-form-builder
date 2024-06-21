@@ -20,7 +20,6 @@ export const ElementEditor = () => {
     // =============================================================================
 
     const renderAlert = () => {
-        console.log("isDirty:", focusedElement.isDirty);
         if (!focusedElement.isDirty) {
             return <></>;
         } else {

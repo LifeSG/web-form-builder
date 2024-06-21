@@ -1,5 +1,5 @@
 import { Text } from "@lifesg/react-design-system/text";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
 import {
@@ -9,10 +9,7 @@ import {
 } from "src/context-providers";
 import { IBaseTextBasedFieldValues, SchemaHelper } from "src/schemas";
 import * as Yup from "yup";
-import {
-    ConditionalRenderingChild,
-    IOnChangeProps,
-} from "./conditional-rendering-child";
+import { ConditionalRenderingChild } from "./conditional-rendering-child";
 
 interface IOptions {
     label: string;
@@ -25,22 +22,15 @@ export const ConditionalRendering = () => {
     // CONST, STATE, REFS
     // =========================================================================
 
-    const { focusedElement, elements, updateFocusedElement } = useBuilder();
-    const element = focusedElement.element;
-    const [childEntryValues, setChildEntryValues] =
-        useState<IConditionalRendering[]>();
-    const {
-        setValue,
-        formState: { isDirty },
-        getValues,
-    } = useFormContext<IBaseTextBasedFieldValues>();
-    const shouldUpdateFocusedElement =
-        isDirty ||
-        childEntryValues?.length >
-            focusedElement?.element?.conditionalRendering?.length;
+    const { focusedElement, elements } = useBuilder();
+    const element = focusedElement?.element;
+    const [, setChildEntryValues] = useState<IConditionalRendering[]>([]);
+    const { setValue, watch, getValues } =
+        useFormContext<IBaseTextBasedFieldValues>();
 
     const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
-    const invalidAndEmptyFields = getTouchedAndErrorsFields();
+    const invalidAndEmptyFields = checkIsValid();
+    const conditionalRenderingValues = getValues("conditionalRendering") || [];
     // =====================================================================
     // HELPER FUNCTIONS
     // =====================================================================
@@ -60,109 +50,93 @@ export const ConditionalRendering = () => {
         return options;
     };
 
-    function getTouchedAndErrorsFields() {
-        if (childEntryValues && childEntryValues.length > 0) {
-            try {
-                const validationSchema = schema.pick(["conditionalRendering"]);
-                const conditionalRenderingValues = getValues(
-                    "conditionalRendering"
-                );
-                validationSchema.validateSync({
-                    conditionalRendering: conditionalRenderingValues,
-                    abortEarly: false,
-                });
-                return false;
-            } catch (error) {
-                return Yup.ValidationError.isError(error);
-            }
-        } else {
+    function checkIsValid() {
+        try {
+            const validationSchema = schema.pick(["conditionalRendering"]);
+
+            validationSchema.validateSync({
+                conditionalRendering: conditionalRenderingValues,
+                abortEarly: false,
+            });
             return false;
+        } catch (error) {
+            return Yup.ValidationError.isError(error);
         }
     }
 
-    function getPopoverMessage() {
+    const getPopoverMessage = useCallback(() => {
         if (invalidAndEmptyFields) {
             return (
                 <Text.Body>
-                    To add new condition, fill up existing condition first.
+                    To add a new condition, fill up the existing condition
+                    first.
                 </Text.Body>
             );
-        } else if (getElementOptions().length === 0) {
+        } else if (getElementOptions()?.length === 0) {
             return <Text.Body>No conditional rendering available.</Text.Body>;
         }
-    }
+        return null;
+    }, [invalidAndEmptyFields, getElementOptions]);
 
     // =============================================================================
     // EVENT HANDLERS
-    // =============================================================================
-
-    const handleChildChange = (
-        index: number,
-        newValue: IConditionalRendering
-    ) => {
-        const updatedValues = [...childEntryValues];
-        updatedValues[index] = newValue;
-        setChildEntryValues(updatedValues);
-        setValue("conditionalRendering", updatedValues);
-    };
+    // ============================================================================
 
     const handleAddButtonClick = () => {
         const conditionalRenderingChild = {
             fieldKey: "",
-            comparator: "",
+            comparator: "Equals",
             value: "",
             internalId: "",
         };
-        const updatedValues = [...childEntryValues, conditionalRenderingChild];
-        setChildEntryValues(updatedValues);
-        setValue("conditionalRendering", updatedValues);
+        const updatedValues = [
+            ...conditionalRenderingValues,
+            conditionalRenderingChild,
+        ];
+        setValue("conditionalRendering", updatedValues, { shouldDirty: true });
     };
 
     const handleDelete = (index: number) => {
-        const currentValues = [...childEntryValues];
-        const updatedValues = currentValues.filter((_, i) => i !== index);
-        setChildEntryValues(updatedValues);
-        setValue("conditionalRendering", updatedValues);
+        const currentValues = [...conditionalRenderingValues];
+        const updatedValues = currentValues?.filter((_, i) => i !== index);
+
+        /** * shouldDirty will only dirty the field; the dirty state is not propagated to the form level
+         * * workaround is to wait for RHF to register the change and set the value again
+         * * reference: https://github.com/orgs/react-hook-form/discussions/9913#discussioncomment-4936301 */
+
+        setValue("conditionalRendering", updatedValues, { shouldDirty: true });
+        setTimeout(() => {
+            setValue("conditionalRendering", updatedValues, {
+                shouldDirty: true,
+            });
+        });
     };
 
     // =========================================================================
     // EFFECTS
     // =========================================================================
     useEffect(() => {
-        const updatedChildEntries = element.conditionalRendering?.filter(
-            (child) => {
-                return elements?.hasOwnProperty(child.internalId);
+        const subscription = watch((values) => {
+            if (values?.conditionalRendering) {
+                setChildEntryValues([
+                    ...values?.conditionalRendering,
+                ] as IConditionalRendering[]);
+            } else {
+                setChildEntryValues([]);
             }
-        );
-        setValue("conditionalRendering", updatedChildEntries);
-        setChildEntryValues(updatedChildEntries);
-    }, [element]);
-
-    useEffect(() => {
-        setValue("conditionalRendering", childEntryValues, {
-            shouldDirty: true,
         });
-    }, [childEntryValues]);
-
-    useEffect(() => {
-        if (shouldUpdateFocusedElement) {
-            updateFocusedElement(true);
-        }
-    }, [shouldUpdateFocusedElement]);
+        return () => subscription.unsubscribe();
+    }, []);
 
     // =============================================================================
     // RENDER FUNCTIONS
     // =============================================================================
     const renderChildren = () => {
-        return childEntryValues?.map((child, index) => (
+        return conditionalRenderingValues?.map((_, index) => (
             <ConditionalRenderingChild
                 key={`conditional-rendering-entry-${index}`}
                 onDelete={() => handleDelete(index)}
-                onChange={(newValue) =>
-                    handleChildChange(index, newValue as IOnChangeProps)
-                }
                 options={getElementOptions()}
-                value={child}
                 index={index}
             />
         ));

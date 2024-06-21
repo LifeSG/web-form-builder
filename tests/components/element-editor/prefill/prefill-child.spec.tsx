@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import "jest-canvas-mock";
 import { FormProvider, useForm } from "react-hook-form";
 import { PrefillChild } from "src/components/element-editor/prefill";
@@ -16,7 +16,6 @@ describe("PrefillChild", () => {
     it("should render the component with provided options and fields", () => {
         renderComponent({
             onDelete: mockDelete,
-            onChange: mockOnChange,
             value: mockEmptyValue,
             index: mockIndex,
         });
@@ -24,29 +23,35 @@ describe("PrefillChild", () => {
         expect(screen.getByPlaceholderText("Enter a path")).toBeInTheDocument();
     });
 
-    it("should render fields with prefilled values given the prefill mode is 'Previous source", () => {
+    it("should render fields with prefilled values given the prefill mode is 'Previous source'", async () => {
         renderComponent({
             onDelete: mockDelete,
-            onChange: mockOnChange,
             value: mockValue,
             index: mockIndex,
         });
-        const getPrefillModeField = screen.getByRole("button", {
-            name: "Previous source",
+
+        const submitButton = screen.getByText("Submit");
+        fireEvent.click(submitButton);
+
+        await waitFor(() => {
+            const getPrefillModeField = screen.getByRole("button", {
+                name: "Previous source",
+            });
+            expect(getPrefillModeField).toBeInTheDocument();
+            expect(screen.getByDisplayValue("mockId")).toBeInTheDocument();
+            expect(screen.getByDisplayValue("mockPath")).toBeInTheDocument();
         });
-        expect(getPrefillModeField).toBeInTheDocument();
-        expect(screen.getByDisplayValue("mockId")).toBeInTheDocument();
-        expect(screen.getByDisplayValue("mockPath")).toBeInTheDocument();
     });
 
     it("should render fields with prefilled values given the prefill mode is 'Myinfo'", () => {
-        const myInfoValue: IPrefillAttributes = {
-            prefillMode: "Myinfo",
-            path: "mockPath",
-        };
+        const myInfoValue: IPrefillAttributes[] = [
+            {
+                prefillMode: "Myinfo",
+                path: "mockPath",
+            },
+        ];
         renderComponent({
             onDelete: mockDelete,
-            onChange: mockOnChange,
             value: myInfoValue,
             index: mockIndex,
         });
@@ -54,13 +59,15 @@ describe("PrefillChild", () => {
             name: "Myinfo",
         });
         expect(getPrefillModeField).toBeInTheDocument();
+        expect(
+            screen.queryByPlaceholderText("Enter an action ID.")
+        ).not.toBeInTheDocument();
         expect(screen.getByDisplayValue("mockPath")).toBeInTheDocument();
     });
 
     it("should fire the delete function on clicking the bin icon", () => {
         renderComponent({
             onDelete: mockDelete,
-            onChange: mockOnChange,
             value: mockEmptyValue,
             index: mockIndex,
         });
@@ -69,25 +76,9 @@ describe("PrefillChild", () => {
         expect(mockDelete).toBeCalled();
     });
 
-    it("should fire onChange when there is a change in the input fields", () => {
-        renderComponent({
-            onDelete: mockDelete,
-            onChange: mockOnChange,
-            value: mockEmptyValue,
-            index: mockIndex,
-        });
-        const getPrefillPathField = screen.getByPlaceholderText("Enter a path");
-        fireEvent.focus(getPrefillPathField);
-        fireEvent.change(getPrefillPathField, {
-            target: { value: "path" },
-        });
-        expect(mockOnChange).toBeCalled();
-    });
-
     it("should render an error message when prefill fields are left empty", async () => {
         renderComponent({
             onDelete: mockDelete,
-            onChange: mockOnChange,
             value: mockEmptyValue,
             index: mockIndex,
         });
@@ -102,8 +93,7 @@ describe("PrefillChild", () => {
     it("should render an error message when actionId field is left empty", async () => {
         renderComponent({
             onDelete: mockDelete,
-            onChange: mockOnChange,
-            value: { ...mockValue, actionId: "" },
+            value: [{ ...mockValue[0], actionId: "" }],
             index: mockIndex,
         });
         const submitButton = screen.getByText("Submit");
@@ -117,25 +107,25 @@ describe("PrefillChild", () => {
     it("should render an error message when actionId field input is invalid", async () => {
         renderComponent({
             onDelete: mockDelete,
-            onChange: mockOnChange,
-            value: { ...mockValue, actionId: "invalid.input" },
+            value: [{ ...mockValue[0], actionId: "invalid.input" }],
             index: mockIndex,
         });
 
-        const getActionIDField =
-            screen.getByPlaceholderText("Enter an action ID");
-        fireEvent.focus(getActionIDField);
-        fireEvent.blur(getActionIDField);
-        const actionIDInvalidError =
-            await screen.findByText("Invalid action ID.");
-        expect(actionIDInvalidError).toHaveTextContent("Invalid action ID.");
+        const submitButton = screen.getByText("Submit");
+        fireEvent.click(submitButton);
+
+        await waitFor(() => {
+            const actionIDInvalidError = screen.getByText("Invalid action ID.");
+            expect(actionIDInvalidError).toHaveTextContent(
+                "Invalid action ID."
+            );
+        });
     });
 
     it("should render an error message when path field input is invalid", async () => {
         renderComponent({
             onDelete: mockDelete,
-            onChange: mockOnChange,
-            value: { ...mockEmptyValue, path: "invalid!input" },
+            value: [{ ...mockEmptyValue[0], path: "invalid!input" }],
             index: mockIndex,
         });
 
@@ -149,30 +139,25 @@ describe("PrefillChild", () => {
 
 type PrefillChildOptions = {
     onDelete?: () => void;
-    onChange?: (newValue: any) => void;
-    value?: IPrefillAttributes;
+    value?: IPrefillAttributes[];
     index?: number;
 };
 
 const MyTestComponent = ({
     prefillChildOptions = {},
 }: { prefillChildOptions?: PrefillChildOptions } = {}) => {
-    const { onDelete, onChange, value, index } = prefillChildOptions;
+    const { onDelete, value, index } = prefillChildOptions;
     const methods = useForm({
         mode: "onTouched",
         resolver: yupResolver(SchemaHelper.buildSchema(EElementType.EMAIL)),
     });
-    const onSubmit = jest.fn;
+    const onSubmit = jest.fn();
+    methods.setValue("prefill", value);
 
     return (
         <FormProvider {...methods}>
             <form onSubmit={methods.handleSubmit(onSubmit)}>
-                <PrefillChild
-                    onDelete={onDelete}
-                    onChange={onChange}
-                    value={value}
-                    index={index}
-                />
+                <PrefillChild onDelete={onDelete} index={index} />
                 <button type="submit">Submit</button>
             </form>
         </FormProvider>
@@ -196,14 +181,18 @@ const renderComponent = (
 // =============================================================================
 const mockDelete = jest.fn();
 const mockOnChange = jest.fn();
-const mockValue: IPrefillAttributes = {
-    prefillMode: "Previous source",
-    actionId: "mockId",
-    path: "mockPath",
-};
+const mockValue: IPrefillAttributes[] = [
+    {
+        prefillMode: "Previous source",
+        actionId: "mockId",
+        path: "mockPath",
+    },
+];
 
-const mockEmptyValue: IPrefillAttributes = {
-    prefillMode: null,
-    path: "",
-};
+const mockEmptyValue: IPrefillAttributes[] = [
+    {
+        prefillMode: null,
+        path: "",
+    },
+];
 const mockIndex = 0;

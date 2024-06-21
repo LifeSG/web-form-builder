@@ -1,4 +1,7 @@
 import { Color } from "@lifesg/react-design-system/color";
+import { Form } from "@lifesg/react-design-system/form";
+import { InputGroup } from "@lifesg/react-design-system/input-group";
+import { ICircleFillIcon } from "@lifesg/react-icons";
 import styled from "styled-components";
 
 export const Wrapper = styled.ul`
@@ -24,4 +27,26 @@ export const ElementButtonList = styled.ul`
     display: flex;
     flex-direction: column;
     gap: 1rem;
+`;
+
+export const ElementSearch = styled(InputGroup)`
+    background: ${Color.Neutral[7]};
+    color: ${Color.Neutral[4]};
+    border: none;
+
+    svg {
+        color: ${Color.Neutral[4]};
+    }
+`;
+
+export const NoResultsWrapper = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+`;
+
+export const NotFoundIcon = styled(ICircleFillIcon)`
+    color: ${Color.Validation.Red.Icon};
+    height: 1.125rem;
+    width: 1.125rem;
 `;

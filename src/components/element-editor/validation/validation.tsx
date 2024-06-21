@@ -5,26 +5,21 @@ import { MultiEntry } from "src/components/common";
 import { EElementType, IValidation, useBuilder } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import { IBaseTextBasedFieldValues, SchemaHelper } from "src/schemas";
-import { ValidationChild } from "./validation-child";
 import * as Yup from "yup";
+import { ValidationChild } from "./validation-child";
 
 export const Validation = () => {
     // =========================================================================
     // CONST, STATES, REFS
     // =========================================================================
-    const { focusedElement, updateFocusedElement } = useBuilder();
-    const element = focusedElement.element;
-    const [childEntryValues, setChildEntryValues] = useState<IValidation[]>([]);
-    const {
-        setValue,
-        formState: { isDirty },
-        getValues,
-    } = useFormContext<IBaseTextBasedFieldValues>();
-    const shouldUpdateFocusedElement =
-        isDirty ||
-        childEntryValues?.length > focusedElement?.element?.validation?.length;
+    const { focusedElement } = useBuilder();
+    const element = focusedElement?.element;
+    const [, setChildEntryValues] = useState<IValidation[]>([]);
+    const { setValue, watch, getValues } =
+        useFormContext<IBaseTextBasedFieldValues>();
+    const validationValues = getValues("validation") || [];
     const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
-    const invalidAndEmptyFields = getTouchedAndErrorsFields();
+    const invalidAndEmptyFields = checkIsValid();
 
     // =========================================================================
     // HELPER FUNCTIONS
@@ -51,22 +46,17 @@ export const Validation = () => {
         }
     }
 
-    function getTouchedAndErrorsFields() {
-        if (childEntryValues && childEntryValues.length > 0) {
-            try {
-                const validationSchema = schema.pick(["validation"]);
-                const validationValues = getValues("validation");
+    function checkIsValid() {
+        try {
+            const validationSchema = schema.pick(["validation"]);
 
-                validationSchema.validateSync({
-                    validation: validationValues,
-                    abortEarly: false,
-                });
-                return false;
-            } catch (error) {
-                return Yup.ValidationError.isError(error);
-            }
-        } else {
+            validationSchema.validateSync({
+                validation: validationValues,
+                abortEarly: false,
+            });
             return false;
+        } catch (error) {
+            return Yup.ValidationError.isError(error);
         }
     }
 
@@ -77,7 +67,7 @@ export const Validation = () => {
                     To add new validation, fill up existing validation first.
                 </Text.Body>
             );
-        } else if (childEntryValues?.length === getMaxEntries(element?.type)) {
+        } else if (validationValues?.length === getMaxEntries(element?.type)) {
             return (
                 <Text.Body>
                     Limit reached. To add new validation, remove existing ones
@@ -87,34 +77,44 @@ export const Validation = () => {
         }
     }
 
+    const setDefaultValidationType = () => {
+        switch (element?.type) {
+            case EElementType.EMAIL:
+                return ELEMENT_VALIDATION_TYPES["Text field"][
+                    EElementType.EMAIL
+                ].validationTypes[0];
+            default:
+                return "";
+        }
+    };
+
     // =========================================================================
     // EVENT HANDLERS
     // =========================================================================
 
-    const handleChildChange = (index: number, newValue: IValidation) => {
-        const updatedValues = [...childEntryValues];
-        updatedValues[index] = newValue;
-        setChildEntryValues(updatedValues);
-        setValue("validation", updatedValues);
-    };
-
     const handleAddButtonClick = () => {
         const validationChild = {
-            validationType: "",
+            validationType: setDefaultValidationType(),
             validationRule: "",
             validationErrorMessage: "",
         };
 
-        const updatedValues = [...childEntryValues, validationChild];
-        setChildEntryValues(updatedValues);
-        setValue("validation", updatedValues);
+        const updatedValues = [...validationValues, validationChild];
+        setValue("validation", updatedValues, { shouldDirty: true });
     };
 
     const handleDelete = (index: number) => {
-        const currentValues = [...childEntryValues];
+        const currentValues = [...validationValues];
         const updatedValues = currentValues.filter((_, i) => i !== index);
-        setChildEntryValues(updatedValues);
-        setValue("validation", updatedValues);
+
+        /** * shouldDirty will only dirty the field; the dirty state is not propagated to the form level
+         * * workaround is to wait for RHF to register the change and set the value again
+         * * reference: https://github.com/orgs/react-hook-form/discussions/9913#discussioncomment-4936301 */
+
+        setValue("validation", updatedValues, { shouldDirty: true });
+        setTimeout(() => {
+            setValue("validation", updatedValues, { shouldDirty: true });
+        });
     };
 
     // =========================================================================
@@ -122,34 +122,25 @@ export const Validation = () => {
     // =========================================================================
 
     useEffect(() => {
-        const element = focusedElement?.element;
-        setChildEntryValues(
-            element?.validation !== undefined ? element?.validation : []
-        );
-    }, [focusedElement.element]);
-
-    useEffect(() => {
-        setValue("validation", childEntryValues, {
-            shouldDirty: true,
+        const subscription = watch((values) => {
+            if (values?.validation) {
+                setChildEntryValues([...values?.validation] as IValidation[]);
+            } else {
+                setChildEntryValues([]);
+            }
         });
-    }, [childEntryValues]);
-    useEffect(() => {
-        if (shouldUpdateFocusedElement) {
-            updateFocusedElement(true);
-        }
-    }, [shouldUpdateFocusedElement]);
+        return () => subscription.unsubscribe();
+    }, []);
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
 
     const renderChildren = () => {
-        return childEntryValues?.map((child, index) => (
+        return validationValues?.map((_, index) => (
             <ValidationChild
                 key={`validation-entry-${index}`}
                 onDelete={() => handleDelete(index)}
-                onChange={(newValue) => handleChildChange(index, newValue)}
                 options={getOptionsByType(element.type)}
-                value={child}
                 index={index}
             />
         ));
@@ -161,7 +152,7 @@ export const Validation = () => {
             title="Validation"
             buttonLabel="validation"
             disabledButton={
-                childEntryValues?.length === getMaxEntries(element?.type) ||
+                validationValues?.length === getMaxEntries(element?.type) ||
                 invalidAndEmptyFields
             }
             popoverMessage={getPopoverMessage()}
