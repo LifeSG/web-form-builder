@@ -1,17 +1,38 @@
-import { useEffect, useState } from "react";
+import { IFrontendEngineData } from "@lifesg/web-frontend-engine/components/types";
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import { MainPanel, SidePanel } from "./components";
 import { Toasts } from "./components/common";
-import { DisplayProvider } from "./context-providers";
-import { BuilderProvider } from "./context-providers/builder";
-import { Container, ToastWrapper, Wrapper } from "./form-builder.styles";
 import { ScreenNotSupportedErrorDisplay } from "./components/error-display/screen-not-supported-error";
+import { DisplayProvider } from "./context-providers";
+import {
+    BuilderProvider,
+    TElementMap,
+    useBuilder,
+} from "./context-providers/builder";
+import { Container, ToastWrapper, Wrapper } from "./form-builder.styles";
+import { generateSchema, translateSchema } from "./util/schema-translator";
 
-export const FormBuilder = () => {
+export interface IFormBuilderMethods {
+    generate?: (elements: TElementMap) => IFrontendEngineData;
+    translate?: (text: string) => void;
+}
+
+export const FormBuilder = forwardRef<any, IFormBuilderMethods>((_, ref) => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
     const [isLargeScreen, setIsLargeScreen] = useState(
         window.innerWidth >= 1200
+    );
+    const { elements } = useBuilder();
+
+    useImperativeHandle(
+        ref,
+        () => ({
+            generate: () => generateSchema(elements),
+            translate: (text: string) => translateSchema(text),
+        }),
+        [elements]
     );
 
     // =========================================================================
@@ -53,4 +74,4 @@ export const FormBuilder = () => {
             </DisplayProvider>
         </BuilderProvider>
     );
-};
+});

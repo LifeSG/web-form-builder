@@ -44,6 +44,7 @@ export interface IBaseFieldAttributes extends IBaseAttributes {
     label: string | undefined;
     required: boolean;
     requiredErrorMsg?: string | undefined;
+    columns?: number;
 }
 
 export interface IBaseTextBasedFieldAttributes extends IBaseFieldAttributes {
