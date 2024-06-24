@@ -1,28 +1,67 @@
 import { IFrontendEngineData } from "@lifesg/web-frontend-engine/components";
-import { EElementType, TElementMap } from "src/context-providers";
+import { EElementType, TElement, TElementMap } from "src/context-providers";
 
-// TODO: Add functionality to check the element's type
+const emailFieldToSchema = (element: TElement) => {
+    const emailFieldSchema = {
+        [element.id]: {
+            label: element.label,
+            uiType: element.type,
+            columns: {
+                desktop: element.columns,
+            },
+            placeholder: element.placeholder,
+
+            validation: [
+                {
+                    required: element.required,
+                    errorMessage: element.requiredErrorMsg,
+                },
+            ],
+        },
+    };
+
+    return emailFieldSchema;
+};
+
+const textBasedFieldToSchema = (element: TElement) => {
+    const textBasedFieldSchema = {
+        [element.id]: {
+            label: element.label,
+            uiType: element.type,
+            columns: {
+                desktop: element.columns,
+            },
+            placeholder: element.placeholder,
+
+            validation: [
+                {
+                    required: element.required,
+                    errorMessage: element.requiredErrorMsg,
+                },
+            ],
+        },
+    };
+
+    return textBasedFieldSchema;
+};
+
+const generateSchemaByType = (element: TElement) => {
+    switch (element.type) {
+        case EElementType.EMAIL:
+            return emailFieldToSchema(element);
+        case EElementType.TEXT:
+        case EElementType.TEXTAREA:
+        case EElementType.CONTACT:
+        case EElementType.NUMERIC:
+            return textBasedFieldToSchema(element);
+    }
+};
+
 export function generateSchema(elements: TElementMap) {
     let fields = {};
 
     Object.entries(elements).forEach(([_, value]) => {
-        const translatedChild = {
-            [value.id]: {
-                label: value.label,
-                uiType: value.type,
-                columns: {
-                    desktop: value.columns,
-                },
-                placeholder: value.placeholder,
-
-                validation: [
-                    {
-                        required: value.required,
-                        errorMessage: value.requiredErrorMsg,
-                    },
-                ],
-            },
-        };
+        const translatedChild = generateSchemaByType(value);
         fields = { ...fields, ...translatedChild };
     });
 

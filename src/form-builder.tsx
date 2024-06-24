@@ -13,11 +13,15 @@ import { Container, ToastWrapper, Wrapper } from "./form-builder.styles";
 import { generateSchema, translateSchema } from "./util/schema-translator";
 
 export interface IFormBuilderMethods {
-    generate?: (elements: TElementMap) => IFrontendEngineData;
+    generate?: (elementsList?: TElementMap) => IFrontendEngineData;
     translate?: (text: string) => void;
 }
 
-export const FormBuilder = forwardRef<any, IFormBuilderMethods>((_, ref) => {
+interface IProps {
+    offset?: number;
+}
+
+const Component = forwardRef<IFormBuilderMethods, IProps>(({ offset }, ref) => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
@@ -55,23 +59,27 @@ export const FormBuilder = forwardRef<any, IFormBuilderMethods>((_, ref) => {
     // =========================================================================
 
     return (
-        <BuilderProvider>
-            <DisplayProvider>
-                <Wrapper>
-                    {!isLargeScreen && <ScreenNotSupportedErrorDisplay />}
-                    <Container
-                        type="grid"
-                        stretch
-                        $isLargeScreen={isLargeScreen}
-                    >
-                        <ToastWrapper>
-                            <Toasts />
-                        </ToastWrapper>
-                        <MainPanel />
-                        <SidePanel />
-                    </Container>
-                </Wrapper>
-            </DisplayProvider>
-        </BuilderProvider>
+        <Wrapper>
+            {!isLargeScreen && <ScreenNotSupportedErrorDisplay />}
+            <Container type="grid" stretch $isLargeScreen={isLargeScreen}>
+                <ToastWrapper>
+                    <Toasts />
+                </ToastWrapper>
+                <MainPanel />
+                <SidePanel offset={offset} />
+            </Container>
+        </Wrapper>
     );
 });
+
+export const FormBuilder = forwardRef<IFormBuilderMethods, IProps>(
+    ({ offset }, ref) => {
+        return (
+            <BuilderProvider>
+                <DisplayProvider>
+                    <Component ref={ref} offset={offset} />
+                </DisplayProvider>
+            </BuilderProvider>
+        );
+    }
+);
