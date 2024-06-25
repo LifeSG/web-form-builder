@@ -100,7 +100,10 @@ export const MainPanel = () => {
                 onClickActionButton: () => handleModalOnClick(element),
             };
             showModal(newModal);
-        } else {
+        } else if (
+            !isDirty &&
+            element?.internalId !== focusedElement?.element?.internalId
+        ) {
             focusElement(element);
         }
     };
