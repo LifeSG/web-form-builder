@@ -10,7 +10,7 @@ interface IWrapperStyleProps {
 }
 
 interface IElementItemWrapperProps extends IWrapperStyleProps {
-    $size: "full" | "third-left" | "third-right";
+    $size: "full" | "third";
 }
 
 // =============================================================================
@@ -191,21 +191,6 @@ export const ElementItemWrapper = styled.li<IElementItemWrapperProps>`
                 return css`
                     grid-column: auto / span 3; /* Default span if $mode is not specified */
                 `;
-        }
-    }}
-
-    /* Additional styling based on $size prop */
-    ${({ $size }) => {
-        if ($size === "third-right") {
-            return css`
-                justify-self: flex-start;
-                width: 100%;
-            `;
-        } else if ($size === "third-left") {
-            return css`
-                justify-self: flex-end; /* Align to the start of the grid column (left side) */
-                width: 100%;
-            `;
         }
     }}
 `;

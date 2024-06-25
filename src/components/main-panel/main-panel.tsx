@@ -11,10 +11,13 @@ import {
 } from "@dnd-kit/core";
 import {
     SortableContext,
+    arrayMove,
     sortableKeyboardCoordinates,
     verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { ErrorDisplay } from "@lifesg/react-design-system/error-display";
+import { debounce } from "lodash";
+import { useCallback, useRef } from "react";
 import { TElement, useBuilder } from "src/context-providers";
 import { ElementCard } from "../element-card";
 import {
@@ -38,7 +41,7 @@ export const MainPanel = () => {
         focusedElement,
         updateOrderedIdentifiers,
     } = useBuilder();
-
+    const wrapperRef = useRef<HTMLDivElement | null>(null);
     const finalMode = focusedElement ? true : showSidePanel;
     const renderMode = finalMode ? "minimised" : "expanded";
 
@@ -72,64 +75,82 @@ export const MainPanel = () => {
         focusElement(element);
     };
 
-    const handleDragEnd = (event: DragEndEvent) => {
-        const { active, over } = event;
+    const handleOnDragMove = useCallback(
+        debounce((event: DragEndEvent) => {
+            const wrapperBounds = wrapperRef.current?.getBoundingClientRect();
+            if (!wrapperBounds) return;
 
-        if (active.id !== over.id) {
-            const oldIndex = orderedIdentifiers.findIndex(
+            const wrapperLeftThirds =
+                wrapperBounds.left + wrapperBounds.width / 3;
+            const wrapperRightThirds =
+                wrapperBounds.left + (wrapperBounds.width * 2) / 3;
+            const mouseX =
+                event.active.rect.current.translated.left +
+                event.activatorEvent["layerX"];
+            const { active, over } = event;
+            if (active.id === over.id) return;
+
+            const newIndex = orderedIdentifiers.findIndex(
                 (item) => item.internalId === active.id
             );
-            const newIndex = orderedIdentifiers.findIndex(
+            const oldIndex = orderedIdentifiers.findIndex(
                 (item) => item.internalId === over.id
             );
 
-            let updatedOrderedIdentifiers = [...orderedIdentifiers];
+            let elementIdentifiers = [...orderedIdentifiers];
+            let updatedOrderedIdentifiers = [];
 
-            const activeCenterX =
-                active.rect.current?.translated.left +
-                active.rect.current?.translated.width / 3;
-            const overCenterX = over.rect.left + over.rect.width / 3;
-            console.log(overCenterX, activeCenterX);
+            if (mouseX < wrapperLeftThirds) {
+                // When it's dragged to the left
+                elementIdentifiers[newIndex] = {
+                    ...elementIdentifiers[newIndex],
+                    size: "third",
+                };
+                elementIdentifiers[oldIndex] = {
+                    ...elementIdentifiers[oldIndex],
+                    size: "third",
+                };
 
-            if (activeCenterX > overCenterX) {
-                // when its dragged to the right
-                updatedOrderedIdentifiers[newIndex] = {
-                    ...updatedOrderedIdentifiers[newIndex],
-                    size: "third-right",
+                const activeElement = elementIdentifiers.splice(newIndex, 1)[0];
+                elementIdentifiers.splice(oldIndex, 0, activeElement);
+                updatedOrderedIdentifiers = [...elementIdentifiers];
+            } else if (mouseX > wrapperRightThirds) {
+                // When it's dragged to the right
+                elementIdentifiers[newIndex] = {
+                    ...elementIdentifiers[newIndex],
+                    size: "third",
                 };
-                updatedOrderedIdentifiers[oldIndex] = {
-                    ...updatedOrderedIdentifiers[oldIndex],
-                    size: "third-left",
+                elementIdentifiers[oldIndex] = {
+                    ...elementIdentifiers[oldIndex],
+                    size: "third",
                 };
+
+                const activeElement = elementIdentifiers.splice(newIndex, 1)[0];
+                elementIdentifiers.splice(oldIndex + 1, 0, activeElement);
+                updatedOrderedIdentifiers = [...elementIdentifiers];
+            } else {
+                // When it's dragged to the center
+                if (elementIdentifiers[newIndex].size === "third") {
+                    elementIdentifiers[newIndex] = {
+                        ...elementIdentifiers[newIndex],
+                        size: "full",
+                    };
+                }
+                updatedOrderedIdentifiers = arrayMove(
+                    elementIdentifiers,
+                    newIndex,
+                    oldIndex
+                );
             }
-
-            if (activeCenterX < overCenterX) {
-                // when its dragged to the left
-                updatedOrderedIdentifiers[newIndex] = {
-                    ...updatedOrderedIdentifiers[newIndex],
-                    size: "third-left",
-                };
-                updatedOrderedIdentifiers[oldIndex] = {
-                    ...updatedOrderedIdentifiers[oldIndex],
-                    size: "third-right",
-                };
-            }
-
-            // TODO: Need to come back cause not sure what can be tracked for this
-            // if (activeCenterX - overCenterX >= 0) {
-            //     // when its dragged to the center
-            //     updatedOrderedIdentifiers[newIndex] = {
-            //         ...updatedOrderedIdentifiers[newIndex],
-            //         size: "full",
-            //     };
-            // }
-
             updateOrderedIdentifiers(updatedOrderedIdentifiers);
-        }
-    };
+        }, 55),
+        [orderedIdentifiers, updateOrderedIdentifiers]
+    );
+
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
+
     const renderElements = () => {
         return orderedIdentifiers.map((identifier) => {
             const element = elements[identifier.internalId];
@@ -164,10 +185,10 @@ export const MainPanel = () => {
     }
 
     return (
-        <Wrapper $mode={renderMode}>
+        <Wrapper $mode={renderMode} ref={wrapperRef}>
             <DndContext
                 sensors={sensors}
-                onDragEnd={handleDragEnd}
+                onDragMove={handleOnDragMove}
                 collisionDetection={closestCenter}
             >
                 <SortableContext

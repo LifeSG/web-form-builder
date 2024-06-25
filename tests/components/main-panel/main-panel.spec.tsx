@@ -55,6 +55,7 @@ const MOCK_ELEMENT = {
         type: EElementType.EMAIL,
         id: "mockElement",
         required: false,
+        size: "full",
         label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
     },
 };

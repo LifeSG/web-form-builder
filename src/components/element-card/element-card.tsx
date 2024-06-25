@@ -119,7 +119,6 @@ export const ElementCard = ({ element, onClick }: IProps) => {
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
-    console.log("size.size:", size.size);
     const droppableContent = isOver ? (
         <DroppableWrapper isOver={isOver} $size={size.size}>
             <PlusCircleIcon />

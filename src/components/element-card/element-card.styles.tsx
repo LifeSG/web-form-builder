@@ -13,7 +13,7 @@ interface IActionButtonStyleProps {
 }
 interface IDroppableWrapperProps {
     isOver: boolean;
-    $size: "full" | "third-left" | "third-right";
+    $size: "full" | "third";
 }
 
 interface IElementCardProps extends IProps {
@@ -133,20 +133,6 @@ export const DroppableWrapper = styled.div<IDroppableWrapperProps>`
         height: 2.08rem;
         width: 2.08rem;
     }
-
-    ${({ $size }) => {
-        if ($size === "third-right") {
-            return css`
-                justify-self: flex-start;
-                width: 100%;
-            `;
-        } else if ($size === "third-left") {
-            return css`
-                justify-self: flex-end;
-                width: 100%;
-            `;
-        }
-    }}
 `;
 
 export const DroppableText = styled(Text.Body)`
