@@ -15,6 +15,13 @@ export enum EElementType {
     TEXTAREA = "textarea",
 }
 
+export enum EConditionType {
+    MORE_THAN = "More than",
+    LESS_THAN = "Less than",
+    EQUALS = "Equals",
+    NOT_EQUALS = "Not equals",
+}
+
 export interface IBaseAttributes {
     id: string | undefined;
     internalId: string;

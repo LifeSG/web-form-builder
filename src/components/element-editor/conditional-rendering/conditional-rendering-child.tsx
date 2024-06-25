@@ -9,6 +9,7 @@ import {
     SelectFieldContainer,
     SelectFieldWrapper,
 } from "./conditional-rendering.styles";
+import { EConditionType } from "src/context-providers";
 
 export interface IOptions {
     label: string;
@@ -39,10 +40,10 @@ export const ConditionalRenderingChild = ({
     // =========================================================================
 
     const comparatorOptions = [
-        "Equals",
-        "More than",
-        "Less than",
-        "Not equals",
+        EConditionType.EQUALS,
+        EConditionType.MORE_THAN,
+        EConditionType.LESS_THAN,
+        EConditionType.NOT_EQUALS
     ];
 
     const {
@@ -71,10 +72,10 @@ export const ConditionalRenderingChild = ({
                                         selectedOption={
                                             fieldWithoutRef.value
                                                 ? options.find(
-                                                      (option) =>
-                                                          option.id ===
-                                                          fieldWithoutRef.value
-                                                  )
+                                                    (option) =>
+                                                        option.id ===
+                                                        fieldWithoutRef.value
+                                                )
                                                 : null
                                         }
                                         onSelectOption={(option: IOptions) => {
