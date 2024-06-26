@@ -1,6 +1,6 @@
 import { EElementType } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS, ELEMENT_VALIDATION_TYPES } from "src/data";
-import { generateSchema } from "src/util/schema-translator";
+import { generateSchema } from "src/util/translator/translator";
 
 describe("SchemaTranslator", () => {
     beforeEach(() => {
@@ -22,12 +22,20 @@ describe("SchemaTranslator", () => {
                 expect(generatedSchema).toStrictEqual(MOCK_EMAIL_SCHEMA);
             });
             it('should generate schema for the email field with validation"', () => {
-                const generatedSchema = generateSchema(MOCK__EMAIL_ELEMENT_WITH_VALIDATION);
-                expect(generatedSchema).toStrictEqual(MOCK_EMAIL_SCHEMA_WITH_VALIDATION);
+                const generatedSchema = generateSchema(
+                    MOCK__EMAIL_ELEMENT_WITH_VALIDATION
+                );
+                expect(generatedSchema).toStrictEqual(
+                    MOCK_EMAIL_SCHEMA_WITH_VALIDATION
+                );
             });
             it('should generate schema for the email field with conditional rendering"', () => {
-                const generatedSchema = generateSchema(MOCK__EMAIL_ELEMENT_WITH_CONDITIONAL_RENDERING);
-                expect(generatedSchema).toStrictEqual(MOCK_EMAIL_SCHEMA_WITH_CONDITIONAL_RENDERING);
+                const generatedSchema = generateSchema(
+                    MOCK__EMAIL_ELEMENT_WITH_CONDITIONAL_RENDERING
+                );
+                expect(generatedSchema).toStrictEqual(
+                    MOCK_EMAIL_SCHEMA_WITH_CONDITIONAL_RENDERING
+                );
             });
         });
 
@@ -73,7 +81,8 @@ const MOCK__EMAIL_ELEMENT_WITH_VALIDATION = {
                     ELEMENT_VALIDATION_TYPES["Text field"][EElementType.EMAIL]
                         .validationTypes[0],
                 validationRule: "@gmail.com",
-                validationErrorMessage: "Enter a email that has a '@gmail.com' domain"
+                validationErrorMessage:
+                    "Enter a email that has a '@gmail.com' domain",
             },
         ],
     },
@@ -98,11 +107,13 @@ const MOCK_EMAIL_SCHEMA_WITH_VALIDATION = {
                                     errorMessage: "Email address is required",
                                 },
                                 {
-                                    matches: "/^[a-zA-Z0-9._%+-]+@(gmail\\.com)$/",
-                                    errorMessage: "Enter a email that has a '@gmail.com' domain"
-                                }
+                                    matches:
+                                        "/^[a-zA-Z0-9._%+-]+@(gmail\\.com)$/",
+                                    errorMessage:
+                                        "Enter a email that has a '@gmail.com' domain",
+                                },
                             ],
-                            showIf: undefined
+                            showIf: undefined,
                         },
                     },
                     uiType: "grid",
@@ -132,10 +143,10 @@ const MOCK__EMAIL_ELEMENT_WITH_CONDITIONAL_RENDERING = {
             {
                 fieldKey: "mockElement1",
                 comparator: "Equals",
-                value: 'hello',
+                value: "hello",
                 internalId: "mock456",
             },
-        ]
+        ],
     },
     mock456: {
         internalId: "mock456",
@@ -148,8 +159,6 @@ const MOCK__EMAIL_ELEMENT_WITH_CONDITIONAL_RENDERING = {
         label: ELEMENT_BUTTON_LABELS[EElementType.TEXT],
     },
 };
-
-
 
 const MOCK_EMAIL_SCHEMA_WITH_CONDITIONAL_RENDERING = {
     sections: {
@@ -174,29 +183,29 @@ const MOCK_EMAIL_SCHEMA_WITH_CONDITIONAL_RENDERING = {
                                 {
                                     ["mockElement1"]: [
                                         {
-                                            "filled": true
+                                            filled: true,
                                         },
                                         {
-                                            "equals": "hello"
-                                        }
-                                    ]
-                                }
-                            ]
+                                            equals: "hello",
+                                        },
+                                    ],
+                                },
+                            ],
                         },
                         ["mockElement1"]: {
                             label: "Short text",
                             uiType: "text-field",
                             columns: {
-                                desktop: 12
+                                desktop: 12,
                             },
                             placeholder: "",
                             validation: [
                                 {
                                     required: true,
-                                    errorMessage: "Input is required"
-                                }
-                            ]
-                        }
+                                    errorMessage: "Input is required",
+                                },
+                            ],
+                        },
                     },
                     uiType: "grid",
                 },
