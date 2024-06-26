@@ -40,11 +40,17 @@ export interface IPrefillAttributes {
     path?: string;
 }
 
+export interface IColumns {
+    desktop: number;
+    tablet: number;
+    mobile: number;
+}
+
 export interface IBaseFieldAttributes extends IBaseAttributes {
     label: string | undefined;
     required: boolean;
     requiredErrorMsg?: string | undefined;
-    columns?: number;
+    columns?: IColumns;
 }
 
 export interface IBaseTextBasedFieldAttributes extends IBaseFieldAttributes {

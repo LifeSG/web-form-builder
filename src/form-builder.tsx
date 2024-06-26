@@ -10,11 +10,11 @@ import {
     useBuilder,
 } from "./context-providers/builder";
 import { Container, Wrapper } from "./form-builder.styles";
-import { generateSchema, translateSchema } from "./util/schema-translator";
+import { Translator } from "./util/translator/translator";
 
 export interface IFormBuilderMethods {
-    generate?: (elementsList?: TElementMap) => IFrontendEngineData;
-    translate?: (text: string) => void;
+    generateSchema?: (elementsList?: TElementMap) => IFrontendEngineData;
+    parseSchema?: (schema: string) => void;
 }
 
 interface IProps {
@@ -33,8 +33,8 @@ const Component = forwardRef<IFormBuilderMethods, IProps>(({ offset }, ref) => {
     useImperativeHandle(
         ref,
         () => ({
-            generate: () => generateSchema(elements),
-            translate: (text: string) => translateSchema(text),
+            generateSchema: () => Translator.generateSchema(elements),
+            parseSchema: (schema: string) => Translator.parseSchema(schema),
         }),
         [elements]
     );

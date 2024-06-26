@@ -2,7 +2,7 @@ import { Color } from "@lifesg/react-design-system";
 import styled from "styled-components";
 
 interface IContentWrapperProps {
-    visible: boolean;
+    visible?: boolean;
 }
 
 export interface IModeButtonProps {
@@ -12,18 +12,20 @@ export interface IModeButtonProps {
 export const ContentWrapper = styled.div<IContentWrapperProps>`
     height: calc(100vh - 5.1rem);
     width: 100vw;
-    display: ${({ visible }) => (visible ? "block" : "none")};
+    display: ${({ visible = true }) => (visible ? "block" : "none")};
 `;
 
 export const IconWrapper = styled.div`
+    position: relative;
     display: flex;
     width: 100%;
     height: 5rem;
     justify-content: flex-end;
     z-index: 1;
     gap: 2rem;
-    padding: 1rem 1rem 0.5rem 0;
+    padding: 1rem;
     background-color: ${Color.Accent.Light[5]};
+    box-sizing: border-box;
 `;
 
 export const IconButton = styled.button<IModeButtonProps>`
@@ -35,6 +37,7 @@ export const IconButton = styled.button<IModeButtonProps>`
     border: none;
     border-radius: 0.25rem;
     padding: 1rem;
+    align-self: center;
 
     :hover {
         background: ${Color.Accent.Light[4]};
@@ -50,16 +53,7 @@ export const IconButton = styled.button<IModeButtonProps>`
     }
 `;
 
-export const PreviewWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 2rem;
-    padding: 2rem;
-`;
-
-export const SchemaViewWrapper = styled.div`
+export const ViewWrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
