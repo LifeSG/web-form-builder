@@ -1,8 +1,8 @@
 import { EElementType } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS, ELEMENT_VALIDATION_TYPES } from "src/data";
-import { generateSchema } from "src/util/translator/translator";
+import { Translator } from "src/util/translator";
 
-describe("SchemaTranslator", () => {
+describe("Translator", () => {
     beforeEach(() => {
         global.ResizeObserver = jest.fn().mockImplementation(() => ({
             observe: jest.fn(),
@@ -18,11 +18,12 @@ describe("SchemaTranslator", () => {
     describe("generateSchema", () => {
         describe('Email field schema generation"', () => {
             it('should generate schema for the email field"', () => {
-                const generatedSchema = generateSchema(MOCK__EMAIL_ELEMENT);
+                const generatedSchema =
+                    Translator.generateSchema(MOCK__EMAIL_ELEMENT);
                 expect(generatedSchema).toStrictEqual(MOCK_EMAIL_SCHEMA);
             });
             it('should generate schema for the email field with validation"', () => {
-                const generatedSchema = generateSchema(
+                const generatedSchema = Translator.generateSchema(
                     MOCK__EMAIL_ELEMENT_WITH_VALIDATION
                 );
                 expect(generatedSchema).toStrictEqual(
@@ -30,7 +31,7 @@ describe("SchemaTranslator", () => {
                 );
             });
             it('should generate schema for the email field with conditional rendering"', () => {
-                const generatedSchema = generateSchema(
+                const generatedSchema = Translator.generateSchema(
                     MOCK__EMAIL_ELEMENT_WITH_CONDITIONAL_RENDERING
                 );
                 expect(generatedSchema).toStrictEqual(
@@ -41,7 +42,9 @@ describe("SchemaTranslator", () => {
 
         describe("Text based field schema generation", () => {
             it('should generate schema for a text based field"', () => {
-                const generatedSchema = generateSchema(MOCK_TEXT_BASED_ELEMENT);
+                const generatedSchema = Translator.generateSchema(
+                    MOCK_TEXT_BASED_ELEMENT
+                );
                 expect(generatedSchema).toStrictEqual(MOCK_TEXT_BASED_SCHEMA);
             });
         });
@@ -205,6 +208,7 @@ const MOCK_EMAIL_SCHEMA_WITH_CONDITIONAL_RENDERING = {
                                     errorMessage: "Input is required",
                                 },
                             ],
+                            showIf: undefined,
                         },
                     },
                     uiType: "grid",
@@ -238,6 +242,7 @@ const MOCK_EMAIL_SCHEMA = {
                                     errorMessage: "Email address is required",
                                 },
                             ],
+                            showIf: undefined,
                         },
                     },
                     uiType: "grid",
@@ -272,8 +277,8 @@ const MOCK_TEXT_BASED_SCHEMA = {
                 grid: {
                     children: {
                         ["mockElement"]: {
-                            label: "Email address",
-                            uiType: "email-field",
+                            label: "Short text",
+                            uiType: "text-field",
                             columns: {
                                 desktop: 12,
                             },
@@ -284,6 +289,7 @@ const MOCK_TEXT_BASED_SCHEMA = {
                                     errorMessage: "Input is required",
                                 },
                             ],
+                            showIf: undefined,
                         },
                     },
                     uiType: "grid",
