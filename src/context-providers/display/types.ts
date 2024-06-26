@@ -20,30 +20,19 @@ export interface IDisplayState {
     modals: TModalProps[];
 }
 
-export type TModalProps =
-    | IDiscardChangesModalProps
-    | IBulkEditModalProps
-    | ICustomModalProps;
+export type TModalProps = IDiscardChangesModalProps;
 
 // =============================================================================
 // MODAL STATE
 // =============================================================================
 export enum EModalType {
     DiscardChanges = "discard-changes",
-    BulkEdit = "bulk-edit",
-    Custom = "custom",
 }
 
 export interface IDiscardChangesModalProps {
     type: EModalType.DiscardChanges;
-}
-
-export interface IBulkEditModalProps {
-    type: EModalType.BulkEdit;
-}
-
-export interface ICustomModalProps {
-    type: EModalType.Custom;
+    onClickActionButton?: () => void;
+    index?: number;
 }
 
 // =============================================================================

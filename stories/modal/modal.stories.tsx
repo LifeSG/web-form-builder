@@ -24,10 +24,14 @@ export const Default = () => {
 };
 
 const ModalContent = () => {
-    const { showModal } = useModal();
+    const { showModal, hideModal } = useModal();
 
     const handleButtonClick = () => {
-        showModal({ type: EModalType.Custom });
+        const newModal = {
+            type: EModalType.DiscardChanges,
+            onClickActionButton: () => hideModal(),
+        };
+        showModal(newModal);
     };
 
     return (

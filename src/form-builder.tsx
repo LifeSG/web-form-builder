@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { MainPanel, SidePanel } from "./components";
-import { Toasts } from "./components/common";
+import { Modals, Toasts } from "./components/common";
 import { DisplayProvider } from "./context-providers";
 import { BuilderProvider } from "./context-providers/builder";
-import { Container, ToastWrapper, Wrapper } from "./form-builder.styles";
+import { Container, Wrapper } from "./form-builder.styles";
 import { ScreenNotSupportedErrorDisplay } from "./components/error-display/screen-not-supported-error";
 
 export const FormBuilder = () => {
@@ -43,9 +43,8 @@ export const FormBuilder = () => {
                         stretch
                         $isLargeScreen={isLargeScreen}
                     >
-                        <ToastWrapper>
-                            <Toasts />
-                        </ToastWrapper>
+                        <Toasts />
+                        <Modals />
                         <MainPanel />
                         <SidePanel />
                     </Container>

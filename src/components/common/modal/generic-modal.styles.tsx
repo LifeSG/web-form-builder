@@ -21,3 +21,13 @@ export const ModalInner = styled.div`
         margin: 4rem 1.25rem;
     }
 `;
+
+export const GrowContainer = styled.div`
+    margin: auto;
+    padding: 5rem 1.25rem;
+    width: 100%;
+
+    ${MediaQuery.MaxWidth.mobileL} {
+        padding: 1rem 1.25rem;
+    }
+`;
