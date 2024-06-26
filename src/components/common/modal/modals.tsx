@@ -1,7 +1,7 @@
 import { EModalType, TModalProps } from "src/context-providers";
 import { useModal } from "src/context-providers/display/modal-hook";
-import { EmptyModal } from "./empty-modal";
-import { ScrollableModal } from "./empty-modal.styles";
+import { DiscardChangesModal } from "./discard-changes-modal";
+import { ScrollableModal } from "./modals.styles";
 
 export const Modals = () => {
     // =========================================================================
@@ -14,14 +14,14 @@ export const Modals = () => {
     // =========================================================================
 
     const renderModalContent = (modal: TModalProps, index: number) => {
-        switch (modal?.type) {
-            case EModalType.BulkEdit:
-            case EModalType.Custom:
-            case EModalType.DiscardChanges:
-                return <EmptyModal modal={modal} index={index} />;
-            default:
-                console.error("type given is not a modal type!");
-                break;
+        if (modal?.type) {
+            switch (modal?.type) {
+                case EModalType.DiscardChanges:
+                    return <DiscardChangesModal modal={modal} />;
+                default:
+                    console.error("type given is not a modal type!");
+                    break;
+            }
         }
     };
 
@@ -29,7 +29,7 @@ export const Modals = () => {
     // RENDER FUNCTIONS
     // =========================================================================
     return (
-        <ScrollableModal show={!!modals.length}>
+        <ScrollableModal show={!!modals?.length}>
             {renderModalContent(modals[0], 0)}
         </ScrollableModal>
     );
