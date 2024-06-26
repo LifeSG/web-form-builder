@@ -1,7 +1,7 @@
 import { IFrontendEngineData } from "@lifesg/web-frontend-engine/components/types";
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import { MainPanel, SidePanel } from "./components";
-import { Toasts } from "./components/common";
+import { Modals, Toasts } from "./components/common";
 import { ScreenNotSupportedErrorDisplay } from "./components/error-display/screen-not-supported-error";
 import { DisplayProvider } from "./context-providers";
 import {
@@ -9,7 +9,7 @@ import {
     TElementMap,
     useBuilder,
 } from "./context-providers/builder";
-import { Container, ToastWrapper, Wrapper } from "./form-builder.styles";
+import { Container, Wrapper } from "./form-builder.styles";
 import { generateSchema, translateSchema } from "./util/schema-translator";
 
 export interface IFormBuilderMethods {
@@ -62,9 +62,8 @@ const Component = forwardRef<IFormBuilderMethods, IProps>(({ offset }, ref) => {
         <Wrapper>
             {!isLargeScreen && <ScreenNotSupportedErrorDisplay />}
             <Container type="grid" stretch $isLargeScreen={isLargeScreen}>
-                <ToastWrapper>
-                    <Toasts />
-                </ToastWrapper>
+                <Toasts />
+                <Modals />
                 <MainPanel />
                 <SidePanel offset={offset} />
             </Container>

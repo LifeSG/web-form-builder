@@ -1,7 +1,12 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import "jest-canvas-mock";
+import { Modals } from "src/components";
 import { SidePanelHeader } from "src/components/side-panel/side-panel-header";
-import { EBuilderMode, EElementType } from "src/context-providers";
+import {
+    DisplayProvider,
+    EBuilderMode,
+    EElementType,
+} from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data/elements-data";
 import { TestHelper } from "src/util/test-helper";
 
@@ -11,7 +16,7 @@ describe("SidePanelHeader", () => {
         jest.resetAllMocks();
     });
 
-    describe("getHeaderTitle & conditoal rendering of the cross button", () => {
+    describe("getHeaderTitle & conditonal rendering of the cross button", () => {
         it("should run the getHeaderTitle function and display the Add Elements title for the add-elements mode", () => {
             renderComponent();
             expect(getHeaderLabel().textContent).toEqual("Add elements");
@@ -52,6 +57,42 @@ describe("SidePanelHeader", () => {
             expect(getCrossButton(true)).not.toBeInTheDocument();
         });
     });
+
+    describe("Modals", () => {
+        it("should render the modal when the editor panel is dirty when clicking on the corss button", async () => {
+            renderComponent({
+                builderContext: {
+                    focusedElement: {
+                        element: mockElement,
+                        isDirty: true,
+                    },
+                },
+            });
+            const crossButton = getCrossButton();
+            fireEvent.click(crossButton);
+            await waitFor(() => {
+                const getText = screen.getByText("Discard changes?");
+                expect(getText).toBeInTheDocument();
+            });
+        });
+
+        it("should not render the modal when the editor panel is not dirty when clicking on the cross button", async () => {
+            renderComponent({
+                builderContext: {
+                    focusedElement: {
+                        element: mockElement,
+                        isDirty: false,
+                    },
+                },
+            });
+            const crossButton = getCrossButton();
+            fireEvent.click(crossButton);
+            await waitFor(() => {
+                const getText = screen.queryByText("Discard changes?");
+                expect(getText).not.toBeInTheDocument();
+            });
+        });
+    });
 });
 
 // =============================================================================
@@ -60,7 +101,13 @@ describe("SidePanelHeader", () => {
 
 const renderComponent = (overrideOptions?: TestHelper.RenderOptions) => {
     return render(
-        TestHelper.withProviders(overrideOptions, <SidePanelHeader />)
+        TestHelper.withProviders(
+            overrideOptions,
+            <DisplayProvider>
+                <Modals />
+                <SidePanelHeader />
+            </DisplayProvider>
+        )
     );
 };
 

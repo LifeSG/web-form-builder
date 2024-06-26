@@ -97,12 +97,12 @@ export const ElementCard = ({ element, onClick }: IProps) => {
     function checkIsFocused() {
         return (
             focusedElement &&
-            focusedElement.element.internalId === element.internalId
+            focusedElement?.element?.internalId === element?.internalId
         );
     }
 
     function shouldDisableDuplicate() {
-        return checkIsFocused() && focusedElement.isDirty;
+        return checkIsFocused() && focusedElement?.isDirty;
     }
 
     // =========================================================================
