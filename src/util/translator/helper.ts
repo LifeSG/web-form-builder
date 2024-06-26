@@ -1,21 +1,9 @@
 import { TElement } from "src/context-providers/builder";
-
-export interface ISchemaValidation {
-    [key: string]: string | boolean;
-    errorMessage: string;
-}
-const createValidationObject = (element: TElement) => {
-    const validation: ISchemaValidation[] = [
-        {
-            required: element.required,
-            errorMessage: element.requiredErrorMsg,
-        },
-    ];
-    return validation;
-};
+import { Translator } from "./translator";
 
 export const elementToSchema = (element: TElement) => {
-    const validation = createValidationObject(element);
+    const validation =
+        Translator.textBasedField.createValidationObject(element);
     const textBasedFieldSchema = {
         [element.id]: {
             label: element.label,

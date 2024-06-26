@@ -2,7 +2,7 @@ import { EElementType } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data";
 import { Translator } from "src/util/translator/translator";
 
-describe("SchemaTranslator", () => {
+describe("Translator", () => {
     describe("generateSchema", () => {
         it("should generate schema for the email field", () => {
             const generatedSchema =
