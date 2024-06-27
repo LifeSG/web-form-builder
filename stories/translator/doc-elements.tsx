@@ -5,7 +5,7 @@ import {
     IFrontendEngineData,
 } from "@lifesg/web-frontend-engine";
 import { useEffect, useRef, useState } from "react";
-import { FormBuilder, IFormBuilderMethods } from "src/form-builder";
+import { FormBuilder, IFormBuilderMethods, ISchemaProps } from "src/form-builder";
 import {
     ContentWrapper,
     IconButton,
@@ -16,14 +16,14 @@ import {
 } from "./doc-elements.styles";
 
 interface IProps {
-    data?: IFrontendEngineData;
+    data?: ISchemaProps;
 }
 
 const FormPreview = ({ data }: IProps) => {
     return (
         <PreviewWrapper>
             <Text.H2>Generate Form</Text.H2>
-            {data && <FrontendEngine data={data} />}
+            {data && <FrontendEngine data={data.schema} />}
         </PreviewWrapper>
     );
 };
@@ -45,7 +45,7 @@ export const DocElement = () => {
     // =========================================================================
     const formBuilderRef = useRef<IFormBuilderMethods>(null);
     const [pageMode, setPageMode] = useState<string>("form-builder-mode");
-    const [schema, setSchema] = useState<IFrontendEngineData | null>(null);
+    const [schema, setSchema] = useState<ISchemaProps | null>(null);
 
     // =========================================================================
     // EVENT HANDLERS

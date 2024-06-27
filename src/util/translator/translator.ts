@@ -1,10 +1,13 @@
 import { IFrontendEngineData } from "@lifesg/web-frontend-engine/components";
 import { TElementMap } from "src/context-providers";
 import { textBasedField } from "./text-based-field";
+import { createPrefillObject } from "./helper";
 
 export namespace Translator {
     export function generateSchema(elements: TElementMap) {
         let fields = {};
+
+        const prefill = createPrefillObject(elements);
 
         Object.entries(elements).forEach(([_, value]) => {
             const translatedChild = textBasedField.elementToSchema(value);
@@ -30,7 +33,7 @@ export namespace Translator {
                 },
             },
         };
-        return elementSchema;
+        return { schema: elementSchema, prefill: prefill };
     }
 
     export function translateSchema(schema: string) {

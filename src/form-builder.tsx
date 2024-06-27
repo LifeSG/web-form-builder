@@ -6,14 +6,24 @@ import { ScreenNotSupportedErrorDisplay } from "./components/error-display/scree
 import { DisplayProvider } from "./context-providers";
 import {
     BuilderProvider,
+    IPrefillAttributes,
     TElementMap,
     useBuilder,
 } from "./context-providers/builder";
 import { Container, Wrapper } from "./form-builder.styles";
 import { Translator } from "./util/translator/translator";
 
+
+interface IPrefillSchema {
+    [key: string]: IPrefillAttributes | IPrefillAttributes[]
+}
+export interface ISchemaProps {
+    schema: IFrontendEngineData;
+    prefill: IPrefillSchema
+}
+
 export interface IFormBuilderMethods {
-    generate?: (elementsList?: TElementMap) => IFrontendEngineData;
+    generate?: (elementsList?: TElementMap) => ISchemaProps;
     translate?: (text: string) => void;
 }
 

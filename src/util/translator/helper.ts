@@ -1,8 +1,24 @@
 import {
     EConditionType,
     IConditionalRendering,
+    TElementMap,
 } from "src/context-providers/builder";
 import { SCHEMA_CONDITION_TYPES } from "src/data";
+
+export const createPrefillObject = (elements: TElementMap) => {
+    let prefill = {};
+    const prefillObj = Object.values(elements).map((value) => {
+        if (value.prefill) {
+            return {
+                [value.id]: value.prefill,
+            };
+        }
+    });
+    Object.values(prefillObj).forEach((prefilObjChild) => {
+        prefill = { ...prefill, ...prefilObjChild };
+    });
+    return prefill;
+};
 
 export const createConditionalRenderingObject = (
     conditions: IConditionalRendering[]
