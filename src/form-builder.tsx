@@ -10,7 +10,7 @@ import {
     useBuilder,
 } from "./context-providers/builder";
 import { Container, Wrapper } from "./form-builder.styles";
-import { Translator } from "./util/translator/translator";
+import { Translator } from "./translator/translator";
 
 export interface IFormBuilderMethods {
     generateSchema?: (elementsList?: TElementMap) => IFrontendEngineData;

@@ -1,29 +1,11 @@
 import { IFrontendEngineData } from "@lifesg/web-frontend-engine";
-import { TElement, TElementMap } from "src/context-providers";
-import { elementToSchema } from "./helper";
+import { TElementMap } from "src/context-providers";
+import { textBasedField } from "./text-based-field";
 
 export namespace Translator {
-    export namespace textBasedField {
-        export interface ISchemaValidation {
-            [key: string]: string | boolean;
-            errorMessage: string;
-        }
-        export const createValidationObject = (element: TElement) => {
-            const validation: ISchemaValidation[] = [
-                {
-                    required: element.required,
-                    errorMessage: element.requiredErrorMsg,
-                },
-            ];
-            return validation;
-        };
-    }
-
     export const generateSchema = (elements: TElementMap) => {
-        let fields = {};
-
-        fields = Object.values(elements).reduce((acc, value) => {
-            const translatedChild = elementToSchema(value);
+        const fields = Object.values(elements).reduce((acc, value) => {
+            const translatedChild = textBasedField.elementToSchema(value);
             return { ...acc, ...translatedChild };
         }, {});
 

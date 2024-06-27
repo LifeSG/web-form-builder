@@ -50,17 +50,14 @@ export const DocElement = () => {
     // EVENT HANDLERS
     // =========================================================================
     const handleFormBuilderButton = (event) => {
-        event.preventDefault();
         setPageMode("form-builder-mode");
     };
 
     const handleFormPreviewButton = (event) => {
-        event.preventDefault();
         setPageMode("preview-mode");
     };
 
     const handleSchemaViewButton = (event) => {
-        event.preventDefault();
         setPageMode("schema-mode");
     };
 
@@ -103,7 +100,7 @@ export const DocElement = () => {
                     <TabletIcon />
                 </IconButton>
             </IconWrapper>
-            <ContentWrapper visible={pageMode === "form-builder-mode"}>
+            <ContentWrapper $visible={pageMode === "form-builder-mode"}>
                 <FormBuilder ref={formBuilderRef} offset={5.1} />
             </ContentWrapper>
             {pageMode === "preview-mode" && (

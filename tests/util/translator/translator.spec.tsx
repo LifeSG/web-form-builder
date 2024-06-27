@@ -1,6 +1,6 @@
 import { EElementType } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data";
-import { Translator } from "src/util/translator/translator";
+import { Translator } from "src/translator/translator";
 
 describe("Translator", () => {
     describe("generateSchema", () => {
