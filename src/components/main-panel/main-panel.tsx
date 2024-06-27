@@ -88,7 +88,6 @@ export const MainPanel = () => {
                 event.active.rect.current.translated.left +
                 event.activatorEvent["layerX"];
             const { active, over } = event;
-            if (active.id === over.id) return;
 
             const newIndex = orderedIdentifiers.findIndex(
                 (item) => item.internalId === active.id
@@ -102,35 +101,67 @@ export const MainPanel = () => {
 
             if (mouseX < wrapperLeftThirds) {
                 // When it's dragged to the left
-                elementIdentifiers[newIndex] = {
-                    ...elementIdentifiers[newIndex],
-                    size: "third",
-                };
-                elementIdentifiers[oldIndex] = {
-                    ...elementIdentifiers[oldIndex],
-                    size: "third",
-                };
+                if (oldIndex !== newIndex) {
+                    elementIdentifiers[newIndex] = {
+                        ...elementIdentifiers[newIndex],
+                        size: "left",
+                    };
+                    elementIdentifiers[oldIndex] = {
+                        ...elementIdentifiers[oldIndex],
+                        size: "right",
+                    };
+                    const activeElement = elementIdentifiers.splice(
+                        newIndex,
+                        1
+                    )[0];
+                    elementIdentifiers.splice(oldIndex, 0, activeElement);
+                } else {
+                    elementIdentifiers[newIndex] = {
+                        ...elementIdentifiers[newIndex],
+                        size: "left",
+                    };
+                    const activeElement = elementIdentifiers.splice(
+                        newIndex,
+                        1
+                    )[0];
+                    elementIdentifiers.splice(oldIndex, 0, activeElement);
+                }
 
-                const activeElement = elementIdentifiers.splice(newIndex, 1)[0];
-                elementIdentifiers.splice(oldIndex, 0, activeElement);
                 updatedOrderedIdentifiers = [...elementIdentifiers];
             } else if (mouseX > wrapperRightThirds) {
                 // When it's dragged to the right
-                elementIdentifiers[newIndex] = {
-                    ...elementIdentifiers[newIndex],
-                    size: "third",
-                };
-                elementIdentifiers[oldIndex] = {
-                    ...elementIdentifiers[oldIndex],
-                    size: "third",
-                };
+                if (oldIndex !== newIndex) {
+                    elementIdentifiers[newIndex] = {
+                        ...elementIdentifiers[newIndex],
+                        size: "right",
+                    };
+                    elementIdentifiers[oldIndex] = {
+                        ...elementIdentifiers[oldIndex],
+                        size: "left",
+                    };
 
-                const activeElement = elementIdentifiers.splice(newIndex, 1)[0];
-                elementIdentifiers.splice(oldIndex + 1, 0, activeElement);
+                    const activeElement = elementIdentifiers.splice(
+                        newIndex,
+                        1
+                    )[0];
+                    elementIdentifiers.splice(oldIndex + 1, 0, activeElement);
+                } else {
+                    elementIdentifiers[oldIndex] = {
+                        ...elementIdentifiers[newIndex],
+                        size: "right",
+                    };
+
+                    const activeElement = elementIdentifiers.splice(
+                        newIndex,
+                        1
+                    )[0];
+                    elementIdentifiers.splice(newIndex + 1, 0, activeElement);
+                }
+
                 updatedOrderedIdentifiers = [...elementIdentifiers];
             } else {
                 // When it's dragged to the center
-                if (elementIdentifiers[newIndex].size === "third") {
+                if (elementIdentifiers[newIndex].size !== "full") {
                     elementIdentifiers[newIndex] = {
                         ...elementIdentifiers[newIndex],
                         size: "full",
@@ -143,7 +174,7 @@ export const MainPanel = () => {
                 );
             }
             updateOrderedIdentifiers(updatedOrderedIdentifiers);
-        }, 55),
+        }, 35),
         [orderedIdentifiers, updateOrderedIdentifiers]
     );
 

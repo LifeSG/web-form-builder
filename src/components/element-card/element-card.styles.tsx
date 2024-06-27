@@ -13,7 +13,7 @@ interface IActionButtonStyleProps {
 }
 interface IDroppableWrapperProps {
     isOver: boolean;
-    $size: "full" | "third";
+    $size: "full" | "left" | "right";
 }
 
 interface IElementCardProps extends IProps {
@@ -94,7 +94,7 @@ export const ActionButton = styled.button<IActionButtonStyleProps>`
 `;
 
 export const DroppableWrapper = styled.div<IDroppableWrapperProps>`
-    position: relative;
+    position: absolute;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -108,15 +108,21 @@ export const DroppableWrapper = styled.div<IDroppableWrapperProps>`
 
     ${({ $size }) => css`
         ${MediaQuery.MaxWidth.desktop4k} {
-            grid-column: auto / span ${$size === "full" ? 6 : 3};
+            grid-column: ${$size === "right"
+                ? "4 / span 3"
+                : "auto / span " + ($size === "full" ? 6 : 3)};
         }
 
         ${MediaQuery.MaxWidth.desktopL} {
-            grid-column: auto / span ${$size === "full" ? 8 : 4};
+            grid-column: ${$size === "right"
+                ? "4 / span 4"
+                : "auto / span " + ($size === "full" ? 8 : 4)};
         }
 
         ${MediaQuery.MaxWidth.tablet} {
-            grid-column: auto / span ${$size === "full" ? 6 : 3};
+            grid-column: ${$size === "right"
+                ? "4 / span 3"
+                : "auto / span " + ($size === "full" ? 6 : 3)};
         }
     `}
 
@@ -143,4 +149,8 @@ export const DroppableText = styled(Text.Body)`
 
 export const ElementBaseCard = styled(BaseCard)<IElementCardProps>`
     cursor: ${({ $isDragging }) => ($isDragging ? "grabbing" : "pointer")};
+`;
+
+export const CardWrapper = styled.div`
+    position: relative;
 `;

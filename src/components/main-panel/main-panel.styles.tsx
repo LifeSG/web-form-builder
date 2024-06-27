@@ -10,7 +10,7 @@ interface IWrapperStyleProps {
 }
 
 interface IElementItemWrapperProps extends IWrapperStyleProps {
-    $size: "full" | "third";
+    $size: "full" | "left" | "right";
 }
 
 // =============================================================================
@@ -63,7 +63,7 @@ export const Wrapper = styled.div<IWrapperStyleProps>`
 `;
 
 export const EmptyDisplayWrapper = styled.div<IWrapperStyleProps>`
-    position: relative;
+    position: absolute;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -164,29 +164,84 @@ export const ElementItemWrapper = styled.li<IElementItemWrapperProps>`
     ${({ $mode, $size }) => {
         switch ($mode) {
             case "expanded":
-                return css`
-                    ${MediaQuery.MaxWidth.desktop4k} {
-                        grid-column: auto / span ${$size === "full" ? 6 : 3};
+                switch ($size) {
+                    case "right": {
+                        return css`
+                            ${MediaQuery.MaxWidth.desktop4k} {
+                                grid-column: 4 / span 3;
+                            }
+                            ${MediaQuery.MaxWidth.desktopL} {
+                                grid-column: 4 / span 4;
+                            }
+                            ${MediaQuery.MaxWidth.tablet} {
+                                grid-column: 4 / span 3;
+                            }
+                        `;
                     }
 
-                    ${MediaQuery.MaxWidth.desktopL} {
-                        grid-column: auto / span ${$size === "full" ? 8 : 4};
+                    case "left": {
+                        return css`
+                            ${MediaQuery.MaxWidth.desktop4k} {
+                                grid-column: auto / span 3;
+                            }
+                            ${MediaQuery.MaxWidth.desktopL} {
+                                grid-column: auto / span 4;
+                            }
+                            ${MediaQuery.MaxWidth.tablet} {
+                                grid-column: auto / span 3;
+                            }
+                        `;
                     }
 
-                    ${MediaQuery.MaxWidth.tablet} {
-                        grid-column: auto / span ${$size === "full" ? 6 : 3};
+                    case "full": {
+                        return css`
+                            ${MediaQuery.MaxWidth.desktop4k} {
+                                grid-column: auto / span 6;
+                            }
+                            ${MediaQuery.MaxWidth.desktopL} {
+                                grid-column: auto / span 8;
+                            }
+                            ${MediaQuery.MaxWidth.tablet} {
+                                 grid-column: auto / span 6;
+                        `;
                     }
-                `;
+                }
+
             case "minimised":
-                return css`
-                    ${MediaQuery.MaxWidth.desktop4k} {
-                        grid-column: auto / span ${$size === "full" ? 6 : 3};
+                switch ($size) {
+                    case "right": {
+                        return css`
+                            ${MediaQuery.MaxWidth.desktop4k} {
+                                grid-column: 4 / span 3;
+                            }
+                            ${MediaQuery.MaxWidth.tablet} {
+                                grid-column: 4 / span 2;
+                            }
+                        `;
                     }
 
-                    ${MediaQuery.MaxWidth.tablet} {
-                        grid-column: auto / span ${$size === "full" ? 4 : 2};
+                    case "left": {
+                        return css`
+                            ${MediaQuery.MaxWidth.desktop4k} {
+                                grid-column: auto / span 3;
+                            }
+                            ${MediaQuery.MaxWidth.tablet} {
+                                grid-column: auto / span 2;
+                            }
+                        `;
                     }
-                `;
+
+                    case "full": {
+                        return css`
+                            ${MediaQuery.MaxWidth.desktop4k} {
+                                grid-column: auto / span 6;
+                            }
+                            ${MediaQuery.MaxWidth.tablet} {
+                                 grid-column: auto / span 4;
+                        `;
+                    }
+                }
+
             default:
                 return css`
                     grid-column: auto / span 3; /* Default span if $mode is not specified */

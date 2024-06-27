@@ -23,6 +23,7 @@ import {
     DroppableWrapper,
     ElementBaseCard,
     IdLabel,
+    CardWrapper,
 } from "./element-card.styles";
 
 interface IProps {
@@ -120,14 +121,14 @@ export const ElementCard = ({ element, onClick }: IProps) => {
     // RENDER FUNCTIONS
     // =========================================================================
     const droppableContent = isOver ? (
-        <DroppableWrapper isOver={isOver} $size={size.size}>
+        <DroppableWrapper isOver={isOver} $size={size?.size}>
             <PlusCircleIcon />
             <DroppableText weight={600}>Drop your element here</DroppableText>
         </DroppableWrapper>
     ) : null;
 
     return (
-        <div ref={droppableRef}>
+        <CardWrapper ref={droppableRef}>
             {droppableContent}
             <div ref={setNodeRef} {...sortableProps}>
                 <ElementBaseCard
@@ -168,6 +169,6 @@ export const ElementCard = ({ element, onClick }: IProps) => {
                     </Container>
                 </ElementBaseCard>
             </div>
-        </div>
+        </CardWrapper>
     );
 };

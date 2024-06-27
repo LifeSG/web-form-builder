@@ -22,9 +22,9 @@ export enum ETextFieldMode {
 // STATE
 // =============================================================================
 export interface IElementIdentifier {
-    internalId: string;
+    internalId?: string;
     parentInternalId?: string;
-    size?: "full" | "third";
+    size?: "full" | "left" | "right";
 }
 
 export interface IFocusedElement {
