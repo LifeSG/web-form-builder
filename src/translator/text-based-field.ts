@@ -1,7 +1,7 @@
 import { TElement } from "src/context-providers/builder";
 
-export namespace textBasedField {
-    export interface ISchemaValidation {
+export namespace TextBasedField {
+    interface ISchemaValidation {
         [key: string]: string | boolean;
         errorMessage: string;
     }

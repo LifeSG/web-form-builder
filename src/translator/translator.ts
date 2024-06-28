@@ -1,11 +1,11 @@
 import { IFrontendEngineData } from "@lifesg/web-frontend-engine";
 import { TElementMap } from "src/context-providers";
-import { textBasedField } from "./text-based-field";
+import { TextBasedField } from "./text-based-field";
 
 export namespace Translator {
     export const generateSchema = (elements: TElementMap) => {
         const fields = Object.values(elements).reduce((acc, value) => {
-            const translatedChild = textBasedField.elementToSchema(value);
+            const translatedChild = TextBasedField.elementToSchema(value);
             return { ...acc, ...translatedChild };
         }, {});
 

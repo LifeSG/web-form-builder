@@ -49,15 +49,15 @@ export const DocElement = () => {
     // =========================================================================
     // EVENT HANDLERS
     // =========================================================================
-    const handleFormBuilderButton = (event) => {
+    const handleFormBuilderButton = () => {
         setPageMode("form-builder-mode");
     };
 
-    const handleFormPreviewButton = (event) => {
+    const handleFormPreviewButton = () => {
         setPageMode("preview-mode");
     };
 
-    const handleSchemaViewButton = (event) => {
+    const handleSchemaViewButton = () => {
         setPageMode("schema-mode");
     };
 

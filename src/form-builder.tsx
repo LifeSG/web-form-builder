@@ -13,8 +13,8 @@ import { Container, Wrapper } from "./form-builder.styles";
 import { Translator } from "./translator/translator";
 
 export interface IFormBuilderMethods {
-    generateSchema?: (elementsList?: TElementMap) => IFrontendEngineData;
-    parseSchema?: (schema: string) => void;
+    generateSchema: (elementsList?: TElementMap) => IFrontendEngineData;
+    parseSchema: (schema: string) => void;
 }
 
 interface IProps {
