@@ -6,6 +6,14 @@ import { EBuilderMode, IElementIdentifier, TElementMap } from "./types";
 
 export const useBuilder = () => {
     const { state, dispatch } = useContext(BuilderContext);
+
+    const toggleSubmitting = useCallback((isSubmitting: boolean) => {
+        dispatch({
+            type: "toggle-submitting",
+            payload: isSubmitting,
+        });
+    }, []);
+
     const togglePanel = useCallback((isCollapsed: boolean) => {
         dispatch({
             type: "toggle-panel",
@@ -188,6 +196,8 @@ export const useBuilder = () => {
         currentMode: state.mode,
         orderedIdentifiers: state.orderedIdentifiers,
         focusedElement: state.focusedElement,
+        isSubmitting: state.isSubmitting,
+        toggleSubmitting,
         togglePanel,
         toggleMode,
         updateOrderedIdentifiers,

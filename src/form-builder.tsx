@@ -7,18 +7,19 @@ import { DisplayProvider } from "./context-providers";
 import {
     BuilderProvider,
     IPrefillAttributes,
+    TElement,
     TElementMap,
     useBuilder,
 } from "./context-providers/builder";
 import { Container, Wrapper } from "./form-builder.styles";
-import { Translator } from "./translator/translator";
+import { Translator } from "./translator";
 
 interface IPrefillSchema {
-    [key: string]: IPrefillAttributes | IPrefillAttributes[]
+    [key: string]: IPrefillAttributes | IPrefillAttributes[];
 }
 export interface ISchemaProps {
     schema: IFrontendEngineData;
-    prefill: IPrefillSchema
+    prefill: IPrefillSchema;
 }
 
 export interface IFormBuilderMethods {
@@ -28,9 +29,10 @@ export interface IFormBuilderMethods {
 
 interface IProps {
     offset?: number;
+    onSubmit?: (formData: TElement) => Promise<void>;
 }
 
-const Component = forwardRef<IFormBuilderMethods, IProps>(({ offset }, ref) => {
+const Component = forwardRef<IFormBuilderMethods, IProps>(({ offset, onSubmit }, ref) => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
@@ -74,18 +76,18 @@ const Component = forwardRef<IFormBuilderMethods, IProps>(({ offset }, ref) => {
                 <Toasts />
                 <Modals />
                 <MainPanel />
-                <SidePanel offset={offset} />
+                <SidePanel offset={offset} onSubmit={onSubmit}/>
             </Container>
         </Wrapper>
     );
 });
 
 export const FormBuilder = forwardRef<IFormBuilderMethods, IProps>(
-    ({ offset }, ref) => {
+    ({ offset, onSubmit }, ref) => {
         return (
             <BuilderProvider>
                 <DisplayProvider>
-                    <Component ref={ref} offset={offset} />
+                    <Component ref={ref} offset={offset} onSubmit={onSubmit}/>
                 </DisplayProvider>
             </BuilderProvider>
         );

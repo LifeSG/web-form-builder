@@ -20,6 +20,7 @@ export const SidePanelHeader = () => {
         togglePanel,
         removeFocusedElement,
         focusedElement,
+        isSubmitting,
     } = useBuilder();
     const { isDirty } = focusedElement || {};
     const { showModal, discardChanges } = useModal();
@@ -68,8 +69,8 @@ export const SidePanelHeader = () => {
         if (focusedElement) {
             return (
                 <>
-                    <SaveChangesButton>
-                        {!isDirty ? "Saved" : "Save Changes"}
+                    <SaveChangesButton disabled={isSubmitting} loading={isSubmitting}>
+                        {isSubmitting ? "Saving" : !isDirty ? "Saved" : "Save Changes"}
                     </SaveChangesButton>
                     <IconButton
                         $iconSize="1.5rem"

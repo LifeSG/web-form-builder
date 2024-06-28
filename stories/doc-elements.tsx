@@ -1,9 +1,14 @@
 import { FormBuilder } from "src";
+import { TElement } from "src/context-providers";
 
-export const DocElement = () => {
+interface IProps {
+    onSubmit?: (formData: TElement) => Promise<void>;
+}
+
+export const DocElement = ({onSubmit}: IProps) => {
     return (
         <div style={{ height: "100vh", width: "100vw" }}>
-            <FormBuilder />
+            <FormBuilder onSubmit={onSubmit}/>
         </div>
     );
 };

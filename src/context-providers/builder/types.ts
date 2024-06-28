@@ -47,11 +47,17 @@ export interface IBuilderState {
      * rendering order
      */
     orderedIdentifiers: IElementIdentifier[];
+    isSubmitting: boolean;
 }
 
 // =============================================================================
 // ACTIONS
 // =============================================================================
+export interface IToggleSubmittingAction {
+    type: "toggle-submitting";
+    payload: boolean;
+}
+
 export interface ITogglePanelAction {
     type: "toggle-panel";
     payload: boolean;
@@ -106,6 +112,7 @@ export interface IUpdateFocusedElementAction {
 }
 
 export type TBuilderAction =
+    | IToggleSubmittingAction
     | ITogglePanelAction
     | IUpdateOrderedIdentifiersAction
     | IToggleModeAction
