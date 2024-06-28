@@ -72,7 +72,9 @@ export namespace textBasedField {
                 label: element.label,
                 uiType: element.type,
                 columns: {
-                    desktop: element.columns,
+                    desktop: element.columns.desktop,
+                    tablet: element.columns.tablet,
+                    mobile: element.columns.mobile,
                 },
                 placeholder: element.placeholder,
                 validation: validationObject,

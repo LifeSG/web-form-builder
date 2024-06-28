@@ -25,6 +25,7 @@ export namespace Translator {
                             uiType: "grid",
                         },
                         "submit-button": {
+                            disabled: "invalid-form",
                             label: "Submit",
                             uiType: "submit",
                         },

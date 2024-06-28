@@ -70,7 +70,7 @@ export namespace ElementObjectGenerator {
                     required: true,
                     requiredErrorMsg: "",
                     label: ELEMENT_BUTTON_LABELS[type],
-                    columns: 12,
+                    columns: { desktop: 12, tablet: 12, mobile: 4 },
                     validation: [],
                     conditionalRendering: [],
                     prefill: [],

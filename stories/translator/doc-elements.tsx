@@ -1,4 +1,4 @@
-import { Text } from "@lifesg/react-design-system";
+import { Text } from "@lifesg/react-design-system/text";
 import { EyeIcon, PencilIcon, TabletIcon } from "@lifesg/react-icons";
 import {
     FrontendEngine,
@@ -10,9 +10,8 @@ import {
     ContentWrapper,
     IconButton,
     IconWrapper,
-    PreviewWrapper,
+    ViewWrapper,
     SchemaPreview,
-    SchemaViewWrapper,
 } from "./doc-elements.styles";
 
 interface IProps {
@@ -21,21 +20,21 @@ interface IProps {
 
 const FormPreview = ({ data }: IProps) => {
     return (
-        <PreviewWrapper>
+        <ViewWrapper>
             <Text.H2>Generate Form</Text.H2>
             {data && <FrontendEngine data={data.schema} />}
-        </PreviewWrapper>
+        </ViewWrapper>
     );
 };
 
 const SchemaView = ({ data }: IProps) => {
     return (
-        <SchemaViewWrapper>
+        <ViewWrapper>
             <Text.H2>Generate Schema</Text.H2>
             <SchemaPreview>
                 <pre>{JSON.stringify(data, null, 2)}</pre>
             </SchemaPreview>
-        </SchemaViewWrapper>
+        </ViewWrapper>
     );
 };
 
@@ -50,18 +49,15 @@ export const DocElement = () => {
     // =========================================================================
     // EVENT HANDLERS
     // =========================================================================
-    const handleFormBuilderButton = (event) => {
-        event.preventDefault();
+    const handleFormBuilderButton = () => {
         setPageMode("form-builder-mode");
     };
 
-    const handleFormPreviewButton = (event) => {
-        event.preventDefault();
+    const handleFormPreviewButton = () => {
         setPageMode("preview-mode");
     };
 
-    const handleSchemaViewButton = (event) => {
-        event.preventDefault();
+    const handleSchemaViewButton = () => {
         setPageMode("schema-mode");
     };
 
@@ -70,7 +66,7 @@ export const DocElement = () => {
     // =========================================================================
     useEffect(() => {
         if (formBuilderRef.current) {
-            const generatedSchema = formBuilderRef.current?.generate();
+            const generatedSchema = formBuilderRef.current?.generateSchema();
             setSchema(generatedSchema);
         }
     }, [formBuilderRef.current, pageMode]);
@@ -85,31 +81,38 @@ export const DocElement = () => {
                 <IconButton
                     $active={pageMode === "form-builder-mode"}
                     onClick={handleFormBuilderButton}
+                    type="button"
                 >
                     <PencilIcon />
                 </IconButton>
                 <IconButton
                     $active={pageMode === "preview-mode"}
                     onClick={handleFormPreviewButton}
+                    type="button"
                 >
                     <EyeIcon />
                 </IconButton>
                 <IconButton
                     $active={pageMode === "schema-mode"}
                     onClick={handleSchemaViewButton}
+                    type="button"
                 >
                     <TabletIcon />
                 </IconButton>
             </IconWrapper>
-            <ContentWrapper visible={pageMode === "form-builder-mode"}>
+            <ContentWrapper $visible={pageMode === "form-builder-mode"}>
                 <FormBuilder ref={formBuilderRef} offset={5.1} />
             </ContentWrapper>
-            <ContentWrapper visible={pageMode === "preview-mode"}>
-                <FormPreview data={schema} />
-            </ContentWrapper>
-            <ContentWrapper visible={pageMode === "schema-mode"}>
-                <SchemaView data={schema} />
-            </ContentWrapper>
+            {pageMode === "preview-mode" && (
+                <ContentWrapper>
+                    <FormPreview data={schema} />
+                </ContentWrapper>
+            )}
+            {pageMode === "schema-mode" && (
+                <ContentWrapper>
+                    <SchemaView data={schema} />
+                </ContentWrapper>
+            )}
         </>
     );
 };

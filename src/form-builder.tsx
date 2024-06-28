@@ -11,8 +11,7 @@ import {
     useBuilder,
 } from "./context-providers/builder";
 import { Container, Wrapper } from "./form-builder.styles";
-import { Translator } from "./util/translator/translator";
-
+import { Translator } from "./translator/translator";
 
 interface IPrefillSchema {
     [key: string]: IPrefillAttributes | IPrefillAttributes[]
@@ -23,8 +22,8 @@ export interface ISchemaProps {
 }
 
 export interface IFormBuilderMethods {
-    generate?: (elementsList?: TElementMap) => ISchemaProps;
-    translate?: (text: string) => void;
+    generateSchema: (elementsList?: TElementMap) => IFrontendEngineData;
+    parseSchema: (schema: string) => void;
 }
 
 interface IProps {
@@ -43,8 +42,8 @@ const Component = forwardRef<IFormBuilderMethods, IProps>(({ offset }, ref) => {
     useImperativeHandle(
         ref,
         () => ({
-            generate: () => Translator.generateSchema(elements),
-            translate: (text: string) => Translator.translateSchema(text),
+            generateSchema: () => Translator.generateSchema(elements),
+            parseSchema: (schema: string) => Translator.parseSchema(schema),
         }),
         [elements]
     );

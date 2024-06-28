@@ -1,6 +1,6 @@
 import { EElementType, TElementMap } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS, ELEMENT_VALIDATION_TYPES } from "src/data";
-import { Translator } from "src/util/translator";
+import { Translator } from "src/translator";
 
 describe("Translator", () => {
     beforeEach(() => {
@@ -20,14 +20,14 @@ describe("Translator", () => {
             it('should generate schema for the email field"', () => {
                 const generatedSchema =
                     Translator.generateSchema(MOCK__EMAIL_ELEMENT);
-                expect(generatedSchema).toStrictEqual({schema: MOCK_EMAIL_SCHEMA, prefill: {}});
+                expect(generatedSchema).toStrictEqual(MOCK_EMAIL_SCHEMA);
             });
             it('should generate schema for the email field with validation"', () => {
                 const generatedSchema = Translator.generateSchema(
                     MOCK__EMAIL_ELEMENT_WITH_VALIDATION
                 );
                 expect(generatedSchema).toStrictEqual(
-                    {schema: MOCK_EMAIL_SCHEMA_WITH_VALIDATION, prefill: {}}
+                    MOCK_EMAIL_SCHEMA_WITH_VALIDATION
                 );
             });
             it('should generate schema for the email field with conditional rendering"', () => {
@@ -35,7 +35,7 @@ describe("Translator", () => {
                     MOCK__EMAIL_ELEMENT_WITH_CONDITIONAL_RENDERING
                 );
                 expect(generatedSchema).toStrictEqual(
-                    {schema: MOCK_EMAIL_SCHEMA_WITH_CONDITIONAL_RENDERING, prefill: {}}
+                    MOCK_EMAIL_SCHEMA_WITH_CONDITIONAL_RENDERING
                 );
             });
 
@@ -63,7 +63,7 @@ describe("Translator", () => {
                 const generatedSchema = Translator.generateSchema(
                     MOCK_TEXT_BASED_ELEMENT
                 );
-                expect(generatedSchema).toStrictEqual({schema: MOCK_TEXT_BASED_SCHEMA, prefill: {}});
+                expect(generatedSchema).toStrictEqual(MOCK_TEXT_BASED_SCHEMA);
             });
         });
     });
@@ -73,27 +73,35 @@ describe("Translator", () => {
 // MOCKS
 // =============================================================================
 
-const MOCK__EMAIL_ELEMENT = {
+const MOCK__EMAIL_ELEMENT: TElementMap = {
     mock123: {
         internalId: "mock123",
         type: EElementType.EMAIL,
         id: "mockElement",
         required: true,
         requiredErrorMsg: "Email address is required",
-        columns: 12,
+        columns: {
+            desktop: 12,
+            tablet: 8,
+            mobile: 4,
+        },
         placeholder: "",
         label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
     },
 };
 
-const MOCK__EMAIL_ELEMENT_WITH_VALIDATION = {
+const MOCK__EMAIL_ELEMENT_WITH_VALIDATION: TElementMap = {
     mock123: {
         internalId: "mock123",
         type: EElementType.EMAIL,
         id: "mockElement",
         required: true,
         requiredErrorMsg: "Email address is required",
-        columns: 12,
+        columns: {
+            desktop: 12,
+            tablet: 8,
+            mobile: 4,
+        },
         placeholder: "",
         label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
         validation: [
@@ -110,53 +118,63 @@ const MOCK__EMAIL_ELEMENT_WITH_VALIDATION = {
 };
 
 const MOCK_EMAIL_SCHEMA_WITH_VALIDATION = {
-    sections: {
-        section: {
-            children: {
-                grid: {
-                    children: {
-                        ["mockElement"]: {
-                            label: "Email address",
-                            uiType: "email-field",
-                            columns: {
-                                desktop: 12,
+    prefill: {},
+    schema: {
+        sections: {
+            section: {
+                children: {
+                    grid: {
+                        children: {
+                            ["mockElement"]: {
+                                label: "Email address",
+                                uiType: "email-field",
+                                columns: {
+                                    desktop: 12,
+                                    tablet: 8,
+                                    mobile: 4,
+                                },
+                                placeholder: "",
+                                validation: [
+                                    {
+                                        required: true,
+                                        errorMessage:
+                                            "Email address is required",
+                                    },
+                                    {
+                                        matches:
+                                            "/^[a-zA-Z0-9._%+-]+@(gmail\\.com)$/",
+                                        errorMessage:
+                                            "Enter a email that has a '@gmail.com' domain",
+                                    },
+                                ],
                             },
-                            placeholder: "",
-                            validation: [
-                                {
-                                    required: true,
-                                    errorMessage: "Email address is required",
-                                },
-                                {
-                                    matches:
-                                        "/^[a-zA-Z0-9._%+-]+@(gmail\\.com)$/",
-                                    errorMessage:
-                                        "Enter a email that has a '@gmail.com' domain",
-                                },
-                            ],
-                            showIf: undefined,
                         },
+                        uiType: "grid",
                     },
-                    uiType: "grid",
+                    "submit-button": {
+                        disabled: "invalid-form",
+                        label: "Submit",
+                        uiType: "submit",
+                    },
                 },
-                "submit-button": {
-                    label: "Submit",
-                    uiType: "submit",
-                },
+                uiType: "section",
             },
-            uiType: "section",
         },
     },
 };
 
-const MOCK__EMAIL_ELEMENT_WITH_CONDITIONAL_RENDERING = {
+const MOCK__EMAIL_ELEMENT_WITH_CONDITIONAL_RENDERING: TElementMap = {
     mock123: {
         internalId: "mock123",
         type: EElementType.EMAIL,
         id: "mockElement",
         required: true,
         requiredErrorMsg: "Email address is required",
-        columns: 12,
+        columns: {
+            desktop: 12,
+            tablet: 8,
+            mobile: 4,
+        },
         placeholder: "",
         label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
         validation: [],
@@ -175,68 +193,80 @@ const MOCK__EMAIL_ELEMENT_WITH_CONDITIONAL_RENDERING = {
         id: "mockElement1",
         required: true,
         requiredErrorMsg: "Input is required",
-        columns: 12,
+        columns: {
+            desktop: 12,
+            tablet: 8,
+            mobile: 4,
+        },
         placeholder: "",
         label: ELEMENT_BUTTON_LABELS[EElementType.TEXT],
     },
 };
 
 const MOCK_EMAIL_SCHEMA_WITH_CONDITIONAL_RENDERING = {
-    sections: {
-        section: {
-            children: {
-                grid: {
-                    children: {
-                        ["mockElement"]: {
-                            label: "Email address",
-                            uiType: "email-field",
-                            columns: {
-                                desktop: 12,
+    prefill: {},
+    schema: {
+        sections: {
+            section: {
+                children: {
+                    grid: {
+                        children: {
+                            ["mockElement"]: {
+                                label: "Email address",
+                                uiType: "email-field",
+                                columns: {
+                                    desktop: 12,
+                                    tablet: 8,
+                                    mobile: 4,
+                                },
+                                placeholder: "",
+                                validation: [
+                                    {
+                                        required: true,
+                                        errorMessage:
+                                            "Email address is required",
+                                    },
+                                ],
+                                showIf: [
+                                    {
+                                        ["mockElement1"]: [
+                                            {
+                                                filled: true,
+                                            },
+                                            {
+                                                equals: "hello",
+                                            },
+                                        ],
+                                    },
+                                ],
                             },
-                            placeholder: "",
-                            validation: [
-                                {
-                                    required: true,
-                                    errorMessage: "Email address is required",
+                            ["mockElement1"]: {
+                                label: "Short text",
+                                uiType: "text-field",
+                                columns: {
+                                    desktop: 12,
+                                    tablet: 8,
+                                    mobile: 4,
                                 },
-                            ],
-                            showIf: [
-                                {
-                                    ["mockElement1"]: [
-                                        {
-                                            filled: true,
-                                        },
-                                        {
-                                            equals: "hello",
-                                        },
-                                    ],
-                                },
-                            ],
-                        },
-                        ["mockElement1"]: {
-                            label: "Short text",
-                            uiType: "text-field",
-                            columns: {
-                                desktop: 12,
+                                placeholder: "",
+                                validation: [
+                                    {
+                                        required: true,
+                                        errorMessage: "Input is required",
+                                    },
+                                ],
                             },
-                            placeholder: "",
-                            validation: [
-                                {
-                                    required: true,
-                                    errorMessage: "Input is required",
-                                },
-                            ],
-                            showIf: undefined,
                         },
+                        uiType: "grid",
                     },
-                    uiType: "grid",
+                    "submit-button": {
+                        disabled: "invalid-form",
+                        label: "Submit",
+                        uiType: "submit",
+                    },
                 },
-                "submit-button": {
-                    label: "Submit",
-                    uiType: "submit",
-                },
+                uiType: "section",
             },
-            uiType: "section",
         },
     },
 };
@@ -248,7 +278,7 @@ const MOCK__EMAIL_ELEMENT_WITH_MYINFO_PREFILL: TElementMap = {
         id: "mockElement",
         required: true,
         requiredErrorMsg: "Email address is required",
-        columns: 12,
+        columns: { desktop: 12, tablet: 8, mobile: 4 },
         placeholder: "",
         label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
         prefill: [
@@ -267,7 +297,7 @@ const MOCK__EMAIL_ELEMENT_WITH_PREVIOUS_SOURCE_PREFILL: TElementMap = {
         id: "mockElement",
         required: true,
         requiredErrorMsg: "Email address is required",
-        columns: 12,
+        columns: { desktop: 12, tablet: 8, mobile: 4 },
         placeholder: "",
         label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
         prefill: [
@@ -287,25 +317,28 @@ const MOCK_EMAIL_SCHEMA_WITH_MYINFO_PREFILL = {
                 children: {
                     grid: {
                         children: {
-                            "mockElement": {
+                            mockElement: {
                                 label: "Email address",
                                 uiType: "email-field",
                                 columns: {
                                     desktop: 12,
+                                    tablet: 8,
+                                    mobile: 4,
                                 },
                                 placeholder: "",
                                 validation: [
                                     {
                                         required: true,
-                                        errorMessage: "Email address is required",
+                                        errorMessage:
+                                            "Email address is required",
                                     },
                                 ],
-                                showIf: undefined,
                             },
                         },
                         uiType: "grid",
                     },
                     "submit-button": {
+                        disabled: "invalid-form",
                         label: "Submit",
                         uiType: "submit",
                     },
@@ -315,7 +348,7 @@ const MOCK_EMAIL_SCHEMA_WITH_MYINFO_PREFILL = {
         },
     },
     prefill: {
-        "mockElement": [
+        mockElement: [
             {
                 prefillMode: "Myinfo",
                 path: "testpath",
@@ -331,25 +364,28 @@ const MOCK_EMAIL_SCHEMA_WITH_PREVIOUS_SOURCE_PREFILL = {
                 children: {
                     grid: {
                         children: {
-                            "mockElement": {
+                            mockElement: {
                                 label: "Email address",
                                 uiType: "email-field",
                                 columns: {
                                     desktop: 12,
+                                    tablet: 8,
+                                    mobile: 4,
                                 },
                                 placeholder: "",
                                 validation: [
                                     {
                                         required: true,
-                                        errorMessage: "Email address is required",
+                                        errorMessage:
+                                            "Email address is required",
                                     },
                                 ],
-                                showIf: undefined,
                             },
                         },
                         uiType: "grid",
                     },
                     "submit-button": {
+                        disabled: "invalid-form",
                         label: "Submit",
                         uiType: "submit",
                     },
@@ -359,7 +395,7 @@ const MOCK_EMAIL_SCHEMA_WITH_PREVIOUS_SOURCE_PREFILL = {
         },
     },
     prefill: {
-        "mockElement": [
+        mockElement: [
             {
                 prefillMode: "Previous source",
                 actionId: "testaction",
@@ -370,82 +406,93 @@ const MOCK_EMAIL_SCHEMA_WITH_PREVIOUS_SOURCE_PREFILL = {
 };
 
 const MOCK_EMAIL_SCHEMA = {
-    sections: {
-        section: {
-            children: {
-                grid: {
-                    children: {
-                        ["mockElement"]: {
-                            label: "Email address",
-                            uiType: "email-field",
-                            columns: {
-                                desktop: 12,
-                            },
-                            placeholder: "",
-                            validation: [
-                                {
-                                    required: true,
-                                    errorMessage: "Email address is required",
+    prefill: {},
+    schema: {
+        sections: {
+            section: {
+                children: {
+                    grid: {
+                        children: {
+                            ["mockElement"]: {
+                                label: "Email address",
+                                uiType: "email-field",
+                                columns: {
+                                    desktop: 12,
+                                    tablet: 8,
+                                    mobile: 4,
                                 },
-                            ],
-                            showIf: undefined,
+                                placeholder: "",
+                                validation: [
+                                    {
+                                        required: true,
+                                        errorMessage:
+                                            "Email address is required",
+                                    },
+                                ],
+                            },
                         },
+                        uiType: "grid",
                     },
-                    uiType: "grid",
+                    "submit-button": {
+                        disabled: "invalid-form",
+                        label: "Submit",
+                        uiType: "submit",
+                    },
                 },
-                "submit-button": {
-                    label: "Submit",
-                    uiType: "submit",
-                },
+                uiType: "section",
             },
-            uiType: "section",
         },
     },
 };
 
-const MOCK_TEXT_BASED_ELEMENT = {
+const MOCK_TEXT_BASED_ELEMENT: TElementMap = {
     mock456: {
         internalId: "mock456",
         type: EElementType.TEXT,
         id: "mockElement",
         required: true,
         requiredErrorMsg: "Input is required",
-        columns: 12,
+        columns: { desktop: 12, tablet: 8, mobile: 4 },
         placeholder: "",
         label: ELEMENT_BUTTON_LABELS[EElementType.TEXT],
     },
 };
 
 const MOCK_TEXT_BASED_SCHEMA = {
-    sections: {
-        section: {
-            children: {
-                grid: {
-                    children: {
-                        ["mockElement"]: {
-                            label: "Short text",
-                            uiType: "text-field",
-                            columns: {
-                                desktop: 12,
-                            },
-                            placeholder: "",
-                            validation: [
-                                {
-                                    required: true,
-                                    errorMessage: "Input is required",
+    prefill: {},
+    schema: {
+        sections: {
+            section: {
+                children: {
+                    grid: {
+                        children: {
+                            ["mockElement"]: {
+                                label: "Short text",
+                                uiType: "text-field",
+                                columns: {
+                                    desktop: 12,
+                                    tablet: 8,
+                                    mobile: 4,
                                 },
-                            ],
-                            showIf: undefined,
+                                placeholder: "",
+                                validation: [
+                                    {
+                                        required: true,
+                                        errorMessage: "Input is required",
+                                    },
+                                ],
+                            },
                         },
+                        uiType: "grid",
                     },
-                    uiType: "grid",
+                    "submit-button": {
+                        disabled: "invalid-form",
+                        label: "Submit",
+                        uiType: "submit",
+                    },
                 },
-                "submit-button": {
-                    label: "Submit",
-                    uiType: "submit",
-                },
+                uiType: "section",
             },
-            uiType: "section",
         },
     },
 };
