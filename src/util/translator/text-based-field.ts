@@ -35,7 +35,6 @@ export namespace textBasedField {
                 errorMessage: element.requiredErrorMsg,
             },
         ];
-
         if (element?.validation?.length > 0) {
             switch (element.type) {
                 case EElementType.EMAIL: {
@@ -76,9 +75,10 @@ export namespace textBasedField {
                     desktop: element.columns,
                 },
                 placeholder: element.placeholder,
-
                 validation: validationObject,
-                showIf: conditionalRenderingObject,
+                ...(conditionalRenderingObject.length > 0 && {
+                    showIf: conditionalRenderingObject,
+                }),
             },
         };
 
