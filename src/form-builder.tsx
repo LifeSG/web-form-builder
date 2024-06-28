@@ -22,8 +22,8 @@ export interface ISchemaProps {
 }
 
 export interface IFormBuilderMethods {
-    generateSchema: (elementsList?: TElementMap) => IFrontendEngineData;
-    parseSchema: (schema: string) => void;
+    generateSchema: (elementsList?: TElementMap) => ISchemaProps;
+    translateSchema: (schema: string) => void;
 }
 
 interface IProps {
@@ -43,7 +43,7 @@ const Component = forwardRef<IFormBuilderMethods, IProps>(({ offset }, ref) => {
         ref,
         () => ({
             generateSchema: () => Translator.generateSchema(elements),
-            parseSchema: (schema: string) => Translator.parseSchema(schema),
+            translateSchema: (schema: string) => Translator.translateSchema(schema),
         }),
         [elements]
     );
