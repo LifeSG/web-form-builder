@@ -1,9 +1,8 @@
 import { Text } from "@lifesg/react-design-system/text";
-import { EyeIcon, PencilIcon, TabletIcon } from "@lifesg/react-icons";
-import {
-    FrontendEngine,
-    IFrontendEngineData,
-} from "@lifesg/web-frontend-engine";
+import { EyeIcon } from "@lifesg/react-icons/eye";
+import { PencilIcon } from "@lifesg/react-icons/pencil";
+import { TabletIcon } from "@lifesg/react-icons/tablet";
+import { FrontendEngine } from "@lifesg/web-frontend-engine";
 import { useEffect, useRef, useState } from "react";
 import { FormBuilder, IFormBuilderMethods, ISchemaProps } from "src/form-builder";
 import {

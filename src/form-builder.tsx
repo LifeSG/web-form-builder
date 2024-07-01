@@ -1,4 +1,4 @@
-import { IFrontendEngineData } from "@lifesg/web-frontend-engine/components/types";
+import { IFrontendEngineData } from "@lifesg/web-frontend-engine";
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import { MainPanel, SidePanel } from "./components";
 import { Modals, Toasts } from "./components/common";
@@ -81,11 +81,11 @@ const Component = forwardRef<IFormBuilderMethods, IProps>(({ offset }, ref) => {
 });
 
 export const FormBuilder = forwardRef<IFormBuilderMethods, IProps>(
-    ({ offset }, ref) => {
+    (props, ref) => {
         return (
             <BuilderProvider>
                 <DisplayProvider>
-                    <Component ref={ref} offset={offset} />
+                    <Component ref={ref} {...props} />
                 </DisplayProvider>
             </BuilderProvider>
         );

@@ -1,12 +1,13 @@
 import { EElementType, IValidation, TElement } from "src/context-providers";
 import { createConditionalRenderingObject } from "./helper";
 
-export namespace textBasedField {
-    export namespace email {
-        export interface ISchemaValidation {
-            [key: string]: string | boolean;
-            errorMessage: string;
-        }
+export namespace TextBasedField {
+    export interface ISchemaValidation {
+        [key: string]: string | boolean;
+        errorMessage?: string;
+    }
+
+    namespace Email {
         export const createEmailValidationSchema = (
             validation: IValidation
         ) => {
@@ -28,36 +29,41 @@ export namespace textBasedField {
         };
     }
 
-    export const createValidationObject = (element: TElement) => {
-        const validation: email.ISchemaValidation[] = [
-            {
-                required: element.required,
-                errorMessage: element.requiredErrorMsg,
-            },
-        ];
-        if (element?.validation?.length > 0) {
+    const createValidationObject = (element: TElement) => {
+        if (!element) return;
+
+        const validation: ISchemaValidation[] = [];
+
+        if (element.required) {
+            validation.push({
+                required: true,
+                ...(element.requiredErrorMsg && {
+                    errorMessage: element.requiredErrorMsg,
+                }),
+            });
+        }
+
+        if (element.validation && element.validation.length > 0) {
             switch (element.type) {
                 case EElementType.EMAIL: {
-                    const validationChild = email.createEmailValidationSchema(
-                        element.validation?.[0]
+                    const validationChild = Email.createEmailValidationSchema(
+                        element.validation[0]
                     );
                     validation.push(validationChild);
                     break;
                 }
-
                 case EElementType.TEXT:
                 case EElementType.TEXTAREA:
                 case EElementType.CONTACT:
-                case EElementType.NUMERIC: {
+                case EElementType.NUMERIC:
                     break;
-                }
-
                 case EElementType.CHECKBOX:
-                case EElementType.RADIO: {
+                case EElementType.RADIO:
                     break;
-                }
             }
         }
+
+        if (validation.length === 0) return;
 
         return validation;
     };
@@ -67,6 +73,7 @@ export namespace textBasedField {
             element?.conditionalRendering
         );
         const validationObject = createValidationObject(element);
+
         const textBasedFieldSchema = {
             [element.id]: {
                 label: element.label,
@@ -76,9 +83,11 @@ export namespace textBasedField {
                     tablet: element.columns.tablet,
                     mobile: element.columns.mobile,
                 },
-                placeholder: element.placeholder,
-                validation: validationObject,
-                ...(conditionalRenderingObject.length > 0 && {
+                ...(element.placeholder && {
+                    placeholder: element.placeholder,
+                }),
+                ...(validationObject && { validation: validationObject }),
+                ...(conditionalRenderingObject && {
                     showIf: conditionalRenderingObject,
                 }),
             },
