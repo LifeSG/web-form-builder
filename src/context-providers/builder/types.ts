@@ -36,6 +36,13 @@ export type TElementMap = {
     [internalId: string]: TElement;
 };
 
+export interface IDeletedElements {
+    [internalId: string]: {
+        element: TElement;
+        position: number;
+    };
+}
+
 export interface IBuilderState {
     mode: EBuilderMode;
     showSidePanel: boolean;
@@ -47,6 +54,7 @@ export interface IBuilderState {
      * rendering order
      */
     orderedIdentifiers: IElementIdentifier[];
+    deletedElements: IDeletedElements;
 }
 
 // =============================================================================
@@ -80,6 +88,16 @@ export interface IDeleteElementAction {
     payload: {
         updatedElements: TElementMap;
         orderedIdentifiers: IElementIdentifier[];
+        deletedElements: IDeletedElements;
+    };
+}
+
+export interface IUndoDeleteElementAction {
+    type: "undo-delete-element";
+    payload: {
+        updatedElements: TElementMap;
+        orderedIdentifiers: IElementIdentifier[];
+        deletedElements: IDeletedElements;
     };
 }
 
@@ -111,6 +129,7 @@ export type TBuilderAction =
     | IToggleModeAction
     | IAddElementAction
     | IDeleteElementAction
+    | IUndoDeleteElementAction
     | IFocusElementAction
     | IRemoveFocusedElementAction
     | IUpdateElementAction

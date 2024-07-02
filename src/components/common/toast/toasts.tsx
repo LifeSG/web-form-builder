@@ -5,6 +5,8 @@ import { ToastWrapper } from "./toasts.styles";
 export const Toasts: Function = () => {
     const { toasts } = useDisplay();
 
+    console.log(toasts);
+
     return (
         <ToastWrapper>
             {toasts.map((toast) => (
