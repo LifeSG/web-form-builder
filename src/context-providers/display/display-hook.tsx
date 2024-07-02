@@ -10,7 +10,7 @@ export const useDisplay = () => {
             const newId = SimpleIdGenerator.generate();
             dispatch({
                 type: "show-toast",
-                payload: { ...toast, id: newId },
+                payload: { ...toast, id: newId},
             });
         },
         [dispatch, state.toasts]

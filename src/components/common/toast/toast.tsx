@@ -24,6 +24,15 @@ export const DisplayToast = ({ toast, onClickActionButton }: IProps) => {
     // =============================================================================
     switch (toast.type) {
         case EToastTypes.SUCCESS_TOAST:
+            return (
+                <Toast
+                    type={"success"}
+                    label={toast.message}
+                    autoDismiss
+                    fixed={false}
+                    onDismiss={() => handleDismissToast(toast.id)}
+                />
+            );
         case EToastTypes.DELETE_TOAST:
             return (
                 <Toast
@@ -32,6 +41,10 @@ export const DisplayToast = ({ toast, onClickActionButton }: IProps) => {
                     autoDismiss
                     fixed={false}
                     onDismiss={() => handleDismissToast(toast.id)}
+                    actionButton={{
+                        label: "Undo",
+                        onClick: onClickActionButton,
+                    }}
                 />
             );
         default:

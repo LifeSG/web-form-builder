@@ -17,6 +17,7 @@ const DEFAULT_VALUES: IBuilderState = {
     focusedElement: null,
     showSidePanel: true,
     orderedIdentifiers: [],
+    deletedElements: {},
 };
 
 // =============================================================================
@@ -48,6 +49,14 @@ export const builderReducer = (
         case "delete-element": {
             state.elements = action.payload.updatedElements;
             state.orderedIdentifiers = action.payload.orderedIdentifiers;
+            state.deletedElements = action.payload.deletedElements;
+            break;
+        }
+        case "undo-delete-element": {
+            console.log(state.elements)
+            // state.elements = action.payload.updatedElements;
+            // state.orderedIdentifiers = action.payload.orderedIdentifiers;
+            // state.deletedElements = action.payload.deletedElements;
             break;
         }
         case "focus-element": {

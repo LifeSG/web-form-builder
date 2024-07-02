@@ -37,7 +37,7 @@ export const ElementCard = ({ element, onClick }: IProps) => {
     // CONST, STATE, REFS
     // =========================================================================
     const { label, id } = element;
-    const { focusedElement, deleteElement, duplicateElement } = useBuilder();
+    const { focusedElement, deleteElement, duplicateElement, undoDeleteElement } = useBuilder();
     const { showToast } = useDisplay();
 
     const { isDragging } = useDraggable({
@@ -89,6 +89,12 @@ export const ElementCard = ({ element, onClick }: IProps) => {
         event.stopPropagation();
         // TODO: Add confirmation modal
         deleteElement(element.internalId);
+        const deleteToast = {
+            message: "Element deleted.",
+            type: EToastTypes.DELETE_TOAST,
+            onClickActionButton: () => undoDeleteElement(focusedElement.element.internalId),
+        };
+        showToast(deleteToast);
     };
 
     // =========================================================================
