@@ -1,18 +1,16 @@
-import { IFrontendEngineData } from "@lifesg/web-frontend-engine/components";
+import { IFrontendEngineData } from "@lifesg/web-frontend-engine";
 import { TElementMap } from "src/context-providers";
-import { textBasedField } from "./text-based-field";
+import { TextBasedField } from "./text-based-field";
 import { createPrefillObject } from "./helper";
 
 export namespace Translator {
     export function generateSchema(elements: TElementMap) {
-        let fields = {};
-
         const prefill = createPrefillObject(elements);
 
-        Object.entries(elements).forEach(([_, value]) => {
-            const translatedChild = textBasedField.elementToSchema(value);
-            fields = { ...fields, ...translatedChild };
-        });
+        const fields = Object.values(elements).reduce((acc, element) => {
+            const translatedChild = TextBasedField.elementToSchema(element);
+            return { ...acc, ...translatedChild };
+        }, {});
 
         const elementSchema: IFrontendEngineData = {
             sections: {
@@ -34,7 +32,7 @@ export namespace Translator {
                 },
             },
         };
-        return { schema: elementSchema, prefill: prefill };
+        return { schema: elementSchema, prefill };
     }
 
     export function translateSchema(schema: string) {

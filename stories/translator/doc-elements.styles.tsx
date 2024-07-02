@@ -68,6 +68,6 @@ export const SchemaPreview = styled.div`
     max-height: 31.25rem;
     padding: 1rem;
     overflow: auto;
-    border: 0.063rem solid #ccc;
+    border: 1px solid ${Color.Neutral[5]};
     border-radius: 4px;
 `;

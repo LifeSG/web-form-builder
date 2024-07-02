@@ -63,7 +63,7 @@ export interface IBaseFieldAttributes extends IBaseAttributes {
     label: string | undefined;
     required: boolean;
     requiredErrorMsg?: string | undefined;
-    columns?: IColumns;
+    columns: IColumns;
 }
 
 export interface IBaseTextBasedFieldAttributes extends IBaseFieldAttributes {
