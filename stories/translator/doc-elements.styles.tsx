@@ -1,4 +1,5 @@
 import { Color } from "@lifesg/react-design-system/color";
+import { Textarea } from "@lifesg/react-design-system/input-textarea";
 import styled from "styled-components";
 
 interface IContentWrapperProps {
@@ -62,12 +63,11 @@ export const ViewWrapper = styled.div`
     padding: 2rem;
 `;
 
-export const SchemaPreview = styled.div`
-    margin: 2rem;
+export const SchemaPreview = styled(Textarea)`
     width: 80vw;
-    max-height: 31.25rem;
-    padding: 1rem;
+    height: 60vw;
     overflow: auto;
+    padding: 1rem;
     border: 1px solid ${Color.Neutral[5]};
     border-radius: 4px;
 `;

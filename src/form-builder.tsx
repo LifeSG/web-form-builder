@@ -14,16 +14,16 @@ import { Container, Wrapper } from "./form-builder.styles";
 import { Translator } from "./translator/translator";
 
 interface IPrefillSchema {
-    [key: string]: IPrefillAttributes | IPrefillAttributes[]
+    [key: string]: IPrefillAttributes | IPrefillAttributes[];
 }
 export interface ISchemaProps {
     schema: IFrontendEngineData;
-    prefill: IPrefillSchema
+    prefill: IPrefillSchema;
 }
 
 export interface IFormBuilderMethods {
     generateSchema: (elementsList?: TElementMap) => ISchemaProps;
-    translateSchema: (schema: string) => void;
+    parseSchema: (schema: ISchemaProps) => void;
 }
 
 interface IProps {
@@ -37,13 +37,17 @@ const Component = forwardRef<IFormBuilderMethods, IProps>(({ offset }, ref) => {
     const [isLargeScreen, setIsLargeScreen] = useState(
         window.innerWidth >= 1200
     );
-    const { elements } = useBuilder();
+    const { elements, updateElementSchema } = useBuilder();
 
     useImperativeHandle(
         ref,
         () => ({
             generateSchema: () => Translator.generateSchema(elements),
-            translateSchema: (schema: string) => Translator.translateSchema(schema),
+            parseSchema: (schema: ISchemaProps) => {
+                const { newOrderedIdentifiers, newElements } =
+                    Translator.parseSchema(schema);
+                updateElementSchema(newElements, newOrderedIdentifiers);
+            },
         }),
         [elements]
     );

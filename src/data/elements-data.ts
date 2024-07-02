@@ -60,3 +60,10 @@ export const SCHEMA_CONDITION_TYPES = {
     [EConditionType.EQUALS]: "equals",
     [EConditionType.NOT_EQUALS]: "notEquals",
 };
+
+export const ELEMENT_CONDITION_TYPES = {
+    ["moreThan"]: EConditionType.MORE_THAN,
+    ["lessThan"]: EConditionType.LESS_THAN,
+    ["equals"]: EConditionType.EQUALS,
+    ["notEquals"]: EConditionType.NOT_EQUALS,
+};

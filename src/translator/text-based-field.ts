@@ -1,5 +1,9 @@
 import { EElementType, IValidation, TElement } from "src/context-providers";
-import { createConditionalRenderingObject } from "./helper";
+import { ELEMENT_VALIDATION_TYPES } from "src/data";
+import {
+    createConditionalRenderingObject,
+    translateConditionalRenderingObject,
+} from "./helper";
 
 export namespace TextBasedField {
     export interface ISchemaValidation {
@@ -27,11 +31,34 @@ export namespace TextBasedField {
                 errorMessage: validation.validationErrorMessage,
             };
         };
+
+        export const translateEmailValidation = (
+            validation: ISchemaValidation[]
+        ) => {
+            const regexPattern = /@\((.*?)\)\$/;
+            const match = validation[0].matches.toString().match(regexPattern);
+            const extractedDomains = match[1]
+                .split("|")
+                .map((child) => child.replace(/\\./g, "."))
+                .map((value) => {
+                    return "@" + value;
+                })
+                .join(", ");
+
+            return [
+                {
+                    validationType:
+                        ELEMENT_VALIDATION_TYPES["Text field"][
+                            EElementType.EMAIL
+                        ].validationTypes[0],
+                    validationRule: extractedDomains,
+                    validationErrorMessage: validation[0].errorMessage,
+                },
+            ];
+        };
     }
 
     const createValidationObject = (element: TElement) => {
-        if (!element) return;
-
         const validation: ISchemaValidation[] = [];
 
         if (element.required) {
@@ -68,6 +95,23 @@ export namespace TextBasedField {
         return validation;
     };
 
+    export const translateValidationObject = (
+        type: EElementType,
+        validation: ISchemaValidation[]
+    ) => {
+        switch (type) {
+            case EElementType.EMAIL:
+                return Email.translateEmailValidation(validation);
+            case EElementType.NUMERIC:
+            case EElementType.TEXT:
+            case EElementType.TEXTAREA:
+            case EElementType.CONTACT:
+            case EElementType.CHECKBOX:
+            case EElementType.RADIO:
+                return;
+        }
+    };
+
     export const elementToSchema = (element: TElement) => {
         const conditionalRenderingObject = createConditionalRenderingObject(
             element?.conditionalRendering
@@ -94,5 +138,37 @@ export namespace TextBasedField {
         };
 
         return textBasedFieldSchema;
+    };
+
+    export const translateToElement = (schemaElements: {
+        [key: string]: any;
+    }) => {
+        const translatedElements: TElement[] = [];
+
+        Object.entries(schemaElements).forEach(([key, element]) => {
+            const { showIf, uiType, validation, ...rest } = element;
+            const remainingValidation =
+                validation.length > 1 ? validation.slice(1) : [];
+
+            translatedElements.push({
+                ...rest,
+                type: uiType,
+                required: validation?.[0]?.required,
+                requiredErrorMsg: validation?.[0]?.errorMessage,
+                id: key,
+                ...(remainingValidation.length > 0 && {
+                    validation: translateValidationObject(
+                        uiType,
+                        remainingValidation
+                    ),
+                }),
+                ...(showIf && {
+                    conditionalRendering:
+                        translateConditionalRenderingObject(showIf),
+                }),
+            });
+        });
+
+        return translatedElements;
     };
 }

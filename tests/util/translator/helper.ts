@@ -51,7 +51,7 @@ interface MockChildrenSchema {
 
 export const generateMockElement = (props: MockElementProps): TElementMap => {
     return {
-        [props.id]: {
+        [props.internalId]: {
             required: true,
             columns: { desktop: 12, tablet: 8, mobile: 4 },
             label: ELEMENT_BUTTON_LABELS[props.type],

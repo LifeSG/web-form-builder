@@ -4,17 +4,26 @@ import { PencilIcon } from "@lifesg/react-icons/pencil";
 import { TabletIcon } from "@lifesg/react-icons/tablet";
 import { FrontendEngine } from "@lifesg/web-frontend-engine";
 import { useEffect, useRef, useState } from "react";
-import { FormBuilder, IFormBuilderMethods, ISchemaProps } from "src/form-builder";
+import {
+    FormBuilder,
+    IFormBuilderMethods,
+    ISchemaProps,
+} from "src/form-builder";
 import {
     ContentWrapper,
     IconButton,
     IconWrapper,
-    ViewWrapper,
     SchemaPreview,
+    ViewWrapper,
 } from "./doc-elements.styles";
 
 interface IProps {
     data?: ISchemaProps;
+}
+
+interface ISchemaViewProps {
+    data?: ISchemaProps;
+    setSchemaFromView?: (schema: ISchemaProps) => void;
 }
 
 const FormPreview = ({ data }: IProps) => {
@@ -26,13 +35,35 @@ const FormPreview = ({ data }: IProps) => {
     );
 };
 
-const SchemaView = ({ data }: IProps) => {
+const SchemaView = ({ data, setSchemaFromView }: ISchemaViewProps) => {
+    const [schema, setSchema] = useState("");
+
+    const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setSchema(event.target.value);
+    };
+
+    const handleBlur = () => {
+        if (setSchemaFromView) {
+            const newSchema = JSON.parse(schema);
+            setSchemaFromView(newSchema);
+        }
+    };
+
+    useEffect(() => {
+        if (data && setSchemaFromView) {
+            const dataToString = JSON.stringify(data, null, 2);
+            setSchema(dataToString);
+        }
+    }, [data]);
+
     return (
         <ViewWrapper>
             <Text.H2>Generate Schema</Text.H2>
-            <SchemaPreview>
-                <pre>{JSON.stringify(data, null, 2)}</pre>
-            </SchemaPreview>
+            <SchemaPreview
+                value={schema}
+                onChange={handleChange}
+                onBlur={handleBlur}
+            />
         </ViewWrapper>
     );
 };
@@ -64,9 +95,11 @@ export const DocElement = () => {
     // EFFECTS
     // =========================================================================
     useEffect(() => {
-        if (formBuilderRef.current) {
+        if (formBuilderRef.current && pageMode !== "form-builder-mode") {
             const generatedSchema = formBuilderRef.current?.generateSchema();
             setSchema(generatedSchema);
+        } else if (formBuilderRef.current && schema) {
+            formBuilderRef.current?.parseSchema(schema);
         }
     }, [formBuilderRef.current, pageMode]);
 
@@ -109,7 +142,7 @@ export const DocElement = () => {
             )}
             {pageMode === "schema-mode" && (
                 <ContentWrapper>
-                    <SchemaView data={schema} />
+                    <SchemaView data={schema} setSchemaFromView={setSchema} />
                 </ContentWrapper>
             )}
         </>
