@@ -8,6 +8,7 @@ import { CopyIcon } from "@lifesg/react-icons/copy";
 import { CSSProperties } from "react";
 import {
     EToastTypes,
+    IToast,
     TElement,
     useBuilder,
     useDisplay,
@@ -37,7 +38,8 @@ export const ElementCard = ({ element, onClick }: IProps) => {
     // CONST, STATE, REFS
     // =========================================================================
     const { label, id } = element;
-    const { focusedElement, deleteElement, duplicateElement, undoDeleteElement } = useBuilder();
+    const { focusedElement, deleteElement, duplicateElement } = useBuilder();
+    
     const { showToast } = useDisplay();
 
     const { isDragging } = useDraggable({
@@ -85,14 +87,15 @@ export const ElementCard = ({ element, onClick }: IProps) => {
         showToast(newToast);
     };
 
+
     const handleDeleteClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation();
         // TODO: Add confirmation modal
         deleteElement(element.internalId);
-        const deleteToast = {
+        const deleteToast: IToast = {
             message: "Element deleted.",
             type: EToastTypes.DELETE_TOAST,
-            onClickActionButton: () => undoDeleteElement(focusedElement.element.internalId),
+            elementInternalId: element.internalId,
         };
         showToast(deleteToast);
     };

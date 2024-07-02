@@ -55,6 +55,7 @@ export interface IBuilderState {
      */
     orderedIdentifiers: IElementIdentifier[];
     deletedElements: IDeletedElements;
+    lastDeletedInternalId: string;
 }
 
 // =============================================================================
@@ -89,6 +90,7 @@ export interface IDeleteElementAction {
         updatedElements: TElementMap;
         orderedIdentifiers: IElementIdentifier[];
         deletedElements: IDeletedElements;
+        lastDeletedInternalId: string;
     };
 }
 

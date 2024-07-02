@@ -18,6 +18,7 @@ const DEFAULT_VALUES: IBuilderState = {
     showSidePanel: true,
     orderedIdentifiers: [],
     deletedElements: {},
+    lastDeletedInternalId: null,
 };
 
 // =============================================================================
@@ -50,13 +51,13 @@ export const builderReducer = (
             state.elements = action.payload.updatedElements;
             state.orderedIdentifiers = action.payload.orderedIdentifiers;
             state.deletedElements = action.payload.deletedElements;
+            state.lastDeletedInternalId = action.payload.lastDeletedInternalId;
             break;
         }
         case "undo-delete-element": {
-            console.log(state.elements)
-            // state.elements = action.payload.updatedElements;
-            // state.orderedIdentifiers = action.payload.orderedIdentifiers;
-            // state.deletedElements = action.payload.deletedElements;
+            state.elements = action.payload.updatedElements;
+            state.orderedIdentifiers = action.payload.orderedIdentifiers;
+            state.deletedElements = action.payload.deletedElements;
             break;
         }
         case "focus-element": {

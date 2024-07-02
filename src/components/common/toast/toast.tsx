@@ -1,5 +1,6 @@
 import { Toast } from "@lifesg/react-design-system/toast";
-import { EToastTypes, IToast, useDisplay } from "src/context-providers";
+import { useContext } from "react";
+import { BuilderContext, EToastTypes, IToast, useBuilder, useDisplay } from "src/context-providers";
 
 interface IProps {
     toast: IToast;
@@ -11,6 +12,7 @@ export const DisplayToast = ({ toast, onClickActionButton }: IProps) => {
     // CONST, STATE, REF
     // =========================================================================
     const { dismissToast } = useDisplay();
+    const { undoDeleteElement } = useBuilder();
 
     // =============================================================================
     // HELPER FUNCTIONS
@@ -39,11 +41,14 @@ export const DisplayToast = ({ toast, onClickActionButton }: IProps) => {
                     type={"success"}
                     label={toast.message}
                     autoDismiss
+                    autoDismissTime={10000}
                     fixed={false}
                     onDismiss={() => handleDismissToast(toast.id)}
                     actionButton={{
                         label: "Undo",
-                        onClick: onClickActionButton,
+                        onClick: () => {
+                            undoDeleteElement(toast.elementInternalId);
+                        },
                     }}
                 />
             );

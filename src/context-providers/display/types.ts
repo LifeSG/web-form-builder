@@ -12,6 +12,7 @@ export interface IToast {
     id?: string;
     type?: EToastTypes;
     message?: string;
+    elementInternalId?: string;
     onClickActionButton?: () => void;
 }
 
