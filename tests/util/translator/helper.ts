@@ -49,32 +49,13 @@ interface MockChildrenSchema {
     };
 }
 
-export const generateMockElement = ({
-    type,
-    id,
-    internalId,
-    required,
-    requiredErrorMsg,
-    columns,
-    placeholder,
-    label,
-    validation,
-    conditionalRendering,
-    prefill,
-}: MockElementProps): TElementMap => {
+export const generateMockElement = (props: MockElementProps): TElementMap => {
     return {
-        [id]: {
-            internalId,
-            type,
-            id,
-            required: required ?? true,
-            requiredErrorMsg: requiredErrorMsg || "",
-            columns: columns || { desktop: 12, tablet: 8, mobile: 4 },
-            placeholder: placeholder || "",
-            label: label || ELEMENT_BUTTON_LABELS[type],
-            validation: validation || [],
-            conditionalRendering: conditionalRendering || [],
-            prefill: prefill || [],
+        [props.id]: {
+            required: true,
+            columns: { desktop: 12, tablet: 8, mobile: 4 },
+            label: ELEMENT_BUTTON_LABELS[props.type],
+            ...props,
         },
     };
 };
@@ -84,7 +65,7 @@ export const generateMockSchema = (
     children: MockChildrenSchema
 ) => {
     return {
-        prefill: prefill,
+        prefill,
         schema: {
             sections: {
                 section: {
@@ -116,8 +97,8 @@ export const generateMockElementSchema = ({
 }: MockElementSchemaProps): MockChildrenSchema => {
     return {
         [id]: {
-            label: label,
-            uiType: uiType,
+            label,
+            uiType,
             columns: {
                 desktop: 12,
                 tablet: 8,
