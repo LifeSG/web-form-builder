@@ -4,7 +4,7 @@ import { EElementType, TElement } from "./element.types";
 import { BuilderContext } from "./provider";
 import {
     EBuilderMode,
-    IDeletedElements,
+    IDeletedElementMap,
     IElementIdentifier,
     TElementMap,
 } from "./types";
@@ -20,9 +20,24 @@ export const useBuilder = () => {
 
     const updateOrderedIdentifiers = useCallback(
         (orderedIdentifiers: IElementIdentifier[]) => {
+            const positions = orderedIdentifiers.map(
+                (identifier) => identifier.position
+            );
+
+            const sortedPositions = [...positions].sort((a, b) => a - b);
+
+            const updatedOrderedIdentifiers = orderedIdentifiers.map(
+                (identifier, index) => {
+                    return {
+                        ...identifier,
+                        position: sortedPositions[index],
+                    };
+                }
+            );
+
             dispatch({
                 type: "update-ordered-identifiers",
-                payload: orderedIdentifiers,
+                payload: updatedOrderedIdentifiers,
             });
         },
         []
@@ -33,17 +48,23 @@ export const useBuilder = () => {
             const existingIdentifiers = state.orderedIdentifiers.map(
                 (elementId) => elementId.internalId
             );
+
             const existingIds = Object.values(state.elements).map(
                 (element) => element.id
             );
+
             const newElement: TElement = ElementObjectGenerator.generate(
                 type,
                 existingIdentifiers,
                 existingIds
             );
-            const newOrderedIdentifiers = [
+
+            const newOrderedIdentifiers: IElementIdentifier[] = [
                 ...state.orderedIdentifiers,
-                { internalId: newElement.internalId },
+                {
+                    internalId: newElement.internalId,
+                    position: state.elementCounter,
+                },
             ];
 
             dispatch({
@@ -72,6 +93,7 @@ export const useBuilder = () => {
             const existingIdentifiers = state.orderedIdentifiers.map(
                 (elementId) => elementId.internalId
             );
+
             const existingIds = Object.values(state.elements).map(
                 (element) => element.id
             );
@@ -81,9 +103,13 @@ export const useBuilder = () => {
                 existingIdentifiers,
                 existingIds
             );
+
             const newOrderedIdentifiers = [
                 ...state.orderedIdentifiers,
-                { internalId: duplicatedElement.internalId },
+                {
+                    internalId: duplicatedElement.internalId,
+                    position: state.elementCounter,
+                },
             ];
 
             dispatch({
@@ -107,12 +133,12 @@ export const useBuilder = () => {
 
     const deleteElement = useCallback(
         (internalId: string) => {
-            const position = state.orderedIdentifiers.findIndex(
-                (identifier) => identifier.internalId === internalId
-            );
-
-            const { [internalId]: removedElement, ...remaining } =
+            const { [internalId]: deletedElement, ...remaining } =
                 state.elements;
+
+            const deletedElementPosition = state.orderedIdentifiers.find(
+                (identifier) => identifier.internalId === internalId
+            ).position;
 
             const newOrderedIdentifiers = state.orderedIdentifiers.filter(
                 (identifier) => identifier.internalId !== internalId
@@ -134,14 +160,12 @@ export const useBuilder = () => {
                 )
             );
 
-            const deletedElementData = {
-                element: removedElement,
-                position,
-            };
-
-            const newDeletedElements: IDeletedElements = {
+            const newDeletedElements: IDeletedElementMap = {
                 ...state.deletedElements,
-                [internalId]: deletedElementData,
+                [internalId]: {
+                    element: deletedElement,
+                    position: deletedElementPosition,
+                },
             };
 
             dispatch({
@@ -150,7 +174,6 @@ export const useBuilder = () => {
                     updatedElements: remainingElements,
                     orderedIdentifiers: newOrderedIdentifiers,
                     deletedElements: newDeletedElements,
-                    lastDeletedInternalId: internalId,
                 },
             });
 
@@ -164,37 +187,53 @@ export const useBuilder = () => {
             state.elements,
             state.mode,
             state.deletedElements,
-            state.lastDeletedInternalId,
         ]
     );
 
     const undoDeleteElement = useCallback(
         (internalId: string) => {
-            const deletedElementData = state.deletedElements[internalId];
+            const deletedElement = state.deletedElements[internalId];
 
-            if (deletedElementData) {
-                const { element, position } = deletedElementData;
-                const newOrderedIdentifiers = [
-                    ...state.orderedIdentifiers.slice(0, position),
-                    { internalId },
-                    ...state.orderedIdentifiers.slice(position),
-                ];
-                dispatch({
-                    type: "undo-delete-element",
-                    payload: {
-                        updatedElements: {
-                            ...state.elements,
-                            [internalId]: element,
-                        },
-                        orderedIdentifiers: newOrderedIdentifiers,
-                        deletedElements: Object.fromEntries(
-                            Object.entries(state.deletedElements).filter(
-                                ([key]) => key !== internalId
-                            )
-                        ),
-                    },
-                });
+            if (!deletedElement) {
+                return;
             }
+
+            const existingOrderedIdentifiers = state.orderedIdentifiers;
+
+            let insertionIndex = 0;
+
+            for (let i = 0; i < existingOrderedIdentifiers.length; i++) {
+                if (
+                    existingOrderedIdentifiers[i].position >
+                    deletedElement.position
+                ) {
+                    insertionIndex = i;
+                    break;
+                }
+                insertionIndex += 1;
+            }
+
+            const newOrderedIdentifiers: IElementIdentifier[] = [
+                ...state.orderedIdentifiers.slice(0, insertionIndex),
+                { internalId, position: deletedElement.position },
+                ...state.orderedIdentifiers.slice(insertionIndex),
+            ];
+
+            dispatch({
+                type: "undo-delete-element",
+                payload: {
+                    updatedElements: {
+                        ...state.elements,
+                        [internalId]: deletedElement.element,
+                    },
+                    orderedIdentifiers: newOrderedIdentifiers,
+                    deletedElements: Object.fromEntries(
+                        Object.entries(state.deletedElements).filter(
+                            ([key]) => key !== internalId
+                        )
+                    ),
+                },
+            });
         },
         [state.deletedElements, state.orderedIdentifiers, state.elements]
     );

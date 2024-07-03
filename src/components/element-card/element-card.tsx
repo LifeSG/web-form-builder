@@ -40,7 +40,7 @@ export const ElementCard = ({ element, onClick }: IProps) => {
     const { label, id } = element;
     const { focusedElement, deleteElement, duplicateElement } = useBuilder();
     
-    const { showToast } = useDisplay();
+    const { showToast, toasts } = useDisplay();
 
     const { isDragging } = useDraggable({
         id: element.internalId,
@@ -94,7 +94,7 @@ export const ElementCard = ({ element, onClick }: IProps) => {
         deleteElement(element.internalId);
         const deleteToast: IToast = {
             message: "Element deleted.",
-            type: EToastTypes.DELETE_TOAST,
+            type: EToastTypes.DELETE_ELEMENT_TOAST,
             elementInternalId: element.internalId,
         };
         showToast(deleteToast);

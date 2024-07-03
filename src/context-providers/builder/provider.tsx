@@ -18,7 +18,7 @@ const DEFAULT_VALUES: IBuilderState = {
     showSidePanel: true,
     orderedIdentifiers: [],
     deletedElements: {},
-    lastDeletedInternalId: null,
+    elementCounter: 0,
 };
 
 // =============================================================================
@@ -45,13 +45,13 @@ export const builderReducer = (
             const element = action.payload.element;
             state.elements[element.internalId] = element;
             state.orderedIdentifiers = action.payload.orderedIdentifiers;
+            state.elementCounter += 1;
             break;
         }
         case "delete-element": {
             state.elements = action.payload.updatedElements;
             state.orderedIdentifiers = action.payload.orderedIdentifiers;
             state.deletedElements = action.payload.deletedElements;
-            state.lastDeletedInternalId = action.payload.lastDeletedInternalId;
             break;
         }
         case "undo-delete-element": {

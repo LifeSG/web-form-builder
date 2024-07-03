@@ -24,6 +24,7 @@ export enum ETextFieldMode {
 export interface IElementIdentifier {
     internalId: string;
     parentInternalId?: string;
+    position: number;
 }
 
 export interface IFocusedElement {
@@ -32,16 +33,18 @@ export interface IFocusedElement {
     isValid?: boolean;
 }
 
+export interface IDeletedElement {
+    element: TElement;
+    position: number;
+}
+
+export interface IDeletedElementMap {
+    [internalId: string]: IDeletedElement;
+}
+
 export type TElementMap = {
     [internalId: string]: TElement;
 };
-
-export interface IDeletedElements {
-    [internalId: string]: {
-        element: TElement;
-        position: number;
-    };
-}
 
 export interface IBuilderState {
     mode: EBuilderMode;
@@ -54,8 +57,11 @@ export interface IBuilderState {
      * rendering order
      */
     orderedIdentifiers: IElementIdentifier[];
-    deletedElements: IDeletedElements;
-    lastDeletedInternalId: string;
+    deletedElements: IDeletedElementMap;
+    /**
+     * Keeps track of the number of unique elements that have been added to the builder from the start.
+     */
+    elementCounter: number;
 }
 
 // =============================================================================
@@ -89,8 +95,7 @@ export interface IDeleteElementAction {
     payload: {
         updatedElements: TElementMap;
         orderedIdentifiers: IElementIdentifier[];
-        deletedElements: IDeletedElements;
-        lastDeletedInternalId: string;
+        deletedElements: IDeletedElementMap;
     };
 }
 
@@ -99,7 +104,7 @@ export interface IUndoDeleteElementAction {
     payload: {
         updatedElements: TElementMap;
         orderedIdentifiers: IElementIdentifier[];
-        deletedElements: IDeletedElements;
+        deletedElements: IDeletedElementMap;
     };
 }
 
