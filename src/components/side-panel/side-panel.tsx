@@ -10,7 +10,11 @@ import { SidePanelHeader } from "./side-panel-header";
 import { ContentSection, ContentWrapper, Wrapper } from "./side-panel.styles";
 import { Toolbar } from "./toolbar";
 
-export const SidePanel = () => {
+interface IProps {
+    offset?: number;
+}
+
+export const SidePanel = ({ offset }: IProps) => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
@@ -87,7 +91,10 @@ export const SidePanel = () => {
     return (
         <FormProvider {...methods}>
             <form onSubmit={methods.handleSubmit(onSubmit)}>
-                <Wrapper $minimised={focusedElement ? false : !showSidePanel}>
+                <Wrapper
+                    $minimised={focusedElement ? false : !showSidePanel}
+                    $offset={offset ? offset : 0}
+                >
                     <SidePanelHeader />
                     <ContentWrapper>
                         <ContentSection

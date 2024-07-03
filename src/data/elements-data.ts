@@ -1,4 +1,7 @@
-import { EElementType } from "src/context-providers/builder/element.types";
+import {
+    EConditionType,
+    EElementType,
+} from "src/context-providers/builder/element.types";
 
 interface IElementCategoryAttributes {
     categoryTitle: string;
@@ -49,4 +52,11 @@ export const ELEMENT_VALIDATION_TYPES = {
             validationTypes: ["Email domain"],
         },
     },
+};
+
+export const SCHEMA_CONDITION_TYPES = {
+    [EConditionType.MORE_THAN]: "moreThan",
+    [EConditionType.LESS_THAN]: "lessThan",
+    [EConditionType.EQUALS]: "equals",
+    [EConditionType.NOT_EQUALS]: "notEquals",
 };

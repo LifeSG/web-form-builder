@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
 import {
+    EConditionType,
     EElementType,
     IConditionalRendering,
     useBuilder,
@@ -85,7 +86,7 @@ export const ConditionalRendering = () => {
     const handleAddButtonClick = () => {
         const conditionalRenderingChild = {
             fieldKey: "",
-            comparator: "Equals",
+            comparator: EConditionType.EQUALS,
             value: "",
             internalId: "",
         };
