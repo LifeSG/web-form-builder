@@ -13,7 +13,7 @@ import {
 import { Container, Wrapper } from "./form-builder.styles";
 import { Translator } from "./translator/translator";
 
-interface IPrefillSchema {
+export interface IPrefillSchema {
     [key: string]: IPrefillAttributes | IPrefillAttributes[];
 }
 export interface ISchemaProps {

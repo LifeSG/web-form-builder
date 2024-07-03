@@ -39,8 +39,10 @@ export namespace Translator {
     export const parseSchema = (schema: ISchemaProps) => {
         const schemaToTranslate = (schema?.schema as any)?.sections?.section
             ?.children?.grid?.children as any;
-        const translatedElements =
-            TextBasedField.translateToElement(schemaToTranslate);
+        const translatedElements = TextBasedField.translateToElement(
+            schemaToTranslate,
+            schema.prefill
+        );
 
         return updateTranslatedElements(translatedElements);
     };

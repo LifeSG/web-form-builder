@@ -415,6 +415,102 @@ describe("Translator", () => {
                     MOCK__EMAIL_ELEMENT_WITH_CONDITIONAL_RENDERING
                 );
             });
+
+            it("should translate with myinfo prefill from the schema & be generated into new elements", () => {
+                const MOCK_EMAIL_SCHEMA_WITH_MYINFO_PREFILL =
+                    generateMockSchema(
+                        {
+                            mock123: [
+                                {
+                                    prefillMode: "Myinfo",
+                                    path: "testpath",
+                                },
+                            ],
+                        },
+                        generateMockElementSchema({
+                            id: "mock123",
+                            label: "Email address",
+                            uiType: EElementType.EMAIL,
+                            validation: [
+                                {
+                                    required: true,
+                                    errorMessage: "Email address is required",
+                                },
+                            ],
+                        })
+                    );
+
+                const generatedSchema = Translator.parseSchema(
+                    MOCK_EMAIL_SCHEMA_WITH_MYINFO_PREFILL as ISchemaProps
+                );
+
+                const MOCK__EMAIL_ELEMENT_WITH_MYINFO_PREFILL: TElementMap =
+                    generateMockElement({
+                        type: EElementType.EMAIL,
+                        id: "mock123",
+                        internalId: Object.keys(generatedSchema.newElements)[0],
+                        requiredErrorMsg: "Email address is required",
+                        prefill: [
+                            {
+                                prefillMode: "Myinfo",
+                                path: "testpath",
+                            },
+                        ],
+                    });
+
+                expect(generatedSchema.newElements).toEqual(
+                    MOCK__EMAIL_ELEMENT_WITH_MYINFO_PREFILL
+                );
+            });
+
+            it("should translate with previous source prefill from the schema & be generated into new elements", () => {
+                const MOCK_EMAIL_SCHEMA_WITH_PREVIOUS_SOURCE_PREFILL =
+                    generateMockSchema(
+                        {
+                            mock123: [
+                                {
+                                    prefillMode: "Previous source",
+                                    path: "testpath",
+                                    actionId: "ui_action_id",
+                                },
+                            ],
+                        },
+                        generateMockElementSchema({
+                            id: "mock123",
+                            label: "Email address",
+                            uiType: EElementType.EMAIL,
+                            validation: [
+                                {
+                                    required: true,
+                                    errorMessage: "Email address is required",
+                                },
+                            ],
+                        })
+                    );
+
+                const generatedSchema = Translator.parseSchema(
+                    MOCK_EMAIL_SCHEMA_WITH_PREVIOUS_SOURCE_PREFILL as ISchemaProps
+                );
+
+                const MOCK__EMAIL_ELEMENT_WITH_PREVIOUS_SOURCE_PREFILL: TElementMap =
+                    generateMockElement({
+                        type: EElementType.EMAIL,
+                        id: "mock123",
+                        internalId: Object.keys(generatedSchema.newElements)[0],
+                        requiredErrorMsg: "Email address is required",
+                        prefill: [
+                            {
+                                prefillMode: "Previous source",
+                                path: "testpath",
+                                actionId: "ui_action_id",
+                            },
+                        ],
+                    });
+
+                expect(generatedSchema.newElements).toEqual(
+                    MOCK__EMAIL_ELEMENT_WITH_PREVIOUS_SOURCE_PREFILL
+                );
+            });
         });
 
         describe("Text based field schema translation", () => {

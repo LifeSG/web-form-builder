@@ -5,6 +5,7 @@ import {
     TElementMap,
 } from "src/context-providers/builder";
 import { ELEMENT_CONDITION_TYPES, SCHEMA_CONDITION_TYPES } from "src/data";
+import { IPrefillSchema } from "src/form-builder";
 import { generateNewInternalId } from "src/util";
 
 interface ISchemaConditionChild {
@@ -13,6 +14,11 @@ interface ISchemaConditionChild {
 
 interface ISchemaCondition {
     [key: string]: ISchemaConditionChild[];
+}
+export interface ISchemaPrefill {
+    prefillMode: "Myinfo" | "Previous source" | "";
+    actionId?: string;
+    path: string;
 }
 
 export interface ISchemaConditionalRendering {
@@ -31,6 +37,14 @@ export const createPrefillObject = (elements: TElementMap) => {
     }, {});
 
     return prefill;
+};
+
+export const translatePrefillObject = (
+    prefill: IPrefillSchema,
+    key: string
+) => {
+    const findPrefill = Object.entries(prefill).find(([id, _]) => id === key);
+    return findPrefill[1];
 };
 
 export const createConditionalRenderingObject = (

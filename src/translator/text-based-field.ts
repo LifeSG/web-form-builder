@@ -1,8 +1,10 @@
 import { EElementType, IValidation, TElement } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
+import { IPrefillSchema } from "src/form-builder";
 import {
     createConditionalRenderingObject,
     translateConditionalRenderingObject,
+    translatePrefillObject,
 } from "./helper";
 
 export namespace TextBasedField {
@@ -45,16 +47,20 @@ export namespace TextBasedField {
                 })
                 .join(", ");
 
-            return [
-                {
-                    validationType:
-                        ELEMENT_VALIDATION_TYPES["Text field"][
-                            EElementType.EMAIL
-                        ].validationTypes[0],
-                    validationRule: extractedDomains,
-                    validationErrorMessage: validation[0].errorMessage,
-                },
-            ];
+            const DOMAIN_REGEX = /@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}/;
+            const isDomain = DOMAIN_REGEX.exec(extractedDomains);
+            if (isDomain) {
+                return [
+                    {
+                        validationType:
+                            ELEMENT_VALIDATION_TYPES["Text field"][
+                                EElementType.EMAIL
+                            ].validationTypes[0],
+                        validationRule: extractedDomains,
+                        validationErrorMessage: validation[0].errorMessage,
+                    },
+                ];
+            }
         };
     }
 
@@ -140,16 +146,18 @@ export namespace TextBasedField {
         return textBasedFieldSchema;
     };
 
-    export const translateToElement = (schemaElements: {
-        [key: string]: any;
-    }) => {
+    export const translateToElement = (
+        schemaElements: {
+            [key: string]: any;
+        },
+        prefill: IPrefillSchema
+    ) => {
         const translatedElements: TElement[] = [];
 
         Object.entries(schemaElements).forEach(([key, element]) => {
             const { showIf, uiType, validation, ...rest } = element;
             const remainingValidation =
                 validation.length > 1 ? validation.slice(1) : [];
-
             translatedElements.push({
                 ...rest,
                 type: uiType,
@@ -165,6 +173,9 @@ export namespace TextBasedField {
                 ...(showIf && {
                     conditionalRendering:
                         translateConditionalRenderingObject(showIf),
+                }),
+                ...(Object.values(prefill)?.length > 0 && {
+                    prefill: translatePrefillObject(prefill, key),
                 }),
             });
         });
