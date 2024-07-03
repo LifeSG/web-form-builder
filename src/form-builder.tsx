@@ -29,7 +29,7 @@ export interface IFormBuilderMethods {
 
 interface IProps {
     offset?: number;
-    onSubmit?: (formData: TElement) => Promise<void>;
+    onSubmit?: (formData: TElement) => Promise<unknown>;
 }
 
 const Component = forwardRef<IFormBuilderMethods, IProps>(({ offset, onSubmit }, ref) => {

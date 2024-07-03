@@ -9,15 +9,6 @@ type Component = typeof FormBuilder;
 const meta: Meta<Component> = {
     title: "Main",
     component: DocElement,
-    /**
-     * Below is a workaround for a type error in the storybook addon when using an async function.
-     * https://github.com/storybookjs/storybook/issues/23731
-     */
-    args: {
-        onSubmit: async (...args) => {
-            action("onSubmit")(args);
-        },
-    },
     argTypes: {
         onSubmit: {
             description: 'An async function that is called when the `Edit Details` form is submitted.',
@@ -39,7 +30,7 @@ export const OnSubmit: StoryObj<Component> = {
             const logAction = action("onSubmit");
             logAction("Saving form...");
             logAction(formData);
-            await new Promise((resolve) => setTimeout(resolve, 1000));
+            await new Promise((resolve) => setTimeout(resolve, 3000));
             logAction("Form saved successfully!");
         };
         return <DocElement onSubmit={handleSubmit} />;

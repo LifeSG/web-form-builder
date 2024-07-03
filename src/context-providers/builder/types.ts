@@ -47,7 +47,6 @@ export interface IBuilderState {
      * rendering order
      */
     orderedIdentifiers: IElementIdentifier[];
-    isSubmitting: boolean;
 }
 
 // =============================================================================

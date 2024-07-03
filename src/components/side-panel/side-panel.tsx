@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { EElementType, EToastTypes, TElement, useDisplay } from "src/context-providers";
 import { SchemaHelper } from "src/schemas";
@@ -12,20 +12,20 @@ import { Toolbar } from "./toolbar";
 
 interface IProps {
     offset?: number;
-    onSubmit?: (formData: TElement) => Promise<void>;
+    onSubmit?: (formData: TElement) => Promise<unknown>;
 }
 
 export const SidePanel = ({ offset, onSubmit }: IProps) => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const {
         showSidePanel,
         currentMode,
         focusedElement,
         updateElement,
         updateFocusedElement,
-        toggleSubmitting,
     } = useBuilder();
     const { showToast } = useDisplay();
     const methods = useForm({
@@ -40,9 +40,9 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
     const onFormSubmit = useCallback(
         async (values) => {
             if (onSubmit) {
-                toggleSubmitting(true);
+                setIsSubmitting(true);
                 await onSubmit(values);
-                toggleSubmitting(false);
+                setIsSubmitting(false);
             }
             const newToast = {
                 message: "Changes are saved successfully.",
@@ -52,7 +52,7 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
             updateFocusedElement(false, values);
             showToast(newToast);
         },
-        [updateElement, updateFocusedElement]
+        [updateElement, updateFocusedElement, onSubmit]
     );
     // =========================================================================
     // USE EFFECTS
@@ -97,12 +97,15 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
 
     return (
         <FormProvider {...methods}>
-            <form onSubmit={methods.handleSubmit(onFormSubmit)}>
+            <form
+                onSubmit={methods.handleSubmit(onFormSubmit)}
+                {...{ inert: isSubmitting ? "" : undefined }}
+            >
                 <Wrapper
                     $minimised={focusedElement ? false : !showSidePanel}
                     $offset={offset ? offset : 0}
                 >
-                    <SidePanelHeader />
+                    <SidePanelHeader isSubmitting={isSubmitting} />
                     <ContentWrapper>
                         <ContentSection
                             $isFocusedElement={focusedElement ? true : false}
