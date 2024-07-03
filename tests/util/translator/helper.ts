@@ -4,7 +4,6 @@ import {
     IConditionalRendering,
     IPrefillAttributes,
     IValidation,
-    TElement,
     TElementMap,
 } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data";
