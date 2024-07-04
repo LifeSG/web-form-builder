@@ -1,12 +1,15 @@
+import { TFrontendEngineFieldSchema } from "@lifesg/web-frontend-engine";
 import {
     EConditionType,
+    EElementType,
     IConditionalRendering,
+    IPrefillAttributes,
     TElement,
     TElementMap,
 } from "src/context-providers/builder";
 import { ELEMENT_CONDITION_TYPES, SCHEMA_CONDITION_TYPES } from "src/data";
 import { IPrefillSchema } from "src/form-builder";
-import { generateNewInternalId } from "src/util";
+import { TextBasedField } from "./text-based-field";
 
 interface ISchemaConditionChild {
     [comparator: string]: string | boolean;
@@ -37,14 +40,6 @@ export const createPrefillObject = (elements: TElementMap) => {
     }, {});
 
     return prefill;
-};
-
-export const translatePrefillObject = (
-    prefill: IPrefillSchema,
-    key: string
-) => {
-    const findPrefill = Object.entries(prefill).find(([id, _]) => id === key);
-    return findPrefill[1];
 };
 
 export const createConditionalRenderingObject = (
@@ -78,7 +73,8 @@ export const createConditionalRenderingObject = (
 };
 
 export const translateConditionalRenderingObject = (
-    conditions: ISchemaCondition[]
+    conditions: ISchemaCondition[],
+    internalId: string
 ) => {
     return conditions.reduce((translatedConditions, condition) => {
         Object.entries(condition).forEach(([key, value]) => {
@@ -91,6 +87,7 @@ export const translateConditionalRenderingObject = (
                         fieldKey: key,
                         comparator: ELEMENT_CONDITION_TYPES[comparator],
                         value: compValue,
+                        internalId,
                     });
                 });
         });
@@ -98,43 +95,46 @@ export const translateConditionalRenderingObject = (
     }, []);
 };
 
-export const updateTranslatedElements = (schemaElements: TElement[]) => {
+export const translateSchemaBasedOnType = (
+    schemaToTranslate: Record<string, TFrontendEngineFieldSchema>
+) => {
+    const translatedElements = [];
+    Object.entries(schemaToTranslate).forEach(([key, element]) => {
+        const { uiType } = element;
+        switch (uiType) {
+            case EElementType.CONTACT:
+            case EElementType.EMAIL:
+            case EElementType.NUMERIC:
+            case EElementType.TEXT:
+            case EElementType.TEXTAREA: {
+                translatedElements.push(
+                    TextBasedField.translateToElement(element, key)
+                );
+                break;
+            }
+            default: {
+                return;
+            }
+        }
+    });
+    return translatedElements;
+};
+
+export const updateTranslatedElements = (
+    schemaElements: TElement[],
+    prefill: IPrefillSchema
+) => {
     const newElements: TElementMap = {};
     const newOrderedIdentifiers = [];
-    const updates = [];
 
     schemaElements.forEach((schemaElement) => {
-        const newId = generateNewInternalId(
-            Object.values(newElements).map((element) => element?.id)
-        );
-        newOrderedIdentifiers.push({ internalId: newId });
-
-        const updatedElement = {
+        newElements[schemaElement.internalId] = {
             ...schemaElement,
-            internalId: newId,
+            prefill: prefill[schemaElement.id] as IPrefillAttributes[],
         };
-
-        newElements[newId] = updatedElement;
-        updates.push(updatedElement);
-    });
-
-    Object.values(newElements).forEach((schema) => {
-        if (
-            schema.conditionalRendering &&
-            schema.conditionalRendering.length > 0
-        ) {
-            schema.conditionalRendering.forEach((condition, index) => {
-                const existingElement = Object.values(newElements).find(
-                    (element) => element?.id === condition.fieldKey
-                );
-                if (existingElement) {
-                    schema.conditionalRendering[index] = {
-                        ...condition,
-                        internalId: existingElement.internalId,
-                    };
-                }
-            });
-        }
+        newOrderedIdentifiers.push({
+            internalId: schemaElement.internalId,
+        });
     });
 
     return {

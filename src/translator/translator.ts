@@ -1,7 +1,14 @@
-import { IFrontendEngineData } from "@lifesg/web-frontend-engine";
+import {
+    IFrontendEngineData,
+    TFrontendEngineFieldSchema,
+} from "@lifesg/web-frontend-engine";
 import { TElementMap } from "src/context-providers";
 import { ISchemaProps } from "src/form-builder";
-import { createPrefillObject, updateTranslatedElements } from "./helper";
+import {
+    createPrefillObject,
+    translateSchemaBasedOnType,
+    updateTranslatedElements,
+} from "./helper";
 import { TextBasedField } from "./text-based-field";
 
 export namespace Translator {
@@ -36,14 +43,14 @@ export namespace Translator {
         return { schema: elementSchema, prefill };
     }
 
-    export const parseSchema = (schema: ISchemaProps) => {
-        const schemaToTranslate = (schema?.schema as any)?.sections?.section
-            ?.children?.grid?.children as any;
-        const translatedElements = TextBasedField.translateToElement(
-            schemaToTranslate,
-            schema.prefill
-        );
-
-        return updateTranslatedElements(translatedElements);
+    export const parseSchema = (formSchema: ISchemaProps) => {
+        const schemaToTranslate = formSchema?.schema?.sections?.section
+            ?.children?.grid?.["children"] as Record<
+            string,
+            TFrontendEngineFieldSchema
+        >;
+        const translatedElements =
+            translateSchemaBasedOnType(schemaToTranslate);
+        return updateTranslatedElements(translatedElements, formSchema.prefill);
     };
 }
