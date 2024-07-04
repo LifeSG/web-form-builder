@@ -23,7 +23,7 @@ interface IProps {
 
 interface ISchemaViewProps {
     data?: ISchemaProps;
-    setSchemaFromView?: (schema: ISchemaProps) => void;
+    onChange?: (schema: ISchemaProps) => void;
 }
 
 const FormPreview = ({ data }: IProps) => {
@@ -35,22 +35,19 @@ const FormPreview = ({ data }: IProps) => {
     );
 };
 
-const SchemaView = ({ data, setSchemaFromView }: ISchemaViewProps) => {
+const SchemaView = ({ data, onChange }: ISchemaViewProps) => {
     const [schema, setSchema] = useState("");
 
-    const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const handleBlur = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setSchema(event.target.value);
-    };
-
-    const handleBlur = () => {
-        if (setSchemaFromView) {
-            const newSchema = JSON.parse(schema);
-            setSchemaFromView(newSchema);
+        if (onChange) {
+            const newSchema = JSON.parse(event.target.value);
+            onChange(newSchema);
         }
     };
 
     useEffect(() => {
-        if (data && setSchemaFromView) {
+        if (data && onChange) {
             const dataToString = JSON.stringify(data, null, 2);
             setSchema(dataToString);
         }
@@ -59,11 +56,7 @@ const SchemaView = ({ data, setSchemaFromView }: ISchemaViewProps) => {
     return (
         <ViewWrapper>
             <Text.H2>Generate Schema</Text.H2>
-            <SchemaPreview
-                value={schema}
-                onChange={handleChange}
-                onBlur={handleBlur}
-            />
+            <SchemaPreview value={schema} onBlur={handleBlur} />
         </ViewWrapper>
     );
 };
@@ -142,7 +135,7 @@ export const DocElement = () => {
             )}
             {pageMode === "schema-mode" && (
                 <ContentWrapper>
-                    <SchemaView data={schema} setSchemaFromView={setSchema} />
+                    <SchemaView data={schema} onChange={setSchema} />
                 </ContentWrapper>
             )}
         </>

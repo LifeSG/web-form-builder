@@ -1,5 +1,6 @@
 import { EElementType, IValidation, TElement } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
+import { SimpleIdGenerator } from "src/util/simple-id-generator";
 import {
     createConditionalRenderingObject,
     translateConditionalRenderingObject,
@@ -140,34 +141,34 @@ export namespace TextBasedField {
         return textBasedFieldSchema;
     };
 
-    export const translateToElement = (schemaElements: {
-        [key: string]: any;
-    }) => {
-        const translatedElements: TElement[] = [];
+    export const translateToElement = (element, key: string) => {
+        const { showIf, uiType, validation, ...rest } = element;
+        const requiredValidation = validation.filter(
+            (child: { hasOwnProperty: (arg0: string) => any }) =>
+                !Object.prototype.hasOwnProperty.call(child, "required")
+        );
+        const newInternalId = SimpleIdGenerator.generate();
 
-        Object.entries(schemaElements).forEach(([key, element]) => {
-            const { showIf, uiType, validation, ...rest } = element;
-            const remainingValidation =
-                validation.length > 1 ? validation.slice(1) : [];
-
-            translatedElements.push({
-                ...rest,
-                type: uiType,
-                required: validation?.[0]?.required,
-                requiredErrorMsg: validation?.[0]?.errorMessage,
-                id: key,
-                ...(remainingValidation.length > 0 && {
-                    validation: translateValidationObject(
-                        uiType,
-                        remainingValidation
-                    ),
-                }),
-                ...(showIf && {
-                    conditionalRendering:
-                        translateConditionalRenderingObject(showIf),
-                }),
-            });
-        });
+        const translatedElements: TElement = {
+            ...rest,
+            type: uiType,
+            required: validation?.[0]?.required,
+            requiredErrorMsg: validation?.[0]?.errorMessage,
+            id: key,
+            internalId: newInternalId,
+            ...(requiredValidation.length > 0 && {
+                validation: translateValidationObject(
+                    uiType,
+                    requiredValidation
+                ),
+            }),
+            ...(showIf && {
+                conditionalRendering: translateConditionalRenderingObject(
+                    showIf,
+                    newInternalId
+                ),
+            }),
+        };
 
         return translatedElements;
     };
