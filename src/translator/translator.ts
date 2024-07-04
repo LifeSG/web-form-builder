@@ -3,13 +3,13 @@ import {
     TFrontendEngineFieldSchema,
 } from "@lifesg/web-frontend-engine";
 import { TElementMap } from "src/context-providers";
-import { ISchemaProps } from "src/form-builder";
 import {
     createPrefillObject,
     translateSchemaBasedOnType,
     updateTranslatedElements,
 } from "./helper";
 import { TextBasedField } from "./text-based-field";
+import { ISchemaProps } from "./types";
 
 export namespace Translator {
     export function generateSchema(elements: TElementMap) {

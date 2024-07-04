@@ -8,8 +8,12 @@ import {
     TElementMap,
 } from "src/context-providers/builder";
 import { ELEMENT_CONDITION_TYPES, SCHEMA_CONDITION_TYPES } from "src/data";
-import { IPrefillSchema } from "src/form-builder";
+import {
+    PREFILL_ACTIONID_REGEX,
+    PREFILL_PATH_REGEX,
+} from "src/schemas/text-based-fields";
 import { TextBasedField } from "./text-based-field";
+import { IPrefillConfig } from "./types";
 
 interface ISchemaConditionChild {
     [comparator: string]: string | boolean;
@@ -17,11 +21,6 @@ interface ISchemaConditionChild {
 
 interface ISchemaCondition {
     [key: string]: ISchemaConditionChild[];
-}
-export interface ISchemaPrefill {
-    prefillMode: "Myinfo" | "Previous source" | "";
-    actionId?: string;
-    path: string;
 }
 
 export interface ISchemaConditionalRendering {
@@ -40,6 +39,22 @@ export const createPrefillObject = (elements: TElementMap) => {
     }, {});
 
     return prefill;
+};
+
+export const translatePrefillObject = (
+    prefill: IPrefillConfig,
+    key: string
+): IPrefillAttributes[] => {
+    const prefillAttributes = prefill[key] as IPrefillAttributes[];
+    return prefillAttributes.filter((value) => {
+        return (
+            PREFILL_PATH_REGEX.exec(value?.path) !== null &&
+            (!value?.actionId ||
+                PREFILL_ACTIONID_REGEX.exec(value?.actionId) !== null) &&
+            (value?.prefillMode === "Myinfo" ||
+                value?.prefillMode === "Previous source")
+        );
+    });
 };
 
 export const createConditionalRenderingObject = (
@@ -122,7 +137,7 @@ export const translateSchemaBasedOnType = (
 
 export const updateTranslatedElements = (
     schemaElements: TElement[],
-    prefill: IPrefillSchema
+    prefill: IPrefillConfig
 ) => {
     const newElements: TElementMap = {};
     const newOrderedIdentifiers = [];
@@ -130,7 +145,7 @@ export const updateTranslatedElements = (
     schemaElements.forEach((schemaElement) => {
         newElements[schemaElement.internalId] = {
             ...schemaElement,
-            prefill: prefill[schemaElement.id] as IPrefillAttributes[],
+            prefill: translatePrefillObject(prefill, schemaElement.id),
         };
         newOrderedIdentifiers.push({
             internalId: schemaElement.internalId,

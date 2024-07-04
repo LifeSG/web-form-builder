@@ -1,4 +1,3 @@
-import { IFrontendEngineData } from "@lifesg/web-frontend-engine";
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import { MainPanel, SidePanel } from "./components";
 import { Modals, Toasts } from "./components/common";
@@ -6,20 +5,11 @@ import { ScreenNotSupportedErrorDisplay } from "./components/error-display/scree
 import { DisplayProvider } from "./context-providers";
 import {
     BuilderProvider,
-    IPrefillAttributes,
     TElementMap,
     useBuilder,
 } from "./context-providers/builder";
 import { Container, Wrapper } from "./form-builder.styles";
-import { Translator } from "./translator/translator";
-
-export interface IPrefillSchema {
-    [key: string]: IPrefillAttributes | IPrefillAttributes[];
-}
-export interface ISchemaProps {
-    schema: IFrontendEngineData;
-    prefill: IPrefillSchema;
-}
+import { ISchemaProps, Translator } from "./translator";
 
 export interface IFormBuilderMethods {
     generateSchema: (elementsList?: TElementMap) => ISchemaProps;

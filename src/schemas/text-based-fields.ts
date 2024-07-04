@@ -7,8 +7,8 @@ import * as yup from "yup";
 
 const VALIDATION_DOMAIN_REGEX =
     /^@[^\s]+(\.[^\s]+)*(?:\s*,\s*@[^,\s]+(\.[^,\s]+)*)*$/;
-const PREFILL_ACTIONID_REGEX = /^[a-zA-Z0-9_-]+$/;
-const PREFILL_PATH_REGEX = /^[a-zA-Z0-9._-]+$/;
+export const PREFILL_ACTIONID_REGEX = /^[a-zA-Z0-9_-]+$/;
+export const PREFILL_PATH_REGEX = /^[a-zA-Z0-9._-]+$/;
 
 export const EMAIL_SCHEMA = yup.object<IBaseTextBasedFieldAttributes>().shape({
     placeholder: yup.string().optional(),
