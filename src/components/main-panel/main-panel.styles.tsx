@@ -63,7 +63,7 @@ export const Wrapper = styled.div<IWrapperStyleProps>`
 `;
 
 export const EmptyDisplayWrapper = styled.div<IWrapperStyleProps>`
-    position: absolute;
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
