@@ -15,12 +15,21 @@ export const useBuilder = () => {
 
     const updateOrderedIdentifiers = useCallback(
         (orderedIdentifiers: IElementIdentifier[]) => {
+            const newElements = {};
+            orderedIdentifiers.map((value) => {
+                newElements[value.internalId] =
+                    state.elements[value.internalId];
+            });
+
             dispatch({
                 type: "update-ordered-identifiers",
-                payload: orderedIdentifiers,
+                payload: {
+                    orderedIdentifiers,
+                    elements: newElements,
+                },
             });
         },
-        []
+        [state.elements, state.orderedIdentifiers]
     );
 
     const addElement = useCallback(

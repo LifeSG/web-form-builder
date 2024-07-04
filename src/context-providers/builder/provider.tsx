@@ -36,7 +36,8 @@ export const builderReducer = (
             break;
         }
         case "update-ordered-identifiers": {
-            state.orderedIdentifiers = action.payload;
+            state.orderedIdentifiers = action.payload.orderedIdentifiers;
+            state.elements = action.payload.elements;
             break;
         }
         case "add-element": {

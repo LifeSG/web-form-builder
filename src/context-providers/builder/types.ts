@@ -64,7 +64,10 @@ export interface IToggleModeAction {
 
 export interface IUpdateOrderedIdentifiersAction {
     type: "update-ordered-identifiers";
-    payload: IElementIdentifier[];
+    payload: {
+        orderedIdentifiers: IElementIdentifier[];
+        elements?: TElementMap;
+    };
 }
 
 export interface IAddElementAction {
