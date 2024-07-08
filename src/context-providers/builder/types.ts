@@ -52,10 +52,6 @@ export interface IBuilderState {
 // =============================================================================
 // ACTIONS
 // =============================================================================
-export interface IToggleSubmittingAction {
-    type: "toggle-submitting";
-    payload: boolean;
-}
 
 export interface ITogglePanelAction {
     type: "toggle-panel";
@@ -111,7 +107,6 @@ export interface IUpdateFocusedElementAction {
 }
 
 export type TBuilderAction =
-    | IToggleSubmittingAction
     | ITogglePanelAction
     | IUpdateOrderedIdentifiersAction
     | IToggleModeAction

@@ -13,14 +13,11 @@ describe("SidePanel", () => {
             unobserve: jest.fn(),
             disconnect: jest.fn(),
         }));
-        jest.useFakeTimers();
     });
 
     afterEach(() => {
         jest.restoreAllMocks();
         jest.resetAllMocks();
-        jest.runOnlyPendingTimers();
-        jest.useRealTimers();
     });
 
     describe("rendering of the toolbar", () => {
@@ -62,7 +59,7 @@ describe("SidePanel", () => {
     describe("saving of edit element details panel", () => {
         it("should show loading state and disable button when form is saving", async () => {
             const mockOnSubmit = jest.fn(
-                () => new Promise((resolve) => setTimeout(resolve, 10000))
+                () => new Promise((resolve) => setTimeout(resolve))
             );
 
             renderComponent(
@@ -90,10 +87,6 @@ describe("SidePanel", () => {
             expect(saveButton).toBeDisabled();
 
             await waitFor(() => expect(mockOnSubmit).toHaveBeenCalled());
-
-            act(() => {
-                jest.advanceTimersByTime(10000);
-            });
 
             await waitFor(() => expect(saveButton).toHaveTextContent("Saved"));
         });
