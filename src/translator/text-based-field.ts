@@ -1,7 +1,14 @@
-import { EElementType, IValidation, TElement } from "src/context-providers";
+import {
+    EElementType,
+    IColumns,
+    IValidation,
+    TElement,
+} from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import { SimpleIdGenerator } from "src/util/simple-id-generator";
 import {
+    ISchemaCondition,
+    ISchemaConditionalRendering,
     createConditionalRenderingObject,
     translateConditionalRenderingObject,
 } from "./helper";
@@ -10,6 +17,17 @@ export namespace TextBasedField {
     export interface ISchemaValidation {
         [key: string]: string | boolean;
         errorMessage?: string;
+    }
+
+    export interface IElementSchema {
+        columns: IColumns;
+        label: string;
+        placeholder: string;
+        required: boolean;
+        requiredErrorMessage: string;
+        uiType: EElementType;
+        validation?: ISchemaValidation[];
+        showIf?: ISchemaCondition[];
     }
 
     namespace Email {
@@ -141,30 +159,37 @@ export namespace TextBasedField {
         return textBasedFieldSchema;
     };
 
-    export const translateToElement = (element, key: string) => {
+    export const translateToElement = (
+        element: IElementSchema,
+        key: string
+    ) => {
         const { showIf, uiType, validation, ...rest } = element;
-        const requiredValidation = validation.filter(
-            (child: { hasOwnProperty: (arg0: string) => any }) =>
-                !Object.prototype.hasOwnProperty.call(child, "required")
-        );
+
+        let requiredValidation: ISchemaValidation = {};
+        const fieldValidation = [];
+
+        validation.forEach((rule) => {
+            if (Object.prototype.hasOwnProperty.call(rule, "required")) {
+                requiredValidation = rule;
+            } else {
+                fieldValidation.push(rule);
+            }
+        });
         const newInternalId = SimpleIdGenerator.generate();
 
         const translatedElements: TElement = {
             ...rest,
             type: uiType,
-            required: validation?.[0]?.required,
-            requiredErrorMsg: validation?.[0]?.errorMessage,
+            required: requiredValidation.required as boolean,
+            requiredErrorMsg: requiredValidation.errorMessage,
             id: key,
             internalId: newInternalId,
-            ...(requiredValidation.length > 0 && {
-                validation: translateValidationObject(
-                    uiType,
-                    requiredValidation
-                ),
+            ...(fieldValidation.length > 0 && {
+                validation: translateValidationObject(uiType, fieldValidation),
             }),
             ...(showIf && {
                 conditionalRendering: translateConditionalRenderingObject(
-                    showIf,
+                    showIf as ISchemaCondition[],
                     newInternalId
                 ),
             }),

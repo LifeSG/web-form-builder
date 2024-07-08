@@ -13,15 +13,15 @@ interface ISchemaConditionChild {
     [comparator: string]: string | boolean;
 }
 
-interface ISchemaCondition {
+export interface ISchemaCondition {
     [key: string]: ISchemaConditionChild[];
 }
 
 export interface ISchemaConditionalRendering {
-    [key: string]: {
+    [key: string]: Array<{
         filled?: boolean;
-        equals?: string | number;
-    }[];
+        [comparator: string]: string | boolean | number;
+    }>;
 }
 
 export const createPrefillObject = (elements: TElementMap) => {
@@ -88,7 +88,7 @@ export const translateConditionalRenderingObject = (
     }, []);
 };
 
-export const translateSchemaBasedOnType = (
+export const parseSchemaBasedOnType = (
     schemaToTranslate: Record<string, TFrontendEngineFieldSchema>
 ) => {
     const translatedElements = [];
@@ -101,12 +101,12 @@ export const translateSchemaBasedOnType = (
             case EElementType.TEXT:
             case EElementType.TEXTAREA: {
                 translatedElements.push(
-                    TextBasedField.translateToElement(element, key)
+                    TextBasedField.translateToElement(
+                        element as TextBasedField.IElementSchema,
+                        key
+                    )
                 );
                 break;
-            }
-            default: {
-                return;
             }
         }
     });

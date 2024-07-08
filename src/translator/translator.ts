@@ -6,7 +6,7 @@ import { TElementMap } from "src/context-providers";
 import { ISchemaProps } from "src/form-builder";
 import {
     createPrefillObject,
-    translateSchemaBasedOnType,
+    parseSchemaBasedOnType,
     updateTranslatedElements,
 } from "./helper";
 import { TextBasedField } from "./text-based-field";
@@ -49,8 +49,7 @@ export namespace Translator {
             string,
             TFrontendEngineFieldSchema
         >;
-        const translatedElements =
-            translateSchemaBasedOnType(schemaToTranslate);
+        const translatedElements = parseSchemaBasedOnType(schemaToTranslate);
         return updateTranslatedElements(translatedElements);
     };
 }
