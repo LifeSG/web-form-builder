@@ -51,6 +51,18 @@ export const ELEMENT_VALIDATION_TYPES = {
             maxEntries: 1,
             validationTypes: ["Email domain"],
         },
+        [EElementType.TEXT]: {
+            maxEntries: {
+                custom_regex: 999999,
+                min_length: 1,
+                max_length: 1,
+            },
+            validationTypes: [
+                "Custom regex",
+                "Minimum length",
+                "Maximum length",
+            ],
+        },
     },
 };
 

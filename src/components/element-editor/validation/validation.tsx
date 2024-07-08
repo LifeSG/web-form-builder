@@ -18,7 +18,7 @@ export const Validation = () => {
     const { setValue, watch, getValues } =
         useFormContext<IBaseTextBasedFieldValues>();
     const validationValues = getValues("validation") || [];
-    const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
+    const schema = SchemaHelper.buildSchema(element.type);
     const invalidAndEmptyFields = checkIsValid();
 
     // =========================================================================
@@ -30,6 +30,9 @@ export const Validation = () => {
                 return ELEMENT_VALIDATION_TYPES["Text field"][
                     EElementType.EMAIL
                 ].validationTypes;
+            case EElementType.TEXT:
+                return ELEMENT_VALIDATION_TYPES["Text field"][EElementType.TEXT]
+                    .validationTypes;
             default:
                 return ["Select", "Type 1"];
         }
@@ -38,11 +41,40 @@ export const Validation = () => {
     function getMaxEntries(elementType: EElementType) {
         switch (elementType) {
             case EElementType.EMAIL:
-                return ELEMENT_VALIDATION_TYPES["Text field"][
-                    EElementType.EMAIL
-                ].maxEntries;
+                return (
+                    validationValues?.length ===
+                    ELEMENT_VALIDATION_TYPES["Text field"][EElementType.EMAIL]
+                        .maxEntries
+                );
+            case EElementType.TEXT:
+                const { validationTypes, maxEntries } =
+                    ELEMENT_VALIDATION_TYPES["Text field"][EElementType.TEXT];
+
+                const minLengthCount = validationValues
+                    .filter((validation) =>
+                        validationTypes.includes(validation.validationType)
+                    )
+                    .filter(
+                        (validation) =>
+                            validation.validationType === validationTypes[1]
+                    ).length;
+
+                const maxLengthCount = validationValues
+                    .filter((validation) =>
+                        validationTypes.includes(validation.validationType)
+                    )
+                    .filter(
+                        (validation) =>
+                            validation.validationType === validationTypes[2]
+                    ).length;
+
+                return (
+                    maxLengthCount > maxEntries.max_length ||
+                    minLengthCount > maxEntries.min_length
+                );
+
             default:
-                return 6; // this is a arbitary value will be changed later on
+                return validationValues?.length === 6; // this is a arbitary value will be changed later on
         }
     }
 
@@ -67,7 +99,7 @@ export const Validation = () => {
                     To add new validation, fill up existing validation first.
                 </Text.Body>
             );
-        } else if (validationValues?.length === getMaxEntries(element?.type)) {
+        } else if (getMaxEntries(element?.type)) {
             return (
                 <Text.Body>
                     Limit reached. To add new validation, remove existing ones
@@ -152,8 +184,7 @@ export const Validation = () => {
             title="Validation"
             buttonLabel="validation"
             disabledButton={
-                validationValues?.length === getMaxEntries(element?.type) ||
-                invalidAndEmptyFields
+                getMaxEntries(element?.type) || invalidAndEmptyFields
             }
             popoverMessage={getPopoverMessage()}
         >

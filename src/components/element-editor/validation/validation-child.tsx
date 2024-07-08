@@ -34,6 +34,41 @@ export const ValidationChild = ({ onDelete, options, index }: IProps) => {
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
+    const renderValidationRule = (fieldWithoutRef) => {
+        if (options.length === 1 && options[0] === "Email domain") {
+            return (
+                <Form.Textarea
+                    {...fieldWithoutRef}
+                    placeholder={
+                        validationRulePlaceHolder
+                            ? validationRulePlaceHolder
+                            : "Enter rule"
+                    }
+                    value={fieldWithoutRef.value}
+                    onChange={(event) => {
+                        fieldWithoutRef.onChange(event.target.value);
+                    }}
+                    errorMessage={
+                        errors?.validation?.[index]?.validationRule?.message
+                    }
+                />
+            );
+        } else {
+            return (
+                <Form.Input
+                    {...fieldWithoutRef}
+                    placeholder={"Enter rule"}
+                    value={fieldWithoutRef.value}
+                    onChange={(event) => {
+                        fieldWithoutRef.onChange(event.target.value);
+                    }}
+                    errorMessage={
+                        errors?.validation?.[index]?.validationRule?.message
+                    }
+                />
+            );
+        }
+    };
 
     return (
         <ChildEntry onDelete={onDelete}>
@@ -70,26 +105,7 @@ export const ValidationChild = ({ onDelete, options, index }: IProps) => {
                         control={control}
                         render={({ field }) => {
                             const { ref, ...fieldWithoutRef } = field;
-                            return (
-                                <Form.Textarea
-                                    {...fieldWithoutRef}
-                                    placeholder={
-                                        validationRulePlaceHolder
-                                            ? validationRulePlaceHolder
-                                            : "Enter rule"
-                                    }
-                                    value={fieldWithoutRef.value}
-                                    onChange={(event) => {
-                                        fieldWithoutRef.onChange(
-                                            event.target.value
-                                        );
-                                    }}
-                                    errorMessage={
-                                        errors?.validation?.[index]
-                                            ?.validationRule?.message
-                                    }
-                                />
-                            );
+                            return renderValidationRule({ ...fieldWithoutRef });
                         }}
                         shouldUnregister={true}
                     />

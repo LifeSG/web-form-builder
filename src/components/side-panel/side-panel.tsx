@@ -29,7 +29,11 @@ export const SidePanel = ({ offset }: IProps) => {
     const methods = useForm({
         mode: "onTouched",
         // TODO: insert proper type; email is a placeholder
-        resolver: yupResolver(SchemaHelper.buildSchema(EElementType.EMAIL)),
+        resolver: yupResolver(
+            SchemaHelper.buildSchema(
+                focusedElement?.element?.type || EElementType.EMAIL
+            )
+        ),
     });
 
     // =========================================================================
