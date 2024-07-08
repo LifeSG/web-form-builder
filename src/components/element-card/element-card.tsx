@@ -39,8 +39,7 @@ export const ElementCard = ({ element, onClick }: IProps) => {
     // =========================================================================
     const { label, id } = element;
     const { focusedElement, deleteElement, duplicateElement } = useBuilder();
-    
-    const { showToast, toasts } = useDisplay();
+    const { showToast } = useDisplay();
 
     const { isDragging } = useDraggable({
         id: element.internalId,
