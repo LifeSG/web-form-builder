@@ -4,7 +4,11 @@ import { PencilIcon } from "@lifesg/react-icons/pencil";
 import { TabletIcon } from "@lifesg/react-icons/tablet";
 import { FrontendEngine } from "@lifesg/web-frontend-engine";
 import { useEffect, useRef, useState } from "react";
-import { FormBuilder, IFormBuilderMethods, ISchemaProps } from "src/form-builder";
+import {
+    FormBuilder,
+    IFormBuilderMethods,
+    ISchemaProps,
+} from "src/form-builder";
 import {
     ContentWrapper,
     IconButton,
@@ -54,10 +58,18 @@ export const DocElement = () => {
 
     const handleFormPreviewButton = () => {
         setPageMode("preview-mode");
+        if (formBuilderRef.current) {
+            const generatedSchema = formBuilderRef.current?.generateSchema();
+            setSchema(generatedSchema);
+        }
     };
 
     const handleSchemaViewButton = () => {
         setPageMode("schema-mode");
+        if (formBuilderRef.current) {
+            const generatedSchema = formBuilderRef.current?.generateSchema();
+            setSchema(generatedSchema);
+        }
     };
 
     // =========================================================================
@@ -68,7 +80,7 @@ export const DocElement = () => {
             const generatedSchema = formBuilderRef.current?.generateSchema();
             setSchema(generatedSchema);
         }
-    }, [formBuilderRef.current, pageMode]);
+    }, [formBuilderRef.current]);
 
     // =========================================================================
     // RENDER FUNCTIONS
