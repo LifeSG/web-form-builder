@@ -28,9 +28,21 @@ export const SidePanel = ({ offset }: IProps) => {
     const { showToast } = useDisplay();
     const methods = useForm({
         mode: "onTouched",
+        defaultValues: {
+            type: "",
+            label: "",
+            required: true,
+            requiredErrorMsg: "",
+            id: "",
+            placeholder: "",
+        },
         // TODO: insert proper type; email is a placeholder
         resolver: yupResolver(SchemaHelper.buildSchema(EElementType.EMAIL)),
     });
+
+    const {
+        formState: { isSubmitSuccessful, isSubmitting },
+    } = methods;
 
     // =========================================================================
     // HELPER FUNCTIONS
@@ -50,21 +62,21 @@ export const SidePanel = ({ offset }: IProps) => {
     // =========================================================================
     // USE EFFECTS
     // =========================================================================
-    useEffect(() => {
-        methods.reset(undefined, {
-            keepValues: true,
-            keepDirty: false,
-        });
-    }, [methods.formState.isSubmitSuccessful]);
 
     useEffect(() => {
-        if (focusedElement) {
-            const newElement = {};
-            Object.entries(focusedElement?.element).forEach(([key, value]) => {
-                newElement[key] = value === undefined ? "" : value;
+        if (isSubmitSuccessful) {
+            methods.reset(undefined, {
+                keepValues: true,
+                keepDirty: false,
             });
-            methods.reset(newElement);
         }
+    }, [isSubmitSuccessful, methods.reset]);
+
+    useEffect(() => {
+        if (!focusedElement || isSubmitting) {
+            return;
+        }
+        methods.reset(focusedElement.element);
     }, [focusedElement?.element, methods.reset]);
 
     // =========================================================================
@@ -75,7 +87,6 @@ export const SidePanel = ({ offset }: IProps) => {
         if (focusedElement) {
             return <ElementEditor />;
         }
-
         switch (currentMode) {
             case EBuilderMode.ADD_ELEMENT:
                 return <AddElementsPanel />;
