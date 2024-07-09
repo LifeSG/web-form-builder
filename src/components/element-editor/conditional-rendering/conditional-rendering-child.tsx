@@ -120,7 +120,6 @@ export const ConditionalRenderingChild = ({
                                     />
                                 );
                             }}
-                            shouldUnregister={true}
                         />
                     </div>
                     <div>
@@ -148,7 +147,6 @@ export const ConditionalRenderingChild = ({
                                     />
                                 );
                             }}
-                            shouldUnregister={true}
                         />
                     </div>
                 </SelectFieldContainer>
@@ -177,7 +175,6 @@ export const ConditionalRenderingChild = ({
                                 />
                             );
                         }}
-                        shouldUnregister={true}
                     />
                 </div>
             </FieldWrapper>

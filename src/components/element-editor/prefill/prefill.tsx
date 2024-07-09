@@ -1,8 +1,7 @@
 import { Text } from "@lifesg/react-design-system/text";
-import { useEffect, useState } from "react";
-import { useFormContext } from "react-hook-form";
+import { useFieldArray, useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
-import { EElementType, IPrefillAttributes } from "src/context-providers";
+import { EElementType } from "src/context-providers";
 import { IBaseTextBasedFieldValues, SchemaHelper } from "src/schemas";
 import * as Yup from "yup";
 import { PrefillChild } from "./prefill-child";
@@ -10,10 +9,13 @@ export const Prefill = () => {
     // =========================================================================
     // CONST, STATES, REFS
     // =========================================================================
-    const [, setChildEntryValues] = useState<IPrefillAttributes[]>([]);
-    const { setValue, watch, getValues } =
+    const { watch, control } =
         useFormContext<IBaseTextBasedFieldValues>();
-    const prefillValues = getValues("prefill") || [];
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: "prefill",
+    });
+    const prefillValues = watch("prefill");
     const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
     const invalidAndEmptyFields = checkIsValid();
 
@@ -23,7 +25,6 @@ export const Prefill = () => {
     function checkIsValid() {
         try {
             const validationSchema = schema.pick(["prefill"]);
-
             validationSchema.validateSync({
                 prefill: prefillValues,
                 abortEarly: false,
@@ -53,39 +54,12 @@ export const Prefill = () => {
             prefillMode: null,
             path: "",
         };
-        const updatedValues = [...prefillValues, prefillChild];
-        setValue("prefill", updatedValues, { shouldDirty: true });
+        append(prefillChild);
     };
 
     const handleDelete = (index: number) => {
-        const currentValues = [...prefillValues];
-        const updatedValues = currentValues.filter((_, i) => i !== index);
-
-        /** * shouldDirty will only dirty the field; the dirty state is not propagated to the form level
-         * * workaround is to wait for RHF to register the change and set the value again
-         * * reference: https://github.com/orgs/react-hook-form/discussions/9913#discussioncomment-4936301 */
-
-        setValue("prefill", updatedValues, { shouldDirty: true });
-        setTimeout(() => {
-            setValue("prefill", updatedValues, { shouldDirty: true });
-        });
+        remove(index);
     };
-
-    // =========================================================================
-    // EFFECTS
-    // =========================================================================
-    useEffect(() => {
-        const subscription = watch((values) => {
-            if (values?.prefill) {
-                setChildEntryValues([
-                    ...values?.prefill,
-                ] as IPrefillAttributes[]);
-            } else {
-                setChildEntryValues([]);
-            }
-        });
-        return () => subscription.unsubscribe();
-    }, []);
 
     // =========================================================================
     // RENDER FUNCTIONS
@@ -95,9 +69,9 @@ export const Prefill = () => {
         if (prefillValues?.length === 0) {
             return;
         } else {
-            return prefillValues?.map((_, index) => (
+            return fields.map((field, index) => (
                 <PrefillChild
-                    key={`prefill-entry-${index}`}
+                    key={field.id}
                     onDelete={() => handleDelete(index)}
                     index={index}
                 />
