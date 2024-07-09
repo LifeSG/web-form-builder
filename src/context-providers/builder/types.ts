@@ -52,6 +52,7 @@ export interface IBuilderState {
 // =============================================================================
 // ACTIONS
 // =============================================================================
+
 export interface ITogglePanelAction {
     type: "toggle-panel";
     payload: boolean;

@@ -6,6 +6,7 @@ import { EBuilderMode, IElementIdentifier, TElementMap } from "./types";
 
 export const useBuilder = () => {
     const { state, dispatch } = useContext(BuilderContext);
+
     const togglePanel = useCallback((isCollapsed: boolean) => {
         dispatch({
             type: "toggle-panel",
