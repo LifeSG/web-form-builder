@@ -86,10 +86,8 @@ export const ElementCard = ({ element, onClick }: IProps) => {
         showToast(newToast);
     };
 
-
     const handleDeleteClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation();
-        // TODO: Add confirmation modal
         deleteElement(element.internalId);
         const deleteToast: IToast = {
             message: "Element deleted.",

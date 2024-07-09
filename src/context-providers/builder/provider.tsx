@@ -48,12 +48,7 @@ export const builderReducer = (
             state.elementCounter += 1;
             break;
         }
-        case "delete-element": {
-            state.elements = action.payload.updatedElements;
-            state.orderedIdentifiers = action.payload.orderedIdentifiers;
-            state.deletedElements = action.payload.deletedElements;
-            break;
-        }
+        case "delete-element":
         case "undo-delete-element": {
             state.elements = action.payload.updatedElements;
             state.orderedIdentifiers = action.payload.orderedIdentifiers;

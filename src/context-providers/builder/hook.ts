@@ -187,6 +187,7 @@ export const useBuilder = () => {
             state.elements,
             state.mode,
             state.deletedElements,
+            state.focusedElement,
         ]
     );
 
@@ -200,24 +201,20 @@ export const useBuilder = () => {
 
             const existingOrderedIdentifiers = state.orderedIdentifiers;
 
-            let insertionIndex = 0;
+            let insertionIndex = existingOrderedIdentifiers.findIndex(
+                (identifier) => identifier.position > deletedElement.position
+            );
 
-            for (let i = 0; i < existingOrderedIdentifiers.length; i++) {
-                if (
-                    existingOrderedIdentifiers[i].position >
-                    deletedElement.position
-                ) {
-                    insertionIndex = i;
-                    break;
-                }
-                insertionIndex += 1;
+            if (insertionIndex === -1) {
+                insertionIndex = existingOrderedIdentifiers.length;
             }
 
-            const newOrderedIdentifiers: IElementIdentifier[] = [
-                ...state.orderedIdentifiers.slice(0, insertionIndex),
-                { internalId, position: deletedElement.position },
-                ...state.orderedIdentifiers.slice(insertionIndex),
-            ];
+            const newOrderedIdentifiers = [...existingOrderedIdentifiers];
+
+            newOrderedIdentifiers.splice(insertionIndex, 0, {
+                internalId,
+                position: deletedElement.position,
+            });
 
             dispatch({
                 type: "undo-delete-element",

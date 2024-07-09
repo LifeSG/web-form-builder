@@ -8,10 +8,9 @@ import {
 
 interface IProps {
     toast: IToast;
-    onClickActionButton?: () => void;
 }
 
-export const DisplayToast = ({ toast, onClickActionButton }: IProps) => {
+export const DisplayToast = ({ toast }: IProps) => {
     // =========================================================================
     // CONST, STATE, REF
     // =========================================================================
