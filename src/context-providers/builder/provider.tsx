@@ -55,6 +55,7 @@ export const builderReducer = (
             break;
         }
         case "remove-focused-element": {
+            state.focusedElement.isDirty = false;
             state.focusedElement = null;
             break;
         }
