@@ -4,6 +4,8 @@ import { Controller, useFormContext } from "react-hook-form";
 import { ChildEntry } from "src/components/common";
 import { IBaseTextBasedFieldValues } from "src/schemas";
 import { FieldWrapper } from "./validation.styles";
+import { renderValidationRule } from "./helper";
+import { EElementType, useBuilder } from "src/context-providers";
 
 interface IProps {
     onDelete: () => void;
@@ -15,9 +17,12 @@ export const ValidationChild = ({ onDelete, options, index }: IProps) => {
     const {
         formState: { errors },
         control,
+        watch,
     } = useFormContext<IBaseTextBasedFieldValues>();
+    const { focusedElement } = useBuilder();
     const [validationRulePlaceHolder, setValidationRulePlaceHolder] =
         useState<string>();
+    const validationType = watch(`validation.${index}.validationType`);
 
     // =========================================================================
     // USE EFFECTS
@@ -34,41 +39,6 @@ export const ValidationChild = ({ onDelete, options, index }: IProps) => {
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
-    const renderValidationRule = (fieldWithoutRef) => {
-        if (options.length === 1 && options[0] === "Email domain") {
-            return (
-                <Form.Textarea
-                    {...fieldWithoutRef}
-                    placeholder={
-                        validationRulePlaceHolder
-                            ? validationRulePlaceHolder
-                            : "Enter rule"
-                    }
-                    value={fieldWithoutRef.value}
-                    onChange={(event) => {
-                        fieldWithoutRef.onChange(event.target.value);
-                    }}
-                    errorMessage={
-                        errors?.validation?.[index]?.validationRule?.message
-                    }
-                />
-            );
-        } else {
-            return (
-                <Form.Input
-                    {...fieldWithoutRef}
-                    placeholder={"Enter rule"}
-                    value={fieldWithoutRef.value}
-                    onChange={(event) => {
-                        fieldWithoutRef.onChange(event.target.value);
-                    }}
-                    errorMessage={
-                        errors?.validation?.[index]?.validationRule?.message
-                    }
-                />
-            );
-        }
-    };
 
     return (
         <ChildEntry onDelete={onDelete}>
@@ -85,7 +55,11 @@ export const ValidationChild = ({ onDelete, options, index }: IProps) => {
                                     placeholder="Select"
                                     selectedOption={fieldWithoutRef.value}
                                     options={options}
-                                    disabled={options.length === 1}
+                                    disabled={
+                                        options.length === 1 &&
+                                        focusedElement.element.type ===
+                                            EElementType.EMAIL
+                                    }
                                     onSelectOption={(option) => {
                                         field.onChange(option);
                                     }}
@@ -105,7 +79,13 @@ export const ValidationChild = ({ onDelete, options, index }: IProps) => {
                         control={control}
                         render={({ field }) => {
                             const { ref, ...fieldWithoutRef } = field;
-                            return renderValidationRule({ ...fieldWithoutRef });
+                            return renderValidationRule(
+                                { ...fieldWithoutRef },
+                                index,
+                                validationType,
+                                validationRulePlaceHolder,
+                                errors
+                            );
                         }}
                         shouldUnregister={true}
                     />

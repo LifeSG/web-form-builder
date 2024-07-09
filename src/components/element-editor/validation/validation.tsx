@@ -6,6 +6,7 @@ import { EElementType, IValidation, useBuilder } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import { IBaseTextBasedFieldValues, SchemaHelper } from "src/schemas";
 import * as Yup from "yup";
+import { getOptionsByType } from "./helper";
 import { ValidationChild } from "./validation-child";
 
 export const Validation = () => {
@@ -24,19 +25,6 @@ export const Validation = () => {
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
-    function getOptionsByType(elementType: EElementType) {
-        switch (elementType) {
-            case EElementType.EMAIL:
-                return ELEMENT_VALIDATION_TYPES["Text field"][
-                    EElementType.EMAIL
-                ].validationTypes;
-            case EElementType.TEXT:
-                return ELEMENT_VALIDATION_TYPES["Text field"][EElementType.TEXT]
-                    .validationTypes;
-            default:
-                return ["Select", "Type 1"];
-        }
-    }
 
     function getMaxEntries(elementType: EElementType) {
         switch (elementType) {
@@ -47,30 +35,10 @@ export const Validation = () => {
                         .maxEntries
                 );
             case EElementType.TEXT:
-                const { validationTypes, maxEntries } =
-                    ELEMENT_VALIDATION_TYPES["Text field"][EElementType.TEXT];
-
-                const minLengthCount = validationValues
-                    .filter((validation) =>
-                        validationTypes.includes(validation.validationType)
-                    )
-                    .filter(
-                        (validation) =>
-                            validation.validationType === validationTypes[1]
-                    ).length;
-
-                const maxLengthCount = validationValues
-                    .filter((validation) =>
-                        validationTypes.includes(validation.validationType)
-                    )
-                    .filter(
-                        (validation) =>
-                            validation.validationType === validationTypes[2]
-                    ).length;
-
                 return (
-                    maxLengthCount > maxEntries.max_length ||
-                    minLengthCount > maxEntries.min_length
+                    validationValues?.length ===
+                    ELEMENT_VALIDATION_TYPES["Text field"][EElementType.TEXT]
+                        .maxEntries
                 );
 
             default:
@@ -172,7 +140,7 @@ export const Validation = () => {
             <ValidationChild
                 key={`validation-entry-${index}`}
                 onDelete={() => handleDelete(index)}
-                options={getOptionsByType(element.type)}
+                options={getOptionsByType(validationValues, element.type)}
                 index={index}
             />
         ));

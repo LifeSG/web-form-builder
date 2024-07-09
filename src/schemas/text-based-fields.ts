@@ -104,30 +104,23 @@ export const SHORT_TEXT_SCHEMA = yup
                                 .validRegex("Regex not valid."),
                     })
                     .when("validationType", {
-                        is: ELEMENT_VALIDATION_TYPES["Text field"][
-                            EElementType.TEXT
-                        ].validationTypes[1],
+                        is:
+                            ELEMENT_VALIDATION_TYPES["Text field"][
+                                EElementType.TEXT
+                            ].validationTypes[1] ||
+                            ELEMENT_VALIDATION_TYPES["Text field"][
+                                EElementType.TEXT
+                            ].validationTypes[2],
                         then: (rule) =>
                             rule
-                                .required("Minimum length required.")
+                                .required("Numeric value required.")
                                 .test(
                                     "is-number",
-                                    "Numeric value required.",
+                                    "Numeric value only.",
                                     (value) => !isNaN(Number(value))
                                 ),
-                    })
-                    .when("validationType", {
-                        is: ELEMENT_VALIDATION_TYPES["Text field"][
-                            EElementType.TEXT
-                        ].validationTypes[2],
-                        then: (rule) =>
-                            rule
-                                .required("Maximum length required.")
-                                .test(
-                                    "is-number",
-                                    "Numeric value required.",
-                                    (value) => !isNaN(Number(value))
-                                ),
+                        otherwise: (rule) =>
+                            rule.required("Validation rule required."),
                     }),
 
                 validationErrorMessage: yup
