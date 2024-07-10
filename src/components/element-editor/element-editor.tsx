@@ -26,14 +26,14 @@ export const ElementEditor = () => {
 
     const { isTouched: isTypeTouched } = getFieldState("type");
 
-    useEffect(() => {
-        // Once the element type is touched, that element should be considered dirty until it is saved or its changes are discarded.
-        if (isTypeTouched) {
-            updateFocusedElement(true);
-            return;
-        }
-        updateFocusedElement(!!isDirty);
-    }, [isDirty, updateFocusedElement]);
+    // useEffect(() => {
+    //     // Once the element type is touched, that element should be considered dirty until it is saved or its changes are discarded.
+    //     if (isTypeTouched) {
+    //         updateFocusedElement(true);
+    //         return;
+    //     }
+    //     updateFocusedElement(!!isDirty);
+    // }, [isDirty, updateFocusedElement]);
 
     return (
         <Wrapper>
