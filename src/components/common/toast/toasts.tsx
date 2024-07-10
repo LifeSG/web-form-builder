@@ -3,8 +3,7 @@ import { DisplayToast } from "./toast";
 import { ToastWrapper } from "./toasts.styles";
 
 export const Toasts: Function = () => {
-    const { toasts } = useDisplay();
-
+    const { toasts } = useDisplay();    
     return (
         <ToastWrapper>
             {toasts.map((toast) => (

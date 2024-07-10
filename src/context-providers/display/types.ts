@@ -4,7 +4,7 @@ import { Dispatch } from "react";
 // STATE
 // =============================================================================
 export enum EToastTypes {
-    DELETE_TOAST = "delete-toast",
+    DELETE_ELEMENT_TOAST = "delete-element-toast",
     SUCCESS_TOAST = "success-toast",
 }
 
@@ -12,6 +12,7 @@ export interface IToast {
     id?: string;
     type?: EToastTypes;
     message?: string;
+    elementInternalId?: string;
     onClickActionButton?: () => void;
 }
 
