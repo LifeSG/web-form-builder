@@ -30,9 +30,7 @@ export const SidePanel = ({ offset }: IProps) => {
         mode: "onTouched",
         // TODO: insert proper type; email is a placeholder
         resolver: yupResolver(
-            SchemaHelper.buildSchema(
-                focusedElement?.element?.type || EElementType.EMAIL
-            )
+            SchemaHelper.buildSchema(focusedElement?.element?.type)
         ),
     });
 

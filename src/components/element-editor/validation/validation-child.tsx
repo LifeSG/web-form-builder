@@ -1,11 +1,10 @@
 import { Form } from "@lifesg/react-design-system/form";
-import { useEffect, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { ChildEntry } from "src/components/common";
-import { IBaseTextBasedFieldValues } from "src/schemas";
-import { FieldWrapper } from "./validation.styles";
-import { renderValidationRule } from "./helper";
 import { EElementType, useBuilder } from "src/context-providers";
+import { IBaseTextBasedFieldValues } from "src/schemas";
+import { ValidationRule } from "./validation-rule";
+import { FieldWrapper } from "./validation.styles";
 
 interface IProps {
     onDelete: () => void;
@@ -20,21 +19,7 @@ export const ValidationChild = ({ onDelete, options, index }: IProps) => {
         watch,
     } = useFormContext<IBaseTextBasedFieldValues>();
     const { focusedElement } = useBuilder();
-    const [validationRulePlaceHolder, setValidationRulePlaceHolder] =
-        useState<string>();
     const validationType = watch(`validation.${index}.validationType`);
-
-    // =========================================================================
-    // USE EFFECTS
-    // =========================================================================
-
-    useEffect(() => {
-        if (options.length === 1 && options[0] === "Email domain") {
-            setValidationRulePlaceHolder(
-                "Enter email domain, separating with a comma"
-            );
-        }
-    }, []);
 
     // =========================================================================
     // RENDER FUNCTIONS
@@ -79,12 +64,13 @@ export const ValidationChild = ({ onDelete, options, index }: IProps) => {
                         control={control}
                         render={({ field }) => {
                             const { ref, ...fieldWithoutRef } = field;
-                            return renderValidationRule(
-                                { ...fieldWithoutRef },
-                                index,
-                                validationType,
-                                validationRulePlaceHolder,
-                                errors
+                            return (
+                                <ValidationRule
+                                    fieldWithoutRef={{ ...fieldWithoutRef }}
+                                    index={index}
+                                    validationType={validationType}
+                                    errors={errors}
+                                />
                             );
                         }}
                         shouldUnregister={true}
