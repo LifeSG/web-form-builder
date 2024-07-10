@@ -73,7 +73,7 @@ export namespace TextBasedField {
             element?.conditionalRendering
         );
         const validationObject = createValidationObject(element);
-
+        console.log(element);
         const textBasedFieldSchema = {
             [element.id]: {
                 label: element.label,

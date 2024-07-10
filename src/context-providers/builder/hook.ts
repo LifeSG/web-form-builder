@@ -20,7 +20,7 @@ export const useBuilder = () => {
                 payload: orderedIdentifiers,
             });
         },
-        [state.orderedIdentifiers]
+        []
     );
 
     const addElement = useCallback(

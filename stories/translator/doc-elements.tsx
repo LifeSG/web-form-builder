@@ -58,18 +58,10 @@ export const DocElement = () => {
 
     const handleFormPreviewButton = () => {
         setPageMode("preview-mode");
-        if (formBuilderRef.current) {
-            const generatedSchema = formBuilderRef.current?.generateSchema();
-            setSchema(generatedSchema);
-        }
     };
 
     const handleSchemaViewButton = () => {
         setPageMode("schema-mode");
-        if (formBuilderRef.current) {
-            const generatedSchema = formBuilderRef.current?.generateSchema();
-            setSchema(generatedSchema);
-        }
     };
 
     // =========================================================================
@@ -80,7 +72,7 @@ export const DocElement = () => {
             const generatedSchema = formBuilderRef.current?.generateSchema();
             setSchema(generatedSchema);
         }
-    }, [formBuilderRef.current]);
+    }, [formBuilderRef.current, pageMode]);
 
     // =========================================================================
     // RENDER FUNCTIONS
