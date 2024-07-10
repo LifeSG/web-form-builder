@@ -88,13 +88,13 @@ export const DocElement = () => {
     // EFFECTS
     // =========================================================================
     useEffect(() => {
-        if (formBuilderRef.current && pageMode !== "form-builder-mode") {
+        if (pageMode !== "form-builder-mode") {
             const generatedSchema = formBuilderRef.current?.generateSchema();
             setSchema(generatedSchema);
-        } else if (formBuilderRef.current && schema) {
+        } else if (schema) {
             formBuilderRef.current?.parseSchema(schema);
         }
-    }, [formBuilderRef.current, pageMode]);
+    }, [pageMode]);
 
     // =========================================================================
     // RENDER FUNCTIONS

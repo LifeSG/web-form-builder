@@ -1,34 +1,23 @@
+import { IYupValidationRule } from "@lifesg/web-frontend-engine";
 import {
-    EElementType,
-    IColumns,
-    IValidation,
-    TElement,
-} from "src/context-providers";
+    IEmailFieldSchema,
+    INumericFieldSchema,
+    ITextFieldSchema,
+} from "@lifesg/web-frontend-engine/components/fields";
+import { TRenderRules } from "@lifesg/web-frontend-engine/context-providers";
+import { EElementType, IValidation, TElement } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import { SimpleIdGenerator } from "src/util/simple-id-generator";
 import {
-    ISchemaCondition,
-    ISchemaConditionalRendering,
     createConditionalRenderingObject,
-    translateConditionalRenderingObject,
+    parseConditionalRenderingObject,
 } from "./helper";
 
 export namespace TextBasedField {
-    export interface ISchemaValidation {
-        [key: string]: string | boolean;
-        errorMessage?: string;
-    }
-
-    export interface IElementSchema {
-        columns: IColumns;
-        label: string;
-        placeholder: string;
-        required: boolean;
-        requiredErrorMessage: string;
-        uiType: EElementType;
-        validation?: ISchemaValidation[];
-        showIf?: ISchemaCondition[];
-    }
+    export type TElementSchema =
+        | ITextFieldSchema
+        | IEmailFieldSchema
+        | INumericFieldSchema;
 
     namespace Email {
         export const createEmailValidationSchema = (
@@ -52,7 +41,7 @@ export namespace TextBasedField {
         };
 
         export const translateEmailValidation = (
-            validation: ISchemaValidation[]
+            validation: IYupValidationRule[]
         ) => {
             const regexPattern = /@\((.*?)\)\$/;
             const match = validation[0].matches.toString().match(regexPattern);
@@ -78,7 +67,7 @@ export namespace TextBasedField {
     }
 
     const createValidationObject = (element: TElement) => {
-        const validation: ISchemaValidation[] = [];
+        const validation: IYupValidationRule[] = [];
 
         if (element.required) {
             validation.push({
@@ -116,7 +105,7 @@ export namespace TextBasedField {
 
     export const translateValidationObject = (
         type: EElementType,
-        validation: ISchemaValidation[]
+        validation: IYupValidationRule[]
     ) => {
         switch (type) {
             case EElementType.EMAIL:
@@ -159,13 +148,10 @@ export namespace TextBasedField {
         return textBasedFieldSchema;
     };
 
-    export const translateToElement = (
-        element: IElementSchema,
-        key: string
-    ) => {
+    export const parseToElement = (element: TElementSchema, key: string) => {
         const { showIf, uiType, validation, ...rest } = element;
 
-        let requiredValidation: ISchemaValidation = {};
+        let requiredValidation: IYupValidationRule = {};
         const fieldValidation = [];
 
         validation.forEach((rule) => {
@@ -177,24 +163,27 @@ export namespace TextBasedField {
         });
         const newInternalId = SimpleIdGenerator.generate();
 
-        const translatedElements: TElement = {
+        const translatedElements = {
             ...rest,
-            type: uiType,
+            type: uiType as EElementType,
             required: requiredValidation.required as boolean,
             requiredErrorMsg: requiredValidation.errorMessage,
             id: key,
             internalId: newInternalId,
             ...(fieldValidation.length > 0 && {
-                validation: translateValidationObject(uiType, fieldValidation),
+                validation: translateValidationObject(
+                    uiType as EElementType,
+                    fieldValidation
+                ),
             }),
             ...(showIf && {
-                conditionalRendering: translateConditionalRenderingObject(
-                    showIf as ISchemaCondition[],
+                conditionalRendering: parseConditionalRenderingObject(
+                    showIf as TRenderRules[],
                     newInternalId
                 ),
             }),
         };
 
-        return translatedElements;
+        return translatedElements as TElement;
     };
 }

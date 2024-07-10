@@ -7,7 +7,7 @@ import { ISchemaProps } from "src/form-builder";
 import {
     createPrefillObject,
     parseSchemaBasedOnType,
-    updateTranslatedElements,
+    updateParsedElements,
 } from "./helper";
 import { TextBasedField } from "./text-based-field";
 
@@ -44,12 +44,9 @@ export namespace Translator {
     }
 
     export const parseSchema = (formSchema: ISchemaProps) => {
-        const schemaToTranslate = formSchema?.schema?.sections?.section
-            ?.children?.grid?.["children"] as Record<
-            string,
-            TFrontendEngineFieldSchema
-        >;
-        const translatedElements = parseSchemaBasedOnType(schemaToTranslate);
-        return updateTranslatedElements(translatedElements);
+        const schemaToParse = formSchema?.schema?.sections?.section?.children
+            ?.grid?.["children"] as Record<string, TFrontendEngineFieldSchema>;
+        const translatedElements = parseSchemaBasedOnType(schemaToParse);
+        return updateParsedElements(translatedElements);
     };
 }

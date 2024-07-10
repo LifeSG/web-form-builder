@@ -171,22 +171,13 @@ export const useBuilder = () => {
 
     const updateElementSchema = useCallback(
         (elements?: TElementMap, orderedIdentifiers?: IElementIdentifier[]) => {
-            if (orderedIdentifiers) {
-                dispatch({
-                    type: "update-schema-element",
-                    payload: {
-                        elements: elements,
-                        orderedIdentifiers: orderedIdentifiers,
-                    },
-                });
-            } else {
-                dispatch({
-                    type: "update-schema-element",
-                    payload: {
-                        elements: elements,
-                    },
-                });
-            }
+            dispatch({
+                type: "update-schema-element",
+                payload: {
+                    elements,
+                    orderedIdentifiers,
+                },
+            });
         },
         []
     );

@@ -1,4 +1,5 @@
 import { TFrontendEngineFieldSchema } from "@lifesg/web-frontend-engine";
+import { TRenderRules } from "@lifesg/web-frontend-engine/context-providers";
 import {
     EConditionType,
     EElementType,
@@ -8,21 +9,6 @@ import {
 } from "src/context-providers/builder";
 import { ELEMENT_CONDITION_TYPES, SCHEMA_CONDITION_TYPES } from "src/data";
 import { TextBasedField } from "./text-based-field";
-
-interface ISchemaConditionChild {
-    [comparator: string]: string | boolean;
-}
-
-export interface ISchemaCondition {
-    [key: string]: ISchemaConditionChild[];
-}
-
-export interface ISchemaConditionalRendering {
-    [key: string]: Array<{
-        filled?: boolean;
-        [comparator: string]: string | boolean | number;
-    }>;
-}
 
 export const createPrefillObject = (elements: TElementMap) => {
     const prefill = Object.values(elements).reduce((acc, element) => {
@@ -37,7 +23,7 @@ export const createPrefillObject = (elements: TElementMap) => {
 
 export const createConditionalRenderingObject = (
     conditions: IConditionalRendering[]
-): ISchemaConditionalRendering[] => {
+): TRenderRules[] => {
     if (!conditions || conditions.length === 0) {
         return;
     }
@@ -65,33 +51,39 @@ export const createConditionalRenderingObject = (
     return Object.keys(conditionObj).length === 0 ? [] : [conditionObj];
 };
 
-export const translateConditionalRenderingObject = (
-    conditions: ISchemaCondition[],
+export const parseConditionalRenderingObject = (
+    conditions: TRenderRules[],
     internalId: string
 ) => {
-    return conditions.reduce((translatedConditions, condition) => {
-        Object.entries(condition).forEach(([key, value]) => {
-            value
-                .filter((obj) => !("filled" in obj))
-                .forEach((condition) => {
-                    const [comparator, compValue] =
-                        Object.entries(condition)[0];
-                    translatedConditions.push({
-                        fieldKey: key,
-                        comparator: ELEMENT_CONDITION_TYPES[comparator],
-                        value: compValue,
-                        internalId,
+    return conditions.reduce(
+        (
+            parsedConditions: IConditionalRendering[],
+            condition: TRenderRules
+        ) => {
+            Object.entries(condition).forEach(([key, value]) => {
+                value
+                    .filter((obj: TRenderRules) => !("filled" in obj))
+                    .forEach((condition: TRenderRules) => {
+                        const [comparator, compValue] =
+                            Object.entries(condition)[0];
+                        parsedConditions.push({
+                            fieldKey: key,
+                            comparator: ELEMENT_CONDITION_TYPES[comparator],
+                            value: compValue as unknown as string,
+                            internalId,
+                        });
                     });
-                });
-        });
-        return translatedConditions;
-    }, []);
+            });
+            return parsedConditions;
+        },
+        []
+    );
 };
 
 export const parseSchemaBasedOnType = (
     schemaToTranslate: Record<string, TFrontendEngineFieldSchema>
 ) => {
-    const translatedElements = [];
+    const parsedElements = [];
     Object.entries(schemaToTranslate).forEach(([key, element]) => {
         const { uiType } = element;
         switch (uiType) {
@@ -100,9 +92,9 @@ export const parseSchemaBasedOnType = (
             case EElementType.NUMERIC:
             case EElementType.TEXT:
             case EElementType.TEXTAREA: {
-                translatedElements.push(
-                    TextBasedField.translateToElement(
-                        element as TextBasedField.IElementSchema,
+                parsedElements.push(
+                    TextBasedField.parseToElement(
+                        element as TextBasedField.TElementSchema,
                         key
                     )
                 );
@@ -110,10 +102,10 @@ export const parseSchemaBasedOnType = (
             }
         }
     });
-    return translatedElements;
+    return parsedElements;
 };
 
-export const updateTranslatedElements = (schemaElements: TElement[]) => {
+export const updateParsedElements = (schemaElements: TElement[]) => {
     const newElements: TElementMap = {};
     const newOrderedIdentifiers = [];
 
