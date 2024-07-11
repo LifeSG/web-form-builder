@@ -10,7 +10,6 @@ export const Toasts: Function = () => {
                 <DisplayToast
                     key={toast.id}
                     toast={toast}
-                    onClickActionButton={toast.onClickActionButton}
                 />
             ))}
         </ToastWrapper>
