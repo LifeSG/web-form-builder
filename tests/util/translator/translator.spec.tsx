@@ -26,7 +26,7 @@ describe("Translator", () => {
                 const MOCK__EMAIL_ELEMENT: TElementMap = generateMockElement({
                     type: EElementType.EMAIL,
                     id: "mockId1",
-                    internalId: "mockInternalId1",
+                    internalId: "mockId1",
                     required: false,
                 });
                 const MOCK_EMAIL_SCHEMA = generateMockSchema(
@@ -37,9 +37,12 @@ describe("Translator", () => {
                         uiType: EElementType.EMAIL,
                     })
                 );
+                const orderedIdentifiers = [{ internalId: "mockId1" }];
 
-                const generatedSchema =
-                    Translator.generateSchema(MOCK__EMAIL_ELEMENT);
+                const generatedSchema = Translator.generateSchema(
+                    MOCK__EMAIL_ELEMENT,
+                    orderedIdentifiers
+                );
                 expect(generatedSchema).toStrictEqual(MOCK_EMAIL_SCHEMA);
             });
             it("should generate schema for the email field with validation", () => {
@@ -47,7 +50,7 @@ describe("Translator", () => {
                     generateMockElement({
                         type: EElementType.EMAIL,
                         id: "mockId1",
-                        internalId: "mockInternalId1",
+                        internalId: "mockId1",
                         requiredErrorMsg: "Email address is required",
                         validation: [
                             {
@@ -81,9 +84,10 @@ describe("Translator", () => {
                         ],
                     })
                 );
-
+                const orderedIdentifiers = [{ internalId: "mockId1" }];
                 const generatedSchema = Translator.generateSchema(
-                    MOCK__EMAIL_ELEMENT_WITH_VALIDATION
+                    MOCK__EMAIL_ELEMENT_WITH_VALIDATION,
+                    orderedIdentifiers
                 );
                 expect(generatedSchema).toStrictEqual(
                     MOCK_EMAIL_SCHEMA_WITH_VALIDATION
@@ -153,9 +157,13 @@ describe("Translator", () => {
                             }),
                         }
                     );
-
+                const orderedIdentifiers = [
+                    { internalId: "mock123" },
+                    { internalId: "mock456" },
+                ];
                 const generatedSchema = Translator.generateSchema(
-                    MOCK__EMAIL_ELEMENT_WITH_CONDITIONAL_RENDERING
+                    MOCK__EMAIL_ELEMENT_WITH_CONDITIONAL_RENDERING,
+                    orderedIdentifiers
                 );
                 expect(generatedSchema).toStrictEqual(
                     MOCK_EMAIL_SCHEMA_WITH_CONDITIONAL_RENDERING
@@ -198,9 +206,10 @@ describe("Translator", () => {
                             ],
                         })
                     );
-
+                const orderedIdentifiers = [{ internalId: "mock123" }];
                 const generatedSchema = Translator.generateSchema(
-                    MOCK__EMAIL_ELEMENT_WITH_MYINFO_PREFILL
+                    MOCK__EMAIL_ELEMENT_WITH_MYINFO_PREFILL,
+                    orderedIdentifiers
                 );
                 expect(generatedSchema).toStrictEqual(
                     MOCK_EMAIL_SCHEMA_WITH_MYINFO_PREFILL
@@ -245,9 +254,11 @@ describe("Translator", () => {
                             ],
                         })
                     );
+                const orderedIdentifiers = [{ internalId: "mock123" }];
 
                 const generatedSchema = Translator.generateSchema(
-                    MOCK__EMAIL_ELEMENT_WITH_PREVIOUS_SOURCE_PREFILL
+                    MOCK__EMAIL_ELEMENT_WITH_PREVIOUS_SOURCE_PREFILL,
+                    orderedIdentifiers
                 );
                 expect(generatedSchema).toStrictEqual(
                     MOCK_EMAIL_SCHEMA_WITH_PREVIOUS_SOURCE_PREFILL
@@ -261,7 +272,7 @@ describe("Translator", () => {
                     generateMockElement({
                         type: EElementType.TEXT,
                         id: "mockId1",
-                        internalId: "mockInternalId1",
+                        internalId: "mockId1",
                         requiredErrorMsg: "Input is required",
                     });
 
@@ -279,9 +290,11 @@ describe("Translator", () => {
                         ],
                     })
                 );
+                const orderedIdentifiers = [{ internalId: "mockId1" }];
 
                 const generatedSchema = Translator.generateSchema(
-                    MOCK_TEXT_BASED_ELEMENT
+                    MOCK_TEXT_BASED_ELEMENT,
+                    orderedIdentifiers
                 );
                 expect(generatedSchema).toStrictEqual(MOCK_TEXT_BASED_SCHEMA);
             });

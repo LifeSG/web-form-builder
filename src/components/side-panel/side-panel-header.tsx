@@ -10,7 +10,11 @@ import {
     Wrapper,
 } from "./side-panel-header.styles";
 
-export const SidePanelHeader = () => {
+interface IProps {
+    isSubmitting: boolean;
+}
+
+export const SidePanelHeader = ({ isSubmitting }: IProps) => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
@@ -23,7 +27,6 @@ export const SidePanelHeader = () => {
     } = useBuilder();
     const { isDirty } = focusedElement || {};
     const { showModal, discardChanges } = useModal();
-
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
@@ -68,8 +71,16 @@ export const SidePanelHeader = () => {
         if (focusedElement) {
             return (
                 <>
-                    <SaveChangesButton>
-                        {!isDirty ? "Saved" : "Save Changes"}
+                    <SaveChangesButton
+                        data-testid="save-changes-button"
+                        disabled={isSubmitting}
+                        loading={isSubmitting}
+                    >
+                        {isSubmitting
+                            ? "Saving"
+                            : !isDirty
+                              ? "Saved"
+                              : "Save Changes"}
                     </SaveChangesButton>
                     <IconButton
                         $iconSize="1.5rem"

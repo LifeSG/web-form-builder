@@ -35,7 +35,7 @@ export const ElementEditor = () => {
     }, [isDirty, updateFocusedElement]);
 
     return (
-        <Wrapper>
+        <Wrapper data-testid="element-editor">
             {focusedElement.isDirty && (
                 <SaveChangesAlert type="warning" showIcon>
                     To reflect changes on preview, save changes first.
