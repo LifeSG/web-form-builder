@@ -1,4 +1,4 @@
-import { Form } from "@lifesg/react-design-system";
+import { Form } from "@lifesg/react-design-system/form";
 import { ControllerRenderProps, FieldErrors } from "react-hook-form";
 import { EElementType } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";

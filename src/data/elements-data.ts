@@ -52,7 +52,7 @@ export const ELEMENT_VALIDATION_TYPES = {
             validationTypes: ["Email domain"],
         },
         [EElementType.TEXT]: {
-            maxEntries: -1, // This is an arbitary large number to indicate that there can be unlimited validation entries
+            maxEntries: -1, // Set a negetive number so that it will allow unlimited entries as it will not be equal to 0
             validationTypes: [
                 "Custom regex",
                 "Minimum length",

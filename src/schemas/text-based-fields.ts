@@ -38,7 +38,7 @@ yup.addMethod(yup.string, "validRegex", function (message) {
     });
 });
 
-const renderValidationSchema = (elementType: EElementType) => {
+const generateValidationSchema = (elementType: EElementType) => {
     switch (elementType) {
         case EElementType.EMAIL: {
             return yup.array().of(
@@ -110,6 +110,7 @@ const renderValidationSchema = (elementType: EElementType) => {
                                         "Numeric value only.",
                                         (value) =>
                                             !isNaN(Number(value)) &&
+                                            Number.isInteger(Number(value)) &&
                                             parseInt(value) >= 0
                                     ),
                             otherwise: (rule) =>
@@ -130,7 +131,7 @@ const renderValidationSchema = (elementType: EElementType) => {
 export const TEXT_BASED_SCHEMA = (elementType: EElementType) => {
     return yup.object<IBaseTextBasedFieldAttributes>().shape({
         placeholder: yup.string().optional(),
-        validation: renderValidationSchema(elementType),
+        validation: generateValidationSchema(elementType),
         prefill: yup.array().of(
             yup.object().shape({
                 prefillMode: yup.string().required("Source required."),

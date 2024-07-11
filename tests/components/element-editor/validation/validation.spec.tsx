@@ -201,5 +201,5 @@ const MOCK_ELEMENT = {
     required: false,
     label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
     validation: [],
-    columns: { desktop: 12, tablet: 8, mobile: 4 } as IColumns,
+    columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
 };

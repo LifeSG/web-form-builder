@@ -124,7 +124,7 @@ const MOCK_ELEMENT = {
     label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
     validation: [],
     conditionalRendering: [],
-    columns: { desktop: 12, tablet: 8, mobile: 4 } as IColumns,
+    columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
 };
 
 const MOCK_ELEMENTS = {
@@ -137,6 +137,6 @@ const MOCK_ELEMENTS = {
         label: ELEMENT_BUTTON_LABELS[EElementType.TEXT],
         validation: [],
         conditionalRendering: [],
-        columns: { desktop: 12, tablet: 8, mobile: 4 } as IColumns,
+        columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
     },
 };
