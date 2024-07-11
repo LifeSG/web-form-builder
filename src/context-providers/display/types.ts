@@ -13,7 +13,6 @@ export interface IToast {
     type?: EToastTypes;
     message?: string;
     elementInternalId?: string;
-    onClickActionButton?: () => void;
 }
 
 export interface IDisplayState {
