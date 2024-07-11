@@ -149,7 +149,7 @@ export const ConditionalRendering = () => {
             title="Conditional Rendering"
             buttonLabel="condition"
             disabledButton={
-                getElementOptions().length === 0 || invalidAndEmptyFields
+                Object.values(elements).length === 1 || invalidAndEmptyFields
             }
             popoverMessage={getPopoverMessage()}
         >

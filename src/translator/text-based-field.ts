@@ -40,7 +40,7 @@ export namespace TextBasedField {
             };
         };
 
-        export const translateEmailValidation = (
+        export const parseEmailValidation = (
             validation: IYupValidationRule[]
         ) => {
             const regexPattern = /@\((.*?)\)\$/;
@@ -103,13 +103,13 @@ export namespace TextBasedField {
         return validation;
     };
 
-    export const translateValidationObject = (
+    export const parseValidationObject = (
         type: EElementType,
         validation: IYupValidationRule[]
     ) => {
         switch (type) {
             case EElementType.EMAIL:
-                return Email.translateEmailValidation(validation);
+                return Email.parseEmailValidation(validation);
             case EElementType.NUMERIC:
             case EElementType.TEXT:
             case EElementType.TEXTAREA:
@@ -163,7 +163,7 @@ export namespace TextBasedField {
         });
         const newInternalId = SimpleIdGenerator.generate();
 
-        const translatedElements = {
+        const parsedElement = {
             ...rest,
             type: uiType as EElementType,
             required: requiredValidation.required as boolean,
@@ -171,19 +171,18 @@ export namespace TextBasedField {
             id: key,
             internalId: newInternalId,
             ...(fieldValidation.length > 0 && {
-                validation: translateValidationObject(
+                validation: parseValidationObject(
                     uiType as EElementType,
                     fieldValidation
                 ),
             }),
             ...(showIf && {
                 conditionalRendering: parseConditionalRenderingObject(
-                    showIf as TRenderRules[],
-                    newInternalId
+                    showIf as TRenderRules[]
                 ),
             }),
         };
 
-        return translatedElements as TElement;
+        return parsedElement as TElement;
     };
 }

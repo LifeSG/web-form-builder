@@ -51,10 +51,7 @@ export const createConditionalRenderingObject = (
     return Object.keys(conditionObj).length === 0 ? [] : [conditionObj];
 };
 
-export const parseConditionalRenderingObject = (
-    conditions: TRenderRules[],
-    internalId: string
-) => {
+export const parseConditionalRenderingObject = (conditions: TRenderRules[]) => {
     return conditions.reduce(
         (
             parsedConditions: IConditionalRendering[],
@@ -70,7 +67,7 @@ export const parseConditionalRenderingObject = (
                             fieldKey: key,
                             comparator: ELEMENT_CONDITION_TYPES[comparator],
                             value: compValue as unknown as string,
-                            internalId,
+                            internalId: "",
                         });
                     });
             });
@@ -105,13 +102,28 @@ export const parseSchemaBasedOnType = (
     return parsedElements;
 };
 
-export const updateParsedElements = (schemaElements: TElement[]) => {
+export const updateParsedElements = (parsedElements: TElement[]) => {
     const newElements: TElementMap = {};
     const newOrderedIdentifiers = [];
 
-    schemaElements.forEach((schemaElement) => {
-        newElements[schemaElement.internalId] = schemaElement;
-        newOrderedIdentifiers.push({ internalId: schemaElement.internalId });
+    Object.values(parsedElements).forEach((parsedElement: TElement) => {
+        newElements[parsedElement.internalId] = parsedElement;
+        newOrderedIdentifiers.push({ internalId: parsedElement.internalId });
+
+        if (parsedElement?.conditionalRendering?.length > 0) {
+            parsedElement.conditionalRendering.forEach((condition, index) => {
+                const existingElement = Object.values(parsedElements).find(
+                    (element) => element?.id === condition.fieldKey
+                );
+
+                if (existingElement) {
+                    parsedElement.conditionalRendering[index] = {
+                        ...condition,
+                        internalId: existingElement.internalId,
+                    };
+                }
+            });
+        }
     });
 
     return {
