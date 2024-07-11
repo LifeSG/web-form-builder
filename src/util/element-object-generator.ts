@@ -63,13 +63,15 @@ export namespace ElementObjectGenerator {
             case EElementType.NUMERIC:
             case EElementType.CONTACT:
             case EElementType.TEXT:
-            case EElementType.TEXTAREA: {
+            case EElementType.TEXTAREA:
+            case EElementType.DROPDOWN: {
                 const attributes: IBaseTextBasedFieldAttributes = {
                     ...baseAttributes,
                     placeholder: "",
                     required: true,
                     requiredErrorMsg: "",
                     label: ELEMENT_BUTTON_LABELS[type],
+                    description: "",
                     columns: { desktop: 12, tablet: 8, mobile: 4 },
                     validation: [],
                     conditionalRendering: [],
