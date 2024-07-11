@@ -39,15 +39,17 @@ const Component = forwardRef<IFormBuilderMethods, IProps>(({ offset, onSubmit },
     const [isLargeScreen, setIsLargeScreen] = useState(
         window.innerWidth >= 1200
     );
-    const { elements } = useBuilder();
+    const { elements, orderedIdentifiers } = useBuilder();
 
     useImperativeHandle(
         ref,
         () => ({
-            generateSchema: () => Translator.generateSchema(elements),
-            translateSchema: (schema: string) => Translator.translateSchema(schema),
+            generateSchema: () =>
+                Translator.generateSchema(elements, orderedIdentifiers),
+            translateSchema: (schema: string) =>
+                Translator.translateSchema(schema),
         }),
-        [elements]
+        [elements, orderedIdentifiers]
     );
 
     // =========================================================================
