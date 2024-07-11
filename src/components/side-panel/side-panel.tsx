@@ -41,7 +41,7 @@ export const SidePanel = ({ offset }: IProps) => {
     });
 
     const {
-        formState: { isSubmitSuccessful, isSubmitting },
+        formState: { isSubmitSuccessful },
     } = methods;
 
     // =========================================================================
@@ -65,15 +65,16 @@ export const SidePanel = ({ offset }: IProps) => {
 
     useEffect(() => {
         if (isSubmitSuccessful) {
-            methods.reset(undefined, {
-                keepValues: true,
-                keepDirty: false,
-            });
+            /**
+             * On React 17, without setTimeout, isSubmitSuccessful is set to true again on first touch of the form after resetting form.
+             * This issue is fixed on React 18, but the workaround on React 17 would be to use setTimeout.
+             */
+            setTimeout(() => methods.reset());
         }
     }, [isSubmitSuccessful, methods.reset]);
 
     useEffect(() => {
-        if (!focusedElement || isSubmitting) {
+        if (!focusedElement) {
             return;
         }
         methods.reset(focusedElement.element);

@@ -60,6 +60,7 @@ export const BasicDetails = () => {
                             errorMessage={errors.type?.message}
                         />
                     )}
+                    shouldUnregister={true}
                 />
 
                 {hasProperty("label") && (
@@ -81,6 +82,7 @@ export const BasicDetails = () => {
                                 maxLength={40}
                             />
                         )}
+                        shouldUnregister={true}
                     />
                 )}
 
@@ -98,6 +100,7 @@ export const BasicDetails = () => {
                                 id={element.internalId}
                             />
                         )}
+                        shouldUnregister={true}
                     />
 
                     {watch("required", true) && (
@@ -117,6 +120,7 @@ export const BasicDetails = () => {
                                     }
                                 />
                             )}
+                            shouldUnregister={true}
                         />
                     )}
                 </MandatoryFieldBox>
@@ -144,6 +148,7 @@ export const BasicDetails = () => {
                             errorMessage={errors.id?.message}
                         />
                     )}
+                    shouldUnregister={true}
                 />
 
                 {element?.hasOwnProperty("placeholder") && (
@@ -162,6 +167,7 @@ export const BasicDetails = () => {
                                 errorMessage={errors.placeholder?.message}
                             />
                         )}
+                        shouldUnregister={true}
                     />
                 )}
             </Wrapper>

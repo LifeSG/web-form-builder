@@ -25,6 +25,7 @@ export const ConditionalRendering = () => {
     const { fields, append, remove } = useFieldArray({
         control,
         name: "conditionalRendering",
+        shouldUnregister: true,
     });
     const { focusedElement, elements } = useBuilder();
     const element = focusedElement?.element;

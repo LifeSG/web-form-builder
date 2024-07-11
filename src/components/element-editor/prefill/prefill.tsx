@@ -9,11 +9,11 @@ export const Prefill = () => {
     // =========================================================================
     // CONST, STATES, REFS
     // =========================================================================
-    const { watch, control } =
-        useFormContext<IBaseTextBasedFieldValues>();
+    const { watch, control } = useFormContext<IBaseTextBasedFieldValues>();
     const { fields, append, remove } = useFieldArray({
         control,
         name: "prefill",
+        shouldUnregister: true,
     });
     const prefillValues = watch("prefill");
     const schema = SchemaHelper.buildSchema(EElementType.EMAIL);

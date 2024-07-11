@@ -1,4 +1,4 @@
-import { Text } from "@lifesg/react-design-system";
+import { Text } from "@lifesg/react-design-system/text";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
 import { EElementType } from "src/context-providers";
@@ -15,6 +15,7 @@ export const Validation = () => {
     const { fields, append, remove } = useFieldArray({
         control,
         name: "validation",
+        shouldUnregister: true,
     });
     const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
     const validationValues = watch("validation");

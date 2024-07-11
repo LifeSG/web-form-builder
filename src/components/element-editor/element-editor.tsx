@@ -21,7 +21,6 @@ export const ElementEditor = () => {
     const {
         formState: { isDirty },
         getFieldState,
-        getValues,
     } = useFormContext<IBaseTextBasedFieldValues>();
 
     const { isTouched: isTypeTouched } = getFieldState("type");
