@@ -1,7 +1,7 @@
 import { Text } from "@lifesg/react-design-system/text";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
-import { EElementType } from "src/context-providers";
+import { EElementType, useBuilder } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import { IBaseTextBasedFieldValues, SchemaHelper } from "src/schemas";
 import * as Yup from "yup";
@@ -11,6 +11,7 @@ export const Validation = () => {
     // =========================================================================
     // CONST, STATES, REFS
     // =========================================================================
+    const { focusedElement } = useBuilder();
     const { watch, control } = useFormContext<IBaseTextBasedFieldValues>();
     const { fields, append, remove } = useFieldArray({
         control,
@@ -18,8 +19,8 @@ export const Validation = () => {
         shouldUnregister: true,
     });
     const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
-    const validationValues = watch("validation");
-    const elementType = watch("type");
+    const validationValues = watch("validation", focusedElement.element.validation);
+    const elementType = watch("type", focusedElement.element.type);
     const invalidAndEmptyFields = checkIsValid();
 
     // =========================================================================
