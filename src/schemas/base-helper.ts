@@ -17,6 +17,7 @@ export namespace BaseSchemaHelper {
             label: yup.string().required("Label required."),
             required: yup.boolean().required().default(true),
             requiredErrorMsg: yup.string().optional(),
+            description: yup.string().optional(),
             id: yup
                 .string()
                 .required("ID required.")

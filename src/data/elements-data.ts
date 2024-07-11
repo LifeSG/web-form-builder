@@ -19,10 +19,10 @@ export const ELEMENTS_CATEGORIES: IElementCategoryAttributes[] = [
             EElementType.CONTACT,
         ],
     },
-    // {
-    //     categoryTitle: "Option group",
-    //     elementTypes: [EElementType.CHECKBOX, EElementType.RADIO],
-    // },
+    {
+        categoryTitle: "Option group",
+        elementTypes: [EElementType.DROPDOWN],
+    },
 ];
 
 export const ELEMENT_BUTTON_LABELS: { [key in EElementType]: string } = {
@@ -31,6 +31,7 @@ export const ELEMENT_BUTTON_LABELS: { [key in EElementType]: string } = {
     [EElementType.TEXT]: "Short text",
     [EElementType.TEXTAREA]: "Long text",
     [EElementType.CONTACT]: "Contact number",
+    [EElementType.DROPDOWN]: "Dropdown",
     [EElementType.CHECKBOX]: "Checkbox",
     [EElementType.RADIO]: "Radio Button",
 };
@@ -41,6 +42,7 @@ export const ELEMENT_ID_PREFIX: Record<EElementType, string> = {
     [EElementType.CONTACT]: "contact-field",
     [EElementType.TEXT]: "short-text-field",
     [EElementType.TEXTAREA]: "long-text-field",
+    [EElementType.DROPDOWN]: "select",
     [EElementType.CHECKBOX]: "checkbox-field",
     [EElementType.RADIO]: "radion-field",
 };

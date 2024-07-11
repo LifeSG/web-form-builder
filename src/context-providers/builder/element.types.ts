@@ -13,6 +13,7 @@ export enum EElementType {
     RADIO = "radio",
     TEXT = "text-field",
     TEXTAREA = "textarea",
+    DROPDOWN = "select",
 }
 
 export enum EConditionType {
@@ -64,11 +65,19 @@ export interface IBaseFieldAttributes extends IBaseAttributes {
     required: boolean;
     requiredErrorMsg?: string | undefined;
     columns: IColumns;
+    description?: string;
 }
 
 export interface IBaseTextBasedFieldAttributes extends IBaseFieldAttributes {
     placeholder?: string;
     validation?: IValidation[];
+    conditionalRendering?: IConditionalRendering[];
+    prefill?: IPrefillAttributes[];
+}
+
+export interface IBaseOptionGroupBasedFieldAttributes
+    extends IBaseFieldAttributes {
+    placeholder?: string;
     conditionalRendering?: IConditionalRendering[];
     prefill?: IPrefillAttributes[];
 }
@@ -81,10 +90,12 @@ export type IEmailField = IBaseTextBasedFieldAttributes;
 export type INumericField = IBaseTextBasedFieldAttributes;
 export type ITextField = IBaseTextBasedFieldAttributes;
 export type ITextarea = IBaseTextBasedFieldAttributes;
+export type IDropdown = IBaseOptionGroupBasedFieldAttributes;
 
 export type TElement =
     | IEmailField
     | ITextField
     | ITextarea
     | INumericField
-    | IContactField;
+    | IContactField
+    | IDropdown;
