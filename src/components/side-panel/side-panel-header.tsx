@@ -1,6 +1,5 @@
 import { Color } from "@lifesg/react-design-system/color";
 import { CrossIcon } from "@lifesg/react-icons/cross";
-import { useFormContext } from "react-hook-form";
 import { useModal } from "src/context-providers/display/modal-hook";
 import { EBuilderMode, EModalType, useBuilder } from "../../context-providers";
 import { IconButton } from "../common";
