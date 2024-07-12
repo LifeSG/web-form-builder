@@ -3,7 +3,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import "jest-canvas-mock";
 import { FormProvider, useForm } from "react-hook-form";
 import { ConditionalRendering } from "src/components/element-editor/conditional-rendering";
-import { EElementType } from "src/context-providers";
+import { EElementType, IColumns } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data";
 import { SchemaHelper } from "src/schemas";
 import { TestHelper } from "src/util/test-helper";
@@ -124,6 +124,7 @@ const MOCK_ELEMENT = {
     label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
     validation: [],
     conditionalRendering: [],
+    columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
 };
 
 const MOCK_ELEMENTS = {
@@ -136,5 +137,6 @@ const MOCK_ELEMENTS = {
         label: ELEMENT_BUTTON_LABELS[EElementType.TEXT],
         validation: [],
         conditionalRendering: [],
+        columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
     },
 };
