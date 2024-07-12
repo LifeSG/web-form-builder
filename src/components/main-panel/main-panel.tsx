@@ -5,7 +5,7 @@ import {
     MouseSensor,
     TouchSensor,
     UniqueIdentifier,
-    closestCenter,
+    closestCorners,
     useSensor,
     useSensors,
 } from "@dnd-kit/core";
@@ -17,7 +17,7 @@ import {
 } from "@dnd-kit/sortable";
 import { ErrorDisplay } from "@lifesg/react-design-system/error-display";
 import { debounce } from "lodash";
-import { useCallback, useRef } from "react";
+import { useEffect, useRef } from "react";
 import {
     IElementIdentifier,
     TElement,
@@ -33,6 +33,16 @@ import {
     Wrapper,
 } from "./main-panel.styles";
 
+interface IElementRef {
+    internalId?: string;
+    element?: HTMLLIElement | null;
+}
+
+interface IAffectedElementRef {
+    internalId?: string;
+    elementColumn?: IElementIdentifier["size"];
+}
+
 export const MainPanel = () => {
     // =========================================================================
     // CONST, STATE, REFS
@@ -46,6 +56,9 @@ export const MainPanel = () => {
         updateOrderedIdentifiers,
     } = useBuilder();
     const wrapperRef = useRef<HTMLDivElement | null>(null);
+    const elementRefs = useRef<IElementRef[] | null>([]);
+    const elementStartingRefs = useRef<Array<DOMRect | null>>([]);
+    const affectElementsRects = useRef<IAffectedElementRef>({});
     const finalMode = focusedElement ? true : showSidePanel;
     const renderMode = finalMode ? "minimised" : "expanded";
 
@@ -79,228 +92,125 @@ export const MainPanel = () => {
         focusElement(element);
     };
 
-    const handleOnDragMove = useCallback(
-        debounce((event: DragEndEvent) => {
-            const { active, over } = event;
+    const handleonDragStart = () => {
+        elementRefs.current.forEach((elementRef, index) => {
+            elementStartingRefs.current[index] =
+                elementRef.element.getBoundingClientRect();
+        });
+    };
 
-            const newIndex = orderedIdentifiers.findIndex(
-                (item) => item.internalId === active.id
-            );
-            const oldIndex = orderedIdentifiers.findIndex(
-                (item) => item.internalId === over.id
-            );
+    const handleOnDragMove = debounce((event: DragEndEvent) => {
+        const { active } = event;
 
-            const wrapperBounds = wrapperRef.current?.getBoundingClientRect();
-            const cardBounds = document
-                .getElementById(`${active.id}`)
-                .getBoundingClientRect();
-            if (!wrapperBounds) return;
-            if (!cardBounds) return;
+        const wrapperBounds = wrapperRef.current?.getBoundingClientRect();
 
-            const wrapperLeftThirds =
-                wrapperBounds.left + wrapperBounds.width / 3;
-            const wrapperRightThirds =
-                wrapperBounds.left + (wrapperBounds.width * 2) / 3;
+        const wrapperLeftThirds = wrapperBounds.left + wrapperBounds.width / 3;
+        const wrapperRightThirds =
+            wrapperBounds.left +
+            (wrapperBounds.width * 2) / 3 -
+            wrapperBounds.width / 9;
 
-            const cardTop = cardBounds.top - wrapperBounds.top;
-            const cardBottom = cardBounds.bottom - wrapperBounds.top;
+        const currentActiveIndex = orderedIdentifiers.findIndex(
+            (item) => item.internalId === active.id
+        );
 
-            const mouseX =
-                event.active.rect.current.translated.left +
-                event.activatorEvent["layerX"];
+        const mouseX =
+            event.active.rect.current.translated?.left +
+            event.activatorEvent["layerX"];
 
-            const mouseY =
-                event.active.rect.current.translated.top +
-                event.activatorEvent["layerY"];
+        const mouseY =
+            event.active.rect.current.translated.top +
+            event.activatorEvent["layerY"];
 
-            // const isMovingUp = mouseY < cardTop;
-            // const isMovingDown = mouseY > cardBottom;
+        let elementIndex = 0;
+        let inSameRow = false;
+        let column: IElementIdentifier["size"] = "full";
 
-            let elementIdentifiers = [...orderedIdentifiers];
-            let updatedOrderedIdentifiers: IElementIdentifier[] = [];
-            console.log(
-                "check before checking vertical:",
-                updatedOrderedIdentifiers
-            );
-
-            // Determine the movement and size adjustment based on mouse position
-            if (mouseY < cardTop) {
-                // Bringing to the top section
-                updatedOrderedIdentifiers = arrayMove(
-                    elementIdentifiers,
-                    oldIndex,
-                    newIndex
-                );
-
-                if (mouseX < wrapperLeftThirds) {
-                    // Bringing to the left
-                    elementIdentifiers[newIndex] = {
-                        ...elementIdentifiers[newIndex],
-                        size: "left",
-                    };
-                    updatedOrderedIdentifiers = [...elementIdentifiers];
-                } else if (mouseX > wrapperRightThirds) {
-                    // Bringing to the right
-                    elementIdentifiers[newIndex] = {
-                        ...elementIdentifiers[newIndex],
-                        size: "right",
-                    };
-                    updatedOrderedIdentifiers = [...elementIdentifiers];
-                } else {
-                    // Bringing to the center
-                    elementIdentifiers[newIndex] = {
-                        ...elementIdentifiers[newIndex],
-                        size: "full",
-                    };
-                    updatedOrderedIdentifiers = [...elementIdentifiers];
-                }
-            } else if (mouseY > cardBottom) {
-                // Bringing to the bottom section
-                const activeElement = elementIdentifiers.splice(newIndex, 1)[0];
-                elementIdentifiers.splice(oldIndex + 1, 0, activeElement);
-                updatedOrderedIdentifiers = [...elementIdentifiers];
-
-                if (mouseX < wrapperLeftThirds) {
-                    // Bringing to the left
-                    elementIdentifiers[newIndex] = {
-                        ...elementIdentifiers[newIndex],
-                        size: "left",
-                    };
-                    updatedOrderedIdentifiers = [...elementIdentifiers];
-                } else if (mouseX > wrapperRightThirds) {
-                    // Bringing to the right
-                    elementIdentifiers[newIndex] = {
-                        ...elementIdentifiers[newIndex],
-                        size: "right",
-                    };
-                    updatedOrderedIdentifiers = [...elementIdentifiers];
-                } else {
-                    // Bringing to the center
-                    elementIdentifiers[newIndex] = {
-                        ...elementIdentifiers[newIndex],
-                        size: "full",
-                    };
-                    updatedOrderedIdentifiers = [...elementIdentifiers];
-                }
-            } else {
-                // Within the center section
-                if (mouseX < wrapperLeftThirds) {
-                    // Bringing to the left
-                    elementIdentifiers[newIndex] = {
-                        ...elementIdentifiers[newIndex],
-                        size: "left",
-                    };
-                } else if (mouseX > wrapperRightThirds) {
-                    // Bringing to the right
-                    elementIdentifiers[newIndex] = {
-                        ...elementIdentifiers[newIndex],
-                        size: "right",
-                    };
-                } else {
-                    // Bringing to the center
-                    elementIdentifiers[newIndex] = {
-                        ...elementIdentifiers[newIndex],
-                        size: "full",
-                    };
-                }
-
-                updatedOrderedIdentifiers = [...elementIdentifiers];
+        elementStartingRefs.current.forEach((elementRect, index) => {
+            if (mouseY >= elementRect.y) {
+                elementIndex = index;
             }
+            if (mouseY > elementRect.y && mouseY < elementRect.bottom) {
+                inSameRow = true;
+            }
+        });
 
-            // if (mouseX < wrapperLeftThirds) {
-            //     // When it's dragged to the left
-            //     if (mouseY < cardTop) {
-            //         elementIdentifiers[newIndex] = {
-            //             ...elementIdentifiers[newIndex],
-            //             size: "left",
-            //         };
-            //         // const activeElement = elementIdentifiers.splice(
-            //         //     newIndex,
-            //         //     1
-            //         // )[0];
-            //         // elementIdentifiers.splice(
-            //         //     oldIndex > 0 ? oldIndex - 1 : oldIndex,
-            //         //     0,
-            //         //     activeElement
-            //         // );
-            //         updatedOrderedIdentifiers = arrayMove(
-            //             elementIdentifiers,
-            //             oldIndex,
-            //             newIndex
-            //         );
-            //     } else if (mouseY > cardBottom) {
-            //         elementIdentifiers[newIndex] = {
-            //             ...elementIdentifiers[newIndex],
-            //             size: "left",
-            //         };
-            //         const activeElement = elementIdentifiers.splice(
-            //             newIndex,
-            //             1
-            //         )[0];
-            //         elementIdentifiers.splice(oldIndex + 1, 0, activeElement);
-            //     } else {
-            //         elementIdentifiers[newIndex] = {
-            //             ...elementIdentifiers[newIndex],
-            //             size: "left",
-            //         };
-            //     }
+        let updatedOrderedIdentifiers = arrayMove(
+            orderedIdentifiers,
+            currentActiveIndex,
+            elementIndex
+        );
 
-            //     updatedOrderedIdentifiers = [...elementIdentifiers];
-            // } else if (mouseX > wrapperRightThirds) {
-            //     // When it's dragged to the right
-            //     if (mouseY < cardTop) {
-            //         elementIdentifiers[newIndex] = {
-            //             ...elementIdentifiers[newIndex],
-            //             size: "right",
-            //         };
-            //         const activeElement = elementIdentifiers.splice(
-            //             newIndex,
-            //             1
-            //         )[0];
-            //         elementIdentifiers.splice(oldIndex - 1, 0, activeElement);
-            //     } else if (mouseY > cardBottom) {
-            //         elementIdentifiers[newIndex] = {
-            //             ...elementIdentifiers[newIndex],
-            //             size: "right",
-            //         };
-            //         const activeElement = elementIdentifiers.splice(
-            //             newIndex,
-            //             1
-            //         )[0];
-            //         elementIdentifiers.splice(oldIndex + 1, 0, activeElement);
-            //     } else {
-            //         elementIdentifiers[oldIndex] = {
-            //             ...elementIdentifiers[newIndex],
-            //             size: "right",
-            //         };
-            //     }
+        if (mouseX <= wrapperLeftThirds) {
+            column = "left";
+        } else if (mouseX >= wrapperRightThirds) {
+            column = "right";
+        }
 
-            //     updatedOrderedIdentifiers = [...elementIdentifiers];
-            // } else {
-            //     // When it's dragged to the center
-            //     if (elementIdentifiers[newIndex].size !== "full") {
-            //         elementIdentifiers[newIndex] = {
-            //             ...elementIdentifiers[newIndex],
-            //             size: "full",
-            //         };
-            //     }
-            //     updatedOrderedIdentifiers = arrayMove(
-            //         elementIdentifiers,
-            //         newIndex,
-            //         oldIndex
-            //     );
-            // }
-            updateOrderedIdentifiers(updatedOrderedIdentifiers);
-        }, 10),
-        [orderedIdentifiers, updateOrderedIdentifiers]
-    );
+        updatedOrderedIdentifiers[elementIndex] = {
+            ...updatedOrderedIdentifiers[elementIndex],
+            size: column,
+        };
+
+        // to  change sizes of the affected elements accordingly
+        if (
+            column === "left" &&
+            inSameRow &&
+            updatedOrderedIdentifiers[elementIndex + 1]
+        ) {
+            affectElementsRects.current = {
+                internalId:
+                    updateOrderedIdentifiers[elementIndex + 1]?.internalId,
+                elementColumn: updatedOrderedIdentifiers[elementIndex + 1].size,
+            };
+            updateOrderedIdentifiers[elementIndex + 1] = {
+                ...updateOrderedIdentifiers[elementIndex + 1],
+                size: "right",
+            };
+        } else if (
+            column === "right" &&
+            inSameRow &&
+            updatedOrderedIdentifiers[elementIndex - 1]
+        ) {
+            affectElementsRects.current = {
+                internalId:
+                    updateOrderedIdentifiers[elementIndex - 1]?.internalId,
+                elementColumn: updatedOrderedIdentifiers[elementIndex - 1].size,
+            };
+            updateOrderedIdentifiers[elementIndex - 1] = {
+                ...updateOrderedIdentifiers[elementIndex - 1],
+                size: "left",
+            };
+        } else if (!inSameRow) {
+            affectElementsRects.current = null;
+        }
+
+        updateOrderedIdentifiers(updatedOrderedIdentifiers);
+    }, 10);
+
+    const onHandleDragEnd = () => {
+        elementStartingRefs.current = [];
+    };
+
+    // =========================================================================
+    // EFFECTS
+    // =========================================================================
+    useEffect(() => {
+        const validInternalIds = new Set(
+            orderedIdentifiers.map((identifier) => identifier.internalId)
+        );
+
+        elementRefs.current = elementRefs.current.filter((ref) =>
+            validInternalIds.has(ref.internalId)
+        );
+    }, [orderedIdentifiers]);
 
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
 
     const renderElements = () => {
-        return orderedIdentifiers.map((identifier) => {
+        return orderedIdentifiers.map((identifier, index) => {
             const element = elements[identifier.internalId];
             return (
                 <ElementItemWrapper
@@ -308,6 +218,12 @@ export const MainPanel = () => {
                     $mode={renderMode}
                     $size={identifier?.size}
                     data-testid="element-content"
+                    ref={(element) =>
+                        (elementRefs.current[index] = {
+                            internalId: identifier.internalId,
+                            element,
+                        })
+                    }
                 >
                     <ElementCard
                         element={element}
@@ -337,7 +253,9 @@ export const MainPanel = () => {
             <DndContext
                 sensors={sensors}
                 onDragMove={handleOnDragMove}
-                collisionDetection={closestCenter}
+                onDragStart={handleonDragStart}
+                onDragEnd={onHandleDragEnd}
+                collisionDetection={closestCorners}
             >
                 <SortableContext
                     items={items}

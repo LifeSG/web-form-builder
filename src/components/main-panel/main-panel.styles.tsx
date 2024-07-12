@@ -159,13 +159,12 @@ export const ElementsWrapper = styled.ul<IWrapperStyleProps>`
         }
     }}
 `;
-
 export const ElementItemWrapper = styled.li<IElementItemWrapperProps>`
     ${({ $mode, $size }) => {
         switch ($mode) {
             case "expanded":
                 switch ($size) {
-                    case "right": {
+                    case "right":
                         return css`
                             ${MediaQuery.MaxWidth.desktop4k} {
                                 grid-column: 4 / span 3;
@@ -177,39 +176,39 @@ export const ElementItemWrapper = styled.li<IElementItemWrapperProps>`
                                 grid-column: 4 / span 3;
                             }
                         `;
-                    }
-
-                    case "left": {
+                    case "left":
                         return css`
                             ${MediaQuery.MaxWidth.desktop4k} {
-                                grid-column: auto / span 3;
+                                grid-column: 1 / span 3;
                             }
                             ${MediaQuery.MaxWidth.desktopL} {
-                                grid-column: auto / span 4;
+                                grid-column: 1 / span 4;
                             }
                             ${MediaQuery.MaxWidth.tablet} {
-                                grid-column: auto / span 3;
+                                grid-column: 1 / span 3;
                             }
                         `;
-                    }
-
-                    case "full": {
+                    case "full":
                         return css`
                             ${MediaQuery.MaxWidth.desktop4k} {
-                                grid-column: auto / span 6;
+                                grid-column: 1 / span 6;
                             }
                             ${MediaQuery.MaxWidth.desktopL} {
-                                grid-column: auto / span 8;
+                                grid-column: 1 / span 8;
                             }
                             ${MediaQuery.MaxWidth.tablet} {
-                                 grid-column: auto / span 6;
+                                grid-column: 1 / span 6;
+                            }
                         `;
-                    }
+                    default:
+                        return css`
+                            grid-column: 1 / span 3;
+                        `;
                 }
 
             case "minimised":
                 switch ($size) {
-                    case "right": {
+                    case "right":
                         return css`
                             ${MediaQuery.MaxWidth.desktop4k} {
                                 grid-column: 4 / span 3;
@@ -218,33 +217,33 @@ export const ElementItemWrapper = styled.li<IElementItemWrapperProps>`
                                 grid-column: 4 / span 2;
                             }
                         `;
-                    }
-
-                    case "left": {
+                    case "left":
                         return css`
                             ${MediaQuery.MaxWidth.desktop4k} {
-                                grid-column: auto / span 3;
+                                grid-column: 1 / span 3;
                             }
                             ${MediaQuery.MaxWidth.tablet} {
-                                grid-column: auto / span 2;
+                                grid-column: 1 / span 2;
                             }
                         `;
-                    }
-
-                    case "full": {
+                    case "full":
                         return css`
                             ${MediaQuery.MaxWidth.desktop4k} {
-                                grid-column: auto / span 6;
+                                grid-column: 1 / span 6;
                             }
                             ${MediaQuery.MaxWidth.tablet} {
-                                 grid-column: auto / span 4;
+                                grid-column: 1 / span 4;
+                            }
                         `;
-                    }
+                    default:
+                        return css`
+                            grid-column: 1 / span 3;
+                        `;
                 }
 
             default:
                 return css`
-                    grid-column: auto / span 3; /* Default span if $mode is not specified */
+                    grid-column: 1 / span 3; /* Default span if $mode is not specified */
                 `;
         }
     }}

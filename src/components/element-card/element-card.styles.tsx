@@ -106,25 +106,50 @@ export const DroppableWrapper = styled.div<IDroppableWrapperProps>`
     border: 1px solid transparent;
     z-index: -1;
 
-    ${({ $size }) => css`
-        ${MediaQuery.MaxWidth.desktop4k} {
-            grid-column: ${$size === "right"
-                ? "4 / span 3"
-                : "auto / span " + ($size === "full" ? 6 : 3)};
+    ${({ $size }) => {
+        switch ($size) {
+            case "right":
+                return css`
+                    ${MediaQuery.MaxWidth.desktop4k} {
+                        grid-column: 4 / span 3;
+                    }
+                    ${MediaQuery.MaxWidth.desktopL} {
+                        grid-column: 4 / span 4;
+                    }
+                    ${MediaQuery.MaxWidth.tablet} {
+                        grid-column: 4 / span 3;
+                    }
+                `;
+            case "left":
+                return css`
+                    ${MediaQuery.MaxWidth.desktop4k} {
+                        grid-column: 1 / span 3;
+                    }
+                    ${MediaQuery.MaxWidth.desktopL} {
+                        grid-column: 1 / span 4;
+                    }
+                    ${MediaQuery.MaxWidth.tablet} {
+                        grid-column: 1 / span 3;
+                    }
+                `;
+            case "full":
+                return css`
+                    ${MediaQuery.MaxWidth.desktop4k} {
+                        grid-column: 1 / span 6;
+                    }
+                    ${MediaQuery.MaxWidth.desktopL} {
+                        grid-column: 1 / span 8;
+                    }
+                    ${MediaQuery.MaxWidth.tablet} {
+                        grid-column: 1 / span 6;
+                    }
+                `;
+            default:
+                return css`
+                    grid-column: 1 / span 3;
+                `;
         }
-
-        ${MediaQuery.MaxWidth.desktopL} {
-            grid-column: ${$size === "right"
-                ? "4 / span 4"
-                : "auto / span " + ($size === "full" ? 8 : 4)};
-        }
-
-        ${MediaQuery.MaxWidth.tablet} {
-            grid-column: ${$size === "right"
-                ? "4 / span 3"
-                : "auto / span " + ($size === "full" ? 6 : 3)};
-        }
-    `}
+    }}
 
     ${({ isOver }) =>
         isOver &&
