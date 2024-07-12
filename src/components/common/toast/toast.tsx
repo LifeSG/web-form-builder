@@ -1,30 +1,45 @@
 import { Toast } from "@lifesg/react-design-system/toast";
-import { EToastTypes, IToast, useDisplay } from "src/context-providers";
+import {
+    EToastTypes,
+    IToast,
+    useBuilder,
+    useDisplay,
+} from "src/context-providers";
 
 interface IProps {
     toast: IToast;
-    onClickActionButton?: () => void;
 }
 
-export const DisplayToast = ({ toast, onClickActionButton }: IProps) => {
+export const DisplayToast = ({ toast }: IProps) => {
     // =========================================================================
     // CONST, STATE, REF
     // =========================================================================
-    const { dismissToast } = useDisplay();
+    const { dismissToast, showToast } = useDisplay();
+    const { undoDeleteElement } = useBuilder();
 
     // =============================================================================
     // HELPER FUNCTIONS
     // =============================================================================
-    function handleDismissToast(id: string) {
+    const handleDismissToast = (id: string) => {
         dismissToast(id);
-    }
+    };
+
+    const handleUndoDeleteElementClick = () => {
+        undoDeleteElement(toast.elementInternalId);
+        handleDismissToast(toast.id);
+        const revertedToast: IToast = {
+            ...toast,
+            type: EToastTypes.SUCCESS_TOAST,
+            message: "Deleted element reverted.",
+        };
+        showToast(revertedToast);
+    };
 
     // =============================================================================
     // RENDER
     // =============================================================================
     switch (toast.type) {
         case EToastTypes.SUCCESS_TOAST:
-        case EToastTypes.DELETE_TOAST:
             return (
                 <Toast
                     type={"success"}
@@ -32,6 +47,21 @@ export const DisplayToast = ({ toast, onClickActionButton }: IProps) => {
                     autoDismiss
                     fixed={false}
                     onDismiss={() => handleDismissToast(toast.id)}
+                />
+            );
+        case EToastTypes.DELETE_ELEMENT_TOAST:
+            return (
+                <Toast
+                    type={"success"}
+                    label={toast.message}
+                    autoDismiss
+                    autoDismissTime={7000}
+                    fixed={false}
+                    onDismiss={() => handleDismissToast(toast.id)}
+                    actionButton={{
+                        label: "Undo",
+                        onClick: handleUndoDeleteElementClick,
+                    }}
                 />
             );
         default:

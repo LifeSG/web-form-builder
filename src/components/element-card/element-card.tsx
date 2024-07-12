@@ -8,6 +8,7 @@ import { CopyIcon } from "@lifesg/react-icons/copy";
 import { CSSProperties } from "react";
 import {
     EToastTypes,
+    IToast,
     TElement,
     useBuilder,
     useDisplay,
@@ -87,8 +88,13 @@ export const ElementCard = ({ element, onClick }: IProps) => {
 
     const handleDeleteClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation();
-        // TODO: Add confirmation modal
         deleteElement(element.internalId);
+        const deleteToast: IToast = {
+            message: "Element deleted.",
+            type: EToastTypes.DELETE_ELEMENT_TOAST,
+            elementInternalId: element.internalId,
+        };
+        showToast(deleteToast);
     };
 
     // =========================================================================

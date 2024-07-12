@@ -2,7 +2,7 @@ import {
     IFrontendEngineData,
     TFrontendEngineFieldSchema,
 } from "@lifesg/web-frontend-engine";
-import { TElementMap } from "src/context-providers";
+import { IElementIdentifier, TElementMap } from "src/context-providers";
 import { ISchemaProps } from "src/form-builder";
 import {
     createPrefillObject,
@@ -12,10 +12,18 @@ import {
 import { TextBasedField } from "./text-based-field";
 
 export namespace Translator {
-    export function generateSchema(elements: TElementMap) {
+    export function generateSchema(
+        elements: TElementMap,
+        orderedIdentifiers: IElementIdentifier[]
+    ) {
         const prefill = createPrefillObject(elements);
 
-        const fields = Object.values(elements).reduce((acc, element) => {
+        const newElements = orderedIdentifiers.reduce((acc, value) => {
+            acc[value.internalId] = elements[value.internalId];
+            return acc;
+        }, {} as TElementMap);
+
+        const fields = Object.values(newElements).reduce((acc, element) => {
             const translatedChild = TextBasedField.elementToSchema(element);
             return { ...acc, ...translatedChild };
         }, {});
