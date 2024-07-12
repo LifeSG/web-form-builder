@@ -1,4 +1,7 @@
+import { useEffect } from "react";
+import { useFormContext } from "react-hook-form";
 import { useBuilder } from "src/context-providers";
+import { IBaseTextBasedFieldValues } from "src/schemas";
 import { BasicDetails } from "./basic-details";
 import { ConditionalRendering } from "./conditional-rendering";
 import {
@@ -8,9 +11,6 @@ import {
 } from "./element-editor.styles";
 import { Prefill } from "./prefill";
 import { Validation } from "./validation/validation";
-import { useEffect } from "react";
-import { useFormContext } from "react-hook-form";
-import { IBaseTextBasedFieldValues } from "src/schemas";
 
 export const ElementEditor = () => {
     // =========================================================================
@@ -25,6 +25,10 @@ export const ElementEditor = () => {
 
     const { isTouched: isTypeTouched } = getFieldState("type");
 
+    // =========================================================================
+    // EFFECTS
+    // =========================================================================
+
     useEffect(() => {
         // Once the element type is touched, that element should be considered dirty until it is saved or its changes are discarded.
         if (isTypeTouched) {
@@ -33,6 +37,10 @@ export const ElementEditor = () => {
         }
         updateFocusedElement(!!isDirty);
     }, [isDirty, updateFocusedElement]);
+
+    // =========================================================================
+    // RENDER FUNCTIONS
+    // =========================================================================
 
     return (
         <Wrapper data-testid="element-editor">

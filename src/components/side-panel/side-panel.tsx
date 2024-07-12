@@ -1,7 +1,12 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useCallback, useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { EElementType, EToastTypes, TElement, useDisplay } from "src/context-providers";
+import {
+    EElementType,
+    EToastTypes,
+    TElement,
+    useDisplay,
+} from "src/context-providers";
 import { SchemaHelper } from "src/schemas";
 import { EBuilderMode, useBuilder } from "../../context-providers";
 import { ElementEditor } from "../element-editor";
@@ -31,12 +36,7 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
     const methods = useForm({
         mode: "onTouched",
         defaultValues: {
-            type: "",
-            label: "",
-            required: true,
             requiredErrorMsg: "",
-            id: "",
-            placeholder: "",
         },
         // TODO: insert proper type; email is a placeholder
         resolver: yupResolver(SchemaHelper.buildSchema(EElementType.EMAIL)),
