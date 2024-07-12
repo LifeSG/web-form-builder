@@ -24,12 +24,22 @@ export enum ETextFieldMode {
 export interface IElementIdentifier {
     internalId: string;
     parentInternalId?: string;
+    position: number;
 }
 
 export interface IFocusedElement {
     element: TElement;
     isDirty?: boolean;
     isValid?: boolean;
+}
+
+export interface IDeletedElement {
+    element: TElement;
+    position: number;
+}
+
+export interface IDeletedElementMap {
+    [internalId: string]: IDeletedElement;
 }
 
 export type TElementMap = {
@@ -47,11 +57,17 @@ export interface IBuilderState {
      * rendering order
      */
     orderedIdentifiers: IElementIdentifier[];
+    deletedElements: IDeletedElementMap;
+    /**
+     * Keeps track of the number of unique elements that have been added to the builder from the start.
+     */
+    elementCounter: number;
 }
 
 // =============================================================================
 // ACTIONS
 // =============================================================================
+
 export interface ITogglePanelAction {
     type: "toggle-panel";
     payload: boolean;
@@ -80,6 +96,16 @@ export interface IDeleteElementAction {
     payload: {
         updatedElements: TElementMap;
         orderedIdentifiers: IElementIdentifier[];
+        deletedElements: IDeletedElementMap;
+    };
+}
+
+export interface IUndoDeleteElementAction {
+    type: "undo-delete-element";
+    payload: {
+        updatedElements: TElementMap;
+        orderedIdentifiers: IElementIdentifier[];
+        deletedElements: IDeletedElementMap;
     };
 }
 
@@ -111,6 +137,7 @@ export type TBuilderAction =
     | IToggleModeAction
     | IAddElementAction
     | IDeleteElementAction
+    | IUndoDeleteElementAction
     | IFocusElementAction
     | IRemoveFocusedElementAction
     | IUpdateElementAction
