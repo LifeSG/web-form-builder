@@ -24,6 +24,7 @@ interface IProps {
 interface ISchemaViewProps {
     data?: ISchemaProps;
     onChange?: (schema: ISchemaProps) => void;
+    setSchemaProvided?: (value: boolean) => void;
 }
 
 const FormPreview = ({ data }: IProps) => {
@@ -35,11 +36,16 @@ const FormPreview = ({ data }: IProps) => {
     );
 };
 
-const SchemaView = ({ data, onChange }: ISchemaViewProps) => {
+const SchemaView = ({
+    data,
+    onChange,
+    setSchemaProvided,
+}: ISchemaViewProps) => {
     const [schema, setSchema] = useState("");
 
     const handleBlur = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setSchema(event.target.value);
+        setSchemaProvided(true);
         if (onChange) {
             const newSchema = JSON.parse(event.target.value);
             onChange(newSchema);
@@ -68,6 +74,7 @@ export const DocElement = () => {
     const formBuilderRef = useRef<IFormBuilderMethods>(null);
     const [pageMode, setPageMode] = useState<string>("form-builder-mode");
     const [schema, setSchema] = useState<ISchemaProps | null>(null);
+    const [schemaProvided, setSchemaProvided] = useState<boolean>(false);
 
     // =========================================================================
     // EVENT HANDLERS
@@ -91,10 +98,10 @@ export const DocElement = () => {
         if (pageMode !== "form-builder-mode") {
             const generatedSchema = formBuilderRef.current?.generateSchema();
             setSchema(generatedSchema);
-        } else if (schema) {
+        } else if (schema && schemaProvided) {
             formBuilderRef.current?.parseSchema(schema);
         }
-    }, [pageMode]);
+    }, [pageMode, schemaProvided]);
 
     // =========================================================================
     // RENDER FUNCTIONS
@@ -135,7 +142,11 @@ export const DocElement = () => {
             )}
             {pageMode === "schema-mode" && (
                 <ContentWrapper>
-                    <SchemaView data={schema} onChange={setSchema} />
+                    <SchemaView
+                        data={schema}
+                        onChange={setSchema}
+                        setSchemaProvided={setSchemaProvided}
+                    />
                 </ContentWrapper>
             )}
         </>

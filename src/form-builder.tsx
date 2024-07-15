@@ -46,36 +46,21 @@ const Component = forwardRef<IFormBuilderMethods, IProps>(
         const [isLargeScreen, setIsLargeScreen] = useState(
             window.innerWidth >= 1200
         );
-        const {
-            elements,
-            updateElementSchema,
-            orderedIdentifiers,
-            removeFocusedElement,
-        } = useBuilder();
-
-        const generateSchema = useCallback((): ISchemaProps => {
-            const schema = Translator.generateSchema(
-                elements,
-                orderedIdentifiers
-            );
-            removeFocusedElement();
-            return schema;
-        }, [elements, orderedIdentifiers]);
-
-        // Function to parse schema
-        const parseSchema = useCallback((schema: ISchemaProps) => {
-            const { newOrderedIdentifiers, newElements } =
-                Translator.parseSchema(schema);
-            updateElementSchema(newElements, newOrderedIdentifiers);
-        }, []);
+        const { elements, updateElementSchema, orderedIdentifiers } =
+            useBuilder();
 
         useImperativeHandle(
             ref,
             () => ({
-                generateSchema,
-                parseSchema,
+                generateSchema: () =>
+                    Translator.generateSchema(elements, orderedIdentifiers),
+                parseSchema: (schema: ISchemaProps) => {
+                    const { newOrderedIdentifiers, newElements } =
+                        Translator.parseSchema(schema);
+                    updateElementSchema(newElements, newOrderedIdentifiers);
+                },
             }),
-            [generateSchema, parseSchema]
+            [elements, orderedIdentifiers]
         );
 
         // =========================================================================
