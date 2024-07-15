@@ -173,6 +173,7 @@ export const BasicDetails = () => {
                                 field.onChange(e.target.value);
                                 const target = e.target;
                                 target.rows = 1;
+                                target.style.height = `${target.scrollHeight}px`;
                                 const lineHeight = 20;
                                 const newRows = Math.min(
                                     1,
@@ -198,7 +199,7 @@ export const BasicDetails = () => {
                                     rows={
                                         field.value
                                             ? Math.min(
-                                                  2,
+                                                  1,
                                                   Math.floor(
                                                       field.value.length / 50
                                                   ) + 1
@@ -206,9 +207,9 @@ export const BasicDetails = () => {
                                             : 1
                                     }
                                     onChange={handleTextareaChange}
-                                    errorMessage={errors.placeholder?.message}
+                                    errorMessage={errors.description?.message}
                                     maxLength={180}
-                                    style={{ overflow: "hidden" }}
+                                    style={{ overflow: "auto" }}
                                 />
                             );
                         }}
