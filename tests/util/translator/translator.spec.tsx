@@ -33,11 +33,16 @@ describe("Translator", () => {
                     {},
                     generateMockElementSchema({
                         id: "mockId1",
-                        label: "Email address",
+                        label: {
+                            mainLabel: "Email address",
+                            subLabel: "",
+                        },
                         uiType: EElementType.EMAIL,
                     })
                 );
-                const orderedIdentifiers = [{ internalId: "mockId1" }];
+                const orderedIdentifiers = [
+                    { internalId: "mockId1", position: 1 },
+                ];
 
                 const generatedSchema = Translator.generateSchema(
                     MOCK__EMAIL_ELEMENT,
@@ -69,7 +74,10 @@ describe("Translator", () => {
                     {},
                     generateMockElementSchema({
                         id: "mockId1",
-                        label: "Email address",
+                        label: {
+                            mainLabel: "Email address",
+                            subLabel: "",
+                        },
                         uiType: EElementType.EMAIL,
                         validation: [
                             {
@@ -84,7 +92,9 @@ describe("Translator", () => {
                         ],
                     })
                 );
-                const orderedIdentifiers = [{ internalId: "mockId1" }];
+                const orderedIdentifiers = [
+                    { internalId: "mockId1", position: 1 },
+                ];
                 const generatedSchema = Translator.generateSchema(
                     MOCK__EMAIL_ELEMENT_WITH_VALIDATION,
                     orderedIdentifiers
@@ -124,7 +134,10 @@ describe("Translator", () => {
                         {
                             ...generateMockElementSchema({
                                 id: "mock123",
-                                label: "Email address",
+                                label: {
+                                    mainLabel: "Email address",
+                                    subLabel: "",
+                                },
                                 uiType: EElementType.EMAIL,
                                 validation: [
                                     {
@@ -146,7 +159,10 @@ describe("Translator", () => {
                             }),
                             ...generateMockElementSchema({
                                 id: "mock456",
-                                label: "Short text",
+                                label: {
+                                    mainLabel: "Short text",
+                                    subLabel: "",
+                                },
                                 uiType: EElementType.TEXT,
                                 validation: [
                                     {
@@ -158,8 +174,8 @@ describe("Translator", () => {
                         }
                     );
                 const orderedIdentifiers = [
-                    { internalId: "mock123" },
-                    { internalId: "mock456" },
+                    { internalId: "mock123", position: 1 },
+                    { internalId: "mock456", position: 2 },
                 ];
                 const generatedSchema = Translator.generateSchema(
                     MOCK__EMAIL_ELEMENT_WITH_CONDITIONAL_RENDERING,
@@ -196,7 +212,10 @@ describe("Translator", () => {
                         },
                         generateMockElementSchema({
                             id: "mock123",
-                            label: "Email address",
+                            label: {
+                                mainLabel: "Email address",
+                                subLabel: "",
+                            },
                             uiType: EElementType.EMAIL,
                             validation: [
                                 {
@@ -206,7 +225,9 @@ describe("Translator", () => {
                             ],
                         })
                     );
-                const orderedIdentifiers = [{ internalId: "mock123" }];
+                const orderedIdentifiers = [
+                    { internalId: "mock123", position: 1 },
+                ];
                 const generatedSchema = Translator.generateSchema(
                     MOCK__EMAIL_ELEMENT_WITH_MYINFO_PREFILL,
                     orderedIdentifiers
@@ -244,7 +265,10 @@ describe("Translator", () => {
                         },
                         generateMockElementSchema({
                             id: "mock123",
-                            label: "Email address",
+                            label: {
+                                mainLabel: "Email address",
+                                subLabel: "",
+                            },
                             uiType: EElementType.EMAIL,
                             validation: [
                                 {
@@ -254,7 +278,9 @@ describe("Translator", () => {
                             ],
                         })
                     );
-                const orderedIdentifiers = [{ internalId: "mock123" }];
+                const orderedIdentifiers = [
+                    { internalId: "mock123", position: 1 },
+                ];
 
                 const generatedSchema = Translator.generateSchema(
                     MOCK__EMAIL_ELEMENT_WITH_PREVIOUS_SOURCE_PREFILL,
@@ -280,7 +306,10 @@ describe("Translator", () => {
                     {},
                     generateMockElementSchema({
                         id: "mockId1",
-                        label: "Short text",
+                        label: {
+                            mainLabel: "Short text",
+                            subLabel: "",
+                        },
                         uiType: EElementType.TEXT,
                         validation: [
                             {
@@ -290,7 +319,9 @@ describe("Translator", () => {
                         ],
                     })
                 );
-                const orderedIdentifiers = [{ internalId: "mockId1" }];
+                const orderedIdentifiers = [
+                    { internalId: "mockId1", position: 1 },
+                ];
 
                 const generatedSchema = Translator.generateSchema(
                     MOCK_TEXT_BASED_ELEMENT,

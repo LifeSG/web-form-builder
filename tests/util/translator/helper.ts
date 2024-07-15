@@ -9,7 +9,7 @@ import {
 import { ELEMENT_BUTTON_LABELS } from "src/data";
 import { ISchemaConditionalRendering } from "src/translator";
 import { TextBasedField } from "src/translator/text-based-field";
-
+import { IComplexLabel } from "@lifesg/web-frontend-engine/components/fields";
 interface MockElementProps {
     type: EElementType;
     id: string;
@@ -26,7 +26,7 @@ interface MockElementProps {
 
 interface MockElementSchemaProps {
     id: string;
-    label: string;
+    label: IComplexLabel;
     uiType: EElementType;
     placeholder?: string;
     validation?: TextBasedField.ISchemaValidation[];
@@ -39,7 +39,7 @@ interface MockPrefillSchema {
 
 interface MockChildrenSchema {
     [key: string]: {
-        label: string;
+        label: IComplexLabel;
         uiType: EElementType;
         columns: IColumns;
         placeholder?: string;
@@ -96,7 +96,7 @@ export const generateMockElementSchema = ({
 }: MockElementSchemaProps): MockChildrenSchema => {
     return {
         [id]: {
-            label,
+            label: label,
             uiType,
             columns: {
                 desktop: 12,

@@ -162,7 +162,7 @@ export const BasicDetails = () => {
                     )}
                     shouldUnregister={true}
                 />
-                {element?.description && (
+                {hasProperty("description") && (
                     <Controller
                         name="description"
                         control={control}
@@ -175,7 +175,7 @@ export const BasicDetails = () => {
                                 target.rows = 1;
                                 const lineHeight = 20;
                                 const newRows = Math.min(
-                                    2,
+                                    1,
                                     Math.floor(target.scrollHeight / lineHeight)
                                 );
                                 target.rows = newRows;

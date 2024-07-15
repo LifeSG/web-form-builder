@@ -77,7 +77,7 @@ export namespace TextBasedField {
             [element.id]: {
                 label: {
                     mainLabel: element.label,
-                    subLabel: element.description,
+                    subLabel: element.description || "",
                 },
                 uiType: element.type,
                 columns: {
