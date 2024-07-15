@@ -147,7 +147,7 @@ export const Validation = () => {
     return (
         <MultiEntry
             onAdd={handleAddButtonClick}
-            title="Validation"
+            title="Additional Validation"
             buttonLabel="validation"
             disabledButton={getMaxEntries(element?.type) || checkIsValid()}
             popoverMessage={getPopoverMessage()}
