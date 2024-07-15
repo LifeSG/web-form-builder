@@ -39,7 +39,9 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
             requiredErrorMsg: "",
         },
         // TODO: insert proper type; email is a placeholder
-        resolver: yupResolver(SchemaHelper.buildSchema(EElementType.EMAIL)),
+        resolver: yupResolver(
+            SchemaHelper.buildSchema(focusedElement?.element?.type)
+        ),
     });
 
     const {

@@ -5,6 +5,7 @@ import { EElementType, useBuilder } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import { IBaseTextBasedFieldValues, SchemaHelper } from "src/schemas";
 import * as Yup from "yup";
+import { getValidationOptionsByType } from "./helper";
 import { ValidationChild } from "./validation-child";
 
 export const Validation = () => {
@@ -19,36 +20,31 @@ export const Validation = () => {
         shouldUnregister: true,
     });
     const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
-    const validationValues = watch("validation", focusedElement.element.validation);
+    const validationValues = watch(
+        "validation",
+        focusedElement.element.validation
+    );
     const elementType = watch("type", focusedElement.element.type);
-    const invalidAndEmptyFields = checkIsValid();
-
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
-    function getOptionsByType(elementType: EElementType) {
+
+    const hasReachedMaxEntries = (elementType: EElementType) => {
         switch (elementType) {
             case EElementType.EMAIL:
-                return ELEMENT_VALIDATION_TYPES["Text field"][
-                    EElementType.EMAIL
-                ].validationTypes;
-            default:
-                return ["Select", "Type 1"];
-        }
-    }
+            case EElementType.TEXT:
+                return (
+                    validationValues?.length ===
+                    ELEMENT_VALIDATION_TYPES["Text field"][elementType]
+                        .maxEntries
+                );
 
-    function getMaxEntries(elementType: EElementType) {
-        switch (elementType) {
-            case EElementType.EMAIL:
-                return ELEMENT_VALIDATION_TYPES["Text field"][
-                    EElementType.EMAIL
-                ].maxEntries;
             default:
-                return 6; // this is a arbitary value will be changed later on
+                return validationValues?.length === 6; // this is a arbitary value will be changed later on
         }
-    }
+    };
 
-    function checkIsValid() {
+    const checkIsValid = () => {
         try {
             const validationSchema = schema.pick(["validation"]);
             validationSchema.validateSync({
@@ -59,16 +55,17 @@ export const Validation = () => {
         } catch (error) {
             return Yup.ValidationError.isError(error);
         }
-    }
+    };
 
     const getPopoverMessage = () => {
+        const invalidAndEmptyFields = checkIsValid();
         if (invalidAndEmptyFields) {
             return (
                 <Text.Body>
                     To add new validation, fill up existing validation first.
                 </Text.Body>
             );
-        } else if (validationValues?.length === getMaxEntries(elementType)) {
+        } else if (hasReachedMaxEntries(elementType)) {
             return (
                 <Text.Body>
                     Limit reached. To add new validation, remove existing ones
@@ -115,7 +112,10 @@ export const Validation = () => {
             <ValidationChild
                 key={field.id}
                 onDelete={() => handleDelete(index)}
-                options={getOptionsByType(elementType)}
+                options={getValidationOptionsByType(
+                    validationValues,
+                    elementType
+                )}
                 index={index}
             />
         ));
@@ -126,10 +126,7 @@ export const Validation = () => {
             onAdd={handleAddButtonClick}
             title="Validation"
             buttonLabel="validation"
-            disabledButton={
-                validationValues?.length === getMaxEntries(elementType) ||
-                invalidAndEmptyFields
-            }
+            disabledButton={hasReachedMaxEntries(elementType) || checkIsValid()}
             popoverMessage={getPopoverMessage()}
         >
             {renderChildren()}
