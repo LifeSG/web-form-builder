@@ -75,7 +75,10 @@ export namespace TextBasedField {
         const validationObject = createValidationObject(element);
         const textBasedFieldSchema = {
             [element.id]: {
-                label: element.label,
+                label: {
+                    mainLabel: element.label,
+                    subLabel: element.description,
+                },
                 uiType: element.type,
                 columns: {
                     desktop: element.columns.desktop,

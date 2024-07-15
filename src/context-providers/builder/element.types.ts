@@ -64,6 +64,7 @@ export interface IBaseFieldAttributes extends IBaseAttributes {
     required: boolean;
     requiredErrorMsg?: string | undefined;
     columns: IColumns;
+    description?: string;
 }
 
 export interface IBaseTextBasedFieldAttributes extends IBaseFieldAttributes {

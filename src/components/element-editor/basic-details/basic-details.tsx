@@ -162,6 +162,59 @@ export const BasicDetails = () => {
                     )}
                     shouldUnregister={true}
                 />
+                {element?.description && (
+                    <Controller
+                        name="description"
+                        control={control}
+                        render={({ field }) => {
+                            const handleTextareaChange = (
+                                e: React.ChangeEvent<HTMLTextAreaElement>
+                            ) => {
+                                field.onChange(e.target.value);
+                                const target = e.target;
+                                target.rows = 1;
+                                const lineHeight = 20;
+                                const newRows = Math.min(
+                                    2,
+                                    Math.floor(target.scrollHeight / lineHeight)
+                                );
+                                target.rows = newRows;
+                            };
+
+                            return (
+                                <Form.Textarea
+                                    {...field}
+                                    label={{
+                                        children: "Description text (optional)",
+                                        subtitle: (
+                                            <Text.H6 weight={400}>
+                                                This displays as a description
+                                                under the label.
+                                            </Text.H6>
+                                        ),
+                                    }}
+                                    placeholder="Enter description text"
+                                    value={field.value || ""}
+                                    rows={
+                                        field.value
+                                            ? Math.min(
+                                                  2,
+                                                  Math.floor(
+                                                      field.value.length / 50
+                                                  ) + 1
+                                              )
+                                            : 1
+                                    }
+                                    onChange={handleTextareaChange}
+                                    errorMessage={errors.placeholder?.message}
+                                    maxLength={180}
+                                    style={{ overflow: "hidden" }}
+                                />
+                            );
+                        }}
+                        shouldUnregister={true}
+                    />
+                )}
 
                 {element?.hasOwnProperty("placeholder") && (
                     <Controller
