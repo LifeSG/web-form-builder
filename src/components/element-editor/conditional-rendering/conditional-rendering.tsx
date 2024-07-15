@@ -30,7 +30,6 @@ export const ConditionalRendering = () => {
         useFormContext<IBaseTextBasedFieldValues>();
 
     const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
-    const invalidAndEmptyFields = checkIsValid();
     const conditionalRenderingValues = getValues("conditionalRendering") || [];
     // =====================================================================
     // HELPER FUNCTIONS
@@ -66,6 +65,7 @@ export const ConditionalRendering = () => {
     }
 
     const getPopoverMessage = useCallback(() => {
+        const invalidAndEmptyFields = checkIsValid();
         if (invalidAndEmptyFields) {
             return (
                 <Text.Body>
@@ -77,7 +77,7 @@ export const ConditionalRendering = () => {
             return <Text.Body>No conditional rendering available.</Text.Body>;
         }
         return null;
-    }, [invalidAndEmptyFields, getElementOptions]);
+    }, [checkIsValid(), getElementOptions]);
 
     // =============================================================================
     // EVENT HANDLERS
@@ -148,9 +148,7 @@ export const ConditionalRendering = () => {
             onAdd={handleAddButtonClick}
             title="Conditional Rendering"
             buttonLabel="condition"
-            disabledButton={
-                Object.values(elements).length === 1 || invalidAndEmptyFields
-            }
+            disabledButton={getElementOptions().length === 0 || checkIsValid()}
             popoverMessage={getPopoverMessage()}
         >
             {renderChildren()}

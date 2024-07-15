@@ -1,5 +1,11 @@
 import { IFrontendEngineData } from "@lifesg/web-frontend-engine";
-import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
+import {
+    forwardRef,
+    useCallback,
+    useEffect,
+    useImperativeHandle,
+    useState,
+} from "react";
 import { MainPanel, SidePanel } from "./components";
 import { Modals, Toasts } from "./components/common";
 import { ScreenNotSupportedErrorDisplay } from "./components/error-display/screen-not-supported-error";
@@ -40,21 +46,36 @@ const Component = forwardRef<IFormBuilderMethods, IProps>(
         const [isLargeScreen, setIsLargeScreen] = useState(
             window.innerWidth >= 1200
         );
-        const { elements, updateElementSchema, orderedIdentifiers } =
-            useBuilder();
+        const {
+            elements,
+            updateElementSchema,
+            orderedIdentifiers,
+            removeFocusedElement,
+        } = useBuilder();
+
+        const generateSchema = useCallback((): ISchemaProps => {
+            const schema = Translator.generateSchema(
+                elements,
+                orderedIdentifiers
+            );
+            removeFocusedElement();
+            return schema;
+        }, [elements, orderedIdentifiers]);
+
+        // Function to parse schema
+        const parseSchema = useCallback((schema: ISchemaProps) => {
+            const { newOrderedIdentifiers, newElements } =
+                Translator.parseSchema(schema);
+            updateElementSchema(newElements, newOrderedIdentifiers);
+        }, []);
 
         useImperativeHandle(
             ref,
             () => ({
-                generateSchema: () =>
-                    Translator.generateSchema(elements, orderedIdentifiers),
-                parseSchema: (schema: ISchemaProps) => {
-                    const { newOrderedIdentifiers, newElements } =
-                        Translator.parseSchema(schema);
-                    updateElementSchema(newElements, newOrderedIdentifiers);
-                },
+                generateSchema,
+                parseSchema,
             }),
-            [elements, orderedIdentifiers]
+            [generateSchema, parseSchema]
         );
 
         // =========================================================================
