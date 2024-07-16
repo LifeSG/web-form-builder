@@ -8,14 +8,6 @@ import { ELEMENT_BUTTON_LABELS } from "src/data";
 import { SchemaHelper } from "src/schemas";
 import { TestHelper } from "src/util/test-helper";
 
-jest.mock("src/context-providers/builder/hook", () => ({
-    useBuilder: () => ({
-        elements: MOCK_ELEMENTS,
-        focusedElement: MOCK_FOCUSED_ELEMENT,
-        updateFocusedElement: jest.fn(),
-    }),
-}));
-
 describe("BasicDetails", () => {
     beforeEach(() => {
         global.ResizeObserver = jest.fn().mockImplementation(() => ({
@@ -32,7 +24,7 @@ describe("BasicDetails", () => {
 
     describe("rendering label & required error message fields", () => {
         it("should render label if element has label property", async () => {
-            renderComponent({
+            renderComponent(EElementType.EMAIL, {
                 builderContext: {
                     focusedElement: MOCK_FOCUSED_ELEMENT,
                     elements: MOCK_ELEMENTS,
@@ -44,7 +36,7 @@ describe("BasicDetails", () => {
         });
 
         it("should render required error message if element has required error message property", async () => {
-            renderComponent({
+            renderComponent(EElementType.EMAIL, {
                 builderContext: {
                     focusedElement: MOCK_FOCUSED_ELEMENT,
                     elements: MOCK_ELEMENTS,
@@ -59,7 +51,7 @@ describe("BasicDetails", () => {
         });
 
         it("should render the description if element has the description property", async () => {
-            renderComponent({
+            renderComponent(EElementType.EMAIL, {
                 builderContext: {
                     focusedElement: MOCK_FOCUSED_ELEMENT,
                     elements: MOCK_ELEMENTS,
@@ -71,11 +63,29 @@ describe("BasicDetails", () => {
             );
             expect(descriptionField).toBeInTheDocument();
         });
+
+        it("should render the preselected field & resizable area input field if element has the preselected value & resizable area input field property", async () => {
+            renderComponent(EElementType.TEXTAREA, {
+                builderContext: {
+                    focusedElement: MOCK_FOCUSED_TEXT_AREA_ELEMENT,
+                    elements: MOCK_TEXT_AREA_ELEMENTS,
+                },
+            });
+
+            const resizableAreaInput = await screen.findByText(
+                "Resizable area input"
+            );
+            const preSelectedField = await screen.findByText(
+                "Pre-selected value (optional)"
+            );
+            expect(resizableAreaInput).toBeInTheDocument();
+            expect(preSelectedField).toBeInTheDocument();
+        });
     });
 
     describe("rendering the error messages for the fields", () => {
         it("should render an error message for the ID field if it is empty", async () => {
-            renderComponent({
+            renderComponent(EElementType.EMAIL, {
                 builderContext: {
                     focusedElement: MOCK_FOCUSED_ELEMENT,
                     elements: MOCK_ELEMENTS,
@@ -90,7 +100,7 @@ describe("BasicDetails", () => {
         });
 
         it("should render an error message for the ID field if it is invalid", async () => {
-            renderComponent({
+            renderComponent(EElementType.EMAIL, {
                 builderContext: {
                     focusedElement: MOCK_FOCUSED_ELEMENT,
                     elements: MOCK_ELEMENTS,
@@ -107,7 +117,7 @@ describe("BasicDetails", () => {
         });
 
         it("should render an error message for the label field if it is empty", async () => {
-            renderComponent({
+            renderComponent(EElementType.EMAIL, {
                 builderContext: {
                     focusedElement: MOCK_FOCUSED_ELEMENT,
                     elements: MOCK_ELEMENTS,
@@ -128,11 +138,16 @@ describe("BasicDetails", () => {
 // HELPER FUNCTIONS
 // =============================================================================
 
-const MyTestComponent = () => {
+interface IComponentProps {
+    elementType: EElementType;
+}
+
+const MyTestComponent: React.FC<IComponentProps> = ({ elementType }) => {
     const methods = useForm({
         mode: "onTouched",
-        resolver: yupResolver(SchemaHelper.buildSchema(EElementType.EMAIL)),
+        resolver: yupResolver(SchemaHelper.buildSchema(elementType)),
     });
+
     return (
         <FormProvider {...methods}>
             <BasicDetails />
@@ -140,9 +155,15 @@ const MyTestComponent = () => {
     );
 };
 
-const renderComponent = (overrideOptions?: TestHelper.RenderOptions) => {
+const renderComponent = (
+    elementType?: EElementType,
+    overrideOptions?: TestHelper.RenderOptions
+) => {
     return render(
-        TestHelper.withProviders(overrideOptions, <MyTestComponent />)
+        TestHelper.withProviders(
+            overrideOptions,
+            <MyTestComponent elementType={elementType} />
+        )
     );
 };
 
@@ -176,8 +197,35 @@ const MOCK_ELEMENTS = {
         type: EElementType.EMAIL,
         id: "mockElement",
         required: false,
-        description: "",
+        description: "hellooo",
         label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
+        columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
+    },
+};
+
+const MOCK_FOCUSED_TEXT_AREA_ELEMENT = {
+    element: {
+        internalId: "mock256",
+        type: EElementType.TEXTAREA,
+        id: "mockElement",
+        required: false,
+        description: "hellooo",
+        preSelectedValue: "",
+        resizableInput: true,
+        label: ELEMENT_BUTTON_LABELS[EElementType.TEXTAREA],
+        columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
+    },
+};
+const MOCK_TEXT_AREA_ELEMENTS = {
+    mock256: {
+        internalId: "mock256",
+        type: EElementType.TEXTAREA,
+        id: "mockElement",
+        required: false,
+        description: "hellooo",
+        preSelectedValue: "",
+        resizableInput: true,
+        label: ELEMENT_BUTTON_LABELS[EElementType.TEXTAREA],
         columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
     },
 };
