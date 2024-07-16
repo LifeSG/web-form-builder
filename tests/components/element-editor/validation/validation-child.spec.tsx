@@ -9,6 +9,14 @@ import { SchemaHelper } from "src/schemas";
 import { TestHelper } from "src/util/test-helper";
 
 describe("ValidationChild", () => {
+    beforeEach(() => {
+        global.ResizeObserver = jest.fn().mockImplementation(() => ({
+            observe: jest.fn(),
+            unobserve: jest.fn(),
+            disconnect: jest.fn(),
+        }));
+    });
+
     afterEach(() => {
         jest.restoreAllMocks();
         jest.resetAllMocks();
@@ -32,6 +40,46 @@ describe("ValidationChild", () => {
         expect(screen.getByPlaceholderText("Enter rule")).toBeInTheDocument();
         expect(
             screen.getByPlaceholderText("Set error message")
+        ).toBeInTheDocument();
+    });
+
+    it("should render the component with provided options and fields and alert when focused element is the long text field", () => {
+        renderComponent(
+            {
+                onDelete: mockDelete,
+                options: mockLongTextValidationOptions,
+                value: mockEmptyValue,
+                index: mockIndex,
+            },
+            {
+                builderContext: {
+                    focusedElement: {
+                        element: {
+                            internalId: "mock123",
+                            type: EElementType.TEXTAREA,
+                            id: "mockElement",
+                            required: false,
+                            description: "hellooo",
+                            label: ELEMENT_BUTTON_LABELS[EElementType.TEXTAREA],
+                            columns: {
+                                desktop: 12,
+                                tablet: 8,
+                                mobile: 4,
+                            } as const,
+                        },
+                    },
+                },
+            }
+        );
+        // expect(screen.getByText("Select")).toBeInTheDocument();
+        // expect(screen.getByPlaceholderText("Enter rule")).toBeInTheDocument();
+        // expect(
+        //     screen.getByPlaceholderText("Set error message")
+        // ).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                "Adding of this validation will result in character counter displayed under the textarea."
+            )
         ).toBeInTheDocument();
     });
 
@@ -281,6 +329,10 @@ const mockFocusedElement = {
 };
 
 const mockOptions = ["Option 1", "Option 2"];
+
+const mockLongTextValidationOptions =
+    ELEMENT_VALIDATION_TYPES["Text field"][EElementType.TEXTAREA]
+        .validationTypes;
 
 const mockEmailValidationOptions =
     ELEMENT_VALIDATION_TYPES["Text field"][EElementType.EMAIL].validationTypes;
