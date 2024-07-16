@@ -48,6 +48,11 @@ export interface IPrefillAttributes {
     path?: string;
 }
 
+export interface IDropdownItemAttributes {
+    value: string;
+    label: string;
+}
+
 type MobileCol = 1 | 2 | 3 | 4;
 type MobileColRange = MobileCol | 5;
 type TabletCol = MobileCol | 5 | 6 | 7 | 8;
@@ -80,6 +85,8 @@ export interface IBaseOptionGroupBasedFieldAttributes
     placeholder?: string;
     conditionalRendering?: IConditionalRendering[];
     prefill?: IPrefillAttributes[];
+    dropdownItems?: IDropdownItemAttributes[];
+    preselectedValue?: string;
 }
 
 // =============================================================================

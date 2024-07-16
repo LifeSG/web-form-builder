@@ -15,6 +15,14 @@ export const ElementEditor = () => {
     // =========================================================================
     const { focusedElement } = useBuilder();
 
+    // =========================================================================
+    // HELPER FUNCTIONS
+    // =========================================================================
+
+    const hasProperty = (key: string) => {
+        return key in focusedElement.element;
+    };
+
     // =============================================================================
     // RENDER FUNCTIONS
     // =============================================================================
@@ -37,7 +45,7 @@ export const ElementEditor = () => {
             <AccordionWrapper>
                 <BasicDetails />
             </AccordionWrapper>
-            <Validation />
+            {hasProperty("validation") && <Validation />}
             <ConditionalRendering />
             <Prefill />
         </Wrapper>

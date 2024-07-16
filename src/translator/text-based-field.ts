@@ -30,7 +30,7 @@ export namespace TextBasedField {
     }
 
     const createValidationObject = (element: TElement) => {
-        if (!element) return;
+        if (!element || !("validation" in element)) return;
 
         const validation: ISchemaValidation[] = [];
 
@@ -42,7 +42,6 @@ export namespace TextBasedField {
                 }),
             });
         }
-
         if (element.validation && element.validation.length > 0) {
             switch (element.type) {
                 case EElementType.EMAIL: {

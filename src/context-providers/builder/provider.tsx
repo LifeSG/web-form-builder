@@ -19,6 +19,7 @@ const DEFAULT_VALUES: IBuilderState = {
     orderedIdentifiers: [],
     deletedElements: {},
     elementCounter: 0,
+    selectedElementType: null,
 };
 
 // =============================================================================
@@ -57,6 +58,7 @@ export const builderReducer = (
         }
         case "focus-element": {
             state.focusedElement = action.payload;
+            state.selectedElementType = action.payload.element.type;
             break;
         }
         case "remove-focused-element": {
@@ -88,6 +90,10 @@ export const builderReducer = (
                     isDirty: action.payload.isDirty,
                 };
             }
+            break;
+        }
+        case "select-element-type": {
+            state.selectedElementType = action.payload;
             break;
         }
     }

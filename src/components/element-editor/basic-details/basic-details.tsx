@@ -5,26 +5,29 @@ import { Controller, useFormContext } from "react-hook-form";
 import { IconDropdown } from "src/components/common/icon-dropdown";
 import { TogglePair } from "src/components/common/toggle-pair/toggle-pair";
 import { EElementType, useBuilder } from "src/context-providers";
-import { IBaseTextBasedFieldValues } from "src/schemas";
+import { TFormFieldValues } from "src/schemas";
 import {
     FieldEditorAccordionItem,
     MandatoryFieldBox,
     Wrapper,
 } from "./basic-details.styles";
+import { DropdownItems } from "./dropdown-items/dropdown-items";
+import { PreselectedValue } from "./preselected-value";
 
 export const BasicDetails = () => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
-    const { focusedElement, updateFocusedElement } = useBuilder();
+    const { focusedElement, updateFocusedElement, selectElementType } =
+        useBuilder();
     const {
         control,
         formState: { errors, isDirty },
         watch,
         reset,
-    } = useFormContext<IBaseTextBasedFieldValues>();
+    } = useFormContext<TFormFieldValues>();
     const element = focusedElement.element;
-
+    const type = watch("type");
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
@@ -67,6 +70,7 @@ export const BasicDetails = () => {
                             type={field.value}
                             id={element?.id}
                             onChange={(value: EElementType) => {
+                                selectElementType(value);
                                 field.onChange(value);
                             }}
                             errorMessage={errors.type?.message}
@@ -74,7 +78,6 @@ export const BasicDetails = () => {
                     )}
                     shouldUnregister={true}
                 />
-
                 {hasProperty("label") && (
                     <Controller
                         name="label"
@@ -97,7 +100,6 @@ export const BasicDetails = () => {
                         shouldUnregister={true}
                     />
                 )}
-
                 <MandatoryFieldBox>
                     <Controller
                         name="required"
@@ -136,6 +138,8 @@ export const BasicDetails = () => {
                         />
                     )}
                 </MandatoryFieldBox>
+
+                {type === EElementType.DROPDOWN && <DropdownItems />}
 
                 <Controller
                     name="id"
@@ -211,6 +215,10 @@ export const BasicDetails = () => {
                         )}
                         shouldUnregister={true}
                     />
+                )}
+
+                {element?.hasOwnProperty("preselectedValue") && (
+                    <PreselectedValue />
                 )}
             </Wrapper>
         </FieldEditorAccordionItem>

@@ -22,6 +22,7 @@ interface IProps {
 }
 
 const FormPreview = ({ data }: IProps) => {
+    console.log(data.schema);
     return (
         <ViewWrapper>
             <Text.H2>Generate Form</Text.H2>
@@ -57,22 +58,20 @@ export const DocElement = () => {
     };
 
     const handleFormPreviewButton = () => {
+        if (formBuilderRef.current) {
+            const generatedSchema = formBuilderRef.current.generateSchema();
+            setSchema(generatedSchema);
+        }
         setPageMode("preview-mode");
     };
 
     const handleSchemaViewButton = () => {
-        setPageMode("schema-mode");
-    };
-
-    // =========================================================================
-    // EFFECTS
-    // =========================================================================
-    useEffect(() => {
         if (formBuilderRef.current) {
-            const generatedSchema = formBuilderRef.current?.generateSchema();
+            const generatedSchema = formBuilderRef.current.generateSchema();
             setSchema(generatedSchema);
         }
-    }, [formBuilderRef.current, pageMode]);
+        setPageMode("schema-mode");
+    };
 
     // =========================================================================
     // RENDER FUNCTIONS

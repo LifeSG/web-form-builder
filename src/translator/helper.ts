@@ -52,3 +52,14 @@ export const createConditionalRenderingObject = (
 
     return Object.keys(conditionObj).length === 0 ? [] : [conditionObj];
 };
+
+export const createDefaultValuesObject = (elements: TElementMap) => {
+    const defaultValues = Object.values(elements).reduce((acc, element) => {
+        if (element.preselectedValue) {
+            acc[element.id] = element.preselectedValue;
+        }
+        return acc;
+    }, {});
+
+    return defaultValues;
+};

@@ -129,7 +129,7 @@ const generateValidationSchema = (elementType: EElementType) => {
 // SCHEMAS
 // =============================================================================
 export const TEXT_BASED_SCHEMA = (elementType: EElementType) => {
-    return yup.object<IBaseTextBasedFieldAttributes>().shape({
+    return yup.object().shape({
         placeholder: yup.string().optional(),
         validation: generateValidationSchema(elementType),
         prefill: yup.array().of(
@@ -161,3 +161,7 @@ export const TEXT_BASED_SCHEMA = (elementType: EElementType) => {
         ),
     });
 };
+
+export type TTextBasedSchema = yup.InferType<
+    ReturnType<typeof TEXT_BASED_SCHEMA>
+>;

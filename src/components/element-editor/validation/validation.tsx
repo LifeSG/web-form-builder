@@ -4,10 +4,15 @@ import { useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
 import { EElementType, IValidation, useBuilder } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
-import { IBaseTextBasedFieldValues, SchemaHelper } from "src/schemas";
+import {
+    TFormFieldValues,
+    SchemaHelper,
+    TOverallTextBasedYupSchema,
+} from "src/schemas";
 import * as Yup from "yup";
 import { getValidationOptionsByType } from "./helper";
 import { ValidationChild } from "./validation-child";
+import { TTextBasedSchema } from "src/schemas/text-based-fields";
 
 export const Validation = () => {
     // =========================================================================
@@ -16,8 +21,7 @@ export const Validation = () => {
     const { focusedElement } = useBuilder();
     const element = focusedElement?.element;
     const [, setChildEntryValues] = useState<IValidation[]>([]);
-    const { setValue, watch, getValues } =
-        useFormContext<IBaseTextBasedFieldValues>();
+    const { setValue, watch, getValues } = useFormContext<TTextBasedSchema>();
     const validationValues = getValues("validation") || [];
     const schema = SchemaHelper.buildSchema(element.type);
 
@@ -42,7 +46,9 @@ export const Validation = () => {
 
     const checkIsValid = () => {
         try {
-            const validationSchema = schema.pick(["validation"]);
+            const validationSchema = (
+                schema as TOverallTextBasedYupSchema
+            ).pick(["validation"]);
 
             validationSchema.validateSync({
                 validation: validationValues,

@@ -3,33 +3,41 @@ import * as yup from "yup";
 import { EElementType } from "../context-providers/builder/element.types";
 import { BaseSchemaHelper } from "./base-helper";
 import { TEXT_BASED_SCHEMA } from "./text-based-fields";
+import { OPTION_GROUP_BASED_SCHEMA } from "./option-group-based-fields";
+import {
+    TOverallOptionGroupBasedSchema,
+    TOverallTextBasedSchema,
+    TYupSchema,
+} from "./types";
 
 export namespace SchemaHelper {
-    export const buildSchema = (type: EElementType) => {
+    export const buildSchema = (type: EElementType): TYupSchema => {
         try {
             const { elements, focusedElement } = useBuilder();
 
-            const baseTextFieldBasedSchema =
-                BaseSchemaHelper.getTextFieldBasedSchema(
-                    elements,
-                    focusedElement
-                );
+            const baseSchema = BaseSchemaHelper.getBaseSchema(
+                elements,
+                focusedElement
+            );
 
             switch (type) {
                 case EElementType.EMAIL:
-                    return yup
-                        .object()
-                        .concat(baseTextFieldBasedSchema)
-                        .concat(TEXT_BASED_SCHEMA(type));
-
                 case EElementType.TEXT:
                     return yup
                         .object()
-                        .concat(baseTextFieldBasedSchema)
+                        .concat(baseSchema)
                         .concat(TEXT_BASED_SCHEMA(type));
+                case EElementType.DROPDOWN:
+                    return yup
+                        .object()
+                        .concat(baseSchema)
+                        .concat(OPTION_GROUP_BASED_SCHEMA);
+                default:
+                    return undefined;
             }
         } catch (error) {
             console.error("Error in schema helper:", error);
+            return undefined;
         }
     };
 }

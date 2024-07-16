@@ -8,11 +8,11 @@ import * as yup from "yup";
 const ID_REGEX = /^[a-z]+(?:[A-Z0-9][a-z0-9]*)*(?:[-_][a-z0-9]+)*$/gm;
 
 export namespace BaseSchemaHelper {
-    export const getTextFieldBasedSchema = (
+    export const getBaseSchema = (
         elements: TElementMap,
         focusedElement: IFocusedElement
     ) =>
-        yup.object<IBaseFieldAttributes>().shape({
+        yup.object().shape({
             type: yup.string().required("Element type required."),
             label: yup.string().required("Label required."),
             required: yup.boolean().required().default(true),
@@ -29,4 +29,5 @@ export namespace BaseSchemaHelper {
                     "ID must not be duplicated."
                 ),
         });
+    export type TBaseSchema = yup.InferType<ReturnType<typeof getBaseSchema>>;
 }

@@ -2,7 +2,7 @@ import { Form } from "@lifesg/react-design-system/form";
 import { Text } from "@lifesg/react-design-system/text";
 import { Controller, useFormContext } from "react-hook-form";
 import { ChildEntry } from "src/components/common";
-import { IBaseTextBasedFieldValues } from "src/schemas";
+import { TBaseTextBasedFieldValues } from "src/schemas";
 import {
     FieldWrapper,
     OptionIDText,
@@ -43,14 +43,14 @@ export const ConditionalRenderingChild = ({
         EConditionType.EQUALS,
         EConditionType.MORE_THAN,
         EConditionType.LESS_THAN,
-        EConditionType.NOT_EQUALS
+        EConditionType.NOT_EQUALS,
     ];
 
     const {
         formState: { errors },
         control,
         setValue,
-    } = useFormContext<IBaseTextBasedFieldValues>();
+    } = useFormContext<TBaseTextBasedFieldValues>();
 
     // =========================================================================
     // RENDER FUNCTIONS
@@ -72,10 +72,10 @@ export const ConditionalRenderingChild = ({
                                         selectedOption={
                                             fieldWithoutRef.value
                                                 ? options.find(
-                                                    (option) =>
-                                                        option.id ===
-                                                        fieldWithoutRef.value
-                                                )
+                                                      (option) =>
+                                                          option.id ===
+                                                          fieldWithoutRef.value
+                                                  )
                                                 : null
                                         }
                                         onSelectOption={(option: IOptions) => {

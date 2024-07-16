@@ -1,6 +1,7 @@
 import {
     EElementType,
     IBaseAttributes,
+    IBaseOptionGroupBasedFieldAttributes,
     IBaseTextBasedFieldAttributes,
     TElement,
 } from "src/context-providers";
@@ -63,8 +64,7 @@ export namespace ElementObjectGenerator {
             case EElementType.NUMERIC:
             case EElementType.CONTACT:
             case EElementType.TEXT:
-            case EElementType.TEXTAREA:
-            case EElementType.DROPDOWN: {
+            case EElementType.TEXTAREA: {
                 const attributes: IBaseTextBasedFieldAttributes = {
                     ...baseAttributes,
                     placeholder: "",
@@ -76,6 +76,31 @@ export namespace ElementObjectGenerator {
                     validation: [],
                     conditionalRendering: [],
                     prefill: [],
+                };
+                return attributes;
+            }
+            case EElementType.DROPDOWN: {
+                const attributes: IBaseOptionGroupBasedFieldAttributes = {
+                    ...baseAttributes,
+                    placeholder: "",
+                    required: true,
+                    requiredErrorMsg: "",
+                    label: ELEMENT_BUTTON_LABELS[type],
+                    description: "",
+                    columns: { desktop: 12, tablet: 8, mobile: 4 },
+                    conditionalRendering: [],
+                    prefill: [],
+                    dropdownItems: [
+                        {
+                            label: "",
+                            value: "",
+                        },
+                        {
+                            label: "",
+                            value: "",
+                        },
+                    ],
+                    preselectedValue: null,
                 };
                 return attributes;
             }

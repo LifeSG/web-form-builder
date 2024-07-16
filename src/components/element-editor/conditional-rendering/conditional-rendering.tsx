@@ -7,7 +7,7 @@ import {
     IConditionalRendering,
     useBuilder,
 } from "src/context-providers";
-import { IBaseTextBasedFieldValues, SchemaHelper } from "src/schemas";
+import { TBaseTextBasedFieldValues, SchemaHelper } from "src/schemas";
 import * as Yup from "yup";
 import { ConditionalRenderingChild } from "./conditional-rendering-child";
 
@@ -26,7 +26,7 @@ export const ConditionalRendering = () => {
     const element = focusedElement?.element;
     const [, setChildEntryValues] = useState<IConditionalRendering[]>([]);
     const { setValue, watch, getValues } =
-        useFormContext<IBaseTextBasedFieldValues>();
+        useFormContext<TBaseTextBasedFieldValues>();
 
     const schema = SchemaHelper.buildSchema(element.type);
     const invalidAndEmptyFields = checkIsValid();

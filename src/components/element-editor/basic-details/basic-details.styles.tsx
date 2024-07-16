@@ -23,6 +23,7 @@ export const Wrapper = styled.div`
     > :first-child {
         margin-top: 2rem;
     }
+    overflow: auto;
 `;
 
 export const FieldEditorAccordionItem = styled(

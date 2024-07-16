@@ -2,7 +2,7 @@ import { Form } from "@lifesg/react-design-system/form";
 import { Controller, useFormContext } from "react-hook-form";
 import { ChildEntry } from "src/components/common";
 import { EElementType, useBuilder } from "src/context-providers";
-import { IBaseTextBasedFieldValues } from "src/schemas";
+import { TBaseTextBasedFieldValues } from "src/schemas";
 import { ValidationRule } from "./validation-rule";
 import { FieldWrapper } from "./validation.styles";
 
@@ -17,7 +17,7 @@ export const ValidationChild = ({ onDelete, options, index }: IProps) => {
         formState: { errors },
         control,
         watch,
-    } = useFormContext<IBaseTextBasedFieldValues>();
+    } = useFormContext<TBaseTextBasedFieldValues>();
     const { focusedElement } = useBuilder();
     const validationType = watch(`validation.${index}.validationType`);
 

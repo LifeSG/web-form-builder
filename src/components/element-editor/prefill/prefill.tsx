@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
 import { IPrefillAttributes, useBuilder } from "src/context-providers";
-import { IBaseTextBasedFieldValues, SchemaHelper } from "src/schemas";
+import { TBaseTextBasedFieldValues, SchemaHelper } from "src/schemas";
 import * as Yup from "yup";
 import { PrefillChild } from "./prefill-child";
 export const Prefill = () => {
@@ -14,7 +14,7 @@ export const Prefill = () => {
     const element = focusedElement?.element;
     const [, setChildEntryValues] = useState<IPrefillAttributes[]>([]);
     const { setValue, watch, getValues } =
-        useFormContext<IBaseTextBasedFieldValues>();
+        useFormContext<TBaseTextBasedFieldValues>();
     const prefillValues = getValues("prefill") || [];
     const schema = SchemaHelper.buildSchema(element.type);
     const invalidAndEmptyFields = checkIsValid();
