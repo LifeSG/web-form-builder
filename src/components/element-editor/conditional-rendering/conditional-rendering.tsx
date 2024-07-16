@@ -4,7 +4,6 @@ import { useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
 import {
     EConditionType,
-    EElementType,
     IConditionalRendering,
     useBuilder,
 } from "src/context-providers";
@@ -29,7 +28,8 @@ export const ConditionalRendering = () => {
     const { setValue, watch, getValues } =
         useFormContext<IBaseTextBasedFieldValues>();
 
-    const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
+    const schema = SchemaHelper.buildSchema(element.type);
+    const invalidAndEmptyFields = checkIsValid();
     const conditionalRenderingValues = getValues("conditionalRendering") || [];
     // =====================================================================
     // HELPER FUNCTIONS

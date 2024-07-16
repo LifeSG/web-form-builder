@@ -6,6 +6,7 @@ import { EElementType, IValidation, useBuilder } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import { IBaseTextBasedFieldValues, SchemaHelper } from "src/schemas";
 import * as Yup from "yup";
+import { getValidationOptionsByType } from "./helper";
 import { ValidationChild } from "./validation-child";
 
 export const Validation = () => {
@@ -18,35 +19,28 @@ export const Validation = () => {
     const { setValue, watch, getValues } =
         useFormContext<IBaseTextBasedFieldValues>();
     const validationValues = getValues("validation") || [];
-    const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
-    const invalidAndEmptyFields = checkIsValid();
+    const schema = SchemaHelper.buildSchema(element.type);
 
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
-    function getOptionsByType(elementType: EElementType) {
+
+    const getMaxEntries = (elementType: EElementType) => {
         switch (elementType) {
             case EElementType.EMAIL:
-                return ELEMENT_VALIDATION_TYPES["Text field"][
-                    EElementType.EMAIL
-                ].validationTypes;
-            default:
-                return ["Select", "Type 1"];
-        }
-    }
+            case EElementType.TEXT:
+                return (
+                    validationValues?.length ===
+                    ELEMENT_VALIDATION_TYPES["Text field"][elementType]
+                        .maxEntries
+                );
 
-    function getMaxEntries(elementType: EElementType) {
-        switch (elementType) {
-            case EElementType.EMAIL:
-                return ELEMENT_VALIDATION_TYPES["Text field"][
-                    EElementType.EMAIL
-                ].maxEntries;
             default:
-                return 6; // this is a arbitary value will be changed later on
+                return validationValues?.length === 6; // this is a arbitary value will be changed later on
         }
-    }
+    };
 
-    function checkIsValid() {
+    const checkIsValid = () => {
         try {
             const validationSchema = schema.pick(["validation"]);
 
@@ -58,16 +52,17 @@ export const Validation = () => {
         } catch (error) {
             return Yup.ValidationError.isError(error);
         }
-    }
+    };
 
-    function getPopoverMessage() {
+    const getPopoverMessage = () => {
+        const invalidAndEmptyFields = checkIsValid();
         if (invalidAndEmptyFields) {
             return (
                 <Text.Body>
                     To add new validation, fill up existing validation first.
                 </Text.Body>
             );
-        } else if (validationValues?.length === getMaxEntries(element?.type)) {
+        } else if (getMaxEntries(element?.type)) {
             return (
                 <Text.Body>
                     Limit reached. To add new validation, remove existing ones
@@ -75,7 +70,7 @@ export const Validation = () => {
                 </Text.Body>
             );
         }
-    }
+    };
 
     const setDefaultValidationType = () => {
         switch (element?.type) {
@@ -140,7 +135,10 @@ export const Validation = () => {
             <ValidationChild
                 key={`validation-entry-${index}`}
                 onDelete={() => handleDelete(index)}
-                options={getOptionsByType(element.type)}
+                options={getValidationOptionsByType(
+                    validationValues,
+                    element.type
+                )}
                 index={index}
             />
         ));
@@ -149,12 +147,9 @@ export const Validation = () => {
     return (
         <MultiEntry
             onAdd={handleAddButtonClick}
-            title="Validation"
+            title="Additional Validation"
             buttonLabel="validation"
-            disabledButton={
-                validationValues?.length === getMaxEntries(element?.type) ||
-                invalidAndEmptyFields
-            }
+            disabledButton={getMaxEntries(element?.type) || checkIsValid()}
             popoverMessage={getPopoverMessage()}
         >
             {renderChildren()}

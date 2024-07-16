@@ -2,7 +2,7 @@ import { Text } from "@lifesg/react-design-system/text";
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
-import { EElementType, IPrefillAttributes } from "src/context-providers";
+import { IPrefillAttributes, useBuilder } from "src/context-providers";
 import { IBaseTextBasedFieldValues, SchemaHelper } from "src/schemas";
 import * as Yup from "yup";
 import { PrefillChild } from "./prefill-child";
@@ -10,11 +10,13 @@ export const Prefill = () => {
     // =========================================================================
     // CONST, STATES, REFS
     // =========================================================================
+    const { focusedElement } = useBuilder();
+    const element = focusedElement?.element;
     const [, setChildEntryValues] = useState<IPrefillAttributes[]>([]);
     const { setValue, watch, getValues } =
         useFormContext<IBaseTextBasedFieldValues>();
     const prefillValues = getValues("prefill") || [];
-    const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
+    const schema = SchemaHelper.buildSchema(element.type);
     const invalidAndEmptyFields = checkIsValid();
 
     // =========================================================================
