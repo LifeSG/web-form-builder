@@ -32,7 +32,7 @@ export const ElementEditor = () => {
     };
 
     return (
-        <Wrapper>
+        <Wrapper data-testid="element-editor">
             {renderAlert()}
             <AccordionWrapper>
                 <BasicDetails />

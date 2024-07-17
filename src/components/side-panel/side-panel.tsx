@@ -1,7 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { EElementType, EToastTypes, useDisplay } from "src/context-providers";
+import { EToastTypes, TElement, useDisplay } from "src/context-providers";
 import { SchemaHelper } from "src/schemas";
 import { EBuilderMode, useBuilder } from "../../context-providers";
 import { ElementEditor } from "../element-editor";
@@ -12,12 +12,14 @@ import { Toolbar } from "./toolbar";
 
 interface IProps {
     offset?: number;
+    onSubmit?: (formData: TElement) => Promise<unknown>;
 }
 
-export const SidePanel = ({ offset }: IProps) => {
+export const SidePanel = ({ offset, onSubmit }: IProps) => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const {
         showSidePanel,
         currentMode,
@@ -29,14 +31,21 @@ export const SidePanel = ({ offset }: IProps) => {
     const methods = useForm({
         mode: "onTouched",
         // TODO: insert proper type; email is a placeholder
-        resolver: yupResolver(SchemaHelper.buildSchema(EElementType.EMAIL)),
+        resolver: yupResolver(
+            SchemaHelper.buildSchema(focusedElement?.element?.type)
+        ),
     });
 
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
-    const onSubmit = useCallback(
-        (values) => {
+    const onFormSubmit = useCallback(
+        async (values) => {
+            if (onSubmit) {
+                setIsSubmitting(true);
+                await onSubmit(values);
+                setIsSubmitting(false);
+            }
             const newToast = {
                 message: "Changes are saved successfully.",
                 type: EToastTypes.SUCCESS_TOAST,
@@ -45,7 +54,7 @@ export const SidePanel = ({ offset }: IProps) => {
             updateFocusedElement(false, values);
             showToast(newToast);
         },
-        [updateElement, updateFocusedElement]
+        [updateElement, updateFocusedElement, onSubmit]
     );
     // =========================================================================
     // USE EFFECTS
@@ -90,12 +99,15 @@ export const SidePanel = ({ offset }: IProps) => {
 
     return (
         <FormProvider {...methods}>
-            <form onSubmit={methods.handleSubmit(onSubmit)}>
+            <form
+                onSubmit={methods.handleSubmit(onFormSubmit)}
+                {...{ inert: isSubmitting ? "" : undefined }}
+            >
                 <Wrapper
                     $minimised={focusedElement ? false : !showSidePanel}
                     $offset={offset ? offset : 0}
                 >
-                    <SidePanelHeader />
+                    <SidePanelHeader isSubmitting={isSubmitting} />
                     <ContentWrapper>
                         <ContentSection
                             $isFocusedElement={focusedElement ? true : false}
