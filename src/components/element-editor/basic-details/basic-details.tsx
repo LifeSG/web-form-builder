@@ -25,6 +25,7 @@ export const BasicDetails = () => {
         formState: { errors, isDirty },
         watch,
         reset,
+        setValue,
     } = useFormContext<TFormFieldValues>();
     const element = focusedElement.element;
     const type = watch("type");
@@ -72,6 +73,12 @@ export const BasicDetails = () => {
                             onChange={(value: EElementType) => {
                                 selectElementType(value);
                                 field.onChange(value);
+                                if (value === EElementType.DROPDOWN) {
+                                    setValue("dropdownItems", [
+                                        { label: "", value: "" },
+                                        { label: "", value: "" },
+                                    ]);
+                                }
                             }}
                             errorMessage={errors.type?.message}
                         />
@@ -217,9 +224,7 @@ export const BasicDetails = () => {
                     />
                 )}
 
-                {element?.hasOwnProperty("preselectedValue") && (
-                    <PreselectedValue />
-                )}
+                <PreselectedValue />
             </Wrapper>
         </FieldEditorAccordionItem>
     );

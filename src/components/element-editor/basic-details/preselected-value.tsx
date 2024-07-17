@@ -24,7 +24,9 @@ export const PreselectedValue = () => {
 
     useEffect(() => {
         if (preselectedValue === "") {
-            setValue("preselectedValue", null);
+            setValue("preselectedValue", null, {
+                shouldDirty: true,
+            });
         }
     }, [preselectedValue, setValue]);
 
@@ -59,7 +61,7 @@ export const PreselectedValue = () => {
                         (item) => item.value === preselectedValue
                     )
                 ) {
-                    setValue("preselectedValue", "");
+                    setValue("preselectedValue", null);
                 }
 
                 const selectedOption = preselectedValueOptions.find(
@@ -102,10 +104,10 @@ export const PreselectedValue = () => {
                                                 setValue(
                                                     "preselectedValue",
                                                     ""
-                                                ); // Keep it empty to trigger useEffect
-                                            } else {
-                                                field.onChange(option.value);
+                                                );
+                                                return;
                                             }
+                                            field.onChange(option.value);
                                         }}
                                         errorMessage={
                                             errors.preselectedValue?.message

@@ -3,26 +3,28 @@ import { Text } from "@lifesg/react-design-system/text";
 import { PencilIcon } from "@lifesg/react-icons/pencil";
 import { PlusIcon } from "@lifesg/react-icons/plus";
 import { useFieldArray, useFormContext } from "react-hook-form";
-import { TFormFieldValues } from "src/schemas";
 import { DropdownItemsChild } from "./dropdown-items-child";
 import {
     DropdownItemsButton,
     DropdownItemsButtonsWrapper,
     DropdownItemsWrapper,
 } from "./dropdown-items.styles";
+import { TOptionGroupBasedSchema } from "src/schemas/option-group-based-fields";
 
 export const DropdownItems = () => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
-    const { control } = useFormContext<TFormFieldValues>();
+    const { control } = useFormContext<TOptionGroupBasedSchema>();
     const { fields, append, remove } = useFieldArray({
         control,
         name: "dropdownItems",
         rules: {
             minLength: 2,
         },
+        shouldUnregister: true,
     });
+
     // =========================================================================
     // EVENT HANDLERS
     // =========================================================================

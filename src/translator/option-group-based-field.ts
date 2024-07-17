@@ -28,6 +28,16 @@ export namespace OptionGroupBasedField {
                     tablet: element.columns.tablet,
                     mobile: element.columns.mobile,
                 },
+                ...(element.required && {
+                    validation: [
+                        {
+                            required: true,
+                            ...(element.requiredErrorMsg && {
+                                errorMessage: element.requiredErrorMsg,
+                            }),
+                        },
+                    ],
+                }),
                 ...(filteredDropdownItems && {
                     options: filteredDropdownItems,
                 }),

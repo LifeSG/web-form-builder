@@ -43,14 +43,14 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
     } = useBuilder();
     const { showToast } = useDisplay();
     const schema = SchemaHelper.buildSchema(selectedElementType);
-
-    // here we defined schema to be many types. Subsequently we need to narrow down to which type it is.
     const methods = useForm({
         mode: "onTouched",
-        // TODO: insert proper type; email is a placeholder
         resolver: yupResolver(schema),
+        defaultValues: {
+            requiredErrorMsg: "",
+            preselectedValue: null,
+        },
     });
-
     const {
         getValues,
         formState: { defaultValues, errors },

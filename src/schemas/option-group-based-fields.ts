@@ -14,7 +14,7 @@ export const OPTION_GROUP_BASED_SCHEMA = yup.object().shape({
             })
         )
         .min(2, "At least 2 items required."),
-    preselectedValue: yup.string().optional(),
+    preselectedValue: yup.string().nullable(),
     prefill: yup.array().of(
         yup.object().shape({
             prefillMode: yup.string().required("Source required."),

@@ -3,7 +3,7 @@ import { EyeIcon } from "@lifesg/react-icons/eye";
 import { PencilIcon } from "@lifesg/react-icons/pencil";
 import { TabletIcon } from "@lifesg/react-icons/tablet";
 import { FrontendEngine } from "@lifesg/web-frontend-engine";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import {
     FormBuilder,
     IFormBuilderMethods,
@@ -22,7 +22,6 @@ interface IProps {
 }
 
 const FormPreview = ({ data }: IProps) => {
-    console.log(data.schema);
     return (
         <ViewWrapper>
             <Text.H2>Generate Form</Text.H2>
