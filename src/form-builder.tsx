@@ -39,7 +39,7 @@ const Component = forwardRef<IFormBuilderMethods, IProps>(({ offset, onSubmit },
     const [isLargeScreen, setIsLargeScreen] = useState(
         window.innerWidth >= 1200
     );
-    const { elements, orderedIdentifiers } = useBuilder();
+    const { elements, orderedIdentifiers, isSubmitting } = useBuilder();
 
     useImperativeHandle(
         ref,
@@ -72,9 +72,9 @@ const Component = forwardRef<IFormBuilderMethods, IProps>(({ offset, onSubmit },
     // =========================================================================
 
     return (
-        <Wrapper>
+        <Wrapper $disabled={isSubmitting}>
             {!isLargeScreen && <ScreenNotSupportedErrorDisplay />}
-            <Container type="grid" stretch $isLargeScreen={isLargeScreen}>
+            <Container type="grid" stretch $isLargeScreen={isLargeScreen} {...{ inert: isSubmitting ? "" : undefined }}>
                 <Toasts />
                 <Modals />
                 <MainPanel />

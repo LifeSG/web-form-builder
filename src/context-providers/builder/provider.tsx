@@ -19,6 +19,7 @@ const DEFAULT_VALUES: IBuilderState = {
     orderedIdentifiers: [],
     deletedElements: {},
     elementCounter: 0,
+    isSubmitting: false,
 };
 
 // =============================================================================
@@ -29,6 +30,10 @@ export const builderReducer = (
     action: TBuilderAction
 ) => {
     switch (action.type) {
+        case "toggle-submitting": {
+            state.isSubmitting = action.payload;
+            break;
+        }
         case "toggle-panel": {
             state.showSidePanel = action.payload;
             break;
