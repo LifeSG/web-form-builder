@@ -1,8 +1,4 @@
-import {
-    IBaseFieldAttributes,
-    IFocusedElement,
-    TElementMap,
-} from "src/context-providers";
+import { IFocusedElement, TElementMap } from "src/context-providers";
 import * as yup from "yup";
 
 const ID_REGEX = /^[a-z]+(?:[A-Z0-9][a-z0-9]*)*(?:[-_][a-z0-9]+)*$/gm;

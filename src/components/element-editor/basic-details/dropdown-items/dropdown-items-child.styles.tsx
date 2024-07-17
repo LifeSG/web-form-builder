@@ -1,6 +1,4 @@
 import { Color } from "@lifesg/react-design-system/color";
-import { BinIcon } from "@lifesg/react-icons";
-import { DragHandleIcon } from "@lifesg/react-icons/drag-handle";
 import styled from "styled-components";
 
 // =============================================================================

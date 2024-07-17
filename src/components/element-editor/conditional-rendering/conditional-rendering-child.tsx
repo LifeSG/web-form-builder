@@ -2,6 +2,7 @@ import { Form } from "@lifesg/react-design-system/form";
 import { Text } from "@lifesg/react-design-system/text";
 import { Controller, useFormContext } from "react-hook-form";
 import { ChildEntry } from "src/components/common";
+import { EConditionType } from "src/context-providers";
 import { TBaseTextBasedFieldValues } from "src/schemas";
 import {
     FieldWrapper,
@@ -9,7 +10,6 @@ import {
     SelectFieldContainer,
     SelectFieldWrapper,
 } from "./conditional-rendering.styles";
-import { EConditionType } from "src/context-providers";
 
 export interface IOptions {
     label: string;

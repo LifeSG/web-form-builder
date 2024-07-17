@@ -3,7 +3,6 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
 import { act } from "react-dom/test-utils";
 import { FormProvider, useForm } from "react-hook-form";
-import { BasicDetails } from "src/components/element-editor/basic-details";
 import { DropdownItems } from "src/components/element-editor/basic-details/dropdown-items/dropdown-items";
 import { EElementType } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data";
@@ -68,8 +67,6 @@ describe("Dropdown Items", () => {
             )[0];
 
             expect(deleteButton).toBeInTheDocument();
-
-            console.log(deleteButton);
 
             await act(async () => {
                 fireEvent.click(deleteButton);

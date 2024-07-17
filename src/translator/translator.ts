@@ -4,9 +4,9 @@ import {
     IElementIdentifier,
     TElementMap,
 } from "src/context-providers";
-import { TextBasedField } from "./text-based-field";
 import { createDefaultValuesObject, createPrefillObject } from "./helper";
 import { OptionGroupBasedField } from "./option-group-based-field";
+import { TextBasedField } from "./text-based-field";
 
 export namespace Translator {
     export function generateSchema(

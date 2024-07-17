@@ -1,5 +1,5 @@
-import { Color } from "@lifesg/react-design-system/color";
 import { Accordion } from "@lifesg/react-design-system/accordion";
+import { Color } from "@lifesg/react-design-system/color";
 import styled from "styled-components";
 
 interface FieldEditorAccordionItemProps {
@@ -51,4 +51,5 @@ export const FieldEditorAccordionItem = styled(
     [data-testid="accordion-item-expand-collapse-button"] {
         margin: ${({ $hideTopBorder }) =>
             $hideTopBorder ? `0 0.1rem 0 1rem` : "0 0.1rem 0 0"};
+    }
 `;

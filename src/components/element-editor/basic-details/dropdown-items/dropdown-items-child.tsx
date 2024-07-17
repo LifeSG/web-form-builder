@@ -1,14 +1,14 @@
 import { Form } from "@lifesg/react-design-system/form";
 import { Text } from "@lifesg/react-design-system/text";
+import { BinIcon, DragHandleIcon } from "@lifesg/react-icons";
+import { Controller, useFormContext } from "react-hook-form";
 import {
     DropdownItemsChildWrapper,
     DropdownItemsDragHandleButton,
 } from "./dropdown-items-child.styles";
-import { Controller, useFormContext } from "react-hook-form";
-import { BinIcon, DragHandleIcon } from "@lifesg/react-icons";
 
-import DropdownItemsBinButton from "./dropdown-items-bin-button";
 import { TOverallOptionGroupBasedSchema } from "src/schemas";
+import DropdownItemsBinButton from "./dropdown-items-bin-button";
 
 interface IProps {
     onDelete: () => void;

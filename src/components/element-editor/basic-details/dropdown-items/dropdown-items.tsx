@@ -2,15 +2,15 @@ import { Form } from "@lifesg/react-design-system/form";
 import { Text } from "@lifesg/react-design-system/text";
 import { PencilIcon } from "@lifesg/react-icons/pencil";
 import { PlusIcon } from "@lifesg/react-icons/plus";
+import { useEffect } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
+import { TOptionGroupBasedSchema } from "src/schemas/option-group-based-fields";
 import { DropdownItemsChild } from "./dropdown-items-child";
 import {
     DropdownItemsButton,
     DropdownItemsButtonsWrapper,
     DropdownItemsWrapper,
 } from "./dropdown-items.styles";
-import { TOptionGroupBasedSchema } from "src/schemas/option-group-based-fields";
-import { useEffect } from "react";
 
 export const DropdownItems = () => {
     // =========================================================================

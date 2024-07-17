@@ -4,15 +4,11 @@ import { useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
 import { EElementType, IValidation, useBuilder } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
-import {
-    TFormFieldValues,
-    SchemaHelper,
-    TOverallTextBasedYupSchema,
-} from "src/schemas";
+import { SchemaHelper, TOverallTextBasedYupSchema } from "src/schemas";
+import { TTextBasedSchema } from "src/schemas/text-based-fields";
 import * as Yup from "yup";
 import { getValidationOptionsByType } from "./helper";
 import { ValidationChild } from "./validation-child";
-import { TTextBasedSchema } from "src/schemas/text-based-fields";
 
 export const Validation = () => {
     // =========================================================================

@@ -1,5 +1,5 @@
-import styled from "styled-components";
 import { ButtonWithIcon } from "@lifesg/react-design-system";
+import styled from "styled-components";
 
 export const DropdownItemsWrapper = styled.div`
     display: flex;

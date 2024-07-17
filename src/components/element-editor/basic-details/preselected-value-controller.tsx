@@ -14,12 +14,11 @@ export const PreselectedValueController = () => {
     const {
         control,
         formState: { errors },
-        getValues,
         watch,
     } = useFormContext<TFormFieldValues>();
 
-    const type = watch("type", getValues("type"));
-    const preselectedValue = watch("preselectedValue", null);
+    const type = watch("type");
+    const preselectedValue = watch("preselectedValue");
 
     // =========================================================================
     // RENDER FUNCTIONS
@@ -54,7 +53,6 @@ export const PreselectedValueController = () => {
                             control={control}
                             render={({ field }) => {
                                 const { ref, ...withoutRef } = field;
-                                // watch this in a new component then clear if the value is removed;
                                 return (
                                     <Form.Select
                                         {...withoutRef}

@@ -1,6 +1,6 @@
-import { useEffect } from "react";
 import { Form } from "@lifesg/react-design-system/form";
 import { Text } from "@lifesg/react-design-system/text";
+import { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import {
     EElementType,

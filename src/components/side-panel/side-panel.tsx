@@ -1,5 +1,4 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import { useCallback, useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import {
@@ -8,14 +7,7 @@ import {
     TElement,
     useDisplay,
 } from "src/context-providers";
-import {
-    SchemaHelper,
-    TOverallOptionGroupBasedSchema,
-    TOverallTextBasedSchema,
-    TFormFieldValues,
-    TYupSchema,
-    TOverallOptionGroupBasedYupSchema,
-} from "src/schemas";
+import { SchemaHelper, TOverallOptionGroupBasedYupSchema } from "src/schemas";
 import { EBuilderMode, useBuilder } from "../../context-providers";
 import { ElementEditor } from "../element-editor";
 import { AddElementsPanel } from "./add-elements-panel";
@@ -118,13 +110,7 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
     }, [methods.formState.isSubmitSuccessful]);
 
     useEffect(() => {
-        console.log("DEFAULT VALS", defaultValues);
-        console.log("GET VALS", getValues());
-    }, [methods.formState]);
-
-    useEffect(() => {
         if (focusedElement) {
-            console.log("FOCUSED ELEMENT", focusedElement);
             const newElement = {};
             Object.entries(focusedElement?.element).forEach(([key, value]) => {
                 newElement[key] = value === undefined ? "" : value;

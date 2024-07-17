@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
 import { IPrefillAttributes, useBuilder } from "src/context-providers";
-import { TBaseTextBasedFieldValues, SchemaHelper } from "src/schemas";
+import { SchemaHelper, TBaseTextBasedFieldValues } from "src/schemas";
 import * as Yup from "yup";
 import { PrefillChild } from "./prefill-child";
 export const Prefill = () => {

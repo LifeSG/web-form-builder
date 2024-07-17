@@ -13,8 +13,8 @@ import {
     ContentWrapper,
     IconButton,
     IconWrapper,
-    ViewWrapper,
     SchemaPreview,
+    ViewWrapper,
 } from "./doc-elements.styles";
 
 interface IProps {

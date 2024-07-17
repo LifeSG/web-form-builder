@@ -25,10 +25,9 @@ export const BasicDetails = () => {
         formState: { errors, isDirty },
         watch,
         reset,
-        setValue,
     } = useFormContext<TFormFieldValues>();
     const element = focusedElement.element;
-    const type = watch("type", element?.type);
+    const type = watch("type");
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
