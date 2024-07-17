@@ -29,7 +29,7 @@ describe("Validation", () => {
                 focusedElement: { element: MOCK_ELEMENT, isDirty: true },
             },
         });
-        expect(screen.getByText("Validation")).toBeInTheDocument();
+        expect(screen.getByText("Additional Validation")).toBeInTheDocument();
         expect(getAddValidationButton()).toBeInTheDocument();
     });
 
