@@ -3,7 +3,7 @@ import { EyeIcon } from "@lifesg/react-icons/eye";
 import { PencilIcon } from "@lifesg/react-icons/pencil";
 import { TabletIcon } from "@lifesg/react-icons/tablet";
 import { FrontendEngine } from "@lifesg/web-frontend-engine";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import {
     FormBuilder,
     IFormBuilderMethods,
@@ -13,8 +13,8 @@ import {
     ContentWrapper,
     IconButton,
     IconWrapper,
-    ViewWrapper,
     SchemaPreview,
+    ViewWrapper,
 } from "./doc-elements.styles";
 
 interface IProps {
@@ -57,22 +57,20 @@ export const DocElement = () => {
     };
 
     const handleFormPreviewButton = () => {
+        if (formBuilderRef.current) {
+            const generatedSchema = formBuilderRef.current.generateSchema();
+            setSchema(generatedSchema);
+        }
         setPageMode("preview-mode");
     };
 
     const handleSchemaViewButton = () => {
-        setPageMode("schema-mode");
-    };
-
-    // =========================================================================
-    // EFFECTS
-    // =========================================================================
-    useEffect(() => {
         if (formBuilderRef.current) {
-            const generatedSchema = formBuilderRef.current?.generateSchema();
+            const generatedSchema = formBuilderRef.current.generateSchema();
             setSchema(generatedSchema);
         }
-    }, [formBuilderRef.current, pageMode]);
+        setPageMode("schema-mode");
+    };
 
     // =========================================================================
     // RENDER FUNCTIONS
