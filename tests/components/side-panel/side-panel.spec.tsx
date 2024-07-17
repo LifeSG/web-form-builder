@@ -68,6 +68,7 @@ describe("SidePanel", () => {
                         focusedElement: {
                             element: MOCK_ELEMENT,
                         },
+                        selectedElementType: EElementType.EMAIL,
                     },
                 },
                 mockOnSubmit

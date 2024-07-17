@@ -24,6 +24,12 @@ interface MockElementProps {
     prefill?: IPrefillAttributes[];
 }
 
+interface MockSchemaProps {
+    defaultValues?: Record<string, unknown>;
+    prefill?: MockPrefillSchema;
+    children: MockChildrenSchema;
+}
+
 interface MockElementSchemaProps {
     id: string;
     label: string;
@@ -59,13 +65,15 @@ export const generateMockElement = (props: MockElementProps): TElementMap => {
     };
 };
 
-export const generateMockSchema = (
-    prefill: MockPrefillSchema,
-    children: MockChildrenSchema
-) => {
+export const generateMockSchema = ({
+    defaultValues = {},
+    prefill = {},
+    children,
+}: MockSchemaProps) => {
     return {
         prefill,
         schema: {
+            defaultValues,
             sections: {
                 section: {
                     children: {

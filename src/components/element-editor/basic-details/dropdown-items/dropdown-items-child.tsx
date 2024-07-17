@@ -57,6 +57,7 @@ export const DropdownItemsChild = ({ onDelete, index }: IProps) => {
                 control={control}
                 render={({ field }) => (
                     <Form.Input
+                        data-testid="dropdown-item-label"
                         placeholder="Enter label"
                         {...field}
                         errorMessage={

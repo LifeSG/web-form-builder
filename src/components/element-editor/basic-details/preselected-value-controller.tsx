@@ -14,11 +14,12 @@ export const PreselectedValueController = () => {
     const {
         control,
         formState: { errors },
+        getValues,
         watch,
     } = useFormContext<TFormFieldValues>();
 
-    const type = watch("type");
-    const preselectedValue = watch("preselectedValue");
+    const type = watch("type", getValues("type"));
+    const preselectedValue = watch("preselectedValue", null);
 
     // =========================================================================
     // RENDER FUNCTIONS
@@ -34,9 +35,12 @@ export const PreselectedValueController = () => {
                         value: "",
                     },
                 ];
-                const validDropdownItems = dropdownItems?.filter((item) => {
-                    return item.value.length > 0 && item.label.length > 0;
-                });
+                const validDropdownItems = dropdownItems?.filter(
+                    (item): item is IDropdownItemAttributes => {
+                        return item.value.length > 0 && item.label.length > 0;
+                    }
+                );
+
                 if (validDropdownItems?.length > 0) {
                     preselectedValueOptions.push(...validDropdownItems);
                 }
@@ -79,6 +83,7 @@ export const PreselectedValueController = () => {
                                             field.onChange(option.value);
                                         }}
                                         errorMessage={
+                                            "preselectedValue" in errors &&
                                             errors.preselectedValue?.message
                                         }
                                     />

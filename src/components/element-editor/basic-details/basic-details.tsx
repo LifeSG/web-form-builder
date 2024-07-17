@@ -28,7 +28,7 @@ export const BasicDetails = () => {
         setValue,
     } = useFormContext<TFormFieldValues>();
     const element = focusedElement.element;
-    const type = watch("type");
+    const type = watch("type", element?.type);
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
@@ -73,12 +73,6 @@ export const BasicDetails = () => {
                             onChange={(value: EElementType) => {
                                 selectElementType(value);
                                 field.onChange(value);
-                                if (value === EElementType.DROPDOWN) {
-                                    setValue("dropdownItems", [
-                                        { label: "", value: "" },
-                                        { label: "", value: "" },
-                                    ]);
-                                }
                             }}
                             errorMessage={errors.type?.message}
                         />

@@ -10,6 +10,7 @@ import {
     DropdownItemsWrapper,
 } from "./dropdown-items.styles";
 import { TOptionGroupBasedSchema } from "src/schemas/option-group-based-fields";
+import { useEffect } from "react";
 
 export const DropdownItems = () => {
     // =========================================================================
@@ -24,6 +25,20 @@ export const DropdownItems = () => {
         },
         shouldUnregister: true,
     });
+
+    // =========================================================================
+    // EFFECTS
+    // =========================================================================
+
+    useEffect(() => {
+        append(
+            [
+                { label: "", value: "" },
+                { label: "", value: "" },
+            ],
+            { shouldFocus: false }
+        );
+    }, []);
 
     // =========================================================================
     // EVENT HANDLERS

@@ -32,7 +32,14 @@ const DropdownItemsBinButton = ({
                 </PopoverTrigger>
             );
         }
-        return <StyledBinButton onClick={onClick}>{children}</StyledBinButton>;
+        return (
+            <StyledBinButton
+                data-testid="dropdown-items-bin-button"
+                onClick={onClick}
+            >
+                {children}
+            </StyledBinButton>
+        );
     };
 
     return renderButton();
