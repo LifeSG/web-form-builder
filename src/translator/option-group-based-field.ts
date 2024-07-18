@@ -1,4 +1,4 @@
-import { TElement } from "src/context-providers";
+import { TOptionGroupBasedElement } from "src/context-providers";
 import { createConditionalRenderingObject } from "./helper";
 
 export namespace OptionGroupBasedField {
@@ -7,17 +7,14 @@ export namespace OptionGroupBasedField {
         errorMessage?: string;
     }
 
-    export const elementToSchema = (element: TElement) => {
+    export const elementToSchema = (element: TOptionGroupBasedElement) => {
         const conditionalRenderingObject = createConditionalRenderingObject(
             element?.conditionalRendering
         );
 
-        const filteredDropdownItems =
-            "dropdownItems" in element
-                ? element.dropdownItems.filter(
-                      (item) => item.label && item.value
-                  )
-                : undefined;
+        const filteredDropdownItems = element.dropdownItems.filter(
+            (item) => item.label && item.value
+        );
 
         const optionGroupBasedFieldSchema = {
             [element.id]: {

@@ -1,4 +1,8 @@
-import { EElementType, IValidation, TElement } from "src/context-providers";
+import {
+    EElementType,
+    IValidation,
+    TTextBasedElement,
+} from "src/context-providers";
 import { createConditionalRenderingObject } from "./helper";
 
 export namespace TextBasedField {
@@ -29,7 +33,7 @@ export namespace TextBasedField {
         };
     }
 
-    const createValidationObject = (element: TElement) => {
+    const createValidationObject = (element: TTextBasedElement) => {
         if (!element) return;
 
         const validation: ISchemaValidation[] = [];
@@ -43,11 +47,7 @@ export namespace TextBasedField {
             });
         }
 
-        if (
-            "validation" in element &&
-            element.validation &&
-            element.validation.length > 0
-        ) {
+        if (element.validation && element.validation.length > 0) {
             switch (element.type) {
                 case EElementType.EMAIL: {
                     const validationChild = Email.createEmailValidationSchema(
@@ -72,7 +72,7 @@ export namespace TextBasedField {
         return validation;
     };
 
-    export const elementToSchema = (element: TElement) => {
+    export const elementToSchema = (element: TTextBasedElement) => {
         const conditionalRenderingObject = createConditionalRenderingObject(
             element?.conditionalRendering
         );

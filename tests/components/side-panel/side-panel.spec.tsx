@@ -2,7 +2,11 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import "jest-canvas-mock";
 import { act } from "react-dom/test-utils";
 import { SidePanel } from "src/components";
-import { EElementType, TElement } from "src/context-providers";
+import {
+    EElementType,
+    TElement,
+    TOptionGroupBasedElement,
+} from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data/elements-data";
 import { TestHelper } from "src/util/test-helper";
 
@@ -91,6 +95,55 @@ describe("SidePanel", () => {
 
             await waitFor(() => expect(saveButton).toHaveTextContent("Saved"));
         });
+
+        it("should remove empty dropdown items when saving if there are at least 2 valid dropdown items", async () => {
+            renderComponent({
+                builderContext: {
+                    focusedElement: {
+                        element: MOCK_DROPDOWN_ELEMENT,
+                    },
+                    selectedElementType: EElementType.DROPDOWN,
+                },
+            });
+
+            const dropdownItemLabels = await screen.findAllByTestId(
+                "dropdown-item-label"
+            );
+            const dropdownItemValues = await screen.findAllByTestId(
+                "dropdown-item-value"
+            );
+
+            let saveButton = screen.getByTestId("save-changes-button");
+
+            expect(saveButton).toHaveTextContent("Saved");
+
+            expect(dropdownItemLabels).toHaveLength(2);
+
+            fireEvent.input(dropdownItemLabels[0], {
+                target: { value: "New Label" },
+            });
+            fireEvent.input(dropdownItemValues[0], {
+                target: { value: "New Value" },
+            });
+            fireEvent.input(dropdownItemLabels[1], {
+                target: { value: "New Label" },
+            });
+            fireEvent.input(dropdownItemValues[1], {
+                target: { value: "New Value" },
+            });
+
+            fireEvent.click(screen.getByText("Add Option"));
+
+            expect(
+                await screen.findAllByTestId("dropdown-item-label")
+            ).toHaveLength(3);
+
+            fireEvent.click(saveButton);
+
+            expect(
+                await screen.findAllByTestId("dropdown-item-label")
+            ).toHaveLength(2);
+        });
     });
 });
 
@@ -127,4 +180,17 @@ const MOCK_ELEMENT: TElement = {
     required: false,
     label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
     columns: { desktop: 12, tablet: 8, mobile: 4 },
+};
+
+const MOCK_DROPDOWN_ELEMENT: TOptionGroupBasedElement = {
+    internalId: "mock123",
+    type: EElementType.DROPDOWN,
+    id: "mockElement",
+    required: false,
+    label: ELEMENT_BUTTON_LABELS[EElementType.DROPDOWN],
+    columns: { desktop: 12, tablet: 8, mobile: 4 },
+    dropdownItems: [
+        { label: "", value: "" },
+        { label: "", value: "" },
+    ],
 };

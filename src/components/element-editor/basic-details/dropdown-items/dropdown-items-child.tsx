@@ -6,7 +6,6 @@ import {
     DropdownItemsChildWrapper,
     DropdownItemsDragHandleButton,
 } from "./dropdown-items-child.styles";
-
 import { TOverallOptionGroupBasedSchema } from "src/schemas";
 import DropdownItemsBinButton from "./dropdown-items-bin-button";
 
@@ -71,6 +70,7 @@ export const DropdownItemsChild = ({ onDelete, index }: IProps) => {
                 control={control}
                 render={({ field }) => (
                     <Form.Input
+                        data-testid="dropdown-item-value"
                         placeholder="Enter value"
                         {...field}
                         errorMessage={

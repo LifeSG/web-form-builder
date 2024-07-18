@@ -20,9 +20,6 @@ export const DropdownItems = () => {
     const { fields, append, remove } = useFieldArray({
         control,
         name: "dropdownItems",
-        rules: {
-            minLength: 2,
-        },
         shouldUnregister: true,
     });
 
@@ -31,13 +28,17 @@ export const DropdownItems = () => {
     // =========================================================================
 
     useEffect(() => {
-        append(
-            [
-                { label: "", value: "" },
-                { label: "", value: "" },
-            ],
-            { shouldFocus: false }
-        );
+        if (fields.length === 0) {
+            append(
+                [
+                    { label: "", value: "" },
+                    { label: "", value: "" },
+                ],
+                {
+                    shouldFocus: false,
+                }
+            );
+        }
     }, []);
 
     // =========================================================================

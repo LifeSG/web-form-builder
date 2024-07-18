@@ -28,12 +28,9 @@ export namespace SchemaHelper {
                         .object()
                         .concat(baseSchema)
                         .concat(OPTION_GROUP_BASED_SCHEMA);
-                default:
-                    return undefined;
             }
         } catch (error) {
             console.error("Error in schema helper:", error);
-            return undefined;
         }
     };
 }

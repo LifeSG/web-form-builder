@@ -3,18 +3,10 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
 import { FormProvider, useForm } from "react-hook-form";
 import { BasicDetails } from "src/components/element-editor/basic-details";
-import { EElementType, IColumns } from "src/context-providers";
+import { EElementType } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data";
 import { SchemaHelper } from "src/schemas";
 import { TestHelper } from "src/util/test-helper";
-
-jest.mock("src/context-providers/builder/hook", () => ({
-    useBuilder: () => ({
-        elements: MOCK_ELEMENTS,
-        focusedElement: MOCK_FOCUSED_ELEMENT,
-        updateFocusedElement: jest.fn(),
-    }),
-}));
 
 describe("BasicDetails", () => {
     beforeEach(() => {
@@ -32,7 +24,7 @@ describe("BasicDetails", () => {
 
     describe("rendering label & required error message fields", () => {
         it("should render label if element has label property", async () => {
-            renderComponent({
+            renderComponent(EElementType.EMAIL, {
                 builderContext: {
                     focusedElement: MOCK_FOCUSED_ELEMENT,
                     elements: MOCK_ELEMENTS,
@@ -44,7 +36,7 @@ describe("BasicDetails", () => {
         });
 
         it("should render required error message if element has required error message property", async () => {
-            renderComponent({
+            renderComponent(EElementType.EMAIL, {
                 builderContext: {
                     focusedElement: MOCK_FOCUSED_ELEMENT,
                     elements: MOCK_ELEMENTS,
@@ -61,7 +53,7 @@ describe("BasicDetails", () => {
 
     describe("rendering the error messages for the fields", () => {
         it("should render an error message for the ID field if it is empty", async () => {
-            renderComponent({
+            renderComponent(EElementType.EMAIL, {
                 builderContext: {
                     focusedElement: MOCK_FOCUSED_ELEMENT,
                     elements: MOCK_ELEMENTS,
@@ -76,7 +68,7 @@ describe("BasicDetails", () => {
         });
 
         it("should render an error message for the ID field if it is invalid", async () => {
-            renderComponent({
+            renderComponent(EElementType.EMAIL, {
                 builderContext: {
                     focusedElement: MOCK_FOCUSED_ELEMENT,
                     elements: MOCK_ELEMENTS,
@@ -93,7 +85,7 @@ describe("BasicDetails", () => {
         });
 
         it("should render an error message for the label field if it is empty", async () => {
-            renderComponent({
+            renderComponent(EElementType.EMAIL, {
                 builderContext: {
                     focusedElement: MOCK_FOCUSED_ELEMENT,
                     elements: MOCK_ELEMENTS,
@@ -108,27 +100,117 @@ describe("BasicDetails", () => {
             expect(labelErrorMessage).toHaveTextContent("Label required.");
         });
     });
+
+    describe("rendering the preselected value", () => {
+        it("should render the preselected value if the element type is dropdown and there is at least 1 valid dropdown item", async () => {
+            renderComponent(EElementType.DROPDOWN, {
+                builderContext: {
+                    focusedElement: MOCK_FOCUSED_DROPDOWN_ELEMENT,
+                    elements: MOCK_ELEMENTS,
+                },
+            });
+
+            const dropdownItem = screen.getByText("Dropdown items");
+            expect(dropdownItem).toBeInTheDocument();
+
+            const dropdownItemLabels = await screen.findAllByTestId(
+                "dropdown-item-label"
+            );
+            const dropdownItemValues = await screen.findAllByTestId(
+                "dropdown-item-value"
+            );
+
+            expect(dropdownItemLabels[0]).toBeInTheDocument();
+            expect(dropdownItemValues[0]).toBeInTheDocument();
+
+            expect(
+                screen.queryByText("Pre-selected value (optional)")
+            ).not.toBeInTheDocument();
+
+            fireEvent.change(dropdownItemLabels[0], {
+                target: { value: "New Label" },
+            });
+            fireEvent.change(dropdownItemValues[0], {
+                target: { value: "New Value" },
+            });
+
+            expect(dropdownItemLabels[0]).toHaveValue("New Label");
+            expect(dropdownItemValues[0]).toHaveValue("New Value");
+
+            const preselectedValue = await screen.findByText(
+                "Pre-selected value (optional)"
+            );
+
+            expect(preselectedValue).toBeInTheDocument();
+        });
+    });
+
+    describe("submitting the form for dropdown element", () => {
+        it("should not be able to submit the form if there are not at least 2 valid dropdown items", async () => {
+            renderComponent(EElementType.DROPDOWN, {
+                builderContext: {
+                    focusedElement: MOCK_FOCUSED_DROPDOWN_ELEMENT,
+                    elements: MOCK_ELEMENTS,
+                },
+            });
+
+            const submitButton = screen.getByText("Submit");
+            fireEvent.click(submitButton);
+
+            const labelError = await screen.findAllByText(
+                "Option label required."
+            );
+            const valueError = await screen.findAllByText(
+                "Option value required."
+            );
+
+            // Initially there are 2 empty dropdown items
+            expect(labelError).toHaveLength(2);
+            expect(valueError).toHaveLength(2);
+        });
+    });
 });
+
+// =============================================================================
+// INTERFACES
+// =============================================================================
+
+interface IProps {
+    elementType: EElementType;
+}
 
 // =============================================================================
 // HELPER FUNCTIONS
 // =============================================================================
 
-const MyTestComponent = () => {
+const MyTestComponent = ({ elementType }: IProps) => {
     const methods = useForm({
         mode: "onTouched",
-        resolver: yupResolver(SchemaHelper.buildSchema(EElementType.EMAIL)),
+        resolver: yupResolver(SchemaHelper.buildSchema(elementType)),
+        defaultValues: {
+            type: elementType,
+        },
     });
+    const onSubmit = jest.fn;
     return (
         <FormProvider {...methods}>
-            <BasicDetails />
+            <form onSubmit={methods.handleSubmit(onSubmit)}>
+                <BasicDetails />
+                <button type="submit">Submit</button>
+            </form>
         </FormProvider>
     );
 };
 
-const renderComponent = (overrideOptions?: TestHelper.RenderOptions) => {
+const renderComponent = (
+    elementType: EElementType,
+    overrideOptions?: TestHelper.RenderOptions
+) => {
     return render(
-        TestHelper.withProviders(overrideOptions, <MyTestComponent />)
+        TestHelper.withProviders(
+            overrideOptions,
+            <MyTestComponent elementType={elementType} />
+        )
     );
 };
 
@@ -152,6 +234,25 @@ const MOCK_FOCUSED_ELEMENT = {
         required: false,
         label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
         columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
+    },
+};
+
+const MOCK_FOCUSED_DROPDOWN_ELEMENT = {
+    element: {
+        internalId: "mock123",
+        type: EElementType.DROPDOWN,
+        id: "mockElement",
+        required: false,
+        label: ELEMENT_BUTTON_LABELS[EElementType.DROPDOWN],
+        columns: {
+            desktop: 12,
+            tablet: 8,
+            mobile: 4,
+        } as const,
+        dropdownItems: [
+            { label: "", value: "" },
+            { label: "", value: "" },
+        ],
     },
 };
 
