@@ -1,7 +1,12 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useCallback, useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { EToastTypes, TElement, useDisplay } from "src/context-providers";
+import {
+    EElementType,
+    EToastTypes,
+    TElement,
+    useDisplay,
+} from "src/context-providers";
 import { SchemaHelper } from "src/schemas";
 import { EBuilderMode, useBuilder } from "../../context-providers";
 import { ElementEditor } from "../element-editor";
@@ -30,11 +35,18 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
     const { showToast } = useDisplay();
     const methods = useForm({
         mode: "onTouched",
+        defaultValues: {
+            requiredErrorMsg: "",
+        },
         // TODO: insert proper type; email is a placeholder
         resolver: yupResolver(
             SchemaHelper.buildSchema(focusedElement?.element?.type)
         ),
     });
+
+    const {
+        formState: { isSubmitSuccessful },
+    } = methods;
 
     // =========================================================================
     // HELPER FUNCTIONS
@@ -59,21 +71,22 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
     // =========================================================================
     // USE EFFECTS
     // =========================================================================
-    useEffect(() => {
-        methods.reset(undefined, {
-            keepValues: true,
-            keepDirty: false,
-        });
-    }, [methods.formState.isSubmitSuccessful]);
 
     useEffect(() => {
-        if (focusedElement) {
-            const newElement = {};
-            Object.entries(focusedElement?.element).forEach(([key, value]) => {
-                newElement[key] = value === undefined ? "" : value;
-            });
-            methods.reset(newElement);
+        if (isSubmitSuccessful) {
+            /**
+             * On React 17, without setTimeout, isSubmitSuccessful is set to true again on first touch of the form after resetting form.
+             * This issue is fixed on React 18, but the workaround on React 17 would be to use setTimeout.
+             */
+            setTimeout(() => methods.reset());
         }
+    }, [isSubmitSuccessful, methods.reset]);
+
+    useEffect(() => {
+        if (!focusedElement) {
+            return;
+        }
+        methods.reset(focusedElement.element);
     }, [focusedElement?.element, methods.reset]);
 
     // =========================================================================
@@ -84,7 +97,6 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
         if (focusedElement) {
             return <ElementEditor />;
         }
-
         switch (currentMode) {
             case EBuilderMode.ADD_ELEMENT:
                 return <AddElementsPanel />;

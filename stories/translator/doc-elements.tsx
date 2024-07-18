@@ -84,24 +84,22 @@ export const DocElement = () => {
     };
 
     const handleFormPreviewButton = () => {
+        if (formBuilderRef.current) {
+            const generatedSchema = formBuilderRef.current.generateSchema();
+            setSchema(generatedSchema);
+        }
         setPageMode("preview-mode");
     };
 
     const handleSchemaViewButton = () => {
-        setPageMode("schema-mode");
-    };
-
-    // =========================================================================
-    // EFFECTS
-    // =========================================================================
-    useEffect(() => {
-        if (pageMode !== "form-builder-mode") {
-            const generatedSchema = formBuilderRef.current?.generateSchema();
+        if (formBuilderRef.current) {
+            const generatedSchema = formBuilderRef.current.generateSchema();
             setSchema(generatedSchema);
         } else if (schema && schemaProvided) {
             formBuilderRef.current?.parseSchema(schema);
         }
-    }, [pageMode, schemaProvided]);
+        setPageMode("schema-mode");
+    };
 
     // =========================================================================
     // RENDER FUNCTIONS
