@@ -6,6 +6,7 @@ import {
     generateMockElementSchema,
     generateMockSchema,
 } from "./helper";
+import { ISchemaProps } from "src";
 
 describe("Translator", () => {
     beforeEach(() => {
@@ -297,6 +298,193 @@ describe("Translator", () => {
                     orderedIdentifiers
                 );
                 expect(generatedSchema).toStrictEqual(MOCK_TEXT_BASED_SCHEMA);
+            });
+        });
+
+        describe("Email field schema translation", () => {
+            it("should translate validation from the schema & be generated into new elements", () => {
+                const MOCK_EMAIL_SCHEMA_WITH_VALIDATION = generateMockSchema(
+                    {},
+                    generateMockElementSchema({
+                        id: "mockId1",
+                        label: "Email address",
+                        uiType: EElementType.EMAIL,
+                        validation: [
+                            {
+                                required: true,
+                                errorMessage: "Email address is required",
+                            },
+                            {
+                                matches: "/^[a-zA-Z0-9._%+-]+@(gmail\\.com)$/",
+                                errorMessage:
+                                    "Enter a email that has a '@gmail.com' domain",
+                            },
+                        ],
+                    })
+                );
+                const generatedSchema = Translator.parseSchema(
+                    MOCK_EMAIL_SCHEMA_WITH_VALIDATION as ISchemaProps
+                );
+
+                const MOCK__EMAIL_ELEMENT_WITH_VALIDATION: TElementMap =
+                    generateMockElement({
+                        type: EElementType.EMAIL,
+                        id: "mockId1",
+                        internalId: Object.keys(generatedSchema.newElements)[0],
+                        requiredErrorMsg: "Email address is required",
+                        validation: [
+                            {
+                                validationType:
+                                    ELEMENT_VALIDATION_TYPES["Text field"][
+                                        EElementType.EMAIL
+                                    ].validationTypes[0],
+                                validationRule: "@gmail.com",
+                                validationErrorMessage:
+                                    "Enter a email that has a '@gmail.com' domain",
+                            },
+                        ],
+                    });
+
+                expect(generatedSchema.newElements).toEqual(
+                    MOCK__EMAIL_ELEMENT_WITH_VALIDATION
+                );
+            });
+            it("should translate conditional rendering from the schema & be generated into new elements", () => {
+                const MOCK_EMAIL_SCHEMA_WITH_CONDITIONAL_RENDERING =
+                    generateMockSchema(
+                        {},
+                        {
+                            ...generateMockElementSchema({
+                                id: "mock123",
+                                label: "Email address",
+                                uiType: EElementType.EMAIL,
+                                validation: [
+                                    {
+                                        required: true,
+                                        errorMessage:
+                                            "Email address is required",
+                                    },
+                                ],
+                                showIf: [
+                                    {
+                                        mock456: [
+                                            { filled: true },
+                                            {
+                                                equals: "hello",
+                                            },
+                                        ],
+                                    },
+                                ],
+                            }),
+                            ...generateMockElementSchema({
+                                id: "mock456",
+                                label: "Short text",
+                                uiType: EElementType.TEXT,
+                                validation: [
+                                    {
+                                        required: true,
+                                        errorMessage: "Input is required",
+                                    },
+                                ],
+                            }),
+                        }
+                    );
+
+                const generatedSchema = Translator.parseSchema(
+                    MOCK_EMAIL_SCHEMA_WITH_CONDITIONAL_RENDERING as ISchemaProps
+                );
+
+                const MOCK__EMAIL_ELEMENT_WITH_CONDITIONAL_RENDERING: TElementMap =
+                    {
+                        ...generateMockElement({
+                            type: EElementType.EMAIL,
+                            id: "mock123",
+                            internalId: Object.keys(
+                                generatedSchema.newElements
+                            )[0],
+                            requiredErrorMsg: "Email address is required",
+                            conditionalRendering: [
+                                {
+                                    fieldKey: "mock456",
+                                    comparator: "Equals",
+                                    value: "hello",
+                                    internalId: Object.keys(
+                                        generatedSchema.newElements
+                                    )[1],
+                                },
+                            ],
+                        }),
+                        ...generateMockElement({
+                            type: EElementType.TEXT,
+                            id: "mock456",
+                            internalId: Object.keys(
+                                generatedSchema.newElements
+                            )[1],
+                            requiredErrorMsg: "Input is required",
+                        }),
+                    };
+
+                expect(generatedSchema.newElements).toEqual(
+                    MOCK__EMAIL_ELEMENT_WITH_CONDITIONAL_RENDERING
+                );
+            });
+        });
+
+        describe("Text based field schema translation", () => {
+            it("should translate text based fields from the schema to the element", () => {
+                const MOCK_TEXT_BASED_SCHEMA = generateMockSchema(
+                    {},
+                    {
+                        ...generateMockElementSchema({
+                            id: "mockId1",
+                            label: "Short text",
+                            uiType: EElementType.TEXT,
+                            validation: [
+                                {
+                                    required: true,
+                                    errorMessage: "Input is required",
+                                },
+                            ],
+                        }),
+                        ...generateMockElementSchema({
+                            id: "mock456",
+                            label: "Number",
+                            uiType: EElementType.NUMERIC,
+                            validation: [
+                                {
+                                    required: true,
+                                    errorMessage: "Number is required",
+                                },
+                            ],
+                        }),
+                    }
+                );
+                const generatedSchema = Translator.parseSchema(
+                    MOCK_TEXT_BASED_SCHEMA as ISchemaProps
+                );
+
+                const MOCK_TEXT_BASED_ELEMENT: TElementMap = {
+                    ...generateMockElement({
+                        type: EElementType.TEXT,
+                        id: "mockId1",
+                        label: "Short text",
+                        internalId: Object.keys(generatedSchema.newElements)[0],
+                        required: true,
+                        requiredErrorMsg: "Input is required",
+                    }),
+                    ...generateMockElement({
+                        type: EElementType.NUMERIC,
+                        id: "mock456",
+                        label: "Number",
+                        internalId: Object.keys(generatedSchema.newElements)[1],
+                        required: true,
+                        requiredErrorMsg: "Number is required",
+                    }),
+                };
+
+                expect(generatedSchema.newElements).toEqual(
+                    MOCK_TEXT_BASED_ELEMENT
+                );
             });
         });
     });

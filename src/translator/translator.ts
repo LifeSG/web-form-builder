@@ -1,7 +1,15 @@
-import { IFrontendEngineData } from "@lifesg/web-frontend-engine";
+import {
+    IFrontendEngineData,
+    TFrontendEngineFieldSchema,
+} from "@lifesg/web-frontend-engine";
 import { IElementIdentifier, TElementMap } from "src/context-providers";
+import { ISchemaProps } from "src/form-builder";
+import {
+    createPrefillObject,
+    parseSchemaBasedOnType,
+    updateParsedElements,
+} from "./helper";
 import { TextBasedField } from "./text-based-field";
-import { createPrefillObject } from "./helper";
 
 export namespace Translator {
     export function generateSchema(
@@ -43,7 +51,10 @@ export namespace Translator {
         return { schema: elementSchema, prefill };
     }
 
-    export function translateSchema(schema: string) {
-        console.log("this is the schema:", schema);
-    }
+    export const parseSchema = (formSchema: ISchemaProps) => {
+        const schemaToParse = formSchema?.schema?.sections?.section?.children
+            ?.grid?.["children"] as Record<string, TFrontendEngineFieldSchema>;
+        const parsedElements = parseSchemaBasedOnType(schemaToParse);
+        return updateParsedElements(parsedElements);
+    };
 }

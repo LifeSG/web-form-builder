@@ -1,16 +1,14 @@
+import { TFrontendEngineFieldSchema } from "@lifesg/web-frontend-engine";
+import { TRenderRules } from "@lifesg/web-frontend-engine/context-providers";
 import {
     EConditionType,
+    EElementType,
     IConditionalRendering,
+    TElement,
     TElementMap,
 } from "src/context-providers/builder";
-import { SCHEMA_CONDITION_TYPES } from "src/data";
-
-export interface ISchemaConditionalRendering {
-    [key: string]: {
-        filled?: boolean;
-        equals?: string | number;
-    }[];
-}
+import { ELEMENT_CONDITION_TYPES, SCHEMA_CONDITION_TYPES } from "src/data";
+import { TextBasedField } from "./text-based-field";
 
 export const createPrefillObject = (elements: TElementMap) => {
     const prefill = Object.values(elements).reduce((acc, element) => {
@@ -25,7 +23,7 @@ export const createPrefillObject = (elements: TElementMap) => {
 
 export const createConditionalRenderingObject = (
     conditions: IConditionalRendering[]
-): ISchemaConditionalRendering[] => {
+): TRenderRules[] => {
     if (!conditions || conditions.length === 0) {
         return;
     }
@@ -51,4 +49,85 @@ export const createConditionalRenderingObject = (
     }, {});
 
     return Object.keys(conditionObj).length === 0 ? [] : [conditionObj];
+};
+
+export const parseConditionalRenderingObject = (conditions: TRenderRules[]) => {
+    return conditions.reduce(
+        (
+            parsedConditions: IConditionalRendering[],
+            condition: TRenderRules
+        ) => {
+            Object.entries(condition).forEach(([key, value]) => {
+                value
+                    .filter((obj: TRenderRules) => !("filled" in obj))
+                    .forEach((condition: TRenderRules) => {
+                        const [comparator, compValue] =
+                            Object.entries(condition)[0];
+                        parsedConditions.push({
+                            fieldKey: key,
+                            comparator: ELEMENT_CONDITION_TYPES[comparator],
+                            value: compValue as unknown as string,
+                            internalId: "",
+                        });
+                    });
+            });
+            return parsedConditions;
+        },
+        []
+    );
+};
+
+export const parseSchemaBasedOnType = (
+    schemaToTranslate: Record<string, TFrontendEngineFieldSchema>
+) => {
+    const parsedElements = [];
+    Object.entries(schemaToTranslate).forEach(([key, element]) => {
+        const { uiType } = element;
+        switch (uiType) {
+            case EElementType.CONTACT:
+            case EElementType.EMAIL:
+            case EElementType.NUMERIC:
+            case EElementType.TEXT:
+            case EElementType.TEXTAREA: {
+                parsedElements.push(
+                    TextBasedField.parseToElement(
+                        element as TextBasedField.TElementSchema,
+                        key
+                    )
+                );
+                break;
+            }
+        }
+    });
+    return parsedElements;
+};
+
+export const updateParsedElements = (parsedElements: TElement[]) => {
+    const newElements: TElementMap = {};
+    const newOrderedIdentifiers = [];
+
+    Object.values(parsedElements).forEach((parsedElement: TElement) => {
+        newElements[parsedElement.internalId] = parsedElement;
+        newOrderedIdentifiers.push({ internalId: parsedElement.internalId });
+
+        if (parsedElement?.conditionalRendering?.length > 0) {
+            parsedElement.conditionalRendering.forEach((condition, index) => {
+                const existingElement = Object.values(parsedElements).find(
+                    (element) => element?.id === condition.fieldKey
+                );
+
+                if (existingElement) {
+                    parsedElement.conditionalRendering[index] = {
+                        ...condition,
+                        internalId: existingElement.internalId,
+                    };
+                }
+            });
+        }
+    });
+
+    return {
+        newElements,
+        newOrderedIdentifiers,
+    };
 };
