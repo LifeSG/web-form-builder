@@ -1,11 +1,5 @@
 import { IFrontendEngineData } from "@lifesg/web-frontend-engine";
-import {
-    forwardRef,
-    useCallback,
-    useEffect,
-    useImperativeHandle,
-    useState,
-} from "react";
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import { MainPanel, SidePanel } from "./components";
 import { Modals, Toasts } from "./components/common";
 import { ScreenNotSupportedErrorDisplay } from "./components/error-display/screen-not-supported-error";

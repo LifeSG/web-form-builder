@@ -26,7 +26,6 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
         updateElement,
         updateFocusedElement,
         toggleSubmitting,
-        isSubmitting,
     } = useBuilder();
     const { showToast } = useDisplay();
     const methods = useForm({
