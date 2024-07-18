@@ -1,11 +1,5 @@
 import { IFrontendEngineData } from "@lifesg/web-frontend-engine";
-import {
-    forwardRef,
-    useCallback,
-    useEffect,
-    useImperativeHandle,
-    useState,
-} from "react";
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import { MainPanel, SidePanel } from "./components";
 import { Modals, Toasts } from "./components/common";
 import { ScreenNotSupportedErrorDisplay } from "./components/error-display/screen-not-supported-error";
@@ -46,8 +40,12 @@ const Component = forwardRef<IFormBuilderMethods, IProps>(
         const [isLargeScreen, setIsLargeScreen] = useState(
             window.innerWidth >= 1200
         );
-        const { elements, updateElementSchema, orderedIdentifiers } =
-            useBuilder();
+        const {
+            elements,
+            updateElementSchema,
+            orderedIdentifiers,
+            isSubmitting,
+        } = useBuilder();
 
         useImperativeHandle(
             ref,
@@ -83,9 +81,14 @@ const Component = forwardRef<IFormBuilderMethods, IProps>(
         // =========================================================================
 
         return (
-            <Wrapper>
+            <Wrapper $disabled={isSubmitting}>
                 {!isLargeScreen && <ScreenNotSupportedErrorDisplay />}
-                <Container type="grid" stretch $isLargeScreen={isLargeScreen}>
+                <Container
+                    type="grid"
+                    stretch
+                    $isLargeScreen={isLargeScreen}
+                    {...{ inert: isSubmitting ? "" : undefined }}
+                >
                     <Toasts />
                     <Modals />
                     <MainPanel />
