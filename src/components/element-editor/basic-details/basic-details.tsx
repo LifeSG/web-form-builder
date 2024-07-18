@@ -52,8 +52,6 @@ export const BasicDetails = () => {
         });
     }, []);
 
-    console.log("element:", element, elements);
-
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
@@ -112,7 +110,6 @@ export const BasicDetails = () => {
                             <TogglePair
                                 label={{
                                     mainLabel: "Mandatory field",
-                                    subLabel: "",
                                 }}
                                 value={field.value}
                                 onChange={(value) => {

@@ -44,9 +44,11 @@ const generateValidationSchema = (elementType: EElementType) => {
                         .string()
                         .required("Validation required."),
                     validationRule: yup.string().when("validationType", {
-                        is: ELEMENT_VALIDATION_TYPES["Text field"][
-                            EElementType.EMAIL
-                        ].validationTypes[0],
+                        is: (value: string) => {
+                            return ELEMENT_VALIDATION_TYPES["Text field"][
+                                EElementType.EMAIL
+                            ].validationTypes.includes(value);
+                        },
                         then: (rule) =>
                             rule
                                 .required("Email domain required.")
@@ -72,9 +74,15 @@ const generateValidationSchema = (elementType: EElementType) => {
                     validationRule: yup
                         .string()
                         .when("validationType", {
-                            is: ELEMENT_VALIDATION_TYPES["Text field"][
-                                EElementType.TEXT
-                            ].validationTypes[0],
+                            is: (value: string) => {
+                                const validationTypes =
+                                    ELEMENT_VALIDATION_TYPES["Text field"][
+                                        EElementType.TEXT
+                                    ].validationTypes;
+                                return validationTypes
+                                    .slice(0, 1)
+                                    .includes(value);
+                            },
                             then: (rule) =>
                                 rule
                                     .required("Custom regex required.")
@@ -92,25 +100,13 @@ const generateValidationSchema = (elementType: EElementType) => {
                                     ),
                         })
                         .when("validationType", {
-                            is: ELEMENT_VALIDATION_TYPES["Text field"][
-                                EElementType.TEXT
-                            ].validationTypes[1],
-                            then: (rule) =>
-                                rule
-                                    .required("Numeric value required.")
-                                    .test(
-                                        "is-number",
-                                        "Numeric value only.",
-                                        (value) =>
-                                            !isNaN(Number(value)) &&
-                                            Number.isInteger(Number(value)) &&
-                                            parseInt(value) >= 0
-                                    ),
-                        })
-                        .when("validationType", {
-                            is: ELEMENT_VALIDATION_TYPES["Text field"][
-                                EElementType.TEXT
-                            ].validationTypes[2],
+                            is: (value: string) => {
+                                const validationTypes =
+                                    ELEMENT_VALIDATION_TYPES["Text field"][
+                                        EElementType.TEXT
+                                    ].validationTypes;
+                                return validationTypes.slice(1).includes(value);
+                            },
                             then: (rule) =>
                                 rule
                                     .required("Numeric value required.")
@@ -125,7 +121,6 @@ const generateValidationSchema = (elementType: EElementType) => {
                             otherwise: (rule) =>
                                 rule.required("Validation rule required."),
                         }),
-
                     validationErrorMessage: yup
                         .string()
                         .required("Error message required."),
@@ -181,8 +176,11 @@ export const TEXT_AREA_SCHEMA = (elementType: EElementType) => {
             yup.object().shape({
                 validationType: yup.string().required("Validation required."),
                 validationRule: yup.string().when("validationType", {
-                    is: ELEMENT_VALIDATION_TYPES["Text field"][elementType]
-                        .validationTypes[0],
+                    is: (value: string) => {
+                        return ELEMENT_VALIDATION_TYPES["Text field"][
+                            EElementType.TEXTAREA
+                        ].validationTypes.includes(value);
+                    },
                     then: (rule) =>
                         rule
                             .required("Numeric value required.")
