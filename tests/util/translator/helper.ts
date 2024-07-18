@@ -96,7 +96,7 @@ export const generateMockElementSchema = ({
 }: MockElementSchemaProps): MockChildrenSchema => {
     return {
         [id]: {
-            label: label,
+            label,
             uiType,
             columns: {
                 desktop: 12,

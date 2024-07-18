@@ -171,15 +171,9 @@ export const BasicDetails = () => {
                                 e: React.ChangeEvent<HTMLTextAreaElement>
                             ) => {
                                 field.onChange(e.target.value);
-                                const target = e.target;
-                                target.rows = 1;
-                                target.style.height = `${target.scrollHeight}px`;
-                                const lineHeight = 20;
-                                const newRows = Math.min(
-                                    1,
-                                    Math.floor(target.scrollHeight / lineHeight)
-                                );
-                                target.rows = newRows;
+                                const minHeight = 40;
+                                e.target.style.height = "auto";
+                                e.target.style.height = `${Math.max(minHeight, e.target.scrollHeight)}px`;
                             };
 
                             return (
@@ -196,20 +190,11 @@ export const BasicDetails = () => {
                                     }}
                                     placeholder="Enter description text"
                                     value={field.value || ""}
-                                    rows={
-                                        field.value
-                                            ? Math.min(
-                                                  1,
-                                                  Math.floor(
-                                                      field.value.length / 50
-                                                  ) + 1
-                                              )
-                                            : 1
-                                    }
+                                    rows={1}
                                     onChange={handleTextareaChange}
                                     errorMessage={errors.description?.message}
                                     maxLength={180}
-                                    style={{ overflow: "auto" }}
+                                    style={{ overflow: "hidden" }}
                                 />
                             );
                         }}
