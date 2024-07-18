@@ -152,7 +152,7 @@ export const useBuilder = () => {
                         {
                             ...child,
                             conditionalRendering:
-                                child.conditionalRendering.filter(
+                                child?.conditionalRendering?.filter(
                                     (condition) =>
                                         condition.internalId !== internalId
                                 ),
@@ -265,6 +265,19 @@ export const useBuilder = () => {
         });
     }, []);
 
+    const updateElementSchema = useCallback(
+        (elements?: TElementMap, orderedIdentifiers?: IElementIdentifier[]) => {
+            dispatch({
+                type: "update-schema-element",
+                payload: {
+                    elements,
+                    orderedIdentifiers,
+                },
+            });
+        },
+        []
+    );
+
     const updateFocusedElement = useCallback(
         (isDirty: boolean, element?: TElement) => {
             dispatch({
@@ -296,5 +309,6 @@ export const useBuilder = () => {
         updateElement,
         updateFocusedElement,
         duplicateElement,
+        updateElementSchema,
     };
 };

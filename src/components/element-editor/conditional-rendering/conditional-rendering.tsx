@@ -66,6 +66,7 @@ export const ConditionalRendering = () => {
     }
 
     const getPopoverMessage = useCallback(() => {
+        const invalidAndEmptyFields = checkIsValid();
         if (invalidAndEmptyFields) {
             return (
                 <Text.Body>
@@ -115,9 +116,7 @@ export const ConditionalRendering = () => {
             onAdd={handleAddButtonClick}
             title="Conditional Rendering"
             buttonLabel="condition"
-            disabledButton={
-                getElementOptions().length === 0 || invalidAndEmptyFields
-            }
+            disabledButton={getElementOptions().length === 0 || checkIsValid()}
             popoverMessage={getPopoverMessage()}
         >
             {renderChildren()}

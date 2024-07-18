@@ -1,3 +1,5 @@
+import { IYupValidationRule } from "@lifesg/web-frontend-engine";
+import { TRenderRules } from "@lifesg/web-frontend-engine/context-providers";
 import {
     EElementType,
     IColumns,
@@ -7,8 +9,6 @@ import {
     TElementMap,
 } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data";
-import { ISchemaConditionalRendering } from "src/translator";
-import { TextBasedField } from "src/translator/text-based-field";
 
 interface MockElementProps {
     type: EElementType;
@@ -29,8 +29,8 @@ interface MockElementSchemaProps {
     label: string;
     uiType: EElementType;
     placeholder?: string;
-    validation?: TextBasedField.ISchemaValidation[];
-    showIf?: ISchemaConditionalRendering[];
+    validation?: IYupValidationRule[];
+    showIf?: TRenderRules[];
 }
 
 interface MockPrefillSchema {
@@ -43,14 +43,14 @@ interface MockChildrenSchema {
         uiType: EElementType;
         columns: IColumns;
         placeholder?: string;
-        validation?: TextBasedField.ISchemaValidation[];
-        showIf?: ISchemaConditionalRendering[];
+        validation?: IYupValidationRule[];
+        showIf?: TRenderRules[];
     };
 }
 
 export const generateMockElement = (props: MockElementProps): TElementMap => {
     return {
-        [props.id]: {
+        [props.internalId]: {
             required: true,
             columns: { desktop: 12, tablet: 8, mobile: 4 },
             label: ELEMENT_BUTTON_LABELS[props.type],
