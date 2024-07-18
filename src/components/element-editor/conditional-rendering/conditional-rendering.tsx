@@ -1,10 +1,10 @@
 import { Text } from "@lifesg/react-design-system/text";
-import { useCallback, useEffect, useState } from "react";
-import { useFormContext } from "react-hook-form";
+import { useCallback } from "react";
+import { useFieldArray, useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
 import {
     EConditionType,
-    IConditionalRendering,
+    EElementType,
     useBuilder,
 } from "src/context-providers";
 import { IBaseTextBasedFieldValues, SchemaHelper } from "src/schemas";
@@ -21,16 +21,16 @@ export const ConditionalRendering = () => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
-
+    const { watch, control } = useFormContext<IBaseTextBasedFieldValues>();
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: "conditionalRendering",
+        shouldUnregister: true,
+    });
     const { focusedElement, elements } = useBuilder();
     const element = focusedElement?.element;
-    const [, setChildEntryValues] = useState<IConditionalRendering[]>([]);
-    const { setValue, watch, getValues } =
-        useFormContext<IBaseTextBasedFieldValues>();
-
-    const schema = SchemaHelper.buildSchema(element.type);
-    const invalidAndEmptyFields = checkIsValid();
-    const conditionalRenderingValues = getValues("conditionalRendering") || [];
+    const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
+    const conditionalRenderingValues = watch("conditionalRendering");
     // =====================================================================
     // HELPER FUNCTIONS
     // =====================================================================
@@ -50,10 +50,9 @@ export const ConditionalRendering = () => {
         return options;
     };
 
-    function checkIsValid() {
+    const hasInvalidAndEmptyFields = () => {
         try {
             const validationSchema = schema.pick(["conditionalRendering"]);
-
             validationSchema.validateSync({
                 conditionalRendering: conditionalRenderingValues,
                 abortEarly: false,
@@ -62,23 +61,22 @@ export const ConditionalRendering = () => {
         } catch (error) {
             return Yup.ValidationError.isError(error);
         }
-    }
+    };
 
     const getPopoverMessage = useCallback(() => {
-        const invalidAndEmptyFields = checkIsValid();
-        if (invalidAndEmptyFields) {
+        if (hasInvalidAndEmptyFields()) {
             return (
                 <Text.Body>
                     To add a new condition, fill up the existing condition
                     first.
                 </Text.Body>
             );
-        } else if (getElementOptions()?.length === 0) {
+        }
+        if (getElementOptions()?.length === 0) {
             return <Text.Body>No conditional rendering available.</Text.Body>;
         }
         return null;
-    }, [checkIsValid(), getElementOptions]);
-
+    }, [hasInvalidAndEmptyFields, getElementOptions]);
     // =============================================================================
     // EVENT HANDLERS
     // ============================================================================
@@ -90,52 +88,20 @@ export const ConditionalRendering = () => {
             value: "",
             internalId: "",
         };
-        const updatedValues = [
-            ...conditionalRenderingValues,
-            conditionalRenderingChild,
-        ];
-        setValue("conditionalRendering", updatedValues, { shouldDirty: true });
+        append(conditionalRenderingChild);
     };
 
     const handleDelete = (index: number) => {
-        const currentValues = [...conditionalRenderingValues];
-        const updatedValues = currentValues?.filter((_, i) => i !== index);
-
-        /** * shouldDirty will only dirty the field; the dirty state is not propagated to the form level
-         * * workaround is to wait for RHF to register the change and set the value again
-         * * reference: https://github.com/orgs/react-hook-form/discussions/9913#discussioncomment-4936301 */
-
-        setValue("conditionalRendering", updatedValues, { shouldDirty: true });
-        setTimeout(() => {
-            setValue("conditionalRendering", updatedValues, {
-                shouldDirty: true,
-            });
-        });
+        remove(index);
     };
-
-    // =========================================================================
-    // EFFECTS
-    // =========================================================================
-    useEffect(() => {
-        const subscription = watch((values) => {
-            if (values?.conditionalRendering) {
-                setChildEntryValues([
-                    ...values?.conditionalRendering,
-                ] as IConditionalRendering[]);
-            } else {
-                setChildEntryValues([]);
-            }
-        });
-        return () => subscription.unsubscribe();
-    }, []);
 
     // =============================================================================
     // RENDER FUNCTIONS
     // =============================================================================
     const renderChildren = () => {
-        return conditionalRenderingValues?.map((_, index) => (
+        return fields.map((field, index) => (
             <ConditionalRenderingChild
-                key={`conditional-rendering-entry-${index}`}
+                key={field.id}
                 onDelete={() => handleDelete(index)}
                 options={getElementOptions()}
                 index={index}
@@ -148,7 +114,9 @@ export const ConditionalRendering = () => {
             onAdd={handleAddButtonClick}
             title="Conditional Rendering"
             buttonLabel="condition"
-            disabledButton={getElementOptions().length === 0 || checkIsValid()}
+            disabledButton={
+                getElementOptions().length === 0 || hasInvalidAndEmptyFields()
+            }
             popoverMessage={getPopoverMessage()}
         >
             {renderChildren()}
