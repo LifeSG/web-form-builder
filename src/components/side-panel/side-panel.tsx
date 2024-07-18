@@ -1,13 +1,8 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useCallback, useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import {
-    EElementType,
-    EToastTypes,
-    TElement,
-    useDisplay,
-} from "src/context-providers";
-import { SchemaHelper, TOverallOptionGroupBasedYupSchema } from "src/schemas";
+import { EToastTypes, TElement, useDisplay } from "src/context-providers";
+import { SchemaHelper } from "src/schemas";
 import { EBuilderMode, useBuilder } from "../../context-providers";
 import { ElementEditor } from "../element-editor";
 import { AddElementsPanel } from "./add-elements-panel";
@@ -43,44 +38,10 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
             preselectedValue: null,
         },
     });
-    const {
-        getValues,
-        formState: { defaultValues, errors },
-        setValue,
-    } = methods;
+    const { getValues, formState, setValue } = methods;
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
-    const removeEmptyDropDownItems = () => {
-        const nonEmptyDropDownItems = getValues("dropdownItems").filter(
-            (item) => item.label.length > 0 || item.value.length > 0
-        );
-        try {
-            if ("dropdownItems" in schema.fields) {
-                const validationSchema = (
-                    schema as TOverallOptionGroupBasedYupSchema
-                ).pick(["dropdownItems"]);
-                validationSchema.validateSync({
-                    dropdownItems: nonEmptyDropDownItems,
-                    abortEarly: false,
-                });
-            }
-        } catch (error) {
-            return;
-        }
-        setValue("dropdownItems", nonEmptyDropDownItems);
-    };
-
-    const onClickSaveChanges = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        if (
-            getValues("type") === EElementType.DROPDOWN &&
-            Object.keys(errors).length === 0
-        ) {
-            removeEmptyDropDownItems();
-        }
-        methods.handleSubmit(onFormSubmit)();
-    };
 
     const onFormSubmit = useCallback(
         async (values) => {
@@ -103,11 +64,18 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
     // USE EFFECTS
     // =========================================================================
     useEffect(() => {
-        methods.reset(undefined, {
-            keepValues: true,
-            keepDirty: false,
-        });
-    }, [methods.formState.isSubmitSuccessful]);
+        if (formState.isSubmitSuccessful) {
+            // Remove empty dropdown items
+            const nonEmptyDropdownItems = getValues("dropdownItems")?.filter(
+                (item) => item.label.length > 0 || item.value.length > 0
+            );
+            setValue("dropdownItems", nonEmptyDropdownItems);
+            methods.reset(undefined, {
+                keepValues: true,
+                keepDirty: false,
+            });
+        }
+    }, [formState]);
 
     useEffect(() => {
         if (focusedElement) {
@@ -143,7 +111,7 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
     return (
         <FormProvider {...methods}>
             <form
-                onSubmit={onClickSaveChanges}
+                onSubmit={methods.handleSubmit(onFormSubmit)}
                 {...{ inert: isSubmitting ? "" : undefined }}
             >
                 <Wrapper

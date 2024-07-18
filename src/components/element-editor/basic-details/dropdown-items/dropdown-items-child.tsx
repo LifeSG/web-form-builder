@@ -47,7 +47,7 @@ export const DropdownItemsChild = ({ onDelete, index }: IProps) => {
     };
 
     return (
-        <DropdownItemsChildWrapper>
+        <DropdownItemsChildWrapper data-testid="dropdown-item-child">
             <DropdownItemsDragHandleButton>
                 <DragHandleIcon />
             </DropdownItemsDragHandleButton>

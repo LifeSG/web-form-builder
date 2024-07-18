@@ -134,15 +134,13 @@ describe("SidePanel", () => {
 
             fireEvent.click(screen.getByText("Add Option"));
 
-            expect(
-                await screen.findAllByTestId("dropdown-item-label")
-            ).toHaveLength(3);
+            expect(getDropdownItemChildren()).toHaveLength(3);
 
             fireEvent.click(saveButton);
 
-            expect(
-                await screen.findAllByTestId("dropdown-item-label")
-            ).toHaveLength(2);
+            waitFor(() => {
+                expect(getDropdownItemChildren()).toHaveLength(2);
+            });
         });
     });
 });
@@ -168,6 +166,9 @@ const getToolbar = () => screen.queryByTestId("toolbar");
 const getAddElementsPanel = () => screen.getByTestId("add-elements-panel");
 
 const getElementEditor = () => screen.getByTestId("element-editor");
+
+const getDropdownItemChildren = () =>
+    screen.queryAllByTestId("dropdown-item-child");
 
 // =============================================================================
 // MOCKS

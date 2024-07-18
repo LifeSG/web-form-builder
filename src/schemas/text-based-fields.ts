@@ -1,7 +1,4 @@
-import {
-    EElementType,
-    IBaseTextBasedFieldAttributes,
-} from "src/context-providers";
+import { EElementType } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import * as yup from "yup";
 
