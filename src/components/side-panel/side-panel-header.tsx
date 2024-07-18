@@ -12,7 +12,7 @@ import {
 import { useFormContext } from "react-hook-form";
 
 interface IProps {
-    isSubmitting: boolean;
+    isSubmitting?: boolean;
 }
 
 export const SidePanelHeader = ({ isSubmitting }: IProps) => {
