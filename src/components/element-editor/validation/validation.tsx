@@ -44,7 +44,7 @@ export const Validation = () => {
         }
     };
 
-    const hasInvalidAndEmptyfields = () => {
+    const hasInvalidAndEmptyFields = () => {
         try {
             const validationSchema = schema.pick(["validation"]);
             validationSchema.validateSync({
@@ -58,7 +58,7 @@ export const Validation = () => {
     };
 
     const getPopoverMessage = () => {
-        if (hasInvalidAndEmptyfields()) {
+        if (hasInvalidAndEmptyFields()) {
             return (
                 <Text.Body>
                     To add new validation, fill up existing validation first.
@@ -126,7 +126,7 @@ export const Validation = () => {
             title="Validation"
             buttonLabel="validation"
             disabledButton={
-                hasReachedMaxEntries(elementType) || hasInvalidAndEmptyfields()
+                hasReachedMaxEntries(elementType) || hasInvalidAndEmptyFields()
             }
             popoverMessage={getPopoverMessage()}
         >

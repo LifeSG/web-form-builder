@@ -17,12 +17,11 @@ export const Prefill = () => {
     });
     const prefillValues = watch("prefill");
     const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
-    const invalidAndEmptyFields = checkIsValid();
 
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
-    function checkIsValid() {
+    const hasInvalidAndEmptyFields = () => {
         try {
             const validationSchema = schema.pick(["prefill"]);
             validationSchema.validateSync({
@@ -33,17 +32,17 @@ export const Prefill = () => {
         } catch (error) {
             return Yup.ValidationError.isError(error);
         }
-    }
+    };
 
-    function getPopoverMessage() {
-        if (invalidAndEmptyFields) {
+    const getPopoverMessage = () => {
+        if (hasInvalidAndEmptyFields()) {
             return (
                 <Text.Body>
                     To add new prefill, fill up existing prefill first.
                 </Text.Body>
             );
         }
-    }
+    };
 
     // =========================================================================
     // EVENT HANDLERS
@@ -85,7 +84,7 @@ export const Prefill = () => {
             title="Prefill"
             buttonLabel="prefill"
             subtitle="Prefill information from various data sources, for example Myinfo."
-            disabledButton={invalidAndEmptyFields}
+            disabledButton={hasInvalidAndEmptyFields()}
             popoverMessage={getPopoverMessage()}
         >
             {renderChildren()}

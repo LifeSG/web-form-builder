@@ -31,8 +31,6 @@ export const ConditionalRendering = () => {
     const element = focusedElement?.element;
     const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
     const conditionalRenderingValues = watch("conditionalRendering");
-    const invalidAndEmptyFields = checkIsValid();
-
     // =====================================================================
     // HELPER FUNCTIONS
     // =====================================================================
@@ -52,7 +50,7 @@ export const ConditionalRendering = () => {
         return options;
     };
 
-    function checkIsValid() {
+    const hasInvalidAndEmptyFields = () => {
         try {
             const validationSchema = schema.pick(["conditionalRendering"]);
             validationSchema.validateSync({
@@ -63,21 +61,22 @@ export const ConditionalRendering = () => {
         } catch (error) {
             return Yup.ValidationError.isError(error);
         }
-    }
+    };
 
     const getPopoverMessage = useCallback(() => {
-        if (invalidAndEmptyFields) {
+        if (hasInvalidAndEmptyFields()) {
             return (
                 <Text.Body>
                     To add a new condition, fill up the existing condition
                     first.
                 </Text.Body>
             );
-        } else if (getElementOptions()?.length === 0) {
+        }
+        if (getElementOptions()?.length === 0) {
             return <Text.Body>No conditional rendering available.</Text.Body>;
         }
         return null;
-    }, [invalidAndEmptyFields, getElementOptions]);
+    }, [hasInvalidAndEmptyFields, getElementOptions]);
     // =============================================================================
     // EVENT HANDLERS
     // ============================================================================
@@ -116,7 +115,7 @@ export const ConditionalRendering = () => {
             title="Conditional Rendering"
             buttonLabel="condition"
             disabledButton={
-                getElementOptions().length === 0 || invalidAndEmptyFields
+                getElementOptions().length === 0 || hasInvalidAndEmptyFields()
             }
             popoverMessage={getPopoverMessage()}
         >
