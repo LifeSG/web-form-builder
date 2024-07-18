@@ -3,7 +3,7 @@ import { Text, TextStyleHelper } from "@lifesg/react-design-system/text";
 import { DragHandleIcon } from "@lifesg/react-icons";
 import styled, { css } from "styled-components";
 import { BaseCard, IProps } from "../common";
-import { MediaQuery } from "@lifesg/react-design-system/media";
+import { generateDroppableView } from "../common/columns/columns.styles";
 
 // =============================================================================
 // STYLE INTERFACES
@@ -106,50 +106,7 @@ export const DroppableWrapper = styled.div<IDroppableWrapperProps>`
     border: 1px solid transparent;
     z-index: -1;
 
-    ${({ $size }) => {
-        switch ($size) {
-            case "right":
-                return css`
-                    ${MediaQuery.MaxWidth.desktop4k} {
-                        grid-column: 4 / span 3;
-                    }
-                    ${MediaQuery.MaxWidth.desktopL} {
-                        grid-column: 4 / span 4;
-                    }
-                    ${MediaQuery.MaxWidth.tablet} {
-                        grid-column: 4 / span 3;
-                    }
-                `;
-            case "left":
-                return css`
-                    ${MediaQuery.MaxWidth.desktop4k} {
-                        grid-column: 1 / span 3;
-                    }
-                    ${MediaQuery.MaxWidth.desktopL} {
-                        grid-column: 1 / span 4;
-                    }
-                    ${MediaQuery.MaxWidth.tablet} {
-                        grid-column: 1 / span 3;
-                    }
-                `;
-            case "full":
-                return css`
-                    ${MediaQuery.MaxWidth.desktop4k} {
-                        grid-column: 1 / span 6;
-                    }
-                    ${MediaQuery.MaxWidth.desktopL} {
-                        grid-column: 1 / span 8;
-                    }
-                    ${MediaQuery.MaxWidth.tablet} {
-                        grid-column: 1 / span 6;
-                    }
-                `;
-            default:
-                return css`
-                    grid-column: 1 / span 3;
-                `;
-        }
-    }}
+    ${({ $size }) => generateDroppableView($size)}
 
     ${({ isOver }) =>
         isOver &&

@@ -1,6 +1,14 @@
-import { MediaQuery } from "@lifesg/react-design-system/media";
 import { Text } from "@lifesg/react-design-system/text";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
+import {
+    expandedElementsWrapperStyles,
+    expandedEmptyDisplayGridColumnStyles,
+    expandedGridColumnStyles,
+    generateElementCardView,
+    minimisedElementsWrapperStyles,
+    minimisedEmptyDisplayGridColumnStyles,
+    minimisedGridColumnStyles,
+} from "../common/columns/columns.styles";
 
 // =============================================================================
 // STLE INTERFACES
@@ -23,41 +31,9 @@ export const Wrapper = styled.div<IWrapperStyleProps>`
     ${({ $mode }) => {
         switch ($mode) {
             case "expanded":
-                return css`
-                    ${MediaQuery.MaxWidth.desktop4k} {
-                        grid-column: 4 / span 6;
-                    }
-
-                    ${MediaQuery.MaxWidth.desktopL} {
-                        grid-column: 3 / span 8;
-                    }
-
-                    ${MediaQuery.MaxWidth.desktopM} {
-                        grid-column: 3 / span 8;
-                    }
-
-                    ${MediaQuery.MaxWidth.tablet} {
-                        grid-column: 2 / span 6;
-                    }
-                `;
+                return expandedGridColumnStyles;
             case "minimised":
-                return css`
-                    ${MediaQuery.MaxWidth.desktop4k} {
-                        grid-column: 5 / span 6;
-                    }
-
-                    ${MediaQuery.MaxWidth.desktopL} {
-                        grid-column: 6 / span 6;
-                    }
-
-                    ${MediaQuery.MaxWidth.desktopM} {
-                        grid-column: 6 / span 6;
-                    }
-
-                    ${MediaQuery.MaxWidth.tablet} {
-                        grid-column: 5 / span 4;
-                    }
-                `;
+                return minimisedGridColumnStyles;
         }
     }}
 `;
@@ -73,41 +49,9 @@ export const EmptyDisplayWrapper = styled.div<IWrapperStyleProps>`
     ${({ $mode }) => {
         switch ($mode) {
             case "expanded":
-                return css`
-                    ${MediaQuery.MaxWidth.desktop4k} {
-                        grid-column: 4 / span 6;
-                    }
-
-                    ${MediaQuery.MaxWidth.desktopL} {
-                        grid-column: 3 / span 9;
-                    }
-
-                    ${MediaQuery.MaxWidth.desktopM} {
-                        grid-column: 3 / span 9;
-                    }
-
-                    ${MediaQuery.MaxWidth.tablet} {
-                        grid-column: 2 / span 7;
-                    }
-                `;
+                return expandedEmptyDisplayGridColumnStyles;
             case "minimised":
-                return css`
-                    ${MediaQuery.MaxWidth.desktop4k} {
-                        grid-column: 5 / span 7;
-                    }
-
-                    ${MediaQuery.MaxWidth.desktopL} {
-                        grid-column: 6 / span 7;
-                    }
-
-                    ${MediaQuery.MaxWidth.desktopM} {
-                        grid-column: 6 / span 7;
-                    }
-
-                    ${MediaQuery.MaxWidth.tablet} {
-                        grid-column: 5 / span 4;
-                    }
-                `;
+                return minimisedEmptyDisplayGridColumnStyles;
         }
     }}
 `;
@@ -128,123 +72,12 @@ export const ElementsWrapper = styled.ul<IWrapperStyleProps>`
     ${({ $mode }) => {
         switch ($mode) {
             case "expanded":
-                return css`
-                    ${MediaQuery.MaxWidth.desktop4k} {
-                        grid-template-columns: repeat(6, minmax(0, 1fr));
-                        column-gap: 2rem;
-                    }
-
-                    ${MediaQuery.MaxWidth.desktopL} {
-                        grid-template-columns: repeat(8, minmax(0, 1fr));
-                        column-gap: 2rem;
-                    }
-
-                    ${MediaQuery.MaxWidth.tablet} {
-                        grid-template-columns: repeat(6, minmax(0, 1fr));
-                        column-gap: 1.5rem;
-                    }
-                `;
+                return expandedElementsWrapperStyles;
             case "minimised":
-                return css`
-                    ${MediaQuery.MaxWidth.desktop4k} {
-                        grid-template-columns: repeat(6, minmax(0, 1fr));
-                        column-gap: 2rem;
-                    }
-
-                    ${MediaQuery.MaxWidth.tablet} {
-                        grid-template-columns: repeat(4, minmax(0, 1fr));
-                        column-gap: 1.5rem;
-                    }
-                `;
+                return minimisedElementsWrapperStyles;
         }
     }}
 `;
 export const ElementItemWrapper = styled.li<IElementItemWrapperProps>`
-    ${({ $mode, $size }) => {
-        switch ($mode) {
-            case "expanded":
-                switch ($size) {
-                    case "right":
-                        return css`
-                            ${MediaQuery.MaxWidth.desktop4k} {
-                                grid-column: 4 / span 3;
-                            }
-                            ${MediaQuery.MaxWidth.desktopL} {
-                                grid-column: 4 / span 4;
-                            }
-                            ${MediaQuery.MaxWidth.tablet} {
-                                grid-column: 4 / span 3;
-                            }
-                        `;
-                    case "left":
-                        return css`
-                            ${MediaQuery.MaxWidth.desktop4k} {
-                                grid-column: 1 / span 3;
-                            }
-                            ${MediaQuery.MaxWidth.desktopL} {
-                                grid-column: 1 / span 4;
-                            }
-                            ${MediaQuery.MaxWidth.tablet} {
-                                grid-column: 1 / span 3;
-                            }
-                        `;
-                    case "full":
-                        return css`
-                            ${MediaQuery.MaxWidth.desktop4k} {
-                                grid-column: 1 / span 6;
-                            }
-                            ${MediaQuery.MaxWidth.desktopL} {
-                                grid-column: 1 / span 8;
-                            }
-                            ${MediaQuery.MaxWidth.tablet} {
-                                grid-column: 1 / span 6;
-                            }
-                        `;
-                    default:
-                        return css`
-                            grid-column: 1 / span 3;
-                        `;
-                }
-
-            case "minimised":
-                switch ($size) {
-                    case "right":
-                        return css`
-                            ${MediaQuery.MaxWidth.desktop4k} {
-                                grid-column: 4 / span 3;
-                            }
-                            ${MediaQuery.MaxWidth.tablet} {
-                                grid-column: 4 / span 2;
-                            }
-                        `;
-                    case "left":
-                        return css`
-                            ${MediaQuery.MaxWidth.desktop4k} {
-                                grid-column: 1 / span 3;
-                            }
-                            ${MediaQuery.MaxWidth.tablet} {
-                                grid-column: 1 / span 2;
-                            }
-                        `;
-                    case "full":
-                        return css`
-                            ${MediaQuery.MaxWidth.desktop4k} {
-                                grid-column: 1 / span 6;
-                            }
-                            ${MediaQuery.MaxWidth.tablet} {
-                                grid-column: 1 / span 4;
-                            }
-                        `;
-                    default:
-                        return css`
-                            grid-column: 1 / span 3;
-                        `;
-                }
-
-            default:
-                return css`
-                    grid-column: 1 / span 3; /* Default span if $mode is not specified */
-                `;
-        }
-    }}
+    ${({ $mode, $size }) => generateElementCardView($mode, $size)}
 `;

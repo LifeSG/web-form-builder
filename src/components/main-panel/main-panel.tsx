@@ -1,6 +1,7 @@
 import {
     DndContext,
-    DragEndEvent,
+    DragMoveEvent,
+    DragStartEvent,
     KeyboardSensor,
     MouseSensor,
     TouchSensor,
@@ -13,7 +14,6 @@ import {
     SortableContext,
     arrayMove,
     sortableKeyboardCoordinates,
-    verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { ErrorDisplay } from "@lifesg/react-design-system/error-display";
 import { debounce } from "lodash";
@@ -38,11 +38,6 @@ interface IElementRef {
     element?: HTMLLIElement | null;
 }
 
-interface IAffectedElementRef {
-    internalId?: string;
-    elementColumn?: IElementIdentifier["size"];
-}
-
 export const MainPanel = () => {
     // =========================================================================
     // CONST, STATE, REFS
@@ -58,9 +53,9 @@ export const MainPanel = () => {
     const wrapperRef = useRef<HTMLDivElement | null>(null);
     const elementRefs = useRef<IElementRef[] | null>([]);
     const elementStartingRefs = useRef<Array<DOMRect | null>>([]);
-    const affectElementsRects = useRef<IAffectedElementRef>({});
     const finalMode = focusedElement ? true : showSidePanel;
     const renderMode = finalMode ? "minimised" : "expanded";
+    const dragStartY = useRef(-1);
 
     const items: UniqueIdentifier[] = orderedIdentifiers.map(
         (identifier) => identifier.internalId
@@ -92,14 +87,15 @@ export const MainPanel = () => {
         focusElement(element);
     };
 
-    const handleonDragStart = () => {
+    const handleOnDragStart = (event: DragStartEvent) => {
+        dragStartY.current = event.active.rect.current.initial?.top;
         elementRefs.current.forEach((elementRef, index) => {
             elementStartingRefs.current[index] =
                 elementRef.element.getBoundingClientRect();
         });
     };
 
-    const handleOnDragMove = debounce((event: DragEndEvent) => {
+    const handleOnDragMove = debounce((event: DragMoveEvent) => {
         const { active } = event;
 
         const wrapperBounds = wrapperRef.current?.getBoundingClientRect();
@@ -115,75 +111,43 @@ export const MainPanel = () => {
         );
 
         const mouseX =
-            event.active.rect.current.translated?.left +
+            active.rect.current.translated?.left +
             event.activatorEvent["layerX"];
 
-        const mouseY =
-            event.active.rect.current.translated.top +
-            event.activatorEvent["layerY"];
-
-        let elementIndex = 0;
-        let inSameRow = false;
+        let elementIndex = currentActiveIndex;
         let column: IElementIdentifier["size"] = "full";
-
-        elementStartingRefs.current.forEach((elementRect, index) => {
-            if (mouseY >= elementRect.y) {
-                elementIndex = index;
-            }
-            if (mouseY > elementRect.y && mouseY < elementRect.bottom) {
-                inSameRow = true;
-            }
-        });
-
-        let updatedOrderedIdentifiers = arrayMove(
-            orderedIdentifiers,
-            currentActiveIndex,
-            elementIndex
-        );
-
         if (mouseX <= wrapperLeftThirds) {
             column = "left";
         } else if (mouseX >= wrapperRightThirds) {
             column = "right";
         }
 
+        if (active.rect.current.translated.top > dragStartY.current) {
+            // move down
+            elementIndex = elementStartingRefs.current.findLastIndex(
+                (elementRect) =>
+                    active.rect.current.translated.bottom + 16 >
+                    elementRect.y + elementRect.height / 2
+            );
+        } else {
+            // move up
+            elementIndex = elementStartingRefs.current.findIndex(
+                (elementRect) =>
+                    active.rect.current.translated.top - 16 <
+                    elementRect.y + elementRect.height / 2
+            );
+        }
+        const updatedOrderedIdentifiers = arrayMove(
+            orderedIdentifiers,
+            currentActiveIndex,
+            elementIndex
+        );
+
+        // update dragged element size
         updatedOrderedIdentifiers[elementIndex] = {
             ...updatedOrderedIdentifiers[elementIndex],
             size: column,
         };
-
-        // to  change sizes of the affected elements accordingly
-        if (
-            column === "left" &&
-            inSameRow &&
-            updatedOrderedIdentifiers[elementIndex + 1]
-        ) {
-            affectElementsRects.current = {
-                internalId:
-                    updateOrderedIdentifiers[elementIndex + 1]?.internalId,
-                elementColumn: updatedOrderedIdentifiers[elementIndex + 1].size,
-            };
-            updateOrderedIdentifiers[elementIndex + 1] = {
-                ...updateOrderedIdentifiers[elementIndex + 1],
-                size: "right",
-            };
-        } else if (
-            column === "right" &&
-            inSameRow &&
-            updatedOrderedIdentifiers[elementIndex - 1]
-        ) {
-            affectElementsRects.current = {
-                internalId:
-                    updateOrderedIdentifiers[elementIndex - 1]?.internalId,
-                elementColumn: updatedOrderedIdentifiers[elementIndex - 1].size,
-            };
-            updateOrderedIdentifiers[elementIndex - 1] = {
-                ...updateOrderedIdentifiers[elementIndex - 1],
-                size: "left",
-            };
-        } else if (!inSameRow) {
-            affectElementsRects.current = null;
-        }
 
         updateOrderedIdentifiers(updatedOrderedIdentifiers);
     }, 10);
@@ -253,14 +217,11 @@ export const MainPanel = () => {
             <DndContext
                 sensors={sensors}
                 onDragMove={handleOnDragMove}
-                onDragStart={handleonDragStart}
+                onDragStart={handleOnDragStart}
                 onDragEnd={onHandleDragEnd}
                 collisionDetection={closestCorners}
             >
-                <SortableContext
-                    items={items}
-                    strategy={verticalListSortingStrategy}
-                >
+                <SortableContext items={items}>
                     <ElementsWrapper $mode={renderMode}>
                         {renderElements()}
                     </ElementsWrapper>
