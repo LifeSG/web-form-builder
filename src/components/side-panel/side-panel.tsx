@@ -1,7 +1,12 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useCallback, useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { EToastTypes, TElement, useDisplay } from "src/context-providers";
+import {
+    EElementType,
+    EToastTypes,
+    TElement,
+    useDisplay,
+} from "src/context-providers";
 import { SchemaHelper } from "src/schemas";
 import { EBuilderMode, useBuilder } from "../../context-providers";
 import { ElementEditor } from "../element-editor";
@@ -65,11 +70,13 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
     // =========================================================================
     useEffect(() => {
         if (formState.isSubmitSuccessful) {
-            // Remove empty dropdown items
-            const nonEmptyDropdownItems = getValues("dropdownItems")?.filter(
-                (item) => item.label.length > 0 || item.value.length > 0
-            );
-            setValue("dropdownItems", nonEmptyDropdownItems);
+            /** Remove empty dropdown items before resetting */
+            if (selectedElementType === EElementType.DROPDOWN) {
+                const nonEmptyDropdownItems = getValues("dropdownItems").filter(
+                    (item) => item.label.length > 0 || item.value.length > 0
+                );
+                setValue("dropdownItems", nonEmptyDropdownItems);
+            }
             methods.reset(undefined, {
                 keepValues: true,
                 keepDirty: false,
