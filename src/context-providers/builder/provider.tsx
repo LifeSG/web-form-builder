@@ -90,6 +90,13 @@ export const builderReducer = (
             }
             break;
         }
+        case "update-schema-element": {
+            state.elements = {
+                ...action.payload.elements,
+            };
+            state.orderedIdentifiers = action.payload.orderedIdentifiers;
+            break;
+        }
     }
 
     return state;
@@ -112,7 +119,6 @@ export const BuilderProvider = ({
     children: React.ReactNode;
 }) => {
     const [state, dispatch] = useImmerReducer(builderReducer, DEFAULT_VALUES);
-
     return (
         <BuilderContext.Provider value={{ state, dispatch }}>
             {children}

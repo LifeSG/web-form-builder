@@ -1,5 +1,11 @@
 import { IFrontendEngineData } from "@lifesg/web-frontend-engine";
-import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
+import {
+    forwardRef,
+    useCallback,
+    useEffect,
+    useImperativeHandle,
+    useState,
+} from "react";
 import { MainPanel, SidePanel } from "./components";
 import { Modals, Toasts } from "./components/common";
 import { ScreenNotSupportedErrorDisplay } from "./components/error-display/screen-not-supported-error";
@@ -24,7 +30,7 @@ export interface ISchemaProps {
 
 export interface IFormBuilderMethods {
     generateSchema: (elementsList?: TElementMap) => ISchemaProps;
-    translateSchema: (schema: string) => void;
+    parseSchema: (schema: ISchemaProps) => void;
 }
 
 interface IProps {
@@ -32,57 +38,63 @@ interface IProps {
     onSubmit?: (formData: TElement) => Promise<unknown>;
 }
 
-const Component = forwardRef<IFormBuilderMethods, IProps>(({ offset, onSubmit }, ref) => {
-    // =========================================================================
-    // CONST, STATE, REFS
-    // =========================================================================
-    const [isLargeScreen, setIsLargeScreen] = useState(
-        window.innerWidth >= 1200
-    );
-    const { elements, orderedIdentifiers } = useBuilder();
+const Component = forwardRef<IFormBuilderMethods, IProps>(
+    ({ offset, onSubmit }, ref) => {
+        // =========================================================================
+        // CONST, STATE, REFS
+        // =========================================================================
+        const [isLargeScreen, setIsLargeScreen] = useState(
+            window.innerWidth >= 1200
+        );
+        const { elements, updateElementSchema, orderedIdentifiers } =
+            useBuilder();
 
-    useImperativeHandle(
-        ref,
-        () => ({
-            generateSchema: () =>
-                Translator.generateSchema(elements, orderedIdentifiers),
-            translateSchema: (schema: string) =>
-                Translator.translateSchema(schema),
-        }),
-        [elements, orderedIdentifiers]
-    );
+        useImperativeHandle(
+            ref,
+            () => ({
+                generateSchema: () =>
+                    Translator.generateSchema(elements, orderedIdentifiers),
+                parseSchema: (schema: ISchemaProps) => {
+                    const { newOrderedIdentifiers, newElements } =
+                        Translator.parseSchema(schema);
+                    updateElementSchema(newElements, newOrderedIdentifiers);
+                },
+            }),
+            [elements, orderedIdentifiers]
+        );
 
-    // =========================================================================
-    // EFFECTS
-    // =========================================================================
-    useEffect(() => {
-        if (window) {
-            const handleResize = () => {
-                setIsLargeScreen(window.innerWidth >= 1200);
-            };
-            window.addEventListener("resize", handleResize);
-            return () => {
-                window.removeEventListener("resize", handleResize);
-            };
-        }
-    }, []);
+        // =========================================================================
+        // EFFECTS
+        // =========================================================================
+        useEffect(() => {
+            if (window) {
+                const handleResize = () => {
+                    setIsLargeScreen(window.innerWidth >= 1200);
+                };
+                window.addEventListener("resize", handleResize);
+                return () => {
+                    window.removeEventListener("resize", handleResize);
+                };
+            }
+        }, []);
 
-    // =========================================================================
-    // RENDER FUNCTIONS
-    // =========================================================================
+        // =========================================================================
+        // RENDER FUNCTIONS
+        // =========================================================================
 
-    return (
-        <Wrapper>
-            {!isLargeScreen && <ScreenNotSupportedErrorDisplay />}
-            <Container type="grid" stretch $isLargeScreen={isLargeScreen}>
-                <Toasts />
-                <Modals />
-                <MainPanel />
-                <SidePanel offset={offset} onSubmit={onSubmit}/>
-            </Container>
-        </Wrapper>
-    );
-});
+        return (
+            <Wrapper>
+                {!isLargeScreen && <ScreenNotSupportedErrorDisplay />}
+                <Container type="grid" stretch $isLargeScreen={isLargeScreen}>
+                    <Toasts />
+                    <Modals />
+                    <MainPanel />
+                    <SidePanel offset={offset} onSubmit={onSubmit} />
+                </Container>
+            </Wrapper>
+        );
+    }
+);
 
 export const FormBuilder = forwardRef<IFormBuilderMethods, IProps>(
     (props, ref) => {
