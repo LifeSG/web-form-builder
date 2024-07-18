@@ -123,6 +123,14 @@ export interface IUpdateElementAction {
     payload: TElement;
 }
 
+export interface IUpdateSchemaElementAction {
+    type: "update-schema-element";
+    payload: {
+        elements?: TElementMap;
+        orderedIdentifiers?: IElementIdentifier[];
+    };
+}
+
 export interface IUpdateFocusedElementAction {
     type: "update-focused-element";
     payload: {
@@ -141,7 +149,8 @@ export type TBuilderAction =
     | IFocusElementAction
     | IRemoveFocusedElementAction
     | IUpdateElementAction
-    | IUpdateFocusedElementAction;
+    | IUpdateFocusedElementAction
+    | IUpdateSchemaElementAction;
 
 // =============================================================================
 // CONTEXT

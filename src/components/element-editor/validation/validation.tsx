@@ -123,7 +123,7 @@ export const Validation = () => {
     return (
         <MultiEntry
             onAdd={handleAddButtonClick}
-            title="Validation"
+            title="Additional Validation"
             buttonLabel="validation"
             disabledButton={
                 hasReachedMaxEntries(elementType) || hasInvalidAndEmptyFields()
