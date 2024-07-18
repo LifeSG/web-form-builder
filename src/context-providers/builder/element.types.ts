@@ -99,10 +99,13 @@ export type ITextField = IBaseTextBasedFieldAttributes;
 export type ITextarea = IBaseTextBasedFieldAttributes;
 export type IDropdown = IBaseOptionGroupBasedFieldAttributes;
 
-export type TElement =
+export type TTextBasedElement =
     | IEmailField
     | ITextField
     | ITextarea
     | INumericField
-    | IContactField
-    | IDropdown;
+    | IContactField;
+
+export type TOptionGroupBasedElement = IDropdown;
+
+export type TElement = TTextBasedElement | TOptionGroupBasedElement;
