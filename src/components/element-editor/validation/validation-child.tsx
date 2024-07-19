@@ -71,7 +71,6 @@ export const ValidationChild = ({ onDelete, options, index }: IProps) => {
                                 />
                             );
                         }}
-                        shouldUnregister={true}
                     />
                 </div>
                 <div>
@@ -89,7 +88,6 @@ export const ValidationChild = ({ onDelete, options, index }: IProps) => {
                                 />
                             );
                         }}
-                        shouldUnregister={true}
                     />
                 </div>
                 <div>
@@ -113,7 +111,6 @@ export const ValidationChild = ({ onDelete, options, index }: IProps) => {
                                 />
                             );
                         }}
-                        shouldUnregister={true}
                     />
                 </div>
                 {renderAlert()}

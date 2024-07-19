@@ -13,12 +13,18 @@ import {
     ContentWrapper,
     IconButton,
     IconWrapper,
-    ViewWrapper,
     SchemaPreview,
+    ViewWrapper,
 } from "./doc-elements.styles";
 
 interface IProps {
     data?: ISchemaProps;
+}
+
+interface ISchemaViewProps {
+    data?: ISchemaProps;
+    onChange?: (schema: ISchemaProps) => void;
+    setSchemaProvided?: (value: boolean) => void;
 }
 
 const FormPreview = ({ data }: IProps) => {
@@ -30,13 +36,33 @@ const FormPreview = ({ data }: IProps) => {
     );
 };
 
-const SchemaView = ({ data }: IProps) => {
+const SchemaView = ({
+    data,
+    onChange,
+    setSchemaProvided,
+}: ISchemaViewProps) => {
+    const [schema, setSchema] = useState("");
+
+    const handleBlur = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setSchema(event.target.value);
+        setSchemaProvided(true);
+        if (onChange) {
+            const newSchema = JSON.parse(event.target.value);
+            onChange(newSchema);
+        }
+    };
+
+    useEffect(() => {
+        if (data && onChange) {
+            const dataToString = JSON.stringify(data, null, 2);
+            setSchema(dataToString);
+        }
+    }, [data]);
+
     return (
         <ViewWrapper>
             <Text.H2>Generate Schema</Text.H2>
-            <SchemaPreview>
-                <pre>{JSON.stringify(data, null, 2)}</pre>
-            </SchemaPreview>
+            <SchemaPreview value={schema} onBlur={handleBlur} />
         </ViewWrapper>
     );
 };
@@ -48,6 +74,7 @@ export const DocElement = () => {
     const formBuilderRef = useRef<IFormBuilderMethods>(null);
     const [pageMode, setPageMode] = useState<string>("form-builder-mode");
     const [schema, setSchema] = useState<ISchemaProps | null>(null);
+    const [schemaProvided, setSchemaProvided] = useState<boolean>(false);
 
     // =========================================================================
     // EVENT HANDLERS
@@ -57,22 +84,22 @@ export const DocElement = () => {
     };
 
     const handleFormPreviewButton = () => {
+        if (formBuilderRef.current) {
+            const generatedSchema = formBuilderRef.current.generateSchema();
+            setSchema(generatedSchema);
+        }
         setPageMode("preview-mode");
     };
 
     const handleSchemaViewButton = () => {
+        if (formBuilderRef.current) {
+            const generatedSchema = formBuilderRef.current.generateSchema();
+            setSchema(generatedSchema);
+        } else if (schema && schemaProvided) {
+            formBuilderRef.current?.parseSchema(schema);
+        }
         setPageMode("schema-mode");
     };
-
-    // =========================================================================
-    // EFFECTS
-    // =========================================================================
-    useEffect(() => {
-        if (formBuilderRef.current) {
-            const generatedSchema = formBuilderRef.current?.generateSchema();
-            setSchema(generatedSchema);
-        }
-    }, [formBuilderRef.current, pageMode]);
 
     // =========================================================================
     // RENDER FUNCTIONS
@@ -113,7 +140,11 @@ export const DocElement = () => {
             )}
             {pageMode === "schema-mode" && (
                 <ContentWrapper>
-                    <SchemaView data={schema} />
+                    <SchemaView
+                        data={schema}
+                        onChange={setSchema}
+                        setSchemaProvided={setSchemaProvided}
+                    />
                 </ContentWrapper>
             )}
         </>

@@ -35,7 +35,7 @@ const generateNewElementId = (
         : `${prefix}${maxSuffix + 1 > 0 ? `-${maxSuffix + 1}` : ""}`;
 };
 
-const generateNewInternalId = (existingIds: string[]) => {
+export const generateNewInternalId = (existingIds: string[]) => {
     let internalId: string;
     while (!internalId || existingIds.includes(internalId)) {
         internalId = SimpleIdGenerator.generate();

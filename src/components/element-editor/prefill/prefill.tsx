@@ -1,8 +1,7 @@
 import { Text } from "@lifesg/react-design-system/text";
-import { useEffect, useState } from "react";
-import { useFormContext } from "react-hook-form";
+import { useFieldArray, useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
-import { IPrefillAttributes, useBuilder } from "src/context-providers";
+import { EElementType } from "src/context-providers";
 import { IBaseTextBasedFieldValues, SchemaHelper } from "src/schemas";
 import * as Yup from "yup";
 import { PrefillChild } from "./prefill-child";
@@ -10,22 +9,21 @@ export const Prefill = () => {
     // =========================================================================
     // CONST, STATES, REFS
     // =========================================================================
-    const { focusedElement } = useBuilder();
-    const element = focusedElement?.element;
-    const [, setChildEntryValues] = useState<IPrefillAttributes[]>([]);
-    const { setValue, watch, getValues } =
-        useFormContext<IBaseTextBasedFieldValues>();
-    const prefillValues = getValues("prefill") || [];
-    const schema = SchemaHelper.buildSchema(element.type);
-    const invalidAndEmptyFields = checkIsValid();
+    const { watch, control } = useFormContext<IBaseTextBasedFieldValues>();
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: "prefill",
+        shouldUnregister: true,
+    });
+    const prefillValues = watch("prefill");
+    const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
 
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
-    function checkIsValid() {
+    const hasInvalidAndEmptyFields = () => {
         try {
             const validationSchema = schema.pick(["prefill"]);
-
             validationSchema.validateSync({
                 prefill: prefillValues,
                 abortEarly: false,
@@ -34,17 +32,17 @@ export const Prefill = () => {
         } catch (error) {
             return Yup.ValidationError.isError(error);
         }
-    }
+    };
 
-    function getPopoverMessage() {
-        if (invalidAndEmptyFields) {
+    const getPopoverMessage = () => {
+        if (hasInvalidAndEmptyFields()) {
             return (
                 <Text.Body>
                     To add new prefill, fill up existing prefill first.
                 </Text.Body>
             );
         }
-    }
+    };
 
     // =========================================================================
     // EVENT HANDLERS
@@ -55,39 +53,12 @@ export const Prefill = () => {
             prefillMode: null,
             path: "",
         };
-        const updatedValues = [...prefillValues, prefillChild];
-        setValue("prefill", updatedValues, { shouldDirty: true });
+        append(prefillChild);
     };
 
     const handleDelete = (index: number) => {
-        const currentValues = [...prefillValues];
-        const updatedValues = currentValues.filter((_, i) => i !== index);
-
-        /** * shouldDirty will only dirty the field; the dirty state is not propagated to the form level
-         * * workaround is to wait for RHF to register the change and set the value again
-         * * reference: https://github.com/orgs/react-hook-form/discussions/9913#discussioncomment-4936301 */
-
-        setValue("prefill", updatedValues, { shouldDirty: true });
-        setTimeout(() => {
-            setValue("prefill", updatedValues, { shouldDirty: true });
-        });
+        remove(index);
     };
-
-    // =========================================================================
-    // EFFECTS
-    // =========================================================================
-    useEffect(() => {
-        const subscription = watch((values) => {
-            if (values?.prefill) {
-                setChildEntryValues([
-                    ...values?.prefill,
-                ] as IPrefillAttributes[]);
-            } else {
-                setChildEntryValues([]);
-            }
-        });
-        return () => subscription.unsubscribe();
-    }, []);
 
     // =========================================================================
     // RENDER FUNCTIONS
@@ -97,9 +68,9 @@ export const Prefill = () => {
         if (prefillValues?.length === 0) {
             return;
         } else {
-            return prefillValues?.map((_, index) => (
+            return fields.map((field, index) => (
                 <PrefillChild
-                    key={`prefill-entry-${index}`}
+                    key={field.id}
                     onDelete={() => handleDelete(index)}
                     index={index}
                 />
@@ -113,7 +84,7 @@ export const Prefill = () => {
             title="Prefill"
             buttonLabel="prefill"
             subtitle="Prefill information from various data sources, for example Myinfo."
-            disabledButton={invalidAndEmptyFields}
+            disabledButton={hasInvalidAndEmptyFields()}
             popoverMessage={getPopoverMessage()}
         >
             {renderChildren()}

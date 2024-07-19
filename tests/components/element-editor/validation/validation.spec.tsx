@@ -23,7 +23,7 @@ describe("Validation", () => {
         jest.resetAllMocks();
     });
 
-    it("should contain the the component with the title, buttonLabel & children being passed into it", () => {
+    it("should contain the component with the title, buttonLabel & children being passed into it", () => {
         renderComponent(EElementType.EMAIL, {
             builderContext: {
                 focusedElement: { element: MOCK_ELEMENT, isDirty: true },
