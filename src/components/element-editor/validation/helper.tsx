@@ -9,6 +9,21 @@ export const getValidationOptionsByType = (
     validation: IValidation[],
     elementType: EElementType
 ) => {
+    const getFilteredValidationTypes = (
+        validation: IValidation[],
+        validationTypes: string[],
+        ignoredTypes?: string[]
+    ): string[] => {
+        const hasType = (type: string) =>
+            validation.some((val) => val.validationType === type);
+
+        const filteredValidationTypes = validationTypes.filter(
+            (type) => !hasType(type) || ignoredTypes?.includes(type)
+        );
+
+        return filteredValidationTypes;
+    };
+
     switch (elementType) {
         case EElementType.EMAIL:
             return ELEMENT_VALIDATION_TYPES["Text field"][EElementType.EMAIL]
@@ -20,20 +35,17 @@ export const getValidationOptionsByType = (
                     .validationTypes,
             ];
 
-            const hasMinLength = validation.some(
-                (val) => val.validationType === validationTypes[1]
-            );
-            const hasMaxLength = validation.some(
-                (val) => val.validationType === validationTypes[2]
-            );
-
-            const filteredValidationTypes = validationTypes.filter(
-                (validation) =>
-                    (validation !== validationTypes[1] || !hasMinLength) &&
-                    (validation !== validationTypes[2] || !hasMaxLength)
-            );
-            return filteredValidationTypes;
+            return getFilteredValidationTypes(validation, validationTypes, [
+                validationTypes[0],
+            ]);
         }
+
+        case EElementType.NUMERIC:
+            const validationTypes = [
+                ...ELEMENT_VALIDATION_TYPES["Text field"][EElementType.NUMERIC]
+                    .validationTypes,
+            ];
+            return getFilteredValidationTypes(validation, validationTypes);
         default:
             return ["Select", "Type 1"];
     }
