@@ -8,7 +8,6 @@ import { TRenderRules } from "@lifesg/web-frontend-engine/context-providers";
 import { EElementType, IValidation, TElement } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import { SimpleIdGenerator } from "src/util/simple-id-generator";
-import { IPrefillSchema } from "src/form-builder";
 import {
     createConditionalRenderingObject,
     parseConditionalRenderingObject,
@@ -27,10 +26,10 @@ export namespace TextBasedField {
             const domainRegexString = (domains: IValidation) => {
                 if (domains) {
                     const domainsArr = domains?.validationRule.split(",");
-                    const translatedDomains = domainsArr?.map((domain) =>
+                    const generateSchemaDomains = domainsArr?.map((domain) =>
                         domain.trim().replace(/^@/, "").replace(/\./g, "\\.")
                     );
-                    const regexPattern = `^[a-zA-Z0-9._%+-]+@(${translatedDomains.join("|")})$`;
+                    const regexPattern = `^[a-zA-Z0-9._%+-]+@(${generateSchemaDomains.join("|")})$`;
                     return new RegExp(regexPattern);
                 }
             };

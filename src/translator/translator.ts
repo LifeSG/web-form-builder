@@ -24,8 +24,8 @@ export namespace Translator {
         }, {} as TElementMap);
 
         const fields = Object.values(newElements).reduce((acc, element) => {
-            const translatedChild = TextBasedField.elementToSchema(element);
-            return { ...acc, ...translatedChild };
+            const generateSchema = TextBasedField.elementToSchema(element);
+            return { ...acc, ...generateSchema };
         }, {});
 
         const elementSchema: IFrontendEngineData = {

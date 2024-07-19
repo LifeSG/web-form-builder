@@ -9,12 +9,12 @@ import {
     TElementMap,
 } from "src/context-providers/builder";
 import { ELEMENT_CONDITION_TYPES, SCHEMA_CONDITION_TYPES } from "src/data";
+import { TextBasedField } from "./text-based-field";
+import { IPrefillConfig } from "./types";
 import {
     PREFILL_ACTIONID_REGEX,
     PREFILL_PATH_REGEX,
-} from "src/schemas/text-based-fields";
-import { TextBasedField } from "./text-based-field";
-import { IPrefillConfig } from "./types";
+} from "src/schemas/base-helper";
 
 export const createPrefillObject = (elements: TElementMap) => {
     const prefill = Object.values(elements).reduce((acc, element) => {
@@ -27,12 +27,12 @@ export const createPrefillObject = (elements: TElementMap) => {
     return prefill;
 };
 
-export const translatePrefillObject = (
+export const parsePrefillObject = (
     prefill: IPrefillConfig,
     key: string
 ): IPrefillAttributes[] => {
     const prefillAttributes = prefill[key] as IPrefillAttributes[];
-    return prefillAttributes.filter((value) => {
+    return prefillAttributes?.filter((value) => {
         return (
             PREFILL_PATH_REGEX.exec(value?.path) !== null &&
             (!value?.actionId ||
@@ -100,10 +100,10 @@ export const parseConditionalRenderingObject = (conditions: TRenderRules[]) => {
 };
 
 export const parseSchemaBasedOnType = (
-    schemaToTranslate: Record<string, TFrontendEngineFieldSchema>
+    schemaToParse: Record<string, TFrontendEngineFieldSchema>
 ) => {
     const parsedElements = [];
-    Object.entries(schemaToTranslate).forEach(([key, element]) => {
+    Object.entries(schemaToParse).forEach(([key, element]) => {
         const { uiType } = element;
         switch (uiType) {
             case EElementType.CONTACT:
