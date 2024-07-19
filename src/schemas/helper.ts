@@ -17,12 +17,8 @@ export namespace SchemaHelper {
 
             switch (type) {
                 case EElementType.EMAIL:
-                    return yup
-                        .object()
-                        .concat(baseTextFieldBasedSchema)
-                        .concat(TEXT_BASED_SCHEMA(type));
-
                 case EElementType.TEXT:
+                case EElementType.NUMERIC:
                     return yup
                         .object()
                         .concat(baseTextFieldBasedSchema)

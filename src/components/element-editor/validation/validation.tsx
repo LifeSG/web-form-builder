@@ -19,7 +19,7 @@ export const Validation = () => {
         name: "validation",
         shouldUnregister: true,
     });
-    const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
+    const schema = SchemaHelper.buildSchema(EElementType.NUMERIC);
     const validationValues = watch(
         "validation",
         focusedElement.element.validation
@@ -33,6 +33,7 @@ export const Validation = () => {
         switch (elementType) {
             case EElementType.EMAIL:
             case EElementType.TEXT:
+            case EElementType.NUMERIC:
                 return (
                     validationValues?.length ===
                     ELEMENT_VALIDATION_TYPES["Text field"][elementType]
