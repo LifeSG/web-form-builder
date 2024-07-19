@@ -9,6 +9,7 @@ import { IBaseTextBasedFieldValues } from "src/schemas";
 import {
     FieldEditorAccordionItem,
     MandatoryFieldBox,
+    StyledTextarea,
     Wrapper,
 } from "./basic-details.styles";
 
@@ -171,13 +172,12 @@ export const BasicDetails = () => {
                                 e: React.ChangeEvent<HTMLTextAreaElement>
                             ) => {
                                 field.onChange(e.target.value);
-                                const minHeight = 40;
                                 e.target.style.height = "auto";
-                                e.target.style.height = `${Math.max(minHeight, e.target.scrollHeight)}px`;
+                                e.target.style.height = `${Math.max(40, e.target.scrollHeight)}px`;
                             };
 
                             return (
-                                <Form.Textarea
+                                <StyledTextarea
                                     {...field}
                                     label={{
                                         children: "Description text (optional)",
@@ -194,7 +194,6 @@ export const BasicDetails = () => {
                                     onChange={handleTextareaChange}
                                     errorMessage={errors.description?.message}
                                     maxLength={180}
-                                    style={{ overflow: "hidden" }}
                                 />
                             );
                         }}
