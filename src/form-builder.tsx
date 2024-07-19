@@ -45,6 +45,7 @@ const Component = forwardRef<IFormBuilderMethods, IProps>(
             updateElementSchema,
             orderedIdentifiers,
             isSubmitting,
+            removeFocusedElement,
         } = useBuilder();
 
         useImperativeHandle(
@@ -53,6 +54,7 @@ const Component = forwardRef<IFormBuilderMethods, IProps>(
                 generateSchema: () =>
                     Translator.generateSchema(elements, orderedIdentifiers),
                 parseSchema: (schema: ISchemaProps) => {
+                    removeFocusedElement();
                     const { newOrderedIdentifiers, newElements } =
                         Translator.parseSchema(schema);
                     updateElementSchema(newElements, newOrderedIdentifiers);
