@@ -1,6 +1,5 @@
 import { Form } from "@lifesg/react-design-system/form";
 import { Text } from "@lifesg/react-design-system/text";
-import { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { IconDropdown } from "src/components/common/icon-dropdown";
 import { TogglePair } from "src/components/common/toggle-pair/toggle-pair";
@@ -16,12 +15,12 @@ export const BasicDetails = () => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
-    const { focusedElement, updateFocusedElement } = useBuilder();
+    const { focusedElement } = useBuilder();
     const {
         control,
-        formState: { errors, isDirty },
+        formState: { errors },
         watch,
-        reset,
+        setValue,
     } = useFormContext<IBaseTextBasedFieldValues>();
     const element = focusedElement.element;
 
@@ -32,21 +31,6 @@ export const BasicDetails = () => {
     const hasProperty = (key: string) => {
         return key in element;
     };
-
-    // =========================================================================
-    // USE EFFECTS
-    // =========================================================================
-
-    useEffect(() => {
-        updateFocusedElement(!!isDirty);
-    }, [isDirty, updateFocusedElement]);
-
-    useEffect(() => {
-        reset(element, {
-            keepDirty: true,
-            keepValues: true,
-        });
-    }, []);
 
     // =========================================================================
     // RENDER FUNCTIONS
@@ -67,7 +51,11 @@ export const BasicDetails = () => {
                             type={field.value}
                             id={element?.id}
                             onChange={(value: EElementType) => {
-                                field.onChange(value);
+                                setValue("type", value, {
+                                    shouldTouch: true,
+                                    shouldDirty: true,
+                                });
+                                setValue("validation", []);
                             }}
                             errorMessage={errors.type?.message}
                         />

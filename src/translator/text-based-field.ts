@@ -1,17 +1,24 @@
+import { IYupValidationRule } from "@lifesg/web-frontend-engine";
+import {
+    IEmailFieldSchema,
+    INumericFieldSchema,
+    ITextFieldSchema,
+} from "@lifesg/web-frontend-engine/components/fields";
+import { TRenderRules } from "@lifesg/web-frontend-engine/context-providers";
 import { EElementType, IValidation, TElement } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import { SimpleIdGenerator } from "src/util/simple-id-generator";
 import { IPrefillSchema } from "src/form-builder";
 import {
     createConditionalRenderingObject,
-    translateConditionalRenderingObject,
+    parseConditionalRenderingObject,
 } from "./helper";
 
 export namespace TextBasedField {
-    export interface ISchemaValidation {
-        [key: string]: string | boolean;
-        errorMessage?: string;
-    }
+    export type TElementSchema =
+        | ITextFieldSchema
+        | IEmailFieldSchema
+        | INumericFieldSchema;
 
     namespace Email {
         export const createEmailValidationSchema = (
@@ -34,8 +41,8 @@ export namespace TextBasedField {
             };
         };
 
-        export const translateEmailValidation = (
-            validation: ISchemaValidation[]
+        export const parseEmailValidation = (
+            validation: IYupValidationRule[]
         ) => {
             const regexPattern = /@\((.*?)\)\$/;
             const match = validation[0].matches.toString().match(regexPattern);
@@ -65,7 +72,7 @@ export namespace TextBasedField {
     }
 
     const createValidationObject = (element: TElement) => {
-        const validation: ISchemaValidation[] = [];
+        const validation: IYupValidationRule[] = [];
 
         if (element.required) {
             validation.push({
@@ -101,13 +108,13 @@ export namespace TextBasedField {
         return validation;
     };
 
-    export const translateValidationObject = (
+    export const parseValidationObject = (
         type: EElementType,
-        validation: ISchemaValidation[]
+        validation: IYupValidationRule[]
     ) => {
         switch (type) {
             case EElementType.EMAIL:
-                return Email.translateEmailValidation(validation);
+                return Email.parseEmailValidation(validation);
             case EElementType.NUMERIC:
             case EElementType.TEXT:
             case EElementType.TEXTAREA:
@@ -123,7 +130,6 @@ export namespace TextBasedField {
             element?.conditionalRendering
         );
         const validationObject = createValidationObject(element);
-
         const textBasedFieldSchema = {
             [element.id]: {
                 label: element.label,
@@ -146,35 +152,41 @@ export namespace TextBasedField {
         return textBasedFieldSchema;
     };
 
-    export const translateToElement = (element, key: string) => {
+    export const parseToElement = (element: TElementSchema, key: string) => {
         const { showIf, uiType, validation, ...rest } = element;
-        const requiredValidation = validation.filter(
-            (child: { hasOwnProperty: (arg0: string) => any }) =>
-                !Object.prototype.hasOwnProperty.call(child, "required")
-        );
+
+        let requiredValidation: IYupValidationRule = {};
+        const fieldValidation = [];
+
+        validation.forEach((rule) => {
+            if (Object.prototype.hasOwnProperty.call(rule, "required")) {
+                requiredValidation = rule;
+            } else {
+                fieldValidation.push(rule);
+            }
+        });
         const newInternalId = SimpleIdGenerator.generate();
 
-        const translatedElements: TElement = {
+        const parsedElement = {
             ...rest,
-            type: uiType,
-            required: validation?.[0]?.required,
-            requiredErrorMsg: validation?.[0]?.errorMessage,
+            type: uiType as EElementType,
+            required: requiredValidation.required as boolean,
+            requiredErrorMsg: requiredValidation.errorMessage,
             id: key,
             internalId: newInternalId,
-            ...(requiredValidation.length > 0 && {
-                validation: translateValidationObject(
-                    uiType,
-                    requiredValidation
+            ...(fieldValidation.length > 0 && {
+                validation: parseValidationObject(
+                    uiType as EElementType,
+                    fieldValidation
                 ),
             }),
             ...(showIf && {
-                conditionalRendering: translateConditionalRenderingObject(
-                    showIf,
-                    newInternalId
+                conditionalRendering: parseConditionalRenderingObject(
+                    showIf as TRenderRules[]
                 ),
             }),
         };
 
-        return translatedElements;
+        return parsedElement as TElement;
     };
 }

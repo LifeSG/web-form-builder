@@ -12,7 +12,7 @@ export interface IModeButtonProps {
 
 export const ContentWrapper = styled.div<IContentWrapperProps>`
     height: calc(100vh - 5.1rem);
-    width: 100vw;
+    width: 100%;
     display: ${({ $visible = true }) => ($visible ? "block" : "none")};
 `;
 

@@ -1,10 +1,11 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { fireEvent, render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
+import { setupJestCanvasMock } from "jest-canvas-mock";
 import { FormProvider, useForm } from "react-hook-form";
 import { Validation } from "src/components/element-editor/validation/validation";
-import { EElementType, TElement } from "src/context-providers";
-import { ELEMENT_BUTTON_LABELS, ELEMENT_VALIDATION_TYPES } from "src/data";
+import { EElementType, IColumns } from "src/context-providers";
+import { ELEMENT_BUTTON_LABELS } from "src/data";
 import { SchemaHelper } from "src/schemas";
 import { TestHelper } from "src/util/test-helper";
 
@@ -22,18 +23,18 @@ describe("Validation", () => {
         jest.resetAllMocks();
     });
 
-    it("should contain the the component with the title, buttonLabel & children being passed into it", () => {
-        renderComponent({
+    it("should contain the component with the title, buttonLabel & children being passed into it", () => {
+        renderComponent(EElementType.EMAIL, {
             builderContext: {
                 focusedElement: { element: MOCK_ELEMENT, isDirty: true },
             },
         });
-        expect(screen.getByText("Validation")).toBeInTheDocument();
+        expect(screen.getByText("Additional Validation")).toBeInTheDocument();
         expect(getAddValidationButton()).toBeInTheDocument();
     });
 
     it("should fire onAdd and render the validation-child component when the button is being clicked", () => {
-        renderComponent({
+        renderComponent(EElementType.EMAIL, {
             builderContext: {
                 focusedElement: { element: MOCK_ELEMENT, isDirty: true },
             },
@@ -56,7 +57,7 @@ describe("Validation", () => {
     });
 
     it("should disable the button and show a popover when a maximum number of entries is reached when the inputs are filled up", async () => {
-        renderComponent({
+        renderComponent(EElementType.EMAIL, {
             builderContext: {
                 focusedElement: {
                     element: MOCK_ELEMENT,
@@ -84,8 +85,8 @@ describe("Validation", () => {
         expect(getAddValidationButton()).toBeDisabled();
     });
 
-    it("should disable the button and show a popover when a maximum number of entries is reached for other element types", async () => {
-        renderComponent({
+    it("should disable the button and show a popover when for other element types", async () => {
+        renderComponent(EElementType.TEXT, {
             builderContext: {
                 focusedElement: {
                     element: { ...MOCK_ELEMENT, type: EElementType.TEXT },
@@ -106,16 +107,53 @@ describe("Validation", () => {
         ).toBeInTheDocument();
         expect(getAddValidationButton()).toBeDisabled();
     });
+    it("should remove the validation option when min or max length validation has been used.", async () => {
+        setupJestCanvasMock();
+        renderComponent(EElementType.TEXT, {
+            builderContext: {
+                focusedElement: {
+                    element: {
+                        ...MOCK_ELEMENT,
+                        type: EElementType.TEXT,
+                    },
+                    isDirty: true,
+                },
+            },
+        });
+
+        fireEvent.click(getAddValidationButton());
+
+        const inputValidationType = screen.getByRole("button", {
+            name: "Select",
+        });
+        fireEvent.click(inputValidationType);
+
+        const option = screen.getByText("Minimum length");
+        fireEvent.click(option);
+
+        const inputName = screen.getByPlaceholderText("Enter rule");
+        fireEvent.change(inputName, { target: { value: "2" } });
+
+        const inputValue = screen.getByPlaceholderText("Set error message");
+        fireEvent.change(inputValue, { target: { value: "Test Value" } });
+
+        fireEvent.click(getAddValidationButton());
+
+        fireEvent.click(inputValidationType);
+
+        const option2 = screen.getAllByTestId("list-item");
+        expect(option2.length).toBe(2);
+    });
 });
 
 // =============================================================================
 // HELPER FUNCTIONS
 // =============================================================================
 
-const MyTestComponent = () => {
+const MyTestComponent = ({ elementType }: { elementType: EElementType }) => {
     const methods = useForm({
         mode: "onTouched",
-        resolver: yupResolver(SchemaHelper.buildSchema(EElementType.EMAIL)),
+        resolver: yupResolver(SchemaHelper.buildSchema(elementType)),
     });
 
     return (
@@ -125,9 +163,15 @@ const MyTestComponent = () => {
     );
 };
 
-const renderComponent = (overrideOptions?: TestHelper.RenderOptions) => {
+const renderComponent = (
+    element: EElementType,
+    overrideOptions?: TestHelper.RenderOptions
+) => {
     return render(
-        TestHelper.withProviders(overrideOptions, <MyTestComponent />)
+        TestHelper.withProviders(
+            overrideOptions,
+            <MyTestComponent elementType={element} />
+        )
     );
 };
 
@@ -144,4 +188,5 @@ const MOCK_ELEMENT = {
     required: false,
     label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
     validation: [],
+    columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
 };

@@ -5,6 +5,7 @@ import { ScreenNotSupportedErrorDisplay } from "./components/error-display/scree
 import { DisplayProvider } from "./context-providers";
 import {
     BuilderProvider,
+    TElement,
     TElementMap,
     useBuilder,
 } from "./context-providers/builder";
@@ -18,61 +19,75 @@ export interface IFormBuilderMethods {
 
 interface IProps {
     offset?: number;
+    onSubmit?: (formData: TElement) => Promise<unknown>;
 }
 
-const Component = forwardRef<IFormBuilderMethods, IProps>(({ offset }, ref) => {
-    // =========================================================================
-    // CONST, STATE, REFS
-    // =========================================================================
-    const [isLargeScreen, setIsLargeScreen] = useState(
-        window.innerWidth >= 1200
-    );
-    const { elements, updateElementSchema } = useBuilder();
+const Component = forwardRef<IFormBuilderMethods, IProps>(
+    ({ offset, onSubmit }, ref) => {
+        // =========================================================================
+        // CONST, STATE, REFS
+        // =========================================================================
+        const [isLargeScreen, setIsLargeScreen] = useState(
+            window.innerWidth >= 1200
+        );
+        const {
+            elements,
+            updateElementSchema,
+            orderedIdentifiers,
+            isSubmitting,
+        } = useBuilder();
 
-    useImperativeHandle(
-        ref,
-        () => ({
-            generateSchema: () => Translator.generateSchema(elements),
-            parseSchema: (schema: ISchemaProps) => {
-                const { newOrderedIdentifiers, newElements } =
-                    Translator.parseSchema(schema);
-                updateElementSchema(newElements, newOrderedIdentifiers);
-            },
-        }),
-        [elements]
-    );
+        useImperativeHandle(
+            ref,
+            () => ({
+                generateSchema: () =>
+                    Translator.generateSchema(elements, orderedIdentifiers),
+                parseSchema: (schema: ISchemaProps) => {
+                    const { newOrderedIdentifiers, newElements } =
+                        Translator.parseSchema(schema);
+                    updateElementSchema(newElements, newOrderedIdentifiers);
+                },
+            }),
+            [elements, orderedIdentifiers]
+        );
 
-    // =========================================================================
-    // EFFECTS
-    // =========================================================================
-    useEffect(() => {
-        if (window) {
-            const handleResize = () => {
-                setIsLargeScreen(window.innerWidth >= 1200);
-            };
-            window.addEventListener("resize", handleResize);
-            return () => {
-                window.removeEventListener("resize", handleResize);
-            };
-        }
-    }, []);
+        // =========================================================================
+        // EFFECTS
+        // =========================================================================
+        useEffect(() => {
+            if (window) {
+                const handleResize = () => {
+                    setIsLargeScreen(window.innerWidth >= 1200);
+                };
+                window.addEventListener("resize", handleResize);
+                return () => {
+                    window.removeEventListener("resize", handleResize);
+                };
+            }
+        }, []);
 
-    // =========================================================================
-    // RENDER FUNCTIONS
-    // =========================================================================
+        // =========================================================================
+        // RENDER FUNCTIONS
+        // =========================================================================
 
-    return (
-        <Wrapper>
-            {!isLargeScreen && <ScreenNotSupportedErrorDisplay />}
-            <Container type="grid" stretch $isLargeScreen={isLargeScreen}>
-                <Toasts />
-                <Modals />
-                <MainPanel />
-                <SidePanel offset={offset} />
-            </Container>
-        </Wrapper>
-    );
-});
+        return (
+            <Wrapper $disabled={isSubmitting}>
+                {!isLargeScreen && <ScreenNotSupportedErrorDisplay />}
+                <Container
+                    type="grid"
+                    stretch
+                    $isLargeScreen={isLargeScreen}
+                    {...{ inert: isSubmitting ? "" : undefined }}
+                >
+                    <Toasts />
+                    <Modals />
+                    <MainPanel />
+                    <SidePanel offset={offset} onSubmit={onSubmit} />
+                </Container>
+            </Wrapper>
+        );
+    }
+);
 
 export const FormBuilder = forwardRef<IFormBuilderMethods, IProps>(
     (props, ref) => {

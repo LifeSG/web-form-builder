@@ -1,11 +1,11 @@
-import { Text } from "@lifesg/react-design-system";
-import { useEffect, useState } from "react";
-import { useFormContext } from "react-hook-form";
+import { Text } from "@lifesg/react-design-system/text";
+import { useFieldArray, useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
-import { EElementType, IValidation, useBuilder } from "src/context-providers";
+import { EElementType, useBuilder } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import { IBaseTextBasedFieldValues, SchemaHelper } from "src/schemas";
 import * as Yup from "yup";
+import { getValidationOptionsByType } from "./helper";
 import { ValidationChild } from "./validation-child";
 
 export const Validation = () => {
@@ -13,43 +13,40 @@ export const Validation = () => {
     // CONST, STATES, REFS
     // =========================================================================
     const { focusedElement } = useBuilder();
-    const element = focusedElement?.element;
-    const [, setChildEntryValues] = useState<IValidation[]>([]);
-    const { setValue, watch, getValues } =
-        useFormContext<IBaseTextBasedFieldValues>();
-    const validationValues = getValues("validation") || [];
+    const { watch, control } = useFormContext<IBaseTextBasedFieldValues>();
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: "validation",
+        shouldUnregister: true,
+    });
     const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
-    const invalidAndEmptyFields = checkIsValid();
-
+    const validationValues = watch(
+        "validation",
+        focusedElement.element.validation
+    );
+    const elementType = watch("type", focusedElement.element.type);
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
-    function getOptionsByType(elementType: EElementType) {
+
+    const hasReachedMaxEntries = (elementType: EElementType) => {
         switch (elementType) {
             case EElementType.EMAIL:
-                return ELEMENT_VALIDATION_TYPES["Text field"][
-                    EElementType.EMAIL
-                ].validationTypes;
-            default:
-                return ["Select", "Type 1"];
-        }
-    }
+            case EElementType.TEXT:
+                return (
+                    validationValues?.length ===
+                    ELEMENT_VALIDATION_TYPES["Text field"][elementType]
+                        .maxEntries
+                );
 
-    function getMaxEntries(elementType: EElementType) {
-        switch (elementType) {
-            case EElementType.EMAIL:
-                return ELEMENT_VALIDATION_TYPES["Text field"][
-                    EElementType.EMAIL
-                ].maxEntries;
             default:
-                return 6; // this is a arbitary value will be changed later on
+                return validationValues?.length === 6; // this is a arbitary value will be changed later on
         }
-    }
+    };
 
-    function checkIsValid() {
+    const hasInvalidAndEmptyFields = () => {
         try {
             const validationSchema = schema.pick(["validation"]);
-
             validationSchema.validateSync({
                 validation: validationValues,
                 abortEarly: false,
@@ -58,16 +55,16 @@ export const Validation = () => {
         } catch (error) {
             return Yup.ValidationError.isError(error);
         }
-    }
+    };
 
-    function getPopoverMessage() {
-        if (invalidAndEmptyFields) {
+    const getPopoverMessage = () => {
+        if (hasInvalidAndEmptyFields()) {
             return (
                 <Text.Body>
                     To add new validation, fill up existing validation first.
                 </Text.Body>
             );
-        } else if (validationValues?.length === getMaxEntries(element?.type)) {
+        } else if (hasReachedMaxEntries(elementType)) {
             return (
                 <Text.Body>
                     Limit reached. To add new validation, remove existing ones
@@ -75,10 +72,10 @@ export const Validation = () => {
                 </Text.Body>
             );
         }
-    }
+    };
 
     const setDefaultValidationType = () => {
-        switch (element?.type) {
+        switch (elementType) {
             case EElementType.EMAIL:
                 return ELEMENT_VALIDATION_TYPES["Text field"][
                     EElementType.EMAIL
@@ -98,49 +95,26 @@ export const Validation = () => {
             validationRule: "",
             validationErrorMessage: "",
         };
-
-        const updatedValues = [...validationValues, validationChild];
-        setValue("validation", updatedValues, { shouldDirty: true });
+        append(validationChild);
     };
 
     const handleDelete = (index: number) => {
-        const currentValues = [...validationValues];
-        const updatedValues = currentValues.filter((_, i) => i !== index);
-
-        /** * shouldDirty will only dirty the field; the dirty state is not propagated to the form level
-         * * workaround is to wait for RHF to register the change and set the value again
-         * * reference: https://github.com/orgs/react-hook-form/discussions/9913#discussioncomment-4936301 */
-
-        setValue("validation", updatedValues, { shouldDirty: true });
-        setTimeout(() => {
-            setValue("validation", updatedValues, { shouldDirty: true });
-        });
+        remove(index);
     };
 
-    // =========================================================================
-    // USE EFFECTS
-    // =========================================================================
-
-    useEffect(() => {
-        const subscription = watch((values) => {
-            if (values?.validation) {
-                setChildEntryValues([...values?.validation] as IValidation[]);
-            } else {
-                setChildEntryValues([]);
-            }
-        });
-        return () => subscription.unsubscribe();
-    }, []);
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
 
     const renderChildren = () => {
-        return validationValues?.map((_, index) => (
+        return fields.map((field, index) => (
             <ValidationChild
-                key={`validation-entry-${index}`}
+                key={field.id}
                 onDelete={() => handleDelete(index)}
-                options={getOptionsByType(element.type)}
+                options={getValidationOptionsByType(
+                    validationValues,
+                    elementType
+                )}
                 index={index}
             />
         ));
@@ -149,11 +123,10 @@ export const Validation = () => {
     return (
         <MultiEntry
             onAdd={handleAddButtonClick}
-            title="Validation"
+            title="Additional Validation"
             buttonLabel="validation"
             disabledButton={
-                validationValues?.length === getMaxEntries(element?.type) ||
-                invalidAndEmptyFields
+                hasReachedMaxEntries(elementType) || hasInvalidAndEmptyFields()
             }
             popoverMessage={getPopoverMessage()}
         >

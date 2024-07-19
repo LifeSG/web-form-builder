@@ -1,7 +1,7 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import "jest-canvas-mock";
 import { SidePanel } from "src/components";
-import { EElementType } from "src/context-providers";
+import { EElementType, TElement } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data/elements-data";
 import { TestHelper } from "src/util/test-helper";
 
@@ -38,9 +38,69 @@ describe("SidePanel", () => {
     });
 
     describe("rendering of the panel content", () => {
-        it("should display the content of the side panel based on the mode given", () => {
+        it("should display the add elements panel when there is no focused element", () => {
             renderComponent();
             expect(getAddElementsPanel()).toBeInTheDocument();
+        });
+
+        it("should display the element editor when there is a focused element", () => {
+            renderComponent({
+                builderContext: {
+                    focusedElement: {
+                        element: MOCK_ELEMENT,
+                    },
+                },
+            });
+            expect(getElementEditor()).toBeInTheDocument();
+        });
+    });
+
+    describe("saving of edit element details panel", () => {
+        it("should show loading state and disable button when form is saving", async () => {
+            const mockOnSubmit = jest.fn(
+                () => new Promise((resolve) => setTimeout(resolve))
+            );
+
+            renderComponent(
+                {
+                    builderContext: {
+                        focusedElement: {
+                            element: MOCK_ELEMENT,
+                        },
+                        isSubmitting: true,
+                    },
+                },
+                mockOnSubmit
+            );
+
+            const saveButton = screen.getByTestId("save-changes-button");
+
+            expect(saveButton).toHaveTextContent("Saving");
+
+            expect(saveButton).toBeDisabled();
+        });
+
+        it("should execute the onSubmit function if it is passed in", async () => {
+            const mockOnSubmit = jest.fn(
+                () => new Promise((resolve) => setTimeout(resolve))
+            );
+
+            renderComponent(
+                {
+                    builderContext: {
+                        focusedElement: {
+                            element: MOCK_ELEMENT,
+                        },
+                    },
+                },
+                mockOnSubmit
+            );
+
+            const saveButton = screen.getByTestId("save-changes-button");
+
+            fireEvent.click(saveButton);
+
+            await waitFor(() => expect(mockOnSubmit).toHaveBeenCalled());
         });
     });
 });
@@ -49,22 +109,33 @@ describe("SidePanel", () => {
 // HELPER FUNCTIONS
 // =============================================================================
 
-const renderComponent = (overrideOptions?: TestHelper.RenderOptions) => {
-    return render(TestHelper.withProviders(overrideOptions, <SidePanel />));
+const renderComponent = (
+    overrideOptions?: TestHelper.RenderOptions,
+    onSubmit?: (formData: TElement) => Promise<unknown>
+) => {
+    return render(
+        TestHelper.withProviders(
+            overrideOptions,
+            <SidePanel onSubmit={onSubmit} />
+        )
+    );
 };
 
 const getToolbar = () => screen.queryByTestId("toolbar");
 
 const getAddElementsPanel = () => screen.getByTestId("add-elements-panel");
 
+const getElementEditor = () => screen.getByTestId("element-editor");
+
 // =============================================================================
 // MOCKS
 // =============================================================================
 
-const MOCK_ELEMENT = {
+const MOCK_ELEMENT: TElement = {
     internalId: "mock123",
     type: EElementType.EMAIL,
     id: "mockElement",
     required: false,
     label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
+    columns: { desktop: 12, tablet: 8, mobile: 4 },
 };

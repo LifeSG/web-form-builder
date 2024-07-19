@@ -1,15 +1,14 @@
+import { IYupValidationRule } from "@lifesg/web-frontend-engine";
+import { TRenderRules } from "@lifesg/web-frontend-engine/context-providers";
 import {
     EElementType,
     IColumns,
     IConditionalRendering,
     IPrefillAttributes,
     IValidation,
-    TElement,
     TElementMap,
 } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data";
-import { ISchemaConditionalRendering } from "src/translator";
-import { TextBasedField } from "src/translator/text-based-field";
 
 interface MockElementProps {
     type: EElementType;
@@ -30,8 +29,8 @@ interface MockElementSchemaProps {
     label: string;
     uiType: EElementType;
     placeholder?: string;
-    validation?: TextBasedField.ISchemaValidation[];
-    showIf?: ISchemaConditionalRendering[];
+    validation?: IYupValidationRule[];
+    showIf?: TRenderRules[];
 }
 
 interface MockPrefillSchema {
@@ -44,8 +43,8 @@ interface MockChildrenSchema {
         uiType: EElementType;
         columns: IColumns;
         placeholder?: string;
-        validation?: TextBasedField.ISchemaValidation[];
-        showIf?: ISchemaConditionalRendering[];
+        validation?: IYupValidationRule[];
+        showIf?: TRenderRules[];
     };
 }
 

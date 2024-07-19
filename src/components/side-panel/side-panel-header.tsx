@@ -9,6 +9,7 @@ import {
     SaveChangesButton,
     Wrapper,
 } from "./side-panel-header.styles";
+import { useFormContext } from "react-hook-form";
 
 export const SidePanelHeader = () => {
     // =========================================================================
@@ -20,10 +21,11 @@ export const SidePanelHeader = () => {
         togglePanel,
         removeFocusedElement,
         focusedElement,
+        isSubmitting,
     } = useBuilder();
     const { isDirty } = focusedElement || {};
     const { showModal, discardChanges } = useModal();
-
+    const { reset } = useFormContext();
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
@@ -43,6 +45,7 @@ export const SidePanelHeader = () => {
     const handleModalOnClick = () => {
         removeFocusedElement();
         discardChanges();
+        reset();
     };
 
     // =========================================================================
@@ -68,8 +71,16 @@ export const SidePanelHeader = () => {
         if (focusedElement) {
             return (
                 <>
-                    <SaveChangesButton>
-                        {!isDirty ? "Saved" : "Save Changes"}
+                    <SaveChangesButton
+                        data-testid="save-changes-button"
+                        disabled={isSubmitting}
+                        loading={isSubmitting}
+                    >
+                        {isSubmitting
+                            ? "Saving"
+                            : !isDirty
+                              ? "Saved"
+                              : "Save Changes"}
                     </SaveChangesButton>
                     <IconButton
                         $iconSize="1.5rem"

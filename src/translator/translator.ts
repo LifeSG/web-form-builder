@@ -2,20 +2,28 @@ import {
     IFrontendEngineData,
     TFrontendEngineFieldSchema,
 } from "@lifesg/web-frontend-engine";
-import { TElementMap } from "src/context-providers";
+import { IElementIdentifier, TElementMap } from "src/context-providers";
 import {
     createPrefillObject,
-    translateSchemaBasedOnType,
-    updateTranslatedElements,
+    parseSchemaBasedOnType,
+    updateParsedElements,
 } from "./helper";
 import { TextBasedField } from "./text-based-field";
 import { ISchemaProps } from "./types";
 
 export namespace Translator {
-    export function generateSchema(elements: TElementMap) {
+    export function generateSchema(
+        elements: TElementMap,
+        orderedIdentifiers: IElementIdentifier[]
+    ) {
         const prefill = createPrefillObject(elements);
 
-        const fields = Object.values(elements).reduce((acc, element) => {
+        const newElements = orderedIdentifiers.reduce((acc, value) => {
+            acc[value.internalId] = elements[value.internalId];
+            return acc;
+        }, {} as TElementMap);
+
+        const fields = Object.values(newElements).reduce((acc, element) => {
             const translatedChild = TextBasedField.elementToSchema(element);
             return { ...acc, ...translatedChild };
         }, {});
@@ -44,13 +52,9 @@ export namespace Translator {
     }
 
     export const parseSchema = (formSchema: ISchemaProps) => {
-        const schemaToTranslate = formSchema?.schema?.sections?.section
-            ?.children?.grid?.["children"] as Record<
-            string,
-            TFrontendEngineFieldSchema
-        >;
-        const translatedElements =
-            translateSchemaBasedOnType(schemaToTranslate);
-        return updateTranslatedElements(translatedElements, formSchema.prefill);
+        const schemaToParse = formSchema?.schema?.sections?.section?.children
+            ?.grid?.["children"] as Record<string, TFrontendEngineFieldSchema>;
+        const parsedElements = parseSchemaBasedOnType(schemaToParse);
+        return updateParsedElements(parsedElements);
     };
 }
