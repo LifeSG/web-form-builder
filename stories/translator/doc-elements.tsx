@@ -80,6 +80,9 @@ export const DocElement = () => {
     // EVENT HANDLERS
     // =========================================================================
     const handleFormBuilderButton = () => {
+        if (formBuilderRef.current && schemaProvided) {
+            formBuilderRef.current.parseSchema(schema);
+        }
         setPageMode("form-builder-mode");
     };
 
