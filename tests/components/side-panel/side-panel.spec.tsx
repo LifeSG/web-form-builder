@@ -1,6 +1,5 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import "jest-canvas-mock";
-import { act } from "react-dom/test-utils";
 import { SidePanel } from "src/components";
 import { EElementType, TElement } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data/elements-data";
@@ -68,6 +67,7 @@ describe("SidePanel", () => {
                         focusedElement: {
                             element: MOCK_ELEMENT,
                         },
+                        isSubmitting: true,
                     },
                 },
                 mockOnSubmit
@@ -75,20 +75,32 @@ describe("SidePanel", () => {
 
             const saveButton = screen.getByTestId("save-changes-button");
 
-            expect(saveButton).not.toBeDisabled();
-            expect(saveButton).toHaveTextContent("Saved");
-
-            act(() => {
-                fireEvent.click(saveButton);
-            });
-
-            await waitFor(() => expect(saveButton).toHaveTextContent("Saving"));
+            expect(saveButton).toHaveTextContent("Saving");
 
             expect(saveButton).toBeDisabled();
+        });
+
+        it("should execute the onSubmit function if it is passed in", async () => {
+            const mockOnSubmit = jest.fn(
+                () => new Promise((resolve) => setTimeout(resolve))
+            );
+
+            renderComponent(
+                {
+                    builderContext: {
+                        focusedElement: {
+                            element: MOCK_ELEMENT,
+                        },
+                    },
+                },
+                mockOnSubmit
+            );
+
+            const saveButton = screen.getByTestId("save-changes-button");
+
+            fireEvent.click(saveButton);
 
             await waitFor(() => expect(mockOnSubmit).toHaveBeenCalled());
-
-            await waitFor(() => expect(saveButton).toHaveTextContent("Saved"));
         });
     });
 });

@@ -1,5 +1,7 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import "jest-canvas-mock";
+import { FormProvider, useForm } from "react-hook-form";
 import { Modals } from "src/components";
 import { SidePanelHeader } from "src/components/side-panel/side-panel-header";
 import {
@@ -8,6 +10,7 @@ import {
     EElementType,
 } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data/elements-data";
+import { SchemaHelper } from "src/schemas";
 import { TestHelper } from "src/util/test-helper";
 
 describe("SidePanelHeader", () => {
@@ -99,16 +102,25 @@ describe("SidePanelHeader", () => {
 // HELPER FUNCTIONS
 // =============================================================================
 
-const renderComponent = (overrideOptions?: TestHelper.RenderOptions) => {
-    return render(
-        TestHelper.withProviders(
-            overrideOptions,
-            <DisplayProvider>
-                <Modals />
-                <SidePanelHeader />
-            </DisplayProvider>
-        )
+const TestComponent = () => {
+    const methods = useForm({
+        mode: "onTouched",
+        resolver: yupResolver(SchemaHelper.buildSchema(EElementType.EMAIL)),
+    });
+    return (
+        <DisplayProvider>
+            <Modals />
+            <FormProvider {...methods}>
+                <form>
+                    <SidePanelHeader />
+                </form>
+            </FormProvider>
+        </DisplayProvider>
     );
+};
+
+const renderComponent = (overrideOptions?: TestHelper.RenderOptions) => {
+    return render(TestHelper.withProviders(overrideOptions, <TestComponent />));
 };
 
 const getHeaderLabel = () => screen.getByTestId("header-label");
@@ -126,4 +138,5 @@ const mockElement = {
     id: "mockElement",
     required: false,
     label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
+    columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
 };
