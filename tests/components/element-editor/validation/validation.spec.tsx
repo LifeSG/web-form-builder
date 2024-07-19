@@ -92,6 +92,7 @@ describe("Validation", () => {
                     element: { ...MOCK_ELEMENT, type: EElementType.TEXT },
                     isDirty: true,
                 },
+                selectedElementType: EElementType.TEXT,
             },
         });
 

@@ -3,7 +3,7 @@ import { EyeIcon } from "@lifesg/react-icons/eye";
 import { PencilIcon } from "@lifesg/react-icons/pencil";
 import { TabletIcon } from "@lifesg/react-icons/tablet";
 import { FrontendEngine } from "@lifesg/web-frontend-engine";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
     FormBuilder,
     IFormBuilderMethods,

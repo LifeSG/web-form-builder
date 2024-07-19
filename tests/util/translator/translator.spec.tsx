@@ -309,9 +309,8 @@ describe("Translator", () => {
 
         describe("Email field schema translation", () => {
             it("should translate validation from the schema & be generated into new elements", () => {
-                const MOCK_EMAIL_SCHEMA_WITH_VALIDATION = generateMockSchema(
-                    {},
-                    generateMockElementSchema({
+                const MOCK_EMAIL_SCHEMA_WITH_VALIDATION = generateMockSchema({
+                    children: generateMockElementSchema({
                         id: "mockId1",
                         label: "Email address",
                         uiType: EElementType.EMAIL,
@@ -326,8 +325,8 @@ describe("Translator", () => {
                                     "Enter a email that has a '@gmail.com' domain",
                             },
                         ],
-                    })
-                );
+                    }),
+                });
                 const generatedSchema = Translator.parseSchema(
                     MOCK_EMAIL_SCHEMA_WITH_VALIDATION as ISchemaProps
                 );
@@ -357,9 +356,8 @@ describe("Translator", () => {
             });
             it("should translate conditional rendering from the schema & be generated into new elements", () => {
                 const MOCK_EMAIL_SCHEMA_WITH_CONDITIONAL_RENDERING =
-                    generateMockSchema(
-                        {},
-                        {
+                    generateMockSchema({
+                        children: {
                             ...generateMockElementSchema({
                                 id: "mock123",
                                 label: "Email address",
@@ -393,8 +391,8 @@ describe("Translator", () => {
                                     },
                                 ],
                             }),
-                        }
-                    );
+                        },
+                    });
 
                 const generatedSchema = Translator.parseSchema(
                     MOCK_EMAIL_SCHEMA_WITH_CONDITIONAL_RENDERING as ISchemaProps
@@ -438,9 +436,8 @@ describe("Translator", () => {
 
         describe("Text based field schema translation", () => {
             it("should translate text based fields from the schema to the element", () => {
-                const MOCK_TEXT_BASED_SCHEMA = generateMockSchema(
-                    {},
-                    {
+                const MOCK_TEXT_BASED_SCHEMA = generateMockSchema({
+                    children: {
                         ...generateMockElementSchema({
                             id: "mockId1",
                             label: "Short text",
@@ -463,8 +460,8 @@ describe("Translator", () => {
                                 },
                             ],
                         }),
-                    }
-                );
+                    },
+                });
                 const generatedSchema = Translator.parseSchema(
                     MOCK_TEXT_BASED_SCHEMA as ISchemaProps
                 );

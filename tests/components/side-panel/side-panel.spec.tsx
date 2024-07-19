@@ -96,6 +96,7 @@ describe("SidePanel", () => {
                         focusedElement: {
                             element: MOCK_ELEMENT,
                         },
+                        selectedElementType: EElementType.EMAIL,
                     },
                 },
                 mockOnSubmit
@@ -106,53 +107,6 @@ describe("SidePanel", () => {
             fireEvent.click(saveButton);
 
             await waitFor(() => expect(mockOnSubmit).toHaveBeenCalled());
-        });
-
-        it("should remove empty dropdown items when saving if there are at least 2 valid dropdown items", async () => {
-            renderComponent({
-                builderContext: {
-                    focusedElement: {
-                        element: MOCK_DROPDOWN_ELEMENT,
-                    },
-                    selectedElementType: EElementType.DROPDOWN,
-                },
-            });
-
-            const dropdownItemLabels = await screen.findAllByTestId(
-                "dropdown-item-label"
-            );
-            const dropdownItemValues = await screen.findAllByTestId(
-                "dropdown-item-value"
-            );
-
-            let saveButton = screen.getByTestId("save-changes-button");
-
-            expect(saveButton).toHaveTextContent("Saved");
-
-            expect(dropdownItemLabels).toHaveLength(2);
-
-            fireEvent.input(dropdownItemLabels[0], {
-                target: { value: "New Label" },
-            });
-            fireEvent.input(dropdownItemValues[0], {
-                target: { value: "New Value" },
-            });
-            fireEvent.input(dropdownItemLabels[1], {
-                target: { value: "New Label" },
-            });
-            fireEvent.input(dropdownItemValues[1], {
-                target: { value: "New Value" },
-            });
-
-            fireEvent.click(screen.getByText("Add Option"));
-
-            expect(getDropdownItemChildren()).toHaveLength(3);
-
-            fireEvent.click(saveButton);
-
-            waitFor(() => {
-                expect(getDropdownItemChildren()).toHaveLength(2);
-            });
         });
 
         it("should remove empty dropdown items when saving if there are at least 2 valid dropdown items", async () => {
