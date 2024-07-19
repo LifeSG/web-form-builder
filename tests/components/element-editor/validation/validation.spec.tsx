@@ -4,7 +4,7 @@ import "jest-canvas-mock";
 import { setupJestCanvasMock } from "jest-canvas-mock";
 import { FormProvider, useForm } from "react-hook-form";
 import { Validation } from "src/components/element-editor/validation/validation";
-import { EElementType, IColumns } from "src/context-providers";
+import { EElementType, EValidationType } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data";
 import { SchemaHelper } from "src/schemas";
 import { TestHelper } from "src/util/test-helper";
@@ -42,7 +42,7 @@ describe("Validation", () => {
         fireEvent.click(getAddValidationButton());
         expect(
             screen.getByRole("button", {
-                name: "Email domain",
+                name: EValidationType.EMAIL_DOMAIN,
             })
         ).toBeInTheDocument();
         expect(
@@ -128,7 +128,7 @@ describe("Validation", () => {
         });
         fireEvent.click(inputValidationType);
 
-        const option = screen.getByText("Minimum length");
+        const option = screen.getByText(EValidationType.MIN_LENGTH);
         fireEvent.click(option);
 
         const inputName = screen.getByPlaceholderText("Enter rule");
