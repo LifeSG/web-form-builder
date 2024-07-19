@@ -1,18 +1,15 @@
 import { Text } from "@lifesg/react-design-system/text";
-import { useEffect, useState } from "react";
-import { useFormContext } from "react-hook-form";
+import { useCallback } from "react";
+import { useFieldArray, useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
 import {
+    EConditionType,
     EElementType,
-    IConditionalRendering,
     useBuilder,
 } from "src/context-providers";
 import { IBaseTextBasedFieldValues, SchemaHelper } from "src/schemas";
 import * as Yup from "yup";
-import {
-    ConditionalRenderingChild,
-    IOnChangeProps,
-} from "./conditional-rendering-child";
+import { ConditionalRenderingChild } from "./conditional-rendering-child";
 
 interface IOptions {
     label: string;
@@ -24,23 +21,16 @@ export const ConditionalRendering = () => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
-
-    const { focusedElement, elements, updateFocusedElement } = useBuilder();
-    const element = focusedElement.element;
-    const [childEntryValues, setChildEntryValues] =
-        useState<IConditionalRendering[]>();
-    const {
-        setValue,
-        formState: { isDirty },
-        getValues,
-    } = useFormContext<IBaseTextBasedFieldValues>();
-    const shouldUpdateFocusedElement =
-        isDirty ||
-        childEntryValues?.length >
-            focusedElement?.element?.conditionalRendering?.length;
-
+    const { watch, control } = useFormContext<IBaseTextBasedFieldValues>();
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: "conditionalRendering",
+        shouldUnregister: true,
+    });
+    const { focusedElement, elements } = useBuilder();
+    const element = focusedElement?.element;
     const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
-    const invalidAndEmptyFields = getTouchedAndErrorsFields();
+    const conditionalRenderingValues = watch("conditionalRendering");
     // =====================================================================
     // HELPER FUNCTIONS
     // =====================================================================
@@ -60,109 +50,60 @@ export const ConditionalRendering = () => {
         return options;
     };
 
-    function getTouchedAndErrorsFields() {
-        if (childEntryValues && childEntryValues.length > 0) {
-            try {
-                const validationSchema = schema.pick(["conditionalRendering"]);
-                const conditionalRenderingValues = getValues(
-                    "conditionalRendering"
-                );
-                validationSchema.validateSync({
-                    conditionalRendering: conditionalRenderingValues,
-                    abortEarly: false,
-                });
-                return false;
-            } catch (error) {
-                return Yup.ValidationError.isError(error);
-            }
-        } else {
+    const hasInvalidAndEmptyFields = () => {
+        try {
+            const validationSchema = schema.pick(["conditionalRendering"]);
+            validationSchema.validateSync({
+                conditionalRendering: conditionalRenderingValues,
+                abortEarly: false,
+            });
             return false;
+        } catch (error) {
+            return Yup.ValidationError.isError(error);
         }
-    }
+    };
 
-    function getPopoverMessage() {
-        if (invalidAndEmptyFields) {
+    const getPopoverMessage = useCallback(() => {
+        if (hasInvalidAndEmptyFields()) {
             return (
                 <Text.Body>
-                    To add new condition, fill up existing condition first.
+                    To add a new condition, fill up the existing condition
+                    first.
                 </Text.Body>
             );
-        } else if (getElementOptions().length === 0) {
+        }
+        if (getElementOptions()?.length === 0) {
             return <Text.Body>No conditional rendering available.</Text.Body>;
         }
-    }
-
+        return null;
+    }, [hasInvalidAndEmptyFields, getElementOptions]);
     // =============================================================================
     // EVENT HANDLERS
-    // =============================================================================
-
-    const handleChildChange = (
-        index: number,
-        newValue: IConditionalRendering
-    ) => {
-        const updatedValues = [...childEntryValues];
-        updatedValues[index] = newValue;
-        setChildEntryValues(updatedValues);
-        setValue("conditionalRendering", updatedValues);
-    };
+    // ============================================================================
 
     const handleAddButtonClick = () => {
         const conditionalRenderingChild = {
             fieldKey: "",
-            comparator: "",
+            comparator: EConditionType.EQUALS,
             value: "",
             internalId: "",
         };
-        const updatedValues = [...childEntryValues, conditionalRenderingChild];
-        setChildEntryValues(updatedValues);
-        setValue("conditionalRendering", updatedValues);
+        append(conditionalRenderingChild);
     };
 
     const handleDelete = (index: number) => {
-        const currentValues = [...childEntryValues];
-        const updatedValues = currentValues.filter((_, i) => i !== index);
-        setChildEntryValues(updatedValues);
-        setValue("conditionalRendering", updatedValues);
+        remove(index);
     };
-
-    // =========================================================================
-    // EFFECTS
-    // =========================================================================
-    useEffect(() => {
-        const updatedChildEntries = element.conditionalRendering?.filter(
-            (child) => {
-                return elements?.hasOwnProperty(child.internalId);
-            }
-        );
-        setValue("conditionalRendering", updatedChildEntries);
-        setChildEntryValues(updatedChildEntries);
-    }, [element]);
-
-    useEffect(() => {
-        setValue("conditionalRendering", childEntryValues, {
-            shouldDirty: true,
-        });
-    }, [childEntryValues]);
-
-    useEffect(() => {
-        if (shouldUpdateFocusedElement) {
-            updateFocusedElement(true);
-        }
-    }, [shouldUpdateFocusedElement]);
 
     // =============================================================================
     // RENDER FUNCTIONS
     // =============================================================================
     const renderChildren = () => {
-        return childEntryValues?.map((child, index) => (
+        return fields.map((field, index) => (
             <ConditionalRenderingChild
-                key={`conditional-rendering-entry-${index}`}
+                key={field.id}
                 onDelete={() => handleDelete(index)}
-                onChange={(newValue) =>
-                    handleChildChange(index, newValue as IOnChangeProps)
-                }
                 options={getElementOptions()}
-                value={child}
                 index={index}
             />
         ));
@@ -174,7 +115,7 @@ export const ConditionalRendering = () => {
             title="Conditional Rendering"
             buttonLabel="condition"
             disabledButton={
-                getElementOptions().length === 0 || invalidAndEmptyFields
+                getElementOptions().length === 0 || hasInvalidAndEmptyFields()
             }
             popoverMessage={getPopoverMessage()}
         >

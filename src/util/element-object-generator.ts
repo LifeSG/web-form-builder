@@ -34,7 +34,7 @@ const generateNewElementId = (
         : `${prefix}${maxSuffix + 1 > 0 ? `-${maxSuffix + 1}` : ""}`;
 };
 
-const generateNewInternalId = (existingIds: string[]) => {
+export const generateNewInternalId = (existingIds: string[]) => {
     let internalId: string;
     while (!internalId || existingIds.includes(internalId)) {
         internalId = SimpleIdGenerator.generate();
@@ -70,6 +70,7 @@ export namespace ElementObjectGenerator {
                     required: true,
                     requiredErrorMsg: "",
                     label: ELEMENT_BUTTON_LABELS[type],
+                    columns: { desktop: 12, tablet: 8, mobile: 4 },
                     validation: [],
                     conditionalRendering: [],
                     prefill: [],

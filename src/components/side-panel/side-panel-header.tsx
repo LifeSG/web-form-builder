@@ -1,6 +1,7 @@
 import { Color } from "@lifesg/react-design-system/color";
 import { CrossIcon } from "@lifesg/react-icons/cross";
-import { EBuilderMode, useBuilder } from "../../context-providers";
+import { useModal } from "src/context-providers/display/modal-hook";
+import { EBuilderMode, EModalType, useBuilder } from "../../context-providers";
 import { IconButton } from "../common";
 import {
     HeaderChevronIcon,
@@ -8,6 +9,7 @@ import {
     SaveChangesButton,
     Wrapper,
 } from "./side-panel-header.styles";
+import { useFormContext } from "react-hook-form";
 
 export const SidePanelHeader = () => {
     // =========================================================================
@@ -19,17 +21,11 @@ export const SidePanelHeader = () => {
         togglePanel,
         removeFocusedElement,
         focusedElement,
+        isSubmitting,
     } = useBuilder();
     const { isDirty } = focusedElement || {};
-
-    // =========================================================================
-    // EVENT HANDLERS
-    // =========================================================================
-
-    const handleCrossButtonClick = () => {
-        removeFocusedElement();
-    };
-
+    const { showModal, discardChanges } = useModal();
+    const { reset } = useFormContext();
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
@@ -46,6 +42,28 @@ export const SidePanelHeader = () => {
         }
     };
 
+    const handleModalOnClick = () => {
+        removeFocusedElement();
+        discardChanges();
+        reset();
+    };
+
+    // =========================================================================
+    // EVENT HANDLERS
+    // =========================================================================
+
+    const handleCrossButtonClick = () => {
+        if (isDirty) {
+            const newModal = {
+                type: EModalType.DiscardChanges,
+                onClickActionButton: handleModalOnClick,
+            };
+            showModal(newModal);
+        } else {
+            removeFocusedElement();
+        }
+    };
+
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
@@ -53,13 +71,22 @@ export const SidePanelHeader = () => {
         if (focusedElement) {
             return (
                 <>
-                    <SaveChangesButton>
-                        {!isDirty ? "Saved" : "Save Changes"}
+                    <SaveChangesButton
+                        data-testid="save-changes-button"
+                        disabled={isSubmitting}
+                        loading={isSubmitting}
+                    >
+                        {isSubmitting
+                            ? "Saving"
+                            : !isDirty
+                              ? "Saved"
+                              : "Save Changes"}
                     </SaveChangesButton>
                     <IconButton
                         $iconSize="1.5rem"
                         $iconColor={Color.Neutral[3]}
                         onClick={handleCrossButtonClick}
+                        type="button"
                     >
                         <CrossIcon data-testid="cross-button" />
                     </IconButton>

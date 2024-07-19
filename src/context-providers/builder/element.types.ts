@@ -15,6 +15,13 @@ export enum EElementType {
     TEXTAREA = "textarea",
 }
 
+export enum EConditionType {
+    MORE_THAN = "More than",
+    LESS_THAN = "Less than",
+    EQUALS = "Equals",
+    NOT_EQUALS = "Not equals",
+}
+
 export interface IBaseAttributes {
     id: string | undefined;
     internalId: string;
@@ -30,20 +37,33 @@ export interface IValidation {
 export interface IConditionalRendering {
     fieldKey?: string;
     comparator?: string;
-    value?: string | number;
+    value?: string;
     internalId: string;
 }
 
 export interface IPrefillAttributes {
-    prefillMode?: "Myinfo" | "Previous source";
+    prefillMode?: "Myinfo" | "Previous source" | "";
     actionId?: string;
     path?: string;
+}
+
+type MobileCol = 1 | 2 | 3 | 4;
+type MobileColRange = MobileCol | 5;
+type TabletCol = MobileCol | 5 | 6 | 7 | 8;
+type TabletColRange = TabletCol | 9;
+type DesktopCol = TabletCol | 9 | 10 | 11 | 12;
+type DesktopColRange = DesktopCol | 13;
+export interface IColumns {
+    desktop: DesktopCol | [DesktopColRange, DesktopColRange];
+    tablet: TabletCol | [TabletColRange, TabletColRange];
+    mobile: MobileCol | [MobileColRange, MobileColRange];
 }
 
 export interface IBaseFieldAttributes extends IBaseAttributes {
     label: string | undefined;
     required: boolean;
     requiredErrorMsg?: string | undefined;
+    columns: IColumns;
 }
 
 export interface IBaseTextBasedFieldAttributes extends IBaseFieldAttributes {

@@ -4,7 +4,7 @@ import { Dispatch } from "react";
 // STATE
 // =============================================================================
 export enum EToastTypes {
-    DELETE_TOAST = "delete-toast",
+    DELETE_ELEMENT_TOAST = "delete-element-toast",
     SUCCESS_TOAST = "success-toast",
 }
 
@@ -12,7 +12,7 @@ export interface IToast {
     id?: string;
     type?: EToastTypes;
     message?: string;
-    onClickActionButton?: () => void;
+    elementInternalId?: string;
 }
 
 export interface IDisplayState {
@@ -20,30 +20,19 @@ export interface IDisplayState {
     modals: TModalProps[];
 }
 
-export type TModalProps =
-    | IDiscardChangesModalProps
-    | IBulkEditModalProps
-    | ICustomModalProps;
+export type TModalProps = IDiscardChangesModalProps;
 
 // =============================================================================
 // MODAL STATE
 // =============================================================================
 export enum EModalType {
     DiscardChanges = "discard-changes",
-    BulkEdit = "bulk-edit",
-    Custom = "custom",
 }
 
 export interface IDiscardChangesModalProps {
     type: EModalType.DiscardChanges;
-}
-
-export interface IBulkEditModalProps {
-    type: EModalType.BulkEdit;
-}
-
-export interface ICustomModalProps {
-    type: EModalType.Custom;
+    onClickActionButton?: () => void;
+    index?: number;
 }
 
 // =============================================================================

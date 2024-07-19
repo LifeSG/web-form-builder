@@ -1,129 +1,77 @@
 import { Text } from "@lifesg/react-design-system/text";
-import { useEffect, useState } from "react";
-import { useFormContext } from "react-hook-form";
+import { useFieldArray, useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
-import {
-    EElementType,
-    IPrefillAttributes,
-    useBuilder,
-} from "src/context-providers";
+import { EElementType } from "src/context-providers";
 import { IBaseTextBasedFieldValues, SchemaHelper } from "src/schemas";
 import * as Yup from "yup";
 import { PrefillChild } from "./prefill-child";
-
 export const Prefill = () => {
     // =========================================================================
     // CONST, STATES, REFS
     // =========================================================================
-    const { focusedElement, updateFocusedElement } = useBuilder();
-    const element = focusedElement?.element;
-    const [childEntryValues, setChildEntryValues] = useState<
-        IPrefillAttributes[]
-    >([]);
-    const {
-        setValue,
-        formState: { isDirty },
-        getValues,
-    } = useFormContext<IBaseTextBasedFieldValues>();
-    const shouldUpdateFocusedElement =
-        isDirty ||
-        childEntryValues?.length > focusedElement?.element?.prefill?.length;
+    const { watch, control } = useFormContext<IBaseTextBasedFieldValues>();
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: "prefill",
+        shouldUnregister: true,
+    });
+    const prefillValues = watch("prefill");
     const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
-    const invalidAndEmptyFields = getTouchedAndErrorsFields();
 
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
-    function getTouchedAndErrorsFields() {
-        if (childEntryValues && childEntryValues.length > 0) {
-            try {
-                const validationSchema = schema.pick(["prefill"]);
-                const prefillValues = getValues("prefill");
-                validationSchema.validateSync({
-                    prefill: prefillValues,
-                    abortEarly: false,
-                });
-                return false;
-            } catch (error) {
-                return Yup.ValidationError.isError(error);
-            }
-        } else {
+    const hasInvalidAndEmptyFields = () => {
+        try {
+            const validationSchema = schema.pick(["prefill"]);
+            validationSchema.validateSync({
+                prefill: prefillValues,
+                abortEarly: false,
+            });
             return false;
+        } catch (error) {
+            return Yup.ValidationError.isError(error);
         }
-    }
+    };
 
-    function getPopoverMessage() {
-        if (invalidAndEmptyFields) {
+    const getPopoverMessage = () => {
+        if (hasInvalidAndEmptyFields()) {
             return (
                 <Text.Body>
                     To add new prefill, fill up existing prefill first.
                 </Text.Body>
             );
         }
-    }
+    };
 
     // =========================================================================
     // EVENT HANDLERS
     // =========================================================================
-
-    const handleChildChange = (index: number, newValue: IPrefillAttributes) => {
-        const updatedValues = [...childEntryValues];
-        updatedValues[index] = newValue;
-        setChildEntryValues(updatedValues);
-        setValue("prefill", updatedValues);
-    };
 
     const handleAddButtonClick = () => {
         const prefillChild = {
             prefillMode: null,
             path: "",
         };
-        const updatedValues = [...childEntryValues, prefillChild];
-        setChildEntryValues(updatedValues);
-        setValue("prefill", updatedValues);
+        append(prefillChild);
     };
 
     const handleDelete = (index: number) => {
-        const currentValues = [...childEntryValues];
-        const updatedValues = currentValues.filter((_, i) => i !== index);
-        setChildEntryValues(updatedValues);
-        setValue("prefill", updatedValues);
+        remove(index);
     };
-
-    // =========================================================================
-    // EFFECTS
-    // =========================================================================
-
-    useEffect(() => {
-        setChildEntryValues(element?.prefill);
-    }, [focusedElement.element]);
-
-    useEffect(() => {
-        setValue("prefill", childEntryValues, {
-            shouldDirty: true,
-        });
-    }, [childEntryValues]);
-
-    useEffect(() => {
-        if (shouldUpdateFocusedElement) {
-            updateFocusedElement(true);
-        }
-    }, [shouldUpdateFocusedElement]);
 
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
 
     const renderChildren = () => {
-        if (childEntryValues?.length === 0) {
+        if (prefillValues?.length === 0) {
             return;
         } else {
-            return childEntryValues?.map((child, index) => (
+            return fields.map((field, index) => (
                 <PrefillChild
-                    key={`prefill-entry-${index}`}
+                    key={field.id}
                     onDelete={() => handleDelete(index)}
-                    onChange={(newValue) => handleChildChange(index, newValue)}
-                    value={child}
                     index={index}
                 />
             ));
@@ -136,7 +84,7 @@ export const Prefill = () => {
             title="Prefill"
             buttonLabel="prefill"
             subtitle="Prefill information from various data sources, for example Myinfo."
-            disabledButton={invalidAndEmptyFields}
+            disabledButton={hasInvalidAndEmptyFields()}
             popoverMessage={getPopoverMessage()}
         >
             {renderChildren()}

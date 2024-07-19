@@ -1,7 +1,12 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { EElementType, EToastTypes, useDisplay } from "src/context-providers";
+import {
+    EElementType,
+    EToastTypes,
+    TElement,
+    useDisplay,
+} from "src/context-providers";
 import { SchemaHelper } from "src/schemas";
 import { EBuilderMode, useBuilder } from "../../context-providers";
 import { ElementEditor } from "../element-editor";
@@ -10,7 +15,12 @@ import { SidePanelHeader } from "./side-panel-header";
 import { ContentSection, ContentWrapper, Wrapper } from "./side-panel.styles";
 import { Toolbar } from "./toolbar";
 
-export const SidePanel = () => {
+interface IProps {
+    offset?: number;
+    onSubmit?: (formData: TElement) => Promise<unknown>;
+}
+
+export const SidePanel = ({ offset, onSubmit }: IProps) => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
@@ -20,19 +30,34 @@ export const SidePanel = () => {
         focusedElement,
         updateElement,
         updateFocusedElement,
+        toggleSubmitting,
     } = useBuilder();
     const { showToast } = useDisplay();
     const methods = useForm({
         mode: "onTouched",
+        defaultValues: {
+            requiredErrorMsg: "",
+        },
         // TODO: insert proper type; email is a placeholder
-        resolver: yupResolver(SchemaHelper.buildSchema(EElementType.EMAIL)),
+        resolver: yupResolver(
+            SchemaHelper.buildSchema(focusedElement?.element?.type)
+        ),
     });
+
+    const {
+        formState: { isSubmitSuccessful },
+    } = methods;
 
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
-    const onSubmit = useCallback(
-        (values) => {
+    const onFormSubmit = useCallback(
+        async (values) => {
+            if (onSubmit) {
+                toggleSubmitting(true);
+                await onSubmit(values);
+                toggleSubmitting(false);
+            }
             const newToast = {
                 message: "Changes are saved successfully.",
                 type: EToastTypes.SUCCESS_TOAST,
@@ -41,30 +66,28 @@ export const SidePanel = () => {
             updateFocusedElement(false, values);
             showToast(newToast);
         },
-        [updateElement, updateFocusedElement]
+        [updateElement, updateFocusedElement, onSubmit]
     );
     // =========================================================================
     // USE EFFECTS
     // =========================================================================
-    useEffect(() => {
-        methods.reset(undefined, {
-            keepValues: true,
-            keepDirty: false,
-        });
-    }, [methods.formState.isSubmitSuccessful]);
 
     useEffect(() => {
-        if (focusedElement) {
-            Object.keys(focusedElement.element).forEach((key) => {
-                methods.resetField(key as any, {
-                    defaultValue:
-                        focusedElement.element[key] !== undefined
-                            ? (focusedElement.element[key] as string)
-                            : "",
-                });
-            });
+        if (isSubmitSuccessful) {
+            /**
+             * On React 17, without setTimeout, isSubmitSuccessful is set to true again on first touch of the form after resetting form.
+             * This issue is fixed on React 18, but the workaround on React 17 would be to use setTimeout.
+             */
+            setTimeout(() => methods.reset());
         }
-    }, [focusedElement?.element, methods.resetField]);
+    }, [isSubmitSuccessful, methods.reset]);
+
+    useEffect(() => {
+        if (!focusedElement) {
+            return;
+        }
+        methods.reset(focusedElement.element);
+    }, [focusedElement?.element, methods.reset]);
 
     // =========================================================================
     // RENDER FUNCTIONS
@@ -74,7 +97,6 @@ export const SidePanel = () => {
         if (focusedElement) {
             return <ElementEditor />;
         }
-
         switch (currentMode) {
             case EBuilderMode.ADD_ELEMENT:
                 return <AddElementsPanel />;
@@ -89,8 +111,11 @@ export const SidePanel = () => {
 
     return (
         <FormProvider {...methods}>
-            <form onSubmit={methods.handleSubmit(onSubmit)}>
-                <Wrapper $minimised={focusedElement ? false : !showSidePanel}>
+            <form onSubmit={methods.handleSubmit(onFormSubmit)}>
+                <Wrapper
+                    $minimised={focusedElement ? false : !showSidePanel}
+                    $offset={offset ? offset : 0}
+                >
                     <SidePanelHeader />
                     <ContentWrapper>
                         <ContentSection

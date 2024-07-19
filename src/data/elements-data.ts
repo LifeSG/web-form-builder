@@ -1,4 +1,7 @@
-import { EElementType } from "src/context-providers/builder/element.types";
+import {
+    EConditionType,
+    EElementType,
+} from "src/context-providers/builder/element.types";
 
 interface IElementCategoryAttributes {
     categoryTitle: string;
@@ -48,5 +51,27 @@ export const ELEMENT_VALIDATION_TYPES = {
             maxEntries: 1,
             validationTypes: ["Email domain"],
         },
+        [EElementType.TEXT]: {
+            maxEntries: -1, // Set a negetive number so that it will allow unlimited entries as it will not be equal to 0
+            validationTypes: [
+                "Custom regex",
+                "Minimum length",
+                "Maximum length",
+            ],
+        },
     },
+};
+
+export const SCHEMA_CONDITION_TYPES = {
+    [EConditionType.MORE_THAN]: "moreThan",
+    [EConditionType.LESS_THAN]: "lessThan",
+    [EConditionType.EQUALS]: "equals",
+    [EConditionType.NOT_EQUALS]: "notEquals",
+};
+
+export const ELEMENT_CONDITION_TYPES = {
+    ["moreThan"]: EConditionType.MORE_THAN,
+    ["lessThan"]: EConditionType.LESS_THAN,
+    ["equals"]: EConditionType.EQUALS,
+    ["notEquals"]: EConditionType.NOT_EQUALS,
 };

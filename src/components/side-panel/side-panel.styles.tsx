@@ -8,6 +8,7 @@ import styled, { css } from "styled-components";
 // =============================================================================
 export interface IWrapperStyleProps {
     $minimised: boolean;
+    $offset: number;
 }
 
 export interface IContentSectionStyleProps {
@@ -19,7 +20,7 @@ export interface IContentSectionStyleProps {
 export const Wrapper = styled.div<IWrapperStyleProps>`
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: calc(100% - ${(props) => props.$offset}rem);
     width: 36.8rem;
     transition: ${Transition.Base};
     background: ${Color.Neutral[8]};
@@ -27,7 +28,7 @@ export const Wrapper = styled.div<IWrapperStyleProps>`
     margin-left: auto;
     box-shadow: 0px 2px 12px 0px rgba(104, 104, 104, 0.25);
     position: fixed;
-    top: 0;
+    top: ${(props) => props.$offset}rem;
     left: 0;
     transform: translateX(0);
 

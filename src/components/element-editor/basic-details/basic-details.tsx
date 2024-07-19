@@ -1,10 +1,9 @@
 import { Form } from "@lifesg/react-design-system/form";
 import { Text } from "@lifesg/react-design-system/text";
-import { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { IconDropdown } from "src/components/common/icon-dropdown";
 import { TogglePair } from "src/components/common/toggle-pair/toggle-pair";
-import { useBuilder } from "src/context-providers";
+import { EElementType, useBuilder } from "src/context-providers";
 import { IBaseTextBasedFieldValues } from "src/schemas";
 import {
     FieldEditorAccordionItem,
@@ -16,13 +15,12 @@ export const BasicDetails = () => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
-
-    const { focusedElement, updateFocusedElement } = useBuilder();
+    const { focusedElement } = useBuilder();
     const {
         control,
-        formState: { errors, isDirty },
+        formState: { errors },
         watch,
-        reset,
+        setValue,
     } = useFormContext<IBaseTextBasedFieldValues>();
     const element = focusedElement.element;
 
@@ -33,21 +31,6 @@ export const BasicDetails = () => {
     const hasProperty = (key: string) => {
         return key in element;
     };
-
-    // =========================================================================
-    // USE EFFECTS
-    // =========================================================================
-
-    useEffect(() => {
-        updateFocusedElement(isDirty);
-    }, [isDirty, updateFocusedElement]);
-
-    useEffect(() => {
-        reset(element, {
-            keepDirty: true,
-            keepValues: true,
-        });
-    }, []);
 
     // =========================================================================
     // RENDER FUNCTIONS
@@ -63,15 +46,18 @@ export const BasicDetails = () => {
                 <Controller
                     name="type"
                     control={control}
-                    defaultValue={element?.type}
                     render={({ field }) => (
                         <IconDropdown
-                            type={element?.type}
+                            type={field.value}
                             id={element?.id}
+                            onChange={(value: EElementType) => {
+                                setValue("type", value, {
+                                    shouldTouch: true,
+                                    shouldDirty: true,
+                                });
+                                setValue("validation", []);
+                            }}
                             errorMessage={errors.type?.message}
-                            onChange={(value) =>
-                                field.onChange({ target: { value: value } })
-                            }
                         />
                     )}
                     shouldUnregister={true}
@@ -81,7 +67,6 @@ export const BasicDetails = () => {
                     <Controller
                         name="label"
                         control={control}
-                        defaultValue={element?.label}
                         render={({ field }) => (
                             <Form.Textarea
                                 {...field}
@@ -89,6 +74,10 @@ export const BasicDetails = () => {
                                 label="Element Name"
                                 rows={1}
                                 placeholder="Element Name"
+                                value={field.value}
+                                onChange={(e) => {
+                                    field.onChange(e.target.value);
+                                }}
                                 errorMessage={errors.label?.message}
                                 maxLength={40}
                             />
@@ -101,13 +90,14 @@ export const BasicDetails = () => {
                     <Controller
                         name="required"
                         control={control}
-                        defaultValue={element.required}
                         render={({ field }) => (
                             <TogglePair
                                 label="Mandatory field"
-                                defaultValue={element.required}
+                                value={field.value}
+                                onChange={(value) => {
+                                    field.onChange(value);
+                                }}
                                 id={element.internalId}
-                                onChange={(value) => field.onChange(value)}
                             />
                         )}
                         shouldUnregister={true}
@@ -117,12 +107,14 @@ export const BasicDetails = () => {
                         <Controller
                             name="requiredErrorMsg"
                             control={control}
-                            defaultValue={element.requiredErrorMsg}
                             render={({ field }) => (
                                 <Form.Input
                                     {...field}
                                     label="Error message"
-                                    defaultValue={element.requiredErrorMsg}
+                                    value={field.value || ""}
+                                    onChange={(e) => {
+                                        field.onChange(e.target.value);
+                                    }}
                                     errorMessage={
                                         errors.requiredErrorMsg?.message
                                     }
@@ -136,7 +128,6 @@ export const BasicDetails = () => {
                 <Controller
                     name="id"
                     control={control}
-                    defaultValue={element?.id}
                     render={({ field }) => (
                         <Form.Input
                             {...field}
@@ -150,22 +141,29 @@ export const BasicDetails = () => {
                                 ),
                             }}
                             placeholder="Create an ID"
+                            value={field.value || ""}
+                            onChange={(e) => {
+                                field.onChange(e.target.value);
+                            }}
                             errorMessage={errors.id?.message}
                         />
                     )}
                     shouldUnregister={true}
                 />
 
-                {hasProperty("placeholder") && (
+                {element?.hasOwnProperty("placeholder") && (
                     <Controller
                         name="placeholder"
                         control={control}
-                        defaultValue={element?.placeholder}
                         render={({ field }) => (
                             <Form.Input
                                 {...field}
                                 label="Placeholder text (optional)"
                                 placeholder="Enter placeholder text"
+                                value={field.value || ""}
+                                onChange={(e) => {
+                                    field.onChange(e.target.value);
+                                }}
                                 errorMessage={errors.placeholder?.message}
                             />
                         )}

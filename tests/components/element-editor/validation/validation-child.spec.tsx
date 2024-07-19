@@ -18,7 +18,6 @@ describe("ValidationChild", () => {
         renderComponent({
             onDelete: mockDelete,
             options: mockOptions,
-            onChange: mockOnChange,
             value: mockEmptyValue,
             index: mockIndex,
         });
@@ -33,7 +32,6 @@ describe("ValidationChild", () => {
         renderComponent({
             onDelete: mockDelete,
             options: mockOptions,
-            onChange: mockOnChange,
             value: mockValue,
             index: mockIndex,
         });
@@ -51,7 +49,6 @@ describe("ValidationChild", () => {
         renderComponent({
             onDelete: mockDelete,
             options: mockOptions,
-            onChange: mockOnChange,
             value: mockValue,
             index: mockIndex,
         });
@@ -61,13 +58,32 @@ describe("ValidationChild", () => {
     });
 
     it("should render the validation type field as disabled when there is only 1 option", () => {
-        renderComponent({
-            onDelete: mockDelete,
-            options: ["Option 1"],
-            onChange: mockOnChange,
-            value: mockValue,
-            index: mockIndex,
-        });
+        renderComponent(
+            {
+                onDelete: mockDelete,
+                options: ["Option 1"],
+                value: mockValue,
+                index: mockIndex,
+            },
+            {
+                builderContext: {
+                    focusedElement: {
+                        element: {
+                            type: EElementType.EMAIL,
+                            label: "mock",
+                            required: true,
+                            columns: {
+                                desktop: 12,
+                                tablet: 8,
+                                mobile: 4,
+                            } as const,
+                            id: "mockId",
+                            internalId: "mockId1",
+                        },
+                    },
+                },
+            }
+        );
         const getValidationTypeField = screen.getByRole("button", {
             name: "Option 1",
         });
@@ -75,34 +91,35 @@ describe("ValidationChild", () => {
         expect(getValidationTypeField).toBeDisabled();
     });
 
-    it("should fire onChange when there is a change in the input fields", () => {
-        renderComponent({
-            onDelete: mockDelete,
-            options: mockOptions,
-            onChange: mockOnChange,
-            value: mockValue,
-            index: mockIndex,
-        });
+    it("should render an error message when validation rule field input is invalid", async () => {
+        renderComponent(
+            {
+                onDelete: mockDelete,
+                options: mockEmailValidationOptions,
+                value: mockEmailValidationValue,
+                index: mockIndex,
+            },
+            {
+                builderContext: {
+                    focusedElement: {
+                        element: {
+                            type: EElementType.EMAIL,
+                            label: "mock",
+                            required: true,
+                            columns: {
+                                desktop: 12,
+                                tablet: 8,
+                                mobile: 4,
+                            } as const,
+                            id: "mockId",
+                            internalId: "mockId1",
+                        },
+                    },
+                },
+            }
+        );
         const getValidationRuleField =
             screen.getByPlaceholderText("Enter rule");
-        fireEvent.focus(getValidationRuleField);
-        fireEvent.change(getValidationRuleField, {
-            target: { value: "camel_Case" },
-        });
-        expect(mockOnChange).toBeCalled();
-    });
-
-    it("should render an error message when validation rule field input is invalid", async () => {
-        renderComponent({
-            onDelete: mockDelete,
-            options: mockEmailValidationOptions,
-            onChange: mockOnChange,
-            value: mockEmailValidationValue,
-            index: mockIndex,
-        });
-        const getValidationRuleField = screen.getByPlaceholderText(
-            "Enter email domain, separating with a comma"
-        );
         fireEvent.focus(getValidationRuleField);
         fireEvent.blur(getValidationRuleField);
         const validationRuleError = await screen.findByText(
@@ -114,16 +131,34 @@ describe("ValidationChild", () => {
     });
 
     it("should render an error message when validation rule field for the email element is left empty", async () => {
-        renderComponent({
-            onDelete: mockDelete,
-            options: mockEmailValidationOptions,
-            onChange: mockOnChange,
-            value: mockEEmptyEmailValidationValue,
-            index: mockIndex,
-        });
-        const getValidationRuleField = screen.getByPlaceholderText(
-            "Enter email domain, separating with a comma"
+        renderComponent(
+            {
+                onDelete: mockDelete,
+                options: mockEmailValidationOptions,
+                value: mockEEmptyEmailValidationValue,
+                index: mockIndex,
+            },
+            {
+                builderContext: {
+                    focusedElement: {
+                        element: {
+                            type: EElementType.EMAIL,
+                            label: "mock",
+                            required: true,
+                            columns: {
+                                desktop: 12,
+                                tablet: 8,
+                                mobile: 4,
+                            } as const,
+                            id: "mockId",
+                            internalId: "mockId1",
+                        },
+                    },
+                },
+            }
         );
+        const getValidationRuleField =
+            screen.getByPlaceholderText("Enter rule");
         fireEvent.focus(getValidationRuleField);
         fireEvent.blur(getValidationRuleField);
         const validationRuleError = await screen.findByText(
@@ -136,7 +171,6 @@ describe("ValidationChild", () => {
         renderComponent({
             onDelete: mockDelete,
             options: mockOptions,
-            onChange: mockOnChange,
             value: mockEmptyValue,
             index: mockIndex,
         });
@@ -162,8 +196,7 @@ describe("ValidationChild", () => {
 type ValidationChildOptions = {
     onDelete?: () => void;
     options?: string[];
-    onChange?: (newValue: any) => void;
-    value?: IValidation;
+    value?: IValidation[];
     index?: number;
 };
 
@@ -175,17 +208,15 @@ const MyTestComponent = ({
         resolver: yupResolver(SchemaHelper.buildSchema(EElementType.EMAIL)),
     });
 
-    const { onDelete, options, onChange, value, index } =
-        validationChildOptions;
+    const { onDelete, options, value, index } = validationChildOptions;
     const onSubmit = jest.fn;
+    methods.setValue("validation", value);
     return (
         <FormProvider {...methods}>
             <form onSubmit={methods.handleSubmit(onSubmit)}>
                 <ValidationChild
                     onDelete={onDelete}
                     options={options}
-                    onChange={onChange}
-                    value={value}
                     index={index}
                 />
                 <button type="submit">Submit</button>
@@ -215,32 +246,40 @@ const mockEmailValidationOptions =
     ELEMENT_VALIDATION_TYPES["Text field"][EElementType.EMAIL].validationTypes;
 const mockDelete = jest.fn();
 const mockOnChange = jest.fn();
-const mockValue = {
-    validationType: "Option 1",
-    validationRule: "mockRule",
-    validationErrorMessage: "mockErrorMessage",
-};
+const mockValue = [
+    {
+        validationType: "Option 1",
+        validationRule: "mockRule",
+        validationErrorMessage: "mockErrorMessage",
+    },
+];
 
-const mockEmptyValue = {
-    validationType: "",
-    validationRule: "",
-    validationErrorMessage: "",
-};
+const mockEmptyValue = [
+    {
+        validationType: "",
+        validationRule: "",
+        validationErrorMessage: "",
+    },
+];
 
-const mockEmailValidationValue = {
-    validationType:
-        ELEMENT_VALIDATION_TYPES["Text field"][EElementType.EMAIL]
-            .validationTypes[0],
-    validationRule: "mockRule",
-    validationErrorMessage: "mockErrorMessage",
-};
+const mockEmailValidationValue = [
+    {
+        validationType:
+            ELEMENT_VALIDATION_TYPES["Text field"][EElementType.EMAIL]
+                .validationTypes[0],
+        validationRule: "mockRule",
+        validationErrorMessage: "mockErrorMessage",
+    },
+];
 
-const mockEEmptyEmailValidationValue = {
-    validationType:
-        ELEMENT_VALIDATION_TYPES["Text field"][EElementType.EMAIL]
-            .validationTypes[0],
-    validationRule: "",
-    validationErrorMessage: "mockErrorMessage",
-};
+const mockEEmptyEmailValidationValue = [
+    {
+        validationType:
+            ELEMENT_VALIDATION_TYPES["Text field"][EElementType.EMAIL]
+                .validationTypes[0],
+        validationRule: "",
+        validationErrorMessage: "mockErrorMessage",
+    },
+];
 
-const mockIndex = 1;
+const mockIndex = 0;
