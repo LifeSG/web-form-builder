@@ -51,7 +51,6 @@ export const PrefillChild = ({ onDelete, index }: IProps) => {
                                 />
                             );
                         }}
-                        shouldUnregister={true}
                     />
                 </div>
                 {watch(`prefill.${index}.prefillMode`) ===
@@ -79,7 +78,6 @@ export const PrefillChild = ({ onDelete, index }: IProps) => {
                                     />
                                 );
                             }}
-                            shouldUnregister={true}
                         />
                     </div>
                 )}
@@ -106,7 +104,6 @@ export const PrefillChild = ({ onDelete, index }: IProps) => {
                                 />
                             );
                         }}
-                        shouldUnregister={true}
                     />
                 </div>
             </FieldWrapper>

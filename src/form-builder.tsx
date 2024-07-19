@@ -24,7 +24,7 @@ export interface ISchemaProps {
 
 export interface IFormBuilderMethods {
     generateSchema: (elementsList?: TElementMap) => ISchemaProps;
-    translateSchema: (schema: string) => void;
+    parseSchema: (schema: ISchemaProps) => void;
 }
 
 interface IProps {
@@ -40,15 +40,23 @@ const Component = forwardRef<IFormBuilderMethods, IProps>(
         const [isLargeScreen, setIsLargeScreen] = useState(
             window.innerWidth >= 1200
         );
-        const { elements, orderedIdentifiers } = useBuilder();
+        const {
+            elements,
+            updateElementSchema,
+            orderedIdentifiers,
+            isSubmitting,
+        } = useBuilder();
 
         useImperativeHandle(
             ref,
             () => ({
                 generateSchema: () =>
                     Translator.generateSchema(elements, orderedIdentifiers),
-                translateSchema: (schema: string) =>
-                    Translator.translateSchema(schema),
+                parseSchema: (schema: ISchemaProps) => {
+                    const { newOrderedIdentifiers, newElements } =
+                        Translator.parseSchema(schema);
+                    updateElementSchema(newElements, newOrderedIdentifiers);
+                },
             }),
             [elements, orderedIdentifiers]
         );
@@ -73,9 +81,14 @@ const Component = forwardRef<IFormBuilderMethods, IProps>(
         // =========================================================================
 
         return (
-            <Wrapper>
+            <Wrapper $disabled={isSubmitting}>
                 {!isLargeScreen && <ScreenNotSupportedErrorDisplay />}
-                <Container type="grid" stretch $isLargeScreen={isLargeScreen}>
+                <Container
+                    type="grid"
+                    stretch
+                    $isLargeScreen={isLargeScreen}
+                    {...{ inert: isSubmitting ? "" : undefined }}
+                >
                     <Toasts />
                     <Modals />
                     <MainPanel />

@@ -1,10 +1,19 @@
-import { IFrontendEngineData } from "@lifesg/web-frontend-engine";
+import {
+    IFrontendEngineData,
+    TFrontendEngineFieldSchema,
+} from "@lifesg/web-frontend-engine";
 import {
     EElementType,
     IElementIdentifier,
     TElementMap,
 } from "src/context-providers";
-import { createDefaultValuesObject, createPrefillObject } from "./helper";
+import { ISchemaProps } from "src/form-builder";
+import {
+    createDefaultValuesObject,
+    createPrefillObject,
+    parseSchemaBasedOnType,
+    updateParsedElements,
+} from "./helper";
 import { OptionGroupBasedField } from "./option-group-based-field";
 import { TextBasedField } from "./text-based-field";
 
@@ -65,7 +74,10 @@ export namespace Translator {
         return { schema: elementSchema, prefill };
     }
 
-    export function translateSchema(schema: string) {
-        console.log("this is the schema:", schema);
-    }
+    export const parseSchema = (formSchema: ISchemaProps) => {
+        const schemaToParse = formSchema?.schema?.sections?.section?.children
+            ?.grid?.["children"] as Record<string, TFrontendEngineFieldSchema>;
+        const parsedElements = parseSchemaBasedOnType(schemaToParse);
+        return updateParsedElements(parsedElements);
+    };
 }

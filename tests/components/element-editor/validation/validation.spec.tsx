@@ -23,13 +23,13 @@ describe("Validation", () => {
         jest.resetAllMocks();
     });
 
-    it("should contain the the component with the title, buttonLabel & children being passed into it", () => {
+    it("should contain the component with the title, buttonLabel & children being passed into it", () => {
         renderComponent(EElementType.EMAIL, {
             builderContext: {
                 focusedElement: { element: MOCK_ELEMENT, isDirty: true },
             },
         });
-        expect(screen.getByText("Validation")).toBeInTheDocument();
+        expect(screen.getByText("Additional Validation")).toBeInTheDocument();
         expect(getAddValidationButton()).toBeInTheDocument();
     });
 
@@ -107,7 +107,7 @@ describe("Validation", () => {
         ).toBeInTheDocument();
         expect(getAddValidationButton()).toBeDisabled();
     });
-    it("should disable the button and show a popover when a maximum number of entries is reached for other element types", async () => {
+    it("should remove the validation option when min or max length validation has been used.", async () => {
         setupJestCanvasMock();
         renderComponent(EElementType.TEXT, {
             builderContext: {
@@ -122,40 +122,27 @@ describe("Validation", () => {
         });
 
         fireEvent.click(getAddValidationButton());
+
         const inputValidationType = screen.getByRole("button", {
             name: "Select",
         });
-        const inputName = screen.getByPlaceholderText("Enter rule");
-        const inputValue = screen.getByPlaceholderText("Set error message");
-
         fireEvent.click(inputValidationType);
-        fireEvent.click(screen.getAllByText("Minimum length")[0]);
+
+        const option = screen.getByText("Minimum length");
+        fireEvent.click(option);
+
+        const inputName = screen.getByPlaceholderText("Enter rule");
         fireEvent.change(inputName, { target: { value: "2" } });
+
+        const inputValue = screen.getByPlaceholderText("Set error message");
         fireEvent.change(inputValue, { target: { value: "Test Value" } });
+
         fireEvent.click(getAddValidationButton());
 
-        const inputValidationType2 = screen.getByRole("button", {
-            name: "Select",
-        });
-        const inputName2 = screen.getAllByPlaceholderText("Enter rule")[1];
-        const inputValue2 =
-            screen.getAllByPlaceholderText("Set error message")[1];
+        fireEvent.click(inputValidationType);
 
-        fireEvent.click(inputValidationType2);
-        fireEvent.click(screen.getAllByText("Minimum length")[1]);
-        fireEvent.change(inputName2, { target: { value: "3" } });
-        fireEvent.change(inputValue2, { target: { value: "Test Value" } });
-
-        fireEvent.mouseOver(getAddValidationButton());
-
-        const popoverText = await screen.findByTestId("add-button-popover");
-        expect(popoverText).toBeVisible();
-        expect(
-            screen.getByText(
-                "Limit reached. To add new validation, remove existing ones first."
-            )
-        ).toBeInTheDocument();
-        expect(getAddValidationButton()).toBeDisabled();
+        const option2 = screen.getAllByTestId("list-item");
+        expect(option2.length).toBe(2);
     });
 });
 

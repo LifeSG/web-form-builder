@@ -17,7 +17,8 @@ const mockBuilderState: IBuilderState = {
     showSidePanel: true,
     orderedIdentifiers: [],
     deletedElements: {},
-    elementCounter: 0
+    elementCounter: 0,
+    isSubmitting: false,
 };
 
 const mockDisplayState: IDisplayState = {

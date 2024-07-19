@@ -12,6 +12,13 @@ import {
 export const useBuilder = () => {
     const { state, dispatch } = useContext(BuilderContext);
 
+    const toggleSubmitting = useCallback((isSubmitting: boolean) => {
+        dispatch({
+            type: "toggle-submitting",
+            payload: isSubmitting,
+        });
+    }, []);
+
     const togglePanel = useCallback((isCollapsed: boolean) => {
         dispatch({
             type: "toggle-panel",
@@ -152,7 +159,7 @@ export const useBuilder = () => {
                         {
                             ...child,
                             conditionalRendering:
-                                child.conditionalRendering.filter(
+                                child?.conditionalRendering?.filter(
                                     (condition) =>
                                         condition.internalId !== internalId
                                 ),
@@ -265,6 +272,19 @@ export const useBuilder = () => {
         });
     }, []);
 
+    const updateElementSchema = useCallback(
+        (elements?: TElementMap, orderedIdentifiers?: IElementIdentifier[]) => {
+            dispatch({
+                type: "update-schema-element",
+                payload: {
+                    elements,
+                    orderedIdentifiers,
+                },
+            });
+        },
+        []
+    );
+
     const updateFocusedElement = useCallback(
         (isDirty: boolean, element?: TElement) => {
             dispatch({
@@ -286,6 +306,7 @@ export const useBuilder = () => {
     }, []);
 
     return {
+        isSubmitting: state.isSubmitting,
         deletedElements: state.deletedElements,
         elements: state.elements,
         showSidePanel: state.showSidePanel,
@@ -293,6 +314,7 @@ export const useBuilder = () => {
         orderedIdentifiers: state.orderedIdentifiers,
         focusedElement: state.focusedElement,
         selectedElementType: state.selectedElementType,
+        toggleSubmitting,
         togglePanel,
         toggleMode,
         updateOrderedIdentifiers,
@@ -305,5 +327,6 @@ export const useBuilder = () => {
         updateFocusedElement,
         duplicateElement,
         selectElementType,
+        updateElementSchema,
     };
 };

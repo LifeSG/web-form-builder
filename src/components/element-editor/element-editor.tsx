@@ -1,4 +1,7 @@
+import { useEffect } from "react";
+import { useFormContext } from "react-hook-form";
 import { useBuilder } from "src/context-providers";
+import { TFormFieldValues } from "src/schemas";
 import { BasicDetails } from "./basic-details";
 import { ConditionalRendering } from "./conditional-rendering";
 import {
@@ -13,7 +16,14 @@ export const ElementEditor = () => {
     // =========================================================================
     // CONST, STATE, REF
     // =========================================================================
-    const { focusedElement } = useBuilder();
+    const { focusedElement, updateFocusedElement } = useBuilder();
+
+    const {
+        formState: { isDirty },
+        getFieldState,
+    } = useFormContext<TFormFieldValues>();
+
+    const { isTouched: isTypeTouched } = getFieldState("type");
 
     // =========================================================================
     // HELPER FUNCTIONS
@@ -23,25 +33,30 @@ export const ElementEditor = () => {
         return key in focusedElement.element;
     };
 
-    // =============================================================================
-    // RENDER FUNCTIONS
-    // =============================================================================
+    // =========================================================================
+    // EFFECTS
+    // =========================================================================
 
-    const renderAlert = () => {
-        if (!focusedElement.isDirty) {
-            return <></>;
-        } else {
-            return (
-                <SaveChangesAlert type="warning" showIcon>
-                    To reflect changes on preview, save changes first.
-                </SaveChangesAlert>
-            );
+    useEffect(() => {
+        // Once the element type is touched, that element should be considered dirty until it is saved or its changes are discarded.
+        if (isTypeTouched) {
+            updateFocusedElement(true);
+            return;
         }
-    };
+        updateFocusedElement(!!isDirty);
+    }, [isDirty, updateFocusedElement]);
+
+    // =========================================================================
+    // RENDER FUNCTIONS
+    // =========================================================================
 
     return (
         <Wrapper data-testid="element-editor">
-            {renderAlert()}
+            {focusedElement.isDirty && (
+                <SaveChangesAlert type="warning" showIcon>
+                    To reflect changes on preview, save changes first.
+                </SaveChangesAlert>
+            )}
             <AccordionWrapper>
                 <BasicDetails />
             </AccordionWrapper>

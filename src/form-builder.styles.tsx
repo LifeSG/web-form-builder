@@ -6,7 +6,12 @@ export interface IContainerProps {
     $isLargeScreen: boolean;
 }
 
-export const Wrapper = styled(Layout.Section)`
+export interface IWrapperProps {
+    $disabled?: boolean;
+}
+
+export const Wrapper = styled(Layout.Section)<IWrapperProps>`
+    cursor: ${({ $disabled }) => ($disabled ? "not-allowed" : "pointer")};
     height: 100%;
     overflow-x: hidden;
     padding-left: 0 !important;

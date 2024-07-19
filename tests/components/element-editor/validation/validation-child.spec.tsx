@@ -58,12 +58,32 @@ describe("ValidationChild", () => {
     });
 
     it("should render the validation type field as disabled when there is only 1 option", () => {
-        renderComponent({
-            onDelete: mockDelete,
-            options: ["Option 1"],
-            value: mockValue,
-            index: mockIndex,
-        });
+        renderComponent(
+            {
+                onDelete: mockDelete,
+                options: ["Option 1"],
+                value: mockValue,
+                index: mockIndex,
+            },
+            {
+                builderContext: {
+                    focusedElement: {
+                        element: {
+                            type: EElementType.EMAIL,
+                            label: "mock",
+                            required: true,
+                            columns: {
+                                desktop: 12,
+                                tablet: 8,
+                                mobile: 4,
+                            } as const,
+                            id: "mockId",
+                            internalId: "mockId1",
+                        },
+                    },
+                },
+            }
+        );
         const getValidationTypeField = screen.getByRole("button", {
             name: "Option 1",
         });
@@ -72,15 +92,34 @@ describe("ValidationChild", () => {
     });
 
     it("should render an error message when validation rule field input is invalid", async () => {
-        renderComponent({
-            onDelete: mockDelete,
-            options: mockEmailValidationOptions,
-            value: mockEmailValidationValue,
-            index: mockIndex,
-        });
-        const getValidationRuleField = screen.getByPlaceholderText(
-            "Enter email domain, separating with a comma"
+        renderComponent(
+            {
+                onDelete: mockDelete,
+                options: mockEmailValidationOptions,
+                value: mockEmailValidationValue,
+                index: mockIndex,
+            },
+            {
+                builderContext: {
+                    focusedElement: {
+                        element: {
+                            type: EElementType.EMAIL,
+                            label: "mock",
+                            required: true,
+                            columns: {
+                                desktop: 12,
+                                tablet: 8,
+                                mobile: 4,
+                            } as const,
+                            id: "mockId",
+                            internalId: "mockId1",
+                        },
+                    },
+                },
+            }
         );
+        const getValidationRuleField =
+            screen.getByPlaceholderText("Enter rule");
         fireEvent.focus(getValidationRuleField);
         fireEvent.blur(getValidationRuleField);
         const validationRuleError = await screen.findByText(
@@ -92,15 +131,34 @@ describe("ValidationChild", () => {
     });
 
     it("should render an error message when validation rule field for the email element is left empty", async () => {
-        renderComponent({
-            onDelete: mockDelete,
-            options: mockEmailValidationOptions,
-            value: mockEEmptyEmailValidationValue,
-            index: mockIndex,
-        });
-        const getValidationRuleField = screen.getByPlaceholderText(
-            "Enter email domain, separating with a comma"
+        renderComponent(
+            {
+                onDelete: mockDelete,
+                options: mockEmailValidationOptions,
+                value: mockEEmptyEmailValidationValue,
+                index: mockIndex,
+            },
+            {
+                builderContext: {
+                    focusedElement: {
+                        element: {
+                            type: EElementType.EMAIL,
+                            label: "mock",
+                            required: true,
+                            columns: {
+                                desktop: 12,
+                                tablet: 8,
+                                mobile: 4,
+                            } as const,
+                            id: "mockId",
+                            internalId: "mockId1",
+                        },
+                    },
+                },
+            }
         );
+        const getValidationRuleField =
+            screen.getByPlaceholderText("Enter rule");
         fireEvent.focus(getValidationRuleField);
         fireEvent.blur(getValidationRuleField);
         const validationRuleError = await screen.findByText(

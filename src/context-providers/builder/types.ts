@@ -63,11 +63,17 @@ export interface IBuilderState {
      */
     elementCounter: number;
     selectedElementType: EElementType | null;
+    isSubmitting: boolean;
 }
 
 // =============================================================================
 // ACTIONS
 // =============================================================================
+
+export interface IToggleSubmittingAction {
+    type: "toggle-submitting";
+    payload: boolean;
+}
 
 export interface ITogglePanelAction {
     type: "toggle-panel";
@@ -124,6 +130,14 @@ export interface IUpdateElementAction {
     payload: TElement;
 }
 
+export interface IUpdateSchemaElementAction {
+    type: "update-schema-element";
+    payload: {
+        elements?: TElementMap;
+        orderedIdentifiers?: IElementIdentifier[];
+    };
+}
+
 export interface IUpdateFocusedElementAction {
     type: "update-focused-element";
     payload: {
@@ -148,7 +162,9 @@ export type TBuilderAction =
     | IRemoveFocusedElementAction
     | IUpdateElementAction
     | IUpdateFocusedElementAction
-    | ISelectElementTypeAction;
+    | ISelectElementTypeAction
+    | IToggleSubmittingAction
+    | IUpdateSchemaElementAction;
 
 // =============================================================================
 // CONTEXT

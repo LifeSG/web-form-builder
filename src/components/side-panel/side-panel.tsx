@@ -24,7 +24,6 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
-    const [isSubmitting, setIsSubmitting] = useState(false);
     const {
         showSidePanel,
         currentMode,
@@ -32,6 +31,7 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
         updateElement,
         updateFocusedElement,
         selectedElementType,
+        toggleSubmitting,
     } = useBuilder();
     const { showToast } = useDisplay();
     const schema = SchemaHelper.buildSchema(selectedElementType);
@@ -43,7 +43,11 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
             preselectedValue: null,
         },
     });
-    const { getValues, formState, setValue } = methods;
+    const {
+        getValues,
+        formState: { isSubmitSuccessful },
+        setValue,
+    } = methods;
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
@@ -51,9 +55,9 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
     const onFormSubmit = useCallback(
         async (values) => {
             if (onSubmit) {
-                setIsSubmitting(true);
+                toggleSubmitting(true);
                 await onSubmit(values);
-                setIsSubmitting(false);
+                toggleSubmitting(false);
             }
             const newToast = {
                 message: "Changes are saved successfully.",
@@ -68,8 +72,9 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
     // =========================================================================
     // USE EFFECTS
     // =========================================================================
+
     useEffect(() => {
-        if (formState.isSubmitSuccessful) {
+        if (isSubmitSuccessful) {
             /** Remove empty dropdown items before resetting */
             if (selectedElementType === EElementType.DROPDOWN) {
                 const nonEmptyDropdownItems = getValues("dropdownItems").filter(
@@ -77,21 +82,19 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
                 );
                 setValue("dropdownItems", nonEmptyDropdownItems);
             }
-            methods.reset(undefined, {
-                keepValues: true,
-                keepDirty: false,
-            });
+            /**
+             * On React 17, without setTimeout, isSubmitSuccessful is set to true again on first touch of the form after resetting form.
+             * This issue is fixed on React 18, but the workaround on React 17 would be to use setTimeout.
+             */
+            setTimeout(() => methods.reset());
         }
-    }, [formState]);
+    }, [isSubmitSuccessful, methods.reset]);
 
     useEffect(() => {
-        if (focusedElement) {
-            const newElement = {};
-            Object.entries(focusedElement?.element).forEach(([key, value]) => {
-                newElement[key] = value === undefined ? "" : value;
-            });
-            methods.reset(newElement);
+        if (!focusedElement) {
+            return;
         }
+        methods.reset(focusedElement.element);
     }, [focusedElement?.element, methods.reset]);
 
     // =========================================================================
@@ -102,7 +105,6 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
         if (focusedElement) {
             return <ElementEditor />;
         }
-
         switch (currentMode) {
             case EBuilderMode.ADD_ELEMENT:
                 return <AddElementsPanel />;
@@ -117,15 +119,12 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
 
     return (
         <FormProvider {...methods}>
-            <form
-                onSubmit={methods.handleSubmit(onFormSubmit)}
-                {...{ inert: isSubmitting ? "" : undefined }}
-            >
+            <form onSubmit={methods.handleSubmit(onFormSubmit)}>
                 <Wrapper
                     $minimised={focusedElement ? false : !showSidePanel}
                     $offset={offset ? offset : 0}
                 >
-                    <SidePanelHeader isSubmitting={isSubmitting} />
+                    <SidePanelHeader />
                     <ContentWrapper>
                         <ContentSection
                             $isFocusedElement={focusedElement ? true : false}
