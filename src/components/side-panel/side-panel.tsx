@@ -1,9 +1,9 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import {
-    EElementType,
     EToastTypes,
+    IDropdownItemAttributes,
     TElement,
     useDisplay,
 } from "src/context-providers";
@@ -53,7 +53,7 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
     // =========================================================================
 
     const onFormSubmit = useCallback(
-        async (values) => {
+        async (values: TElement) => {
             if (onSubmit) {
                 toggleSubmitting(true);
                 await onSubmit(values);
@@ -63,6 +63,15 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
                 message: "Changes are saved successfully.",
                 type: EToastTypes.SUCCESS_TOAST,
             };
+            /** Remove empty dropdown items before updating element */
+            if ("dropdownItems" in values) {
+                const nonEmptyDropdownItems = (
+                    getValues("dropdownItems") as IDropdownItemAttributes[]
+                ).filter(
+                    (item) => item.label.length > 0 || item.value.length > 0
+                );
+                values.dropdownItems = nonEmptyDropdownItems;
+            }
             updateElement(values);
             updateFocusedElement(false, values);
             showToast(newToast);
@@ -75,13 +84,6 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
 
     useEffect(() => {
         if (isSubmitSuccessful) {
-            /** Remove empty dropdown items before resetting */
-            if (selectedElementType === EElementType.DROPDOWN) {
-                const nonEmptyDropdownItems = getValues("dropdownItems").filter(
-                    (item) => item.label.length > 0 || item.value.length > 0
-                );
-                setValue("dropdownItems", nonEmptyDropdownItems);
-            }
             /**
              * On React 17, without setTimeout, isSubmitSuccessful is set to true again on first touch of the form after resetting form.
              * This issue is fixed on React 18, but the workaround on React 17 would be to use setTimeout.
