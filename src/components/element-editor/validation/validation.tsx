@@ -79,8 +79,9 @@ export const Validation = () => {
         switch (elementType) {
             case EElementType.EMAIL:
             case EElementType.TEXTAREA:
-                return ELEMENT_VALIDATION_TYPES["Text field"][element?.type]
-                    .validationTypes[0];
+                return ELEMENT_VALIDATION_TYPES["Text field"][
+                    focusedElement?.element?.type
+                ].validationTypes[0];
             default:
                 return "";
         }

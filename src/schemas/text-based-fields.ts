@@ -79,9 +79,10 @@ const generateValidationSchema = (elementType: EElementType) => {
                                     ELEMENT_VALIDATION_TYPES["Text field"][
                                         EElementType.TEXT
                                     ].validationTypes;
-                                return validationTypes
-                                    .slice(0, 1)
-                                    .includes(value);
+                                return (
+                                    validationTypes.includes(value) &&
+                                    value === "Custom regex"
+                                );
                             },
                             then: (rule) =>
                                 rule
@@ -105,7 +106,10 @@ const generateValidationSchema = (elementType: EElementType) => {
                                     ELEMENT_VALIDATION_TYPES["Text field"][
                                         EElementType.TEXT
                                     ].validationTypes;
-                                return validationTypes.slice(1).includes(value);
+                                return (
+                                    validationTypes.includes(value) &&
+                                    value !== "Custom regex"
+                                );
                             },
                             then: (rule) =>
                                 rule

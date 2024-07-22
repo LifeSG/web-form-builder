@@ -19,12 +19,11 @@ export const BasicDetails = () => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
-    const { focusedElement, updateFocusedElement, elements } = useBuilder();
+    const { focusedElement } = useBuilder();
     const {
         control,
         formState: { errors },
         watch,
-        reset,
         setValue,
     } = useFormContext<IBaseTextBasedFieldValues | ITextareaFieldAttributes>();
     const element = focusedElement.element;
