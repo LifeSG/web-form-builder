@@ -58,12 +58,14 @@ const Component = forwardRef<IFormBuilderMethods, IProps>(
                 parseSchema: (schema: ISchemaProps) => {
                     const { newOrderedIdentifiers, newElements } =
                         Translator.parseSchema(schema);
-                    updateElementSchema(newElements, newOrderedIdentifiers);
-                    const newFocusedElement = Object.values(elements).find(
+                    const newFocusedElement = Object.values(newElements).find(
                         (element) => element.id === focusedElement?.element?.id
                     );
-                    removeFocusedElement();
-                    focusElement(newFocusedElement);
+                    updateElementSchema(
+                        newElements,
+                        newOrderedIdentifiers,
+                        newFocusedElement
+                    );
                 },
             }),
             [elements, orderedIdentifiers]

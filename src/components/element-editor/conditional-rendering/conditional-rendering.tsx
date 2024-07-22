@@ -36,8 +36,8 @@ export const ConditionalRendering = () => {
     // =====================================================================
     const getElementOptions = () => {
         const options: IOptions[] = [];
-        Object.entries(elements).forEach(([_, value]) => {
-            if (value.id !== element?.id) {
+        Object.entries(elements).forEach(([key, value]) => {
+            if (key !== element?.internalId) {
                 const optionItem = {
                     label: value?.label,
                     id: value?.id,
