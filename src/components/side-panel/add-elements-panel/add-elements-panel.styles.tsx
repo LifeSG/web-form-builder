@@ -1,5 +1,4 @@
 import { Color } from "@lifesg/react-design-system/color";
-import { Form } from "@lifesg/react-design-system/form";
 import { InputGroup } from "@lifesg/react-design-system/input-group";
 import { ICircleFillIcon } from "@lifesg/react-icons";
 import styled from "styled-components";
