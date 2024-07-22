@@ -18,7 +18,10 @@ export namespace OptionGroupBasedField {
 
         const optionGroupBasedFieldSchema = {
             [element.id]: {
-                label: element.label,
+                label: {
+                    mainLabel: element.label,
+                    subLabel: element.description,
+                },
                 uiType: element.type,
                 columns: {
                     desktop: element.columns.desktop,
