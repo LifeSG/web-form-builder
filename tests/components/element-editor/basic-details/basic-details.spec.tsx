@@ -44,6 +44,20 @@ describe("BasicDetails", () => {
                 await screen.findByLabelText("Error message");
             expect(requiredErrorMessageField).toBeInTheDocument();
         });
+
+        it("should render the description if element has the description property", async () => {
+            renderComponent({
+                builderContext: {
+                    focusedElement: MOCK_FOCUSED_ELEMENT,
+                    elements: MOCK_ELEMENTS,
+                },
+            });
+
+            const descriptionField = await screen.findByText(
+                "Description text (optional)"
+            );
+            expect(descriptionField).toBeInTheDocument();
+        });
     });
 
     describe("rendering the error messages for the fields", () => {
@@ -215,6 +229,7 @@ const MOCK_FOCUSED_ELEMENT = {
         type: EElementType.EMAIL,
         id: "mockElement",
         required: false,
+        description: "hellooo",
         label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
         columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
     },
@@ -245,6 +260,7 @@ const MOCK_ELEMENTS = {
         type: EElementType.EMAIL,
         id: "mockElement",
         required: false,
+        description: "",
         label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
         columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
     },

@@ -8,6 +8,7 @@ import { TFormFieldValues } from "src/schemas";
 import {
     FieldEditorAccordionItem,
     MandatoryFieldBox,
+    StyledTextarea,
     Wrapper,
 } from "./basic-details.styles";
 import { DropdownItems } from "./dropdown-items/dropdown-items";
@@ -153,6 +154,43 @@ export const BasicDetails = () => {
                     )}
                     shouldUnregister={true}
                 />
+                {hasProperty("description") && (
+                    <Controller
+                        name="description"
+                        control={control}
+                        render={({ field }) => {
+                            const handleTextareaChange = (
+                                e: React.ChangeEvent<HTMLTextAreaElement>
+                            ) => {
+                                field.onChange(e.target.value);
+                                e.target.style.height = "auto";
+                                e.target.style.height = `${Math.max(40, e.target.scrollHeight)}px`;
+                            };
+
+                            return (
+                                <StyledTextarea
+                                    {...field}
+                                    label={{
+                                        children: "Description text (optional)",
+                                        subtitle: (
+                                            <Text.H6 weight={400}>
+                                                This displays as a description
+                                                under the label.
+                                            </Text.H6>
+                                        ),
+                                    }}
+                                    placeholder="Enter description text"
+                                    value={field.value || ""}
+                                    rows={1}
+                                    onChange={handleTextareaChange}
+                                    errorMessage={errors.description?.message}
+                                    maxLength={180}
+                                />
+                            );
+                        }}
+                        shouldUnregister={true}
+                    />
+                )}
 
                 {element?.hasOwnProperty("description") && (
                     <Controller

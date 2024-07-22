@@ -1,3 +1,5 @@
+import { IComplexLabel } from "@lifesg/web-frontend-engine/components/fields";
+
 /**
  * Refer to the uiType in the Frontend Engine when setting
  * the value.
@@ -80,7 +82,7 @@ export interface IColumns {
 }
 
 export interface IBaseFieldAttributes extends IBaseAttributes {
-    label: string | undefined;
+    label: string | IComplexLabel;
     required: boolean;
     requiredErrorMsg?: string | undefined;
     columns: IColumns;

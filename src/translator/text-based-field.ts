@@ -1,5 +1,6 @@
 import { IYupValidationRule } from "@lifesg/web-frontend-engine";
 import {
+    IComplexLabel,
     IEmailFieldSchema,
     INumericFieldSchema,
     ITextFieldSchema,
@@ -132,7 +133,12 @@ export namespace TextBasedField {
         const validationObject = createValidationObject(element);
         const textBasedFieldSchema = {
             [element.id]: {
-                label: element.label,
+                label: {
+                    mainLabel: element.label,
+                    ...(element.description && {
+                        subLabel: element.description,
+                    }),
+                },
                 uiType: element.type,
                 columns: {
                     desktop: element.columns.desktop,
@@ -153,7 +159,7 @@ export namespace TextBasedField {
     };
 
     export const parseToElement = (element: TElementSchema, key: string) => {
-        const { showIf, uiType, validation, ...rest } = element;
+        const { showIf, uiType, validation, label, ...rest } = element;
 
         let requiredValidation: IYupValidationRule = {};
         const fieldValidation = [];
@@ -169,6 +175,8 @@ export namespace TextBasedField {
 
         const parsedElement = {
             ...rest,
+            label: (label as IComplexLabel).mainLabel,
+            description: (label as IComplexLabel).subLabel,
             type: uiType as EElementType,
             required: requiredValidation.required as boolean,
             requiredErrorMsg: requiredValidation.errorMessage,
