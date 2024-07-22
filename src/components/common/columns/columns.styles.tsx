@@ -11,15 +11,6 @@ const generateGridColumn = (breakpoints: { [key: string]: string }) => css`
     )}
 `;
 
-const generateGridTemplateColumns = (breakpoints: {
-    [key: string]: string;
-}) => css`
-    ${Object.entries(breakpoints).map(
-        ([key, value]) =>
-            `${MediaQuery.MaxWidth[key]} { grid-template-columns: ${value}; }`
-    )}
-`;
-
 const generateDroppableGridColumn = ($size: string) => {
     const sizeMap = {
         right: {
@@ -46,44 +37,6 @@ const generateDroppableGridColumn = ($size: string) => {
 // =============================================================================
 // STYLES
 // =============================================================================
-export const expandedGridColumnStyles = generateGridColumn({
-    desktop4k: "4 / span 6",
-    desktopL: "3 / span 8",
-    desktopM: "3 / span 8",
-    tablet: "2 / span 6",
-});
-
-export const minimisedGridColumnStyles = generateGridColumn({
-    desktop4k: "5 / span 6",
-    desktopL: "6 / span 6",
-    desktopM: "6 / span 6",
-    tablet: "5 / span 4",
-});
-
-export const expandedEmptyDisplayGridColumnStyles = generateGridColumn({
-    desktop4k: "4 / span 6",
-    desktopL: "3 / span 9",
-    desktopM: "3 / span 9",
-    tablet: "2 / span 7",
-});
-
-export const minimisedEmptyDisplayGridColumnStyles = generateGridColumn({
-    desktop4k: "5 / span 7",
-    desktopL: "6 / span 7",
-    desktopM: "6 / span 7",
-    tablet: "5 / span 4",
-});
-
-export const expandedElementsWrapperStyles = generateGridTemplateColumns({
-    desktop4k: "repeat(6, minmax(0, 1fr)); column-gap: 2rem",
-    desktopL: "repeat(8, minmax(0, 1fr)); column-gap: 2rem",
-    tablet: "repeat(6, minmax(0, 1fr)); column-gap: 1.5rem",
-});
-
-export const minimisedElementsWrapperStyles = generateGridTemplateColumns({
-    desktop4k: "repeat(6, minmax(0, 1fr)); column-gap: 2rem",
-    tablet: "repeat(4, minmax(0, 1fr)); column-gap: 1.5rem",
-});
 
 export const generateElementCardView = ($mode: string, $size: string) => {
     if ($mode === "expanded") {

@@ -144,11 +144,11 @@ export const MainPanel = () => {
             event.activatorEvent["layerX"];
 
         let elementIndex = currentActiveIndex;
-        let column: IElementIdentifier["size"] = "full";
+        let size: IElementIdentifier["size"] = "full";
         if (mouseX <= wrapperLeftThirds) {
-            column = "left";
+            size = "left";
         } else if (mouseX >= wrapperRightThirds) {
-            column = "right";
+            size = "right";
         }
 
         if (active.rect.current.translated.top > dragStartY.current) {
@@ -175,7 +175,7 @@ export const MainPanel = () => {
         // update dragged element size
         updatedOrderedIdentifiers[elementIndex] = {
             ...updatedOrderedIdentifiers[elementIndex],
-            size: column,
+            size: size,
         };
 
         updateOrderedIdentifiers(updatedOrderedIdentifiers);
