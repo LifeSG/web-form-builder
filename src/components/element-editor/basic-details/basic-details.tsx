@@ -154,6 +154,7 @@ export const BasicDetails = () => {
                     )}
                     shouldUnregister={true}
                 />
+
                 {hasProperty("description") && (
                     <Controller
                         name="description"
@@ -188,36 +189,6 @@ export const BasicDetails = () => {
                                 />
                             );
                         }}
-                        shouldUnregister={true}
-                    />
-                )}
-
-                {element?.hasOwnProperty("description") && (
-                    <Controller
-                        name="description"
-                        control={control}
-                        render={({ field }) => (
-                            <Form.Textarea
-                                {...field}
-                                label={{
-                                    children: "Description text (optional)",
-                                    subtitle: (
-                                        <Text.H6 weight={400}>
-                                            This displays as a description under
-                                            the label.
-                                        </Text.H6>
-                                    ),
-                                }}
-                                placeholder="Enter description text"
-                                value={field.value || ""}
-                                rows={1}
-                                onChange={(e) => {
-                                    field.onChange(e.target.value);
-                                }}
-                                errorMessage={errors.placeholder?.message}
-                                maxLength={180}
-                            />
-                        )}
                         shouldUnregister={true}
                     />
                 )}

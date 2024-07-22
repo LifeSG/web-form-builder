@@ -20,7 +20,9 @@ export namespace OptionGroupBasedField {
             [element.id]: {
                 label: {
                     mainLabel: element.label,
-                    subLabel: element.description,
+                    ...(element.description && {
+                        subLabel: element.description,
+                    }),
                 },
                 uiType: element.type,
                 columns: {
