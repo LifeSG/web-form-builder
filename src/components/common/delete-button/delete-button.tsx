@@ -1,14 +1,14 @@
 import { PopoverTrigger } from "@lifesg/react-design-system/popover-v2";
-import { StyledBinButton } from "./dropdown-items-child.styles";
+import { StyledBinButton } from "../../element-editor/basic-details/dropdown-items/dropdown-items-child.styles";
 
 interface IProps {
     onClick: () => void;
     disabled?: boolean;
-    popoverMessage?: string | React.ReactNode;
+    popoverMessage?: JSX.Element;
     children: React.ReactNode;
 }
 
-const DropdownItemsBinButton = ({
+export const DeleteButton = ({
     onClick,
     disabled,
     children,
@@ -22,7 +22,7 @@ const DropdownItemsBinButton = ({
         if (disabled) {
             return (
                 <PopoverTrigger
-                    popoverContent={popoverMessage as JSX.Element}
+                    popoverContent={popoverMessage}
                     trigger="hover"
                     position="bottom-end"
                 >
@@ -33,10 +33,7 @@ const DropdownItemsBinButton = ({
             );
         }
         return (
-            <StyledBinButton
-                data-testid="dropdown-items-bin-button"
-                onClick={onClick}
-            >
+            <StyledBinButton data-testid="delete-button" onClick={onClick}>
                 {children}
             </StyledBinButton>
         );
@@ -44,5 +41,3 @@ const DropdownItemsBinButton = ({
 
     return renderButton();
 };
-
-export default DropdownItemsBinButton;

@@ -7,7 +7,7 @@ import {
     DropdownItemsDragHandleButton,
 } from "./dropdown-items-child.styles";
 import { TOverallOptionGroupBasedSchema } from "src/schemas";
-import DropdownItemsBinButton from "./dropdown-items-bin-button";
+import { DeleteButton } from "../../../common/delete-button/delete-button";
 
 interface IProps {
     onDelete: () => void;
@@ -79,13 +79,13 @@ export const DropdownItemsChild = ({ onDelete, index }: IProps) => {
                     />
                 )}
             ></Controller>
-            <DropdownItemsBinButton
+            <DeleteButton
                 onClick={onDelete}
                 popoverMessage={renderPopoverMessage()}
                 disabled={isDeleteDisabled()}
             >
                 <BinIcon />
-            </DropdownItemsBinButton>
+            </DeleteButton>
         </DropdownItemsChildWrapper>
     );
 };
