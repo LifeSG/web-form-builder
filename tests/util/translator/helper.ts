@@ -16,9 +16,10 @@ interface MockElementProps {
     internalId: string;
     required?: boolean;
     requiredErrorMsg?: string;
+    description?: string;
     columns?: IColumns;
     placeholder?: string;
-    label?: string;
+    label?: string | IComplexLabel;
     validation?: IValidation[];
     conditionalRendering?: IConditionalRendering[];
     prefill?: IPrefillAttributes[];
@@ -96,7 +97,7 @@ export const generateMockElementSchema = ({
 }: MockElementSchemaProps): MockChildrenSchema => {
     return {
         [id]: {
-            label: label,
+            label,
             uiType,
             columns: {
                 desktop: 12,
