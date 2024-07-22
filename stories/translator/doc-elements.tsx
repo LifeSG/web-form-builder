@@ -36,16 +36,11 @@ const FormPreview = ({ data }: IProps) => {
     );
 };
 
-const SchemaView = ({
-    data,
-    onChange,
-    setSchemaProvided,
-}: ISchemaViewProps) => {
+const SchemaView = ({ data, onChange }: ISchemaViewProps) => {
     const [schema, setSchema] = useState("");
 
     const handleBlur = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setSchema(event.target.value);
-        setSchemaProvided(true);
         if (onChange) {
             const newSchema = JSON.parse(event.target.value);
             onChange(newSchema);
@@ -74,30 +69,27 @@ export const DocElement = () => {
     const formBuilderRef = useRef<IFormBuilderMethods>(null);
     const [pageMode, setPageMode] = useState<string>("form-builder-mode");
     const [schema, setSchema] = useState<ISchemaProps | null>(null);
-    const [schemaProvided, setSchemaProvided] = useState<boolean>(false);
 
     // =========================================================================
     // EVENT HANDLERS
     // =========================================================================
     const handleFormBuilderButton = () => {
+        if (formBuilderRef.current) {
+            formBuilderRef.current.parseSchema(schema);
+        }
         setPageMode("form-builder-mode");
     };
 
     const handleFormPreviewButton = () => {
         if (formBuilderRef.current) {
-            const generatedSchema = formBuilderRef.current.generateSchema();
-            setSchema(generatedSchema);
+            formBuilderRef.current.parseSchema(schema);
         }
         setPageMode("preview-mode");
     };
 
     const handleSchemaViewButton = () => {
-        if (formBuilderRef.current) {
-            const generatedSchema = formBuilderRef.current.generateSchema();
-            setSchema(generatedSchema);
-        } else if (schema && schemaProvided) {
-            formBuilderRef.current?.parseSchema(schema);
-        }
+        const generatedSchema = formBuilderRef.current.generateSchema();
+        setSchema(generatedSchema);
         setPageMode("schema-mode");
     };
 
@@ -140,11 +132,7 @@ export const DocElement = () => {
             )}
             {pageMode === "schema-mode" && (
                 <ContentWrapper>
-                    <SchemaView
-                        data={schema}
-                        onChange={setSchema}
-                        setSchemaProvided={setSchemaProvided}
-                    />
+                    <SchemaView data={schema} onChange={setSchema} />
                 </ContentWrapper>
             )}
         </>
