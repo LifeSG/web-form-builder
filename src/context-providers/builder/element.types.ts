@@ -11,10 +11,24 @@ export enum EElementType {
     EMAIL = "email-field",
     NUMERIC = "numeric-field",
     RADIO = "radio",
+    DROPDOWN = "select",
     TEXT = "text-field",
     TEXTAREA = "textarea",
-    DROPDOWN = "select",
 }
+
+export const TextBasedElementTypes: Set<EElementType> = new Set([
+    EElementType.CONTACT,
+    EElementType.EMAIL,
+    EElementType.NUMERIC,
+    EElementType.TEXT,
+    EElementType.TEXTAREA,
+]);
+
+export const OptionGroupBasedElementTypes: Set<EElementType> = new Set([
+    EElementType.CHECKBOX,
+    EElementType.RADIO,
+    EElementType.DROPDOWN,
+]);
 
 export enum EConditionType {
     MORE_THAN = "More than",
