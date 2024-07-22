@@ -1,11 +1,8 @@
-import { yupResolver } from "@hookform/resolvers/yup";
 import { fireEvent, render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
-import { FormProvider, useForm } from "react-hook-form";
 import { BasicDetails } from "src/components/element-editor/basic-details";
 import { EElementType } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data";
-import { SchemaHelper } from "src/schemas";
 import { TestHelper } from "src/util/test-helper";
 
 describe("BasicDetails", () => {
@@ -24,25 +21,23 @@ describe("BasicDetails", () => {
 
     describe("rendering label & required error message fields", () => {
         it("should render label if element has label property", async () => {
-            renderComponent(EElementType.EMAIL, {
+            renderComponent({
                 builderContext: {
                     focusedElement: MOCK_FOCUSED_ELEMENT,
                     elements: MOCK_ELEMENTS,
                 },
             });
-
             const labelField = await getLabelField();
             expect(labelField).toBeInTheDocument();
         });
 
         it("should render required error message if element has required error message property", async () => {
-            renderComponent(EElementType.EMAIL, {
+            renderComponent({
                 builderContext: {
                     focusedElement: MOCK_FOCUSED_ELEMENT,
                     elements: MOCK_ELEMENTS,
                 },
             });
-
             fireEvent.click(await screen.findByLabelText("Yes"));
 
             const requiredErrorMessageField =
@@ -53,7 +48,7 @@ describe("BasicDetails", () => {
 
     describe("rendering the error messages for the fields", () => {
         it("should render an error message for the ID field if it is empty", async () => {
-            renderComponent(EElementType.EMAIL, {
+            renderComponent({
                 builderContext: {
                     focusedElement: MOCK_FOCUSED_ELEMENT,
                     elements: MOCK_ELEMENTS,
@@ -68,7 +63,7 @@ describe("BasicDetails", () => {
         });
 
         it("should render an error message for the ID field if it is invalid", async () => {
-            renderComponent(EElementType.EMAIL, {
+            renderComponent({
                 builderContext: {
                     focusedElement: MOCK_FOCUSED_ELEMENT,
                     elements: MOCK_ELEMENTS,
@@ -85,7 +80,7 @@ describe("BasicDetails", () => {
         });
 
         it("should render an error message for the label field if it is empty", async () => {
-            renderComponent(EElementType.EMAIL, {
+            renderComponent({
                 builderContext: {
                     focusedElement: MOCK_FOCUSED_ELEMENT,
                     elements: MOCK_ELEMENTS,
@@ -103,10 +98,16 @@ describe("BasicDetails", () => {
 
     describe("rendering the preselected value", () => {
         it("should render the preselected value if the element type is dropdown and there is at least 1 valid dropdown item", async () => {
-            renderComponent(EElementType.DROPDOWN, {
+            renderComponent({
                 builderContext: {
                     focusedElement: MOCK_FOCUSED_DROPDOWN_ELEMENT,
                     elements: MOCK_ELEMENTS,
+                },
+                formContext: {
+                    elementType: EElementType.DROPDOWN,
+                    defaultValues: {
+                        type: EElementType.DROPDOWN,
+                    },
                 },
             });
 
@@ -147,10 +148,16 @@ describe("BasicDetails", () => {
 
     describe("submitting the form for dropdown element", () => {
         it("should not be able to submit the form if there are not at least 2 valid dropdown items", async () => {
-            renderComponent(EElementType.DROPDOWN, {
+            renderComponent({
                 builderContext: {
                     focusedElement: MOCK_FOCUSED_DROPDOWN_ELEMENT,
                     elements: MOCK_ELEMENTS,
+                },
+                formContext: {
+                    elementType: EElementType.DROPDOWN,
+                    defaultValues: {
+                        type: EElementType.DROPDOWN,
+                    },
                 },
             });
 
@@ -172,45 +179,21 @@ describe("BasicDetails", () => {
 });
 
 // =============================================================================
-// INTERFACES
-// =============================================================================
-
-interface IProps {
-    elementType: EElementType;
-}
-
-// =============================================================================
 // HELPER FUNCTIONS
 // =============================================================================
 
-const MyTestComponent = ({ elementType }: IProps) => {
-    const methods = useForm({
-        mode: "onTouched",
-        resolver: yupResolver(SchemaHelper.buildSchema(elementType)),
-        defaultValues: {
-            type: elementType,
-        },
-    });
-    const onSubmit = jest.fn;
+const MyTestComponent = () => {
     return (
-        <FormProvider {...methods}>
-            <form onSubmit={methods.handleSubmit(onSubmit)}>
-                <BasicDetails />
-                <button type="submit">Submit</button>
-            </form>
-        </FormProvider>
+        <>
+            <BasicDetails />
+            <button type="submit">Submit</button>
+        </>
     );
 };
 
-const renderComponent = (
-    elementType: EElementType,
-    overrideOptions?: TestHelper.RenderOptions
-) => {
+const renderComponent = (overrideOptions?: TestHelper.RenderOptions) => {
     return render(
-        TestHelper.withProviders(
-            overrideOptions,
-            <MyTestComponent elementType={elementType} />
-        )
+        TestHelper.withProviders(overrideOptions, <MyTestComponent />)
     );
 };
 

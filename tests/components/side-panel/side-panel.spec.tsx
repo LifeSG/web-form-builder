@@ -110,6 +110,19 @@ describe("SidePanel", () => {
         });
 
         it("should remove empty dropdown items when saving if there are at least 2 valid dropdown items", async () => {
+            const MOCK_DROPDOWN_ELEMENT: TOptionGroupBasedElement = {
+                internalId: "mock123",
+                type: EElementType.DROPDOWN,
+                id: "mockElement",
+                required: false,
+                label: ELEMENT_BUTTON_LABELS[EElementType.DROPDOWN],
+                columns: { desktop: 12, tablet: 8, mobile: 4 },
+                dropdownItems: [
+                    { label: "", value: "" },
+                    { label: "", value: "" },
+                ],
+            };
+
             renderComponent({
                 builderContext: {
                     focusedElement: {
@@ -194,17 +207,4 @@ const MOCK_ELEMENT: TElement = {
     required: false,
     label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
     columns: { desktop: 12, tablet: 8, mobile: 4 },
-};
-
-const MOCK_DROPDOWN_ELEMENT: TOptionGroupBasedElement = {
-    internalId: "mock123",
-    type: EElementType.DROPDOWN,
-    id: "mockElement",
-    required: false,
-    label: ELEMENT_BUTTON_LABELS[EElementType.DROPDOWN],
-    columns: { desktop: 12, tablet: 8, mobile: 4 },
-    dropdownItems: [
-        { label: "", value: "" },
-        { label: "", value: "" },
-    ],
 };

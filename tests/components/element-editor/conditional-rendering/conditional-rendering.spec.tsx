@@ -1,11 +1,8 @@
-import { yupResolver } from "@hookform/resolvers/yup";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import "jest-canvas-mock";
-import { FormProvider, useForm } from "react-hook-form";
 import { ConditionalRendering } from "src/components/element-editor/conditional-rendering";
-import { EElementType, IColumns } from "src/context-providers";
+import { EElementType } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data";
-import { SchemaHelper } from "src/schemas";
 import { TestHelper } from "src/util/test-helper";
 
 describe("ConditionalRendering", () => {
@@ -95,15 +92,7 @@ describe("ConditionalRendering", () => {
 // =============================================================================
 
 const MyTestComponent = () => {
-    const methods = useForm({
-        mode: "onTouched",
-        resolver: yupResolver(SchemaHelper.buildSchema(EElementType.EMAIL)),
-    });
-    return (
-        <FormProvider {...methods}>
-            <ConditionalRendering />
-        </FormProvider>
-    );
+    return <ConditionalRendering />;
 };
 
 const renderComponent = (overrideOptions?: TestHelper.RenderOptions) => {

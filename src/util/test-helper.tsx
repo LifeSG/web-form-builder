@@ -1,13 +1,17 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import { BaseTheme } from "@lifesg/react-design-system";
 import { noop } from "lodash";
 import React from "react";
+import { FormProvider, useForm } from "react-hook-form";
 import {
     BuilderContext,
     DisplayContext,
     EBuilderMode,
+    EElementType,
     IBuilderState,
     IDisplayState,
 } from "src/context-providers";
+import { SchemaHelper } from "src/schemas";
 import { ThemeProvider } from "styled-components";
 
 const mockBuilderState: IBuilderState = {
@@ -19,6 +23,7 @@ const mockBuilderState: IBuilderState = {
     deletedElements: {},
     elementCounter: 0,
     isSubmitting: false,
+    selectedElementType: null,
 };
 
 const mockDisplayState: IDisplayState = {
@@ -26,14 +31,26 @@ const mockDisplayState: IDisplayState = {
     modals: [],
 };
 
+interface FormContextProps {
+    elementType?: EElementType;
+    defaultValues?: {
+        [x: string]: any;
+    };
+    currentValues?: {
+        [x: string]: any;
+    };
+    onSubmit?: (data: any) => void;
+}
+
 export namespace TestHelper {
     export interface RenderOptions {
         builderContext?: Partial<IBuilderState>;
         displayContext?: Partial<IDisplayState>;
+        formContext?: FormContextProps;
     }
 
     export const withProviders = (
-        { builderContext, displayContext }: RenderOptions = {},
+        { builderContext, displayContext, formContext }: RenderOptions = {},
         component: React.ReactNode
     ) => {
         return (
@@ -50,10 +67,43 @@ export namespace TestHelper {
                             dispatch: noop,
                         }}
                     >
-                        {component}
+                        <InnerFormProvider formContext={formContext}>
+                            {component}
+                        </InnerFormProvider>
                     </DisplayContext.Provider>
                 </BuilderContext.Provider>
             </ThemeProvider>
+        );
+    };
+
+    const InnerFormProvider = ({
+        formContext,
+        children,
+    }: {
+        formContext?: FormContextProps;
+        children: React.ReactNode;
+    }) => {
+        const methods = useForm({
+            mode: "onTouched",
+            resolver: yupResolver(
+                SchemaHelper.buildSchema(
+                    formContext?.elementType || EElementType.EMAIL
+                )
+            ),
+            defaultValues: formContext?.defaultValues,
+        });
+        if (formContext?.currentValues) {
+            Object.keys(formContext.currentValues).forEach((key) => {
+                methods.setValue(key, formContext.currentValues[key]);
+            });
+        }
+        const onSubmit = jest.fn;
+        return (
+            <FormProvider {...methods}>
+                <form onSubmit={methods.handleSubmit(onSubmit)}>
+                    {children}
+                </form>
+            </FormProvider>
         );
     };
 }

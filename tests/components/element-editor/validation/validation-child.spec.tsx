@@ -1,11 +1,8 @@
-import { yupResolver } from "@hookform/resolvers/yup";
 import { fireEvent, render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
-import { FormProvider, useForm } from "react-hook-form";
 import { ValidationChild } from "src/components/element-editor/validation";
-import { EElementType, IValidation } from "src/context-providers";
+import { EElementType } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
-import { SchemaHelper } from "src/schemas";
 import { TestHelper } from "src/util/test-helper";
 
 describe("ValidationChild", () => {
@@ -18,7 +15,6 @@ describe("ValidationChild", () => {
         renderComponent({
             onDelete: mockDelete,
             options: mockOptions,
-            value: mockEmptyValue,
             index: mockIndex,
         });
         expect(screen.getByText("Select")).toBeInTheDocument();
@@ -29,12 +25,20 @@ describe("ValidationChild", () => {
     });
 
     it("should render fields with prefilled values when values are provided", () => {
-        renderComponent({
-            onDelete: mockDelete,
-            options: mockOptions,
-            value: mockValue,
-            index: mockIndex,
-        });
+        renderComponent(
+            {
+                onDelete: mockDelete,
+                options: mockOptions,
+                index: mockIndex,
+            },
+            {
+                formContext: {
+                    currentValues: {
+                        validation: mockValue,
+                    },
+                },
+            }
+        );
         const getValidationTypeField = screen.getByRole("button", {
             name: "Option 1",
         });
@@ -46,12 +50,20 @@ describe("ValidationChild", () => {
     });
 
     it("should fire the delete function on clicking the bin icon", () => {
-        renderComponent({
-            onDelete: mockDelete,
-            options: mockOptions,
-            value: mockValue,
-            index: mockIndex,
-        });
+        renderComponent(
+            {
+                onDelete: mockDelete,
+                options: mockOptions,
+                index: mockIndex,
+            },
+            {
+                formContext: {
+                    currentValues: {
+                        validation: mockValue,
+                    },
+                },
+            }
+        );
         const deleteButton = screen.getByTestId("delete-button");
         fireEvent.click(deleteButton);
         expect(mockDelete).toBeCalled();
@@ -62,7 +74,6 @@ describe("ValidationChild", () => {
             {
                 onDelete: mockDelete,
                 options: ["Option 1"],
-                value: mockValue,
                 index: mockIndex,
             },
             {
@@ -82,6 +93,11 @@ describe("ValidationChild", () => {
                         },
                     },
                 },
+                formContext: {
+                    currentValues: {
+                        validation: mockValue,
+                    },
+                },
             }
         );
         const getValidationTypeField = screen.getByRole("button", {
@@ -96,7 +112,6 @@ describe("ValidationChild", () => {
             {
                 onDelete: mockDelete,
                 options: mockEmailValidationOptions,
-                value: mockEmailValidationValue,
                 index: mockIndex,
             },
             {
@@ -114,6 +129,11 @@ describe("ValidationChild", () => {
                             id: "mockId",
                             internalId: "mockId1",
                         },
+                    },
+                },
+                formContext: {
+                    currentValues: {
+                        validation: mockEmailValidationValue,
                     },
                 },
             }
@@ -135,7 +155,6 @@ describe("ValidationChild", () => {
             {
                 onDelete: mockDelete,
                 options: mockEmailValidationOptions,
-                value: mockEEmptyEmailValidationValue,
                 index: mockIndex,
             },
             {
@@ -155,6 +174,11 @@ describe("ValidationChild", () => {
                         },
                     },
                 },
+                formContext: {
+                    currentValues: {
+                        validation: mockEmptyEmailValidationValue,
+                    },
+                },
             }
         );
         const getValidationRuleField =
@@ -168,12 +192,20 @@ describe("ValidationChild", () => {
     });
 
     it("should render an error message when validation fields are left empty", async () => {
-        renderComponent({
-            onDelete: mockDelete,
-            options: mockOptions,
-            value: mockEmptyValue,
-            index: mockIndex,
-        });
+        renderComponent(
+            {
+                onDelete: mockDelete,
+                options: mockOptions,
+                index: mockIndex,
+            },
+            {
+                formContext: {
+                    currentValues: {
+                        validation: mockEmptyValue,
+                    },
+                },
+            }
+        );
         const submitButton = screen.getByText("Submit");
         fireEvent.click(submitButton);
         const validationError = await screen.findByText("Validation required.");
@@ -196,32 +228,22 @@ describe("ValidationChild", () => {
 type ValidationChildOptions = {
     onDelete?: () => void;
     options?: string[];
-    value?: IValidation[];
     index?: number;
 };
 
 const MyTestComponent = ({
     validationChildOptions = {},
 }: { validationChildOptions?: ValidationChildOptions } = {}) => {
-    const methods = useForm({
-        mode: "onTouched",
-        resolver: yupResolver(SchemaHelper.buildSchema(EElementType.EMAIL)),
-    });
-
-    const { onDelete, options, value, index } = validationChildOptions;
-    const onSubmit = jest.fn;
-    methods.setValue("validation", value);
+    const { onDelete, options, index } = validationChildOptions;
     return (
-        <FormProvider {...methods}>
-            <form onSubmit={methods.handleSubmit(onSubmit)}>
-                <ValidationChild
-                    onDelete={onDelete}
-                    options={options}
-                    index={index}
-                />
-                <button type="submit">Submit</button>
-            </form>
-        </FormProvider>
+        <>
+            <ValidationChild
+                onDelete={onDelete}
+                options={options}
+                index={index}
+            />
+            <button type="submit">Submit</button>
+        </>
     );
 };
 
@@ -245,7 +267,6 @@ const mockOptions = ["Option 1", "Option 2"];
 const mockEmailValidationOptions =
     ELEMENT_VALIDATION_TYPES["Text field"][EElementType.EMAIL].validationTypes;
 const mockDelete = jest.fn();
-const mockOnChange = jest.fn();
 const mockValue = [
     {
         validationType: "Option 1",
@@ -272,7 +293,7 @@ const mockEmailValidationValue = [
     },
 ];
 
-const mockEEmptyEmailValidationValue = [
+const mockEmptyEmailValidationValue = [
     {
         validationType:
             ELEMENT_VALIDATION_TYPES["Text field"][EElementType.EMAIL]

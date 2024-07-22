@@ -111,16 +111,7 @@ describe("Prefill", () => {
 // =============================================================================
 
 const MyTestComponent = () => {
-    const methods = useForm({
-        mode: "onTouched",
-        resolver: yupResolver(SchemaHelper.buildSchema(EElementType.EMAIL)),
-    });
-
-    return (
-        <FormProvider {...methods}>
-            <Prefill />
-        </FormProvider>
-    );
+    return <Prefill />;
 };
 
 const renderComponent = (overrideOptions: TestHelper.RenderOptions) => {

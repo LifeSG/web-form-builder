@@ -27,6 +27,7 @@ export const Toolbar = () => {
     return (
         <Wrapper data-testid="toolbar">
             <ModeButton
+                type="button"
                 data-testid="add-element"
                 $active={currentMode === EBuilderMode.ADD_ELEMENT}
                 onClick={toggleView(EBuilderMode.ADD_ELEMENT)}
@@ -34,6 +35,7 @@ export const Toolbar = () => {
                 <AddElementIcon />
             </ModeButton>
             <ModeButton
+                type="button"
                 $active={currentMode === EBuilderMode.EDIT_PAGES}
                 onClick={toggleView(EBuilderMode.EDIT_PAGES)}
             >

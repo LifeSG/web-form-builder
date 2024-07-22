@@ -162,12 +162,13 @@ const getDuplicateButton = (useQuery = false) =>
 // MOCKS
 // =============================================================================
 
-const MOCK_ELEMENT = {
+const MOCK_ELEMENT: TElement = {
     internalId: "mock123",
     type: EElementType.EMAIL,
     id: "mockElement",
     required: false,
     label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
+    columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
 };
 
 const mockOnClick = jest.fn();

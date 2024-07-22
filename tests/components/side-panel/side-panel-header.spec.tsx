@@ -103,18 +103,10 @@ describe("SidePanelHeader", () => {
 // =============================================================================
 
 const TestComponent = () => {
-    const methods = useForm({
-        mode: "onTouched",
-        resolver: yupResolver(SchemaHelper.buildSchema(EElementType.EMAIL)),
-    });
     return (
         <DisplayProvider>
             <Modals />
-            <FormProvider {...methods}>
-                <form>
-                    <SidePanelHeader />
-                </form>
-            </FormProvider>
+            <SidePanelHeader />
         </DisplayProvider>
     );
 };
