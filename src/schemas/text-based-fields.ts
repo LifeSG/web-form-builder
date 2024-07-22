@@ -108,7 +108,8 @@ const generateValidationSchema = (elementType: EElementType) => {
                                     ].validationTypes;
                                 return (
                                     validationTypes.includes(value) &&
-                                    value !== "Custom regex"
+                                    (value === "Minimum length" ||
+                                        value === "Maximum length")
                                 );
                             },
                             then: (rule) =>
@@ -122,8 +123,6 @@ const generateValidationSchema = (elementType: EElementType) => {
                                             Number.isInteger(Number(value)) &&
                                             parseInt(value) >= 0
                                     ),
-                            otherwise: (rule) =>
-                                rule.required("Validation rule required."),
                         }),
                     validationErrorMessage: yup
                         .string()
