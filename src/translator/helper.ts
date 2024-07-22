@@ -100,7 +100,8 @@ export const parseConditionalRenderingObject = (conditions: TRenderRules[]) => {
 };
 
 export const parseSchemaBasedOnType = (
-    schemaToParse: Record<string, TFrontendEngineFieldSchema>
+    schemaToParse: Record<string, TFrontendEngineFieldSchema>,
+    prefill: IPrefillConfig
 ) => {
     const parsedElements = [];
     Object.entries(schemaToParse).forEach(([key, element]) => {
@@ -114,7 +115,8 @@ export const parseSchemaBasedOnType = (
                 parsedElements.push(
                     TextBasedField.parseToElement(
                         element as TextBasedField.TElementSchema,
-                        key
+                        key,
+                        prefill
                     )
                 );
                 break;

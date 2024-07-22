@@ -1,11 +1,10 @@
-import { ISchemaProps } from "src";
 import {
     EElementType,
     IElementIdentifier,
     TElementMap,
 } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
-import { Translator } from "src/translator";
+import { ISchemaProps, Translator } from "src/translator";
 import {
     generateMockElement,
     generateMockElementSchema,
@@ -358,6 +357,7 @@ describe("Translator", () => {
                             },
                         ],
                         conditionalRendering: [],
+                        prefill: [],
                     });
 
                 expect(generatedSchema.newElements).toEqual(
@@ -428,6 +428,7 @@ describe("Translator", () => {
                                     )[1],
                                 },
                             ],
+                            prefill: [],
                         }),
                         ...generateMockElement({
                             type: EElementType.TEXT,
@@ -437,6 +438,7 @@ describe("Translator", () => {
                             )[1],
                             requiredErrorMsg: "Input is required",
                             conditionalRendering: [],
+                            prefill: [],
                         }),
                     };
 
@@ -485,6 +487,7 @@ describe("Translator", () => {
                                 path: "testpath",
                             },
                         ],
+                        conditionalRendering: [],
                     });
 
                 expect(generatedSchema.newElements).toEqual(
@@ -527,6 +530,7 @@ describe("Translator", () => {
                         id: "mock123",
                         internalId: Object.keys(generatedSchema.newElements)[0],
                         requiredErrorMsg: "Email address is required",
+                        conditionalRendering: [],
                         prefill: [
                             {
                                 prefillMode: "Previous source",
@@ -584,6 +588,7 @@ describe("Translator", () => {
                         required: true,
                         requiredErrorMsg: "Input is required",
                         conditionalRendering: [],
+                        prefill: [],
                     }),
                     ...generateMockElement({
                         type: EElementType.NUMERIC,
@@ -593,6 +598,7 @@ describe("Translator", () => {
                         required: true,
                         requiredErrorMsg: "Number is required",
                         conditionalRendering: [],
+                        prefill: [],
                     }),
                 };
 

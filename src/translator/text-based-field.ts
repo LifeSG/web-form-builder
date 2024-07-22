@@ -11,7 +11,9 @@ import { SimpleIdGenerator } from "src/util/simple-id-generator";
 import {
     createConditionalRenderingObject,
     parseConditionalRenderingObject,
+    parsePrefillObject,
 } from "./helper";
+import { IPrefillConfig } from "./types";
 
 export namespace TextBasedField {
     export type TElementSchema =
@@ -151,7 +153,11 @@ export namespace TextBasedField {
         return textBasedFieldSchema;
     };
 
-    export const parseToElement = (element: TElementSchema, key: string) => {
+    export const parseToElement = (
+        element: TElementSchema,
+        key: string,
+        prefill: IPrefillConfig
+    ) => {
         const { showIf, uiType, validation, ...rest } = element;
 
         let requiredValidation: IYupValidationRule = {};
@@ -182,6 +188,8 @@ export namespace TextBasedField {
             conditionalRendering: showIf
                 ? parseConditionalRenderingObject(showIf as TRenderRules[])
                 : [],
+
+            prefill: parsePrefillObject(prefill, key) || [],
         };
 
         return parsedElement as TElement;
