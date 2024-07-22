@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
 import { FormProvider, useForm } from "react-hook-form";
 import { BasicDetails } from "src/components/element-editor/basic-details";
-import { EElementType, IColumns } from "src/context-providers";
+import { EElementType } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data";
 import { SchemaHelper } from "src/schemas";
 import { TestHelper } from "src/util/test-helper";
@@ -56,6 +56,20 @@ describe("BasicDetails", () => {
             const requiredErrorMessageField =
                 await screen.findByLabelText("Error message");
             expect(requiredErrorMessageField).toBeInTheDocument();
+        });
+
+        it("should render the description if element has the description property", async () => {
+            renderComponent({
+                builderContext: {
+                    focusedElement: MOCK_FOCUSED_ELEMENT,
+                    elements: MOCK_ELEMENTS,
+                },
+            });
+
+            const descriptionField = await screen.findByText(
+                "Description text (optional)"
+            );
+            expect(descriptionField).toBeInTheDocument();
         });
     });
 
@@ -150,6 +164,7 @@ const MOCK_FOCUSED_ELEMENT = {
         type: EElementType.EMAIL,
         id: "mockElement",
         required: false,
+        description: "hellooo",
         label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
         columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
     },
@@ -161,6 +176,7 @@ const MOCK_ELEMENTS = {
         type: EElementType.EMAIL,
         id: "mockElement",
         required: false,
+        description: "",
         label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
         columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
     },

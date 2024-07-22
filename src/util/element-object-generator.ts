@@ -69,6 +69,7 @@ export namespace ElementObjectGenerator {
                     placeholder: "",
                     required: true,
                     requiredErrorMsg: "",
+                    description: "",
                     label: ELEMENT_BUTTON_LABELS[type],
                     columns: { desktop: 12, tablet: 8, mobile: 4 },
                     validation: [],

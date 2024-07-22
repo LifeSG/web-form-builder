@@ -29,5 +29,6 @@ export namespace BaseSchemaHelper {
                         .filter((id) => id !== focusedElement?.element.id),
                     "ID must not be duplicated."
                 ),
+            description: yup.string().optional(),
         });
 }
