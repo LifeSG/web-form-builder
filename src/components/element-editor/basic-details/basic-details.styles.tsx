@@ -1,8 +1,9 @@
 import { Color } from "@lifesg/react-design-system/color";
 import { Accordion } from "@lifesg/react-design-system/accordion";
 import styled from "styled-components";
+import { Form } from "@lifesg/react-design-system/form";
 
-interface FieldEditorAccordionItemProps {
+interface IFieldEditorAccordionItemProps {
     $hideTopBorder: boolean;
 }
 
@@ -27,7 +28,7 @@ export const Wrapper = styled.div`
 
 export const FieldEditorAccordionItem = styled(
     Accordion.Item
-)<FieldEditorAccordionItemProps>`
+)<IFieldEditorAccordionItemProps>`
     border-top: ${({ $hideTopBorder }) =>
         $hideTopBorder ? `1px solid ${Color.Neutral[6]}` : "0"};
 
@@ -50,4 +51,9 @@ export const FieldEditorAccordionItem = styled(
     [data-testid="accordion-item-expand-collapse-button"] {
         margin: ${({ $hideTopBorder }) =>
             $hideTopBorder ? `0 0.1rem 0 1rem` : "0 0.1rem 0 0"};
+`;
+
+export const StyledTextarea = styled(Form.Textarea)`
+    min-height: 40px;
+    overflow: hidden;
 `;
