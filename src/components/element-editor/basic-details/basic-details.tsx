@@ -79,7 +79,7 @@ export const BasicDetails = () => {
                                 label="Element Name"
                                 rows={1}
                                 placeholder="Element Name"
-                                value={field.value}
+                                value={field.value as string}
                                 onChange={(e) => {
                                     field.onChange(e.target.value);
                                 }}
