@@ -36,7 +36,6 @@ describe("Translator", () => {
                         id: "mockId1",
                         label: {
                             mainLabel: "Email address",
-                            subLabel: "",
                         },
                         uiType: EElementType.EMAIL,
                     })
@@ -77,7 +76,6 @@ describe("Translator", () => {
                         id: "mockId1",
                         label: {
                             mainLabel: "Email address",
-                            subLabel: "",
                         },
                         uiType: EElementType.EMAIL,
                         validation: [
@@ -137,7 +135,6 @@ describe("Translator", () => {
                                 id: "mock123",
                                 label: {
                                     mainLabel: "Email address",
-                                    subLabel: "",
                                 },
                                 uiType: EElementType.EMAIL,
                                 validation: [
@@ -162,7 +159,6 @@ describe("Translator", () => {
                                 id: "mock456",
                                 label: {
                                     mainLabel: "Short text",
-                                    subLabel: "",
                                 },
                                 uiType: EElementType.TEXT,
                                 validation: [
@@ -215,7 +211,6 @@ describe("Translator", () => {
                             id: "mock123",
                             label: {
                                 mainLabel: "Email address",
-                                subLabel: "",
                             },
                             uiType: EElementType.EMAIL,
                             validation: [
@@ -268,7 +263,6 @@ describe("Translator", () => {
                             id: "mock123",
                             label: {
                                 mainLabel: "Email address",
-                                subLabel: "",
                             },
                             uiType: EElementType.EMAIL,
                             validation: [
@@ -309,7 +303,6 @@ describe("Translator", () => {
                         id: "mockId1",
                         label: {
                             mainLabel: "Short text",
-                            subLabel: "",
                         },
                         uiType: EElementType.TEXT,
                         validation: [
@@ -338,7 +331,9 @@ describe("Translator", () => {
                     {},
                     generateMockElementSchema({
                         id: "mockId1",
-                        label: "Email address",
+                        label: {
+                            mainLabel: "Email address",
+                        },
                         uiType: EElementType.EMAIL,
                         validation: [
                             {
@@ -360,6 +355,9 @@ describe("Translator", () => {
                 const MOCK__EMAIL_ELEMENT_WITH_VALIDATION: TElementMap =
                     generateMockElement({
                         type: EElementType.EMAIL,
+                        label: {
+                            mainLabel: "Email address",
+                        },
                         id: "mockId1",
                         internalId: Object.keys(generatedSchema.newElements)[0],
                         requiredErrorMsg: "Email address is required",
@@ -387,7 +385,9 @@ describe("Translator", () => {
                         {
                             ...generateMockElementSchema({
                                 id: "mock123",
-                                label: "Email address",
+                                label: {
+                                    mainLabel: "Email address",
+                                },
                                 uiType: EElementType.EMAIL,
                                 validation: [
                                     {
@@ -409,7 +409,9 @@ describe("Translator", () => {
                             }),
                             ...generateMockElementSchema({
                                 id: "mock456",
-                                label: "Short text",
+                                label: {
+                                    mainLabel: "Short text",
+                                },
                                 uiType: EElementType.TEXT,
                                 validation: [
                                     {
@@ -429,6 +431,9 @@ describe("Translator", () => {
                     {
                         ...generateMockElement({
                             type: EElementType.EMAIL,
+                            label: {
+                                mainLabel: "Email address",
+                            },
                             id: "mock123",
                             internalId: Object.keys(
                                 generatedSchema.newElements
@@ -447,6 +452,9 @@ describe("Translator", () => {
                         }),
                         ...generateMockElement({
                             type: EElementType.TEXT,
+                            label: {
+                                mainLabel: "Short text",
+                            },
                             id: "mock456",
                             internalId: Object.keys(
                                 generatedSchema.newElements
@@ -468,7 +476,9 @@ describe("Translator", () => {
                     {
                         ...generateMockElementSchema({
                             id: "mockId1",
-                            label: "Short text",
+                            label: {
+                                mainLabel: "Short text",
+                            },
                             uiType: EElementType.TEXT,
                             validation: [
                                 {
@@ -479,7 +489,9 @@ describe("Translator", () => {
                         }),
                         ...generateMockElementSchema({
                             id: "mock456",
-                            label: "Number",
+                            label: {
+                                mainLabel: "Number",
+                            },
                             uiType: EElementType.NUMERIC,
                             validation: [
                                 {
@@ -497,8 +509,10 @@ describe("Translator", () => {
                 const MOCK_TEXT_BASED_ELEMENT: TElementMap = {
                     ...generateMockElement({
                         type: EElementType.TEXT,
+                        label: {
+                            mainLabel: "Short text",
+                        },
                         id: "mockId1",
-                        label: "Short text",
                         internalId: Object.keys(generatedSchema.newElements)[0],
                         required: true,
                         requiredErrorMsg: "Input is required",
@@ -506,7 +520,9 @@ describe("Translator", () => {
                     ...generateMockElement({
                         type: EElementType.NUMERIC,
                         id: "mock456",
-                        label: "Number",
+                        label: {
+                            mainLabel: "Number",
+                        },
                         internalId: Object.keys(generatedSchema.newElements)[1],
                         required: true,
                         requiredErrorMsg: "Number is required",
