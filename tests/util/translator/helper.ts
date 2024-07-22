@@ -16,6 +16,7 @@ interface MockElementProps {
     internalId: string;
     required?: boolean;
     requiredErrorMsg?: string;
+    description?: string;
     columns?: IColumns;
     placeholder?: string;
     label?: string | IComplexLabel;
@@ -53,9 +54,7 @@ export const generateMockElement = (props: MockElementProps): TElementMap => {
         [props.internalId]: {
             required: true,
             columns: { desktop: 12, tablet: 8, mobile: 4 },
-            label: props.label
-                ? props.label
-                : ELEMENT_BUTTON_LABELS[props.type],
+            label: ELEMENT_BUTTON_LABELS[props.type],
             ...props,
         },
     };

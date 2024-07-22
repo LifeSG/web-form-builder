@@ -355,9 +355,7 @@ describe("Translator", () => {
                 const MOCK__EMAIL_ELEMENT_WITH_VALIDATION: TElementMap =
                     generateMockElement({
                         type: EElementType.EMAIL,
-                        label: {
-                            mainLabel: "Email address",
-                        },
+                        label: "Email address",
                         id: "mockId1",
                         internalId: Object.keys(generatedSchema.newElements)[0],
                         requiredErrorMsg: "Email address is required",
@@ -431,9 +429,7 @@ describe("Translator", () => {
                     {
                         ...generateMockElement({
                             type: EElementType.EMAIL,
-                            label: {
-                                mainLabel: "Email address",
-                            },
+                            label: "Email address",
                             id: "mock123",
                             internalId: Object.keys(
                                 generatedSchema.newElements
@@ -452,9 +448,7 @@ describe("Translator", () => {
                         }),
                         ...generateMockElement({
                             type: EElementType.TEXT,
-                            label: {
-                                mainLabel: "Short text",
-                            },
+                            label: "Short text",
                             id: "mock456",
                             internalId: Object.keys(
                                 generatedSchema.newElements
@@ -509,9 +503,7 @@ describe("Translator", () => {
                 const MOCK_TEXT_BASED_ELEMENT: TElementMap = {
                     ...generateMockElement({
                         type: EElementType.TEXT,
-                        label: {
-                            mainLabel: "Short text",
-                        },
+                        label: "Short text",
                         id: "mockId1",
                         internalId: Object.keys(generatedSchema.newElements)[0],
                         required: true,
@@ -520,9 +512,7 @@ describe("Translator", () => {
                     ...generateMockElement({
                         type: EElementType.NUMERIC,
                         id: "mock456",
-                        label: {
-                            mainLabel: "Number",
-                        },
+                        label: "Number",
                         internalId: Object.keys(generatedSchema.newElements)[1],
                         required: true,
                         requiredErrorMsg: "Number is required",
