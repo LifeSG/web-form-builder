@@ -2,6 +2,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useCallback, useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import {
+    EElementType,
     EToastTypes,
     IDropdownItemAttributes,
     TElement,
@@ -34,7 +35,9 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
         toggleSubmitting,
     } = useBuilder();
     const { showToast } = useDisplay();
-    const schema = SchemaHelper.buildSchema(selectedElementType);
+    const schema = SchemaHelper.buildSchema(
+        selectedElementType || EElementType.EMAIL
+    );
     const methods = useForm({
         mode: "onTouched",
         resolver: yupResolver(schema),

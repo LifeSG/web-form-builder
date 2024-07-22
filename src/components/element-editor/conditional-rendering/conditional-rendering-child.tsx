@@ -3,7 +3,7 @@ import { Text } from "@lifesg/react-design-system/text";
 import { Controller, useFormContext } from "react-hook-form";
 import { ChildEntry } from "src/components/common";
 import { EConditionType } from "src/context-providers";
-import { TBaseTextBasedFieldValues } from "src/schemas";
+import { TFormFieldValues } from "src/schemas";
 import {
     FieldWrapper,
     OptionIDText,
@@ -50,8 +50,7 @@ export const ConditionalRenderingChild = ({
         formState: { errors },
         control,
         setValue,
-    } = useFormContext<TBaseTextBasedFieldValues>();
-
+    } = useFormContext<TFormFieldValues>();
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================

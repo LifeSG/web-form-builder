@@ -80,6 +80,7 @@ export const OPTION_GROUP_BASED_SCHEMA = yup.object().shape({
             fieldKey: yup.string().required("Reference required."),
             comparator: yup.string().required("Comparator required."),
             value: yup.string().required("Reference value required."),
+            internalId: yup.string(),
         })
     ),
 });

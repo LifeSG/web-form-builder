@@ -17,8 +17,7 @@ export const BasicDetails = () => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
-    const { focusedElement, updateFocusedElement, selectElementType } =
-        useBuilder();
+    const { focusedElement, selectElementType } = useBuilder();
     const {
         control,
         formState: { errors },

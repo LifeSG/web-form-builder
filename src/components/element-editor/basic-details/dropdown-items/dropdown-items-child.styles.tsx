@@ -17,33 +17,31 @@ export const DropdownItemsChildWrapper = styled.div`
     display: flex;
     align-items: start;
     justify-content: center;
-    margin-bottom: 16px;
+    margin-bottom: 1rem;
     & > *:nth-child(1) {
-        margin-right: 8px;
+        margin-right: 0.5rem;
     }
 
     & > *:nth-child(2) {
-        margin-right: 16px;
+        margin-right: 1rem;
     }
 
     & > *:nth-child(3) {
-        margin-right: 16px;
+        margin-right: 1rem;
     }
 
-    & > *:nth-child(4) {
-        margin-right: 0;
-    }
     & > * {
         margin-bottom: 0 !important;
     }
 `;
 
 export const DropdownItemsDragHandleButton = styled.div`
-    margin-top: 0.625rem;
+    margin-top: 0.875rem;
     svg {
         color: ${Color.Accent.Light[1]};
         width: 1.25rem;
         height: 1.25rem;
+        align-items: center;
         cursor: grab;
     }
 `;
