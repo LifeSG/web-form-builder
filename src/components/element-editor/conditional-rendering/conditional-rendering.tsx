@@ -34,11 +34,10 @@ export const ConditionalRendering = () => {
     // =====================================================================
     // HELPER FUNCTIONS
     // =====================================================================
-
     const getElementOptions = () => {
         const options: IOptions[] = [];
-        Object.entries(elements).forEach(([key, value]) => {
-            if (key !== element?.internalId) {
+        Object.entries(elements).forEach(([_, value]) => {
+            if (value.id !== element?.id) {
                 const optionItem = {
                     label: value?.label,
                     id: value?.id,
