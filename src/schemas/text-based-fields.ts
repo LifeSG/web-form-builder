@@ -1,8 +1,8 @@
 import {
     EElementType,
+    EValidationType,
     IBaseTextBasedFieldAttributes,
 } from "src/context-providers";
-import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import * as yup from "yup";
 
 const VALIDATION_DOMAIN_REGEX =
@@ -62,9 +62,7 @@ const generateValidationSchema = (elementType: EElementType) => {
                         .string()
                         .required("Validation required."),
                     validationRule: yup.string().when("validationType", {
-                        is: ELEMENT_VALIDATION_TYPES["Text field"][
-                            EElementType.EMAIL
-                        ].validationTypes[0],
+                        is: EValidationType.EMAIL_DOMAIN,
                         then: (rule) =>
                             rule
                                 .required("Email domain required.")
@@ -90,9 +88,7 @@ const generateValidationSchema = (elementType: EElementType) => {
                     validationRule: yup
                         .string()
                         .when("validationType", {
-                            is: ELEMENT_VALIDATION_TYPES["Text field"][
-                                EElementType.TEXT
-                            ].validationTypes[0],
+                            is: EValidationType.CUSTOM_REGEX,
                             then: (rule) =>
                                 rule
                                     .required("Custom regex required.")
@@ -100,12 +96,8 @@ const generateValidationSchema = (elementType: EElementType) => {
                         })
                         .when("validationType", {
                             is:
-                                ELEMENT_VALIDATION_TYPES["Text field"][
-                                    EElementType.TEXT
-                                ].validationTypes[1] ||
-                                ELEMENT_VALIDATION_TYPES["Text field"][
-                                    EElementType.TEXT
-                                ].validationTypes[2],
+                                EValidationType.MIN_LENGTH ||
+                                EValidationType.MAX_LENGTH,
                             then: (rule) =>
                                 rule
                                     .required("Numeric value required.")
@@ -126,19 +118,13 @@ const generateValidationSchema = (elementType: EElementType) => {
                         .string()
                         .required("Validation required."),
                     validationRule: yup.string().when("validationType", {
-                        is: ELEMENT_VALIDATION_TYPES["Text field"][
-                            EElementType.NUMERIC
-                        ].validationTypes[0],
+                        is: EValidationType.WHOLE_NUMBERS,
                         then: (rule) => rule.optional(),
                         otherwise: (rule) =>
                             rule.when("validationType", {
                                 is:
-                                    ELEMENT_VALIDATION_TYPES["Text field"][
-                                        EElementType.NUMERIC
-                                    ].validationTypes[1] ||
-                                    ELEMENT_VALIDATION_TYPES["Text field"][
-                                        EElementType.NUMERIC
-                                    ].validationTypes[2],
+                                    EValidationType.MIN_VALUE ||
+                                    EValidationType.MAX_VALUE,
                                 then: (rule) =>
                                     rule
                                         .required("Numeric value required.")

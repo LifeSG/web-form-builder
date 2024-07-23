@@ -77,39 +77,42 @@ export namespace TextBasedField {
     }
 
     const createTextFieldValidationSchema = (validation: IValidation[]) => {
-        const validationObj = validation.reduce((acc, value) => {
-            switch (value.validationType) {
-                case EValidationType.MAX_VALUE:
-                case EValidationType.MAX_LENGTH:
-                    acc.push({
-                        max: parseInt(value.validationRule),
-                        errorMessage: value.validationErrorMessage,
-                    });
-                    break;
-                case EValidationType.MIN_VALUE:
-                case EValidationType.MIN_LENGTH:
-                    acc.push({
-                        min: parseInt(value.validationRule),
-                        errorMessage: value.validationErrorMessage,
-                    });
-                    break;
-                case EValidationType.WHOLE_NUMBERS:
-                    acc.push({
-                        integer: true,
-                        errorMessage: value.validationErrorMessage,
-                    });
-                    break;
-                case EValidationType.CUSTOM_REGEX:
-                    acc.push({
-                        matches: value.validationRule,
-                        errorMessage: value.validationErrorMessage,
-                    });
-                    break;
-                default:
-                    break;
-            }
-            return acc;
-        }, [] as ISchemaValidation[]);
+        const validationObj = validation.reduce<ISchemaValidation[]>(
+            (acc, value) => {
+                switch (value.validationType) {
+                    case EValidationType.MAX_VALUE:
+                    case EValidationType.MAX_LENGTH:
+                        acc.push({
+                            max: parseInt(value.validationRule),
+                            errorMessage: value.validationErrorMessage,
+                        });
+                        break;
+                    case EValidationType.MIN_VALUE:
+                    case EValidationType.MIN_LENGTH:
+                        acc.push({
+                            min: parseInt(value.validationRule),
+                            errorMessage: value.validationErrorMessage,
+                        });
+                        break;
+                    case EValidationType.WHOLE_NUMBERS:
+                        acc.push({
+                            integer: true,
+                            errorMessage: value.validationErrorMessage,
+                        });
+                        break;
+                    case EValidationType.CUSTOM_REGEX:
+                        acc.push({
+                            matches: value.validationRule,
+                            errorMessage: value.validationErrorMessage,
+                        });
+                        break;
+                    default:
+                        break;
+                }
+                return acc;
+            },
+            []
+        );
         return validationObj;
     };
 

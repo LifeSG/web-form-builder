@@ -19,12 +19,12 @@ export const Validation = () => {
         name: "validation",
         shouldUnregister: true,
     });
-    const schema = SchemaHelper.buildSchema(EElementType.NUMERIC);
+    const elementType = watch("type", focusedElement.element.type);
+    const schema = SchemaHelper.buildSchema(elementType);
     const validationValues = watch(
         "validation",
         focusedElement.element.validation
     );
-    const elementType = watch("type", focusedElement.element.type);
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
