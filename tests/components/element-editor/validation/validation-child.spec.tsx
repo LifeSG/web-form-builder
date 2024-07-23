@@ -2,10 +2,18 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
 import { ValidationChild } from "src/components/element-editor/validation";
 import { EElementType } from "src/context-providers";
-import { ELEMENT_VALIDATION_TYPES } from "src/data";
+import { ELEMENT_BUTTON_LABELS, ELEMENT_VALIDATION_TYPES } from "src/data";
 import { TestHelper } from "src/util/test-helper";
 
 describe("ValidationChild", () => {
+    beforeEach(() => {
+        global.ResizeObserver = jest.fn().mockImplementation(() => ({
+            observe: jest.fn(),
+            unobserve: jest.fn(),
+            disconnect: jest.fn(),
+        }));
+    });
+
     afterEach(() => {
         jest.restoreAllMocks();
         jest.resetAllMocks();
@@ -24,21 +32,51 @@ describe("ValidationChild", () => {
         ).toBeInTheDocument();
     });
 
-    it("should render fields with prefilled values when values are provided", () => {
+    it("should render the component with provided options and fields and alert when focused element is the long text field", () => {
         renderComponent(
             {
                 onDelete: mockDelete,
-                options: mockOptions,
+                options: mockLongTextValidationOptions,
                 index: mockIndex,
             },
             {
-                formContext: {
-                    currentValues: {
-                        validation: mockValue,
+                builderContext: {
+                    focusedElement: {
+                        element: {
+                            internalId: "mock123",
+                            type: EElementType.TEXTAREA,
+                            id: "mockElement",
+                            required: false,
+                            description: "hellooo",
+                            label: ELEMENT_BUTTON_LABELS[EElementType.TEXTAREA],
+                            columns: {
+                                desktop: 12,
+                                tablet: 8,
+                                mobile: 4,
+                            } as const,
+                        },
                     },
                 },
             }
         );
+        // expect(screen.getByText("Select")).toBeInTheDocument();
+        // expect(screen.getByPlaceholderText("Enter rule")).toBeInTheDocument();
+        // expect(
+        //     screen.getByPlaceholderText("Set error message")
+        // ).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                "Adding of this validation will result in character counter displayed under the textarea."
+            )
+        ).toBeInTheDocument();
+    });
+
+    it("should render fields with prefilled values when values are provided", () => {
+        renderComponent({
+            onDelete: mockDelete,
+            options: mockOptions,
+            index: mockIndex,
+        });
         const getValidationTypeField = screen.getByRole("button", {
             name: "Option 1",
         });
@@ -57,6 +95,9 @@ describe("ValidationChild", () => {
                 index: mockIndex,
             },
             {
+                builderContext: {
+                    focusedElement: mockFocusedElement,
+                },
                 formContext: {
                     currentValues: {
                         validation: mockValue,
@@ -199,6 +240,9 @@ describe("ValidationChild", () => {
                 index: mockIndex,
             },
             {
+                builderContext: {
+                    focusedElement: mockFocusedElement,
+                },
                 formContext: {
                     currentValues: {
                         validation: mockEmptyValue,
@@ -262,7 +306,23 @@ const renderComponent = (
 // =============================================================================
 // MOCKS
 // =============================================================================
+const mockFocusedElement = {
+    element: {
+        internalId: "mock123",
+        type: EElementType.EMAIL,
+        id: "mockElement",
+        required: false,
+        description: "hellooo",
+        label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
+        columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
+    },
+};
+
 const mockOptions = ["Option 1", "Option 2"];
+
+const mockLongTextValidationOptions =
+    ELEMENT_VALIDATION_TYPES["Text field"][EElementType.TEXTAREA]
+        .validationTypes;
 
 const mockEmailValidationOptions =
     ELEMENT_VALIDATION_TYPES["Text field"][EElementType.EMAIL].validationTypes;

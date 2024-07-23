@@ -1,10 +1,12 @@
-import { Form } from "@lifesg/react-design-system";
+import { Form } from "@lifesg/react-design-system/form";
+import { Text } from "@lifesg/react-design-system/text";
 import { Toggle } from "@lifesg/react-design-system/toggle";
+import { IComplexLabel } from "@lifesg/web-frontend-engine/components/fields";
 import { useEffect, useState } from "react";
 import { Row } from "./toggle-pair.styles";
 
 interface IProps {
-    label?: string;
+    label?: IComplexLabel;
     value?: boolean;
     id?: string;
     onChange: (value: boolean) => void;
@@ -44,7 +46,11 @@ export const TogglePair = ({
 
     return (
         <div>
-            <Form.Label>{label}</Form.Label>
+            <Form.Label
+                subtitle={<Text.H6 weight={400}>{label?.subLabel}</Text.H6>}
+            >
+                {label?.mainLabel}
+            </Form.Label>
             <Row>
                 <Toggle
                     type="yes"

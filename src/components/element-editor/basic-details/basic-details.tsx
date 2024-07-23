@@ -3,7 +3,11 @@ import { Text } from "@lifesg/react-design-system/text";
 import { Controller, useFormContext } from "react-hook-form";
 import { IconDropdown } from "src/components/common/icon-dropdown";
 import { TogglePair } from "src/components/common/toggle-pair/toggle-pair";
-import { EElementType, useBuilder } from "src/context-providers";
+import {
+    EElementType,
+    ITextareaFieldAttributes,
+    useBuilder,
+} from "src/context-providers";
 import { TFormFieldValues } from "src/schemas";
 import {
     FieldEditorAccordionItem,
@@ -77,7 +81,7 @@ export const BasicDetails = () => {
                                 label="Element Name"
                                 rows={1}
                                 placeholder="Element Name"
-                                value={field.value}
+                                value={field.value as string}
                                 onChange={(e) => {
                                     field.onChange(e.target.value);
                                 }}
@@ -94,7 +98,9 @@ export const BasicDetails = () => {
                         control={control}
                         render={({ field }) => (
                             <TogglePair
-                                label="Mandatory field"
+                                label={{
+                                    mainLabel: "Mandatory field",
+                                }}
                                 value={field.value}
                                 onChange={(value) => {
                                     field.onChange(value);
@@ -193,7 +199,29 @@ export const BasicDetails = () => {
                     />
                 )}
 
-                {element?.hasOwnProperty("placeholder") && (
+                {hasProperty("resizableInput") && (
+                    <Controller
+                        name="resizableInput"
+                        control={control}
+                        render={({ field }) => (
+                            <TogglePair
+                                label={{
+                                    mainLabel: "Resizable area input",
+                                    subLabel:
+                                        "This allows participant to resize text area.",
+                                }}
+                                value={field.value}
+                                onChange={(value) => {
+                                    field.onChange(value);
+                                }}
+                                id={element.internalId}
+                            />
+                        )}
+                        shouldUnregister={true}
+                    />
+                )}
+
+                {hasProperty("placeholder") && (
                     <Controller
                         name="placeholder"
                         control={control}
