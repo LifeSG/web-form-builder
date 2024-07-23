@@ -76,9 +76,9 @@ export namespace TextBasedField {
     const createValidationObject = (element: TElement) => {
         const validation: IYupValidationRule[] = [];
 
-        if (element.required) {
+        if (element.required !== undefined) {
             validation.push({
-                required: true,
+                required: element.required,
                 ...(element.requiredErrorMsg && {
                     errorMessage: element.requiredErrorMsg,
                 }),
@@ -169,7 +169,7 @@ export namespace TextBasedField {
         let requiredValidation: IYupValidationRule = {};
         const fieldValidation = [];
 
-        validation.forEach((rule) => {
+        validation?.forEach((rule) => {
             if (Object.prototype.hasOwnProperty.call(rule, "required")) {
                 requiredValidation = rule;
             } else {
