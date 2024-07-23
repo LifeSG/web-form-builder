@@ -25,15 +25,19 @@ export const Wrapper = styled.div<IWrapperStyleProps>`
         switch ($mode) {
             case "expanded":
                 return css`
-                 ${MediaQuery.MaxWidth.desktop4k} {
-                    grid-column: 4 / span 6,
-                 } ${MediaQuery.MaxWidth.desktopL} {
-                    grid-column: 3 / span 8,
-                 } ${MediaQuery.MaxWidth.desktopM} {
-                    grid-column: 3 / span 8,
-                 } ${MediaQuery.MaxWidth.tablet} {
-                    grid-column: "2 / span 6,
-                 }`;
+                    ${MediaQuery.MaxWidth.desktop4k} {
+                        grid-column: 4 / span 6;
+                    }
+                    ${MediaQuery.MaxWidth.desktopL} {
+                        grid-column: 3 / span 8;
+                    }
+                    ${MediaQuery.MaxWidth.desktopM} {
+                        grid-column: 3 / span 8;
+                    }
+                    ${MediaQuery.MaxWidth.tablet} {
+                        grid-column: 2 / span 6;
+                    }
+                `;
             case "minimised":
                 return css`
                     ${MediaQuery.MaxWidth.desktop4k} {
@@ -143,5 +147,5 @@ export const ElementsWrapper = styled.ul<IWrapperStyleProps>`
 `;
 
 export const ElementItemWrapper = styled.li<IElementItemWrapperProps>`
-    ${({ $mode, $size }) => generateElementCardView($mode, $size)}
+    ${({ $mode, $size }) => generateElementCardView($size, $mode)}
 `;

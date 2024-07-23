@@ -3,7 +3,7 @@ import { Text, TextStyleHelper } from "@lifesg/react-design-system/text";
 import { DragHandleIcon } from "@lifesg/react-icons";
 import styled, { css } from "styled-components";
 import { BaseCard, IProps } from "../common";
-import { generateDroppableView } from "../common/columns/columns.styles";
+import { generateElementCardView } from "../common/columns/columns.styles";
 
 // =============================================================================
 // STYLE INTERFACES
@@ -106,7 +106,7 @@ export const DroppableWrapper = styled.div<IDroppableWrapperProps>`
     border: 1px solid transparent;
     z-index: -1;
 
-    ${({ $size }) => generateDroppableView($size)}
+    ${({ $size }) => generateElementCardView($size)}
 
     ${({ isOver }) =>
         isOver &&

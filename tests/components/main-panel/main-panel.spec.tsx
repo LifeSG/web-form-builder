@@ -1,7 +1,11 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import "jest-canvas-mock";
 import { MainPanel, Modals, Toasts } from "src/components";
-import { DisplayProvider, EElementType } from "src/context-providers";
+import {
+    DisplayProvider,
+    EElementType,
+    IElementIdentifier,
+} from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data/elements-data";
 import { TestHelper } from "src/util/test-helper";
 
@@ -96,14 +100,18 @@ const renderComponent = (overrideOptions?: TestHelper.RenderOptions) => {
 // =============================================================================
 // MOCKS
 // =============================================================================
-const MOCK_ORDERED_IDENTIFIER = [
+const MOCK_ORDERED_IDENTIFIER: IElementIdentifier[] = [
     {
         internalId: "mock123",
         parentInternalId: "ParentID1",
+        position: 1,
+        size: "full",
     },
     {
         internalId: "mock246",
         parentInternalId: "ParentID2",
+        position: 2,
+        size: "full",
     },
 ];
 
@@ -115,6 +123,7 @@ const MOCK_ELEMENTS = {
         required: false,
         size: "full",
         label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
+        columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
     },
     mock246: {
         internalId: "mock246",
@@ -122,5 +131,6 @@ const MOCK_ELEMENTS = {
         id: "mockElement1",
         required: false,
         label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
+        columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
     },
 };

@@ -1,18 +1,11 @@
 import { MediaQuery } from "@lifesg/react-design-system/media";
 import { css } from "styled-components";
 
-// =============================================================================
-// HELPER FUNCTIONS
-// =============================================================================
-const generateGridColumn = (breakpoints: { [key: string]: string }) => css`
-    ${Object.entries(breakpoints).map(
-        ([key, value]) =>
-            `${MediaQuery.MaxWidth[key]} { grid-column: ${value}; }`
-    )}
-`;
-
-const generateDroppableGridColumn = ($size: string) => {
-    const sizeMap = {
+// =========================================================================
+// CONST
+// =========================================================================
+const ELEMENT_CARD_SIZE_MAP = {
+    expanded: {
         right: {
             desktop4k: "4 / span 3",
             desktopL: "4 / span 4",
@@ -28,22 +21,8 @@ const generateDroppableGridColumn = ($size: string) => {
             desktopL: "1 / span 8",
             tablet: "1 / span 6",
         },
-    };
-    return sizeMap[$size]
-        ? generateGridColumn(sizeMap[$size])
-        : "grid-column: 1 / span 3;";
-};
-
-// =============================================================================
-// STYLES
-// =============================================================================
-
-export const generateElementCardView = ($mode: string, $size: string) => {
-    if ($mode === "expanded") {
-        return generateDroppableGridColumn($size);
-    }
-
-    const sizeMap = {
+    },
+    minimised: {
         right: {
             desktop4k: "4 / span 3",
             tablet: "4 / span 2",
@@ -56,22 +35,22 @@ export const generateElementCardView = ($mode: string, $size: string) => {
             desktop4k: "1 / span 6",
             tablet: "1 / span 4",
         },
-    };
-
-    return sizeMap[$size]
-        ? generateGridColumn(sizeMap[$size])
-        : "grid-column: 1 / span 3;";
+    },
 };
 
-export const generateDroppableView = ($size: string) => {
-    const sizeMap = {
-        right: "4 / span 3",
-        left: "1 / span 3",
-        full: "1 / span 6",
-    };
-    return generateGridColumn({
-        desktop4k: sizeMap[$size] || "1 / span 3",
-        desktopL: sizeMap[$size === "full" ? "full" : "right"] || "1 / span 4",
-        tablet: sizeMap[$size] || "1 / span 3",
-    });
+// =============================================================================
+// HELPER FUNCTIONS
+// =============================================================================
+const generateGridColumn = (breakpoints: { [key: string]: string }) => css`
+    ${Object.entries(breakpoints).map(
+        ([key, value]) =>
+            `${MediaQuery.MaxWidth[key]} { grid-column: ${value}; }`
+    )}
+`;
+
+export const generateElementCardView = (
+    size: "left" | "right" | "full",
+    mode: "expanded" | "minimised" = "expanded"
+) => {
+    return generateGridColumn(ELEMENT_CARD_SIZE_MAP[mode][size]);
 };
