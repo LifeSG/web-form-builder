@@ -44,21 +44,18 @@ const Component = forwardRef<IFormBuilderMethods, IProps>(
                 generateSchema: () =>
                     Translator.generateSchema(elements, orderedIdentifiers),
                 parseSchema: (schema: ISchemaProps) => {
-                    if (Translator.parseSchema(schema) !== null) {
-                        const { newOrderedIdentifiers, newElements } =
-                            Translator.parseSchema(schema);
-                        const newFocusedElement = Object.values(
-                            newElements
-                        ).find(
-                            (element) =>
-                                element.id === focusedElement?.element?.id
-                        );
-                        updateElementSchema(
-                            newElements,
-                            newOrderedIdentifiers,
-                            newFocusedElement
-                        );
-                    }
+                    const { newOrderedIdentifiers, newElements } =
+                        Translator.parseSchema(schema) || {};
+                    if (!newOrderedIdentifiers || !newElements) return;
+
+                    const newFocusedElement = Object.values(newElements).find(
+                        (element) => element.id === focusedElement?.element?.id
+                    );
+                    updateElementSchema(
+                        newElements,
+                        newOrderedIdentifiers,
+                        newFocusedElement
+                    );
                 },
             }),
             [elements, orderedIdentifiers]
