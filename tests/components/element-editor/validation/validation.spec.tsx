@@ -4,7 +4,7 @@ import "jest-canvas-mock";
 import { setupJestCanvasMock } from "jest-canvas-mock";
 import { FormProvider, useForm } from "react-hook-form";
 import { Validation } from "src/components/element-editor/validation/validation";
-import { EElementType, IColumns } from "src/context-providers";
+import { EElementType } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data";
 import { SchemaHelper } from "src/schemas";
 import { TestHelper } from "src/util/test-helper";
