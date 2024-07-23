@@ -4,11 +4,8 @@ import { PencilIcon } from "@lifesg/react-icons/pencil";
 import { TabletIcon } from "@lifesg/react-icons/tablet";
 import { FrontendEngine } from "@lifesg/web-frontend-engine";
 import { useEffect, useRef, useState } from "react";
-import {
-    FormBuilder,
-    IFormBuilderMethods,
-    ISchemaProps,
-} from "src/form-builder";
+import { FormBuilder, IFormBuilderMethods } from "src/form-builder";
+import { ISchemaProps } from "src/translator/types";
 import {
     ContentWrapper,
     IconButton,
@@ -73,15 +70,16 @@ export const DocElement = () => {
     // EVENT HANDLERS
     // =========================================================================
     const handleFormBuilderButton = () => {
-        if (formBuilderRef.current) {
+        if (formBuilderRef.current && schema) {
             formBuilderRef.current.parseSchema(schema);
         }
         setPageMode("form-builder-mode");
     };
 
     const handleFormPreviewButton = () => {
-        if (formBuilderRef.current) {
-            formBuilderRef.current.parseSchema(schema);
+        if (pageMode === "form-builder-mode") {
+            const generatedSchema = formBuilderRef.current.generateSchema();
+            setSchema(generatedSchema);
         }
         setPageMode("preview-mode");
     };

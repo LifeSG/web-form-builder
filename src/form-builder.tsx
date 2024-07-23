@@ -36,8 +36,6 @@ const Component = forwardRef<IFormBuilderMethods, IProps>(
             orderedIdentifiers,
             isSubmitting,
             focusedElement,
-            focusElement,
-            removeFocusedElement,
         } = useBuilder();
 
         useImperativeHandle(
@@ -47,7 +45,9 @@ const Component = forwardRef<IFormBuilderMethods, IProps>(
                     Translator.generateSchema(elements, orderedIdentifiers),
                 parseSchema: (schema: ISchemaProps) => {
                     const { newOrderedIdentifiers, newElements } =
-                        Translator.parseSchema(schema);
+                        Translator.parseSchema(schema) || {};
+                    if (!newOrderedIdentifiers || !newElements) return;
+
                     const newFocusedElement = Object.values(newElements).find(
                         (element) => element.id === focusedElement?.element?.id
                     );
