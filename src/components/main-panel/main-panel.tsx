@@ -16,7 +16,7 @@ import {
     sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
 import { ErrorDisplay } from "@lifesg/react-design-system/error-display";
-import { debounce } from "lodash";
+import debounce from "lodash/debounce";
 import { useEffect, useRef } from "react";
 import {
     EModalType,
@@ -153,11 +153,13 @@ export const MainPanel = () => {
 
         if (active.rect.current.translated.top > dragStartY.current) {
             // move down
-            elementIndex = elementStartingRefs.current.findLastIndex(
-                (elementRect) =>
-                    active.rect.current.translated.bottom + 16 >
-                    elementRect.y + elementRect.height / 2
-            );
+            elementIndex = elementStartingRefs.current
+                .toReversed()
+                .findIndex(
+                    (elementRect) =>
+                        active.rect.current.translated.bottom + 16 >
+                        elementRect.y + elementRect.height / 2
+                );
         } else {
             // move up
             elementIndex = elementStartingRefs.current.findIndex(
