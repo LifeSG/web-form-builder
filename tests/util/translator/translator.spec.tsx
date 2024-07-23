@@ -1,4 +1,9 @@
-import { EElementType, TElementMap } from "src/context-providers";
+import { ISchemaProps } from "src";
+import {
+    EElementType,
+    IElementIdentifier,
+    TElementMap,
+} from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import { Translator } from "src/translator";
 import {
@@ -6,7 +11,6 @@ import {
     generateMockElementSchema,
     generateMockSchema,
 } from "./helper";
-import { ISchemaProps } from "src";
 
 describe("Translator", () => {
     beforeEach(() => {
@@ -370,6 +374,7 @@ describe("Translator", () => {
                                     "Enter a email that has a '@gmail.com' domain",
                             },
                         ],
+                        conditionalRendering: [],
                     });
 
                 expect(generatedSchema.newElements).toEqual(
@@ -454,6 +459,7 @@ describe("Translator", () => {
                                 generatedSchema.newElements
                             )[1],
                             requiredErrorMsg: "Input is required",
+                            conditionalRendering: [],
                         }),
                     };
 
@@ -508,6 +514,7 @@ describe("Translator", () => {
                         internalId: Object.keys(generatedSchema.newElements)[0],
                         required: true,
                         requiredErrorMsg: "Input is required",
+                        conditionalRendering: [],
                     }),
                     ...generateMockElement({
                         type: EElementType.NUMERIC,
@@ -516,6 +523,7 @@ describe("Translator", () => {
                         internalId: Object.keys(generatedSchema.newElements)[1],
                         required: true,
                         requiredErrorMsg: "Number is required",
+                        conditionalRendering: [],
                     }),
                 };
 

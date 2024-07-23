@@ -183,11 +183,9 @@ export namespace TextBasedField {
                     fieldValidation
                 ),
             }),
-            ...(showIf && {
-                conditionalRendering: parseConditionalRenderingObject(
-                    showIf as TRenderRules[]
-                ),
-            }),
+            conditionalRendering: showIf
+                ? parseConditionalRenderingObject(showIf)
+                : [],
         };
 
         return parsedElement as TElement;
