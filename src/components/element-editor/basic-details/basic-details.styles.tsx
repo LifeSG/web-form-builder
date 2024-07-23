@@ -1,7 +1,7 @@
-import { Color } from "@lifesg/react-design-system/color";
+import { Form } from "@lifesg/react-design-system";
 import { Accordion } from "@lifesg/react-design-system/accordion";
+import { Color } from "@lifesg/react-design-system/color";
 import styled from "styled-components";
-import { Form } from "@lifesg/react-design-system/form";
 
 interface IFieldEditorAccordionItemProps {
     $hideTopBorder: boolean;

@@ -15,15 +15,20 @@ import {
     StyledTextarea,
     Wrapper,
 } from "./basic-details.styles";
+import { TopPositionIcon } from "../../../icons/top-position-icon";
+import { BottomPositionIcon } from "../../../icons/bottom-position-icon";
+import { PillFields } from "src/components/common/pills";
+import { useEffect } from "react";
 
 export const BasicDetails = () => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
-    const { focusedElement } = useBuilder();
+    const { focusedElement, updateFocusedElement, elements } = useBuilder();
     const {
         control,
-        formState: { errors },
+        formState: { errors, isDirty },
+        reset,
         watch,
         setValue,
     } = useFormContext<IBaseTextBasedFieldValues | ITextareaFieldAttributes>();
@@ -38,8 +43,26 @@ export const BasicDetails = () => {
     };
 
     // =========================================================================
+    // USE EFFECTS
+    // =========================================================================
+
+    useEffect(() => {
+        updateFocusedElement(!!isDirty);
+    }, [isDirty, updateFocusedElement]);
+
+    useEffect(() => {
+        reset(element, {
+            keepDirty: true,
+            keepValues: true,
+        });
+    }, []);
+
+    console.log("elements:", elements);
+
+    // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
+
     return (
         <FieldEditorAccordionItem
             type="default"
@@ -157,6 +180,58 @@ export const BasicDetails = () => {
                     )}
                     shouldUnregister={true}
                 />
+                {hasProperty("resizableInput") && (
+                    <Controller
+                        name="resizableInput"
+                        control={control}
+                        render={({ field }) => (
+                            <TogglePair
+                                label={{
+                                    mainLabel: "Resizable area input",
+                                    subLabel:
+                                        "This allows participant to resize text area.",
+                                }}
+                                value={field.value}
+                                onChange={(value) => {
+                                    field.onChange(value);
+                                }}
+                                id={element.internalId}
+                            />
+                        )}
+                        shouldUnregister={true}
+                    />
+                )}
+
+                {hasProperty("pills") && (
+                    <MandatoryFieldBox>
+                        <Controller
+                            name="pills"
+                            control={control}
+                            render={({ field }) => (
+                                <TogglePair
+                                    label={{
+                                        mainLabel: "Pills",
+                                        subLabel:
+                                            "This allows a list of selectable short texts to display in pill form. This helps participant to fill up text area fast with less typing.",
+                                    }}
+                                    value={field.value}
+                                    onChange={(value) => {
+                                        field.onChange(value);
+                                    }}
+                                    id={element.internalId}
+                                />
+                            )}
+                            shouldUnregister={true}
+                        />
+
+                        {watch("pills", true) && (
+                            <>
+                                <PillFields id={element.internalId} />
+                            </>
+                        )}
+                    </MandatoryFieldBox>
+                )}
+
                 {hasProperty("description") && (
                     <Controller
                         name="description"
@@ -191,28 +266,6 @@ export const BasicDetails = () => {
                                 />
                             );
                         }}
-                        shouldUnregister={true}
-                    />
-                )}
-
-                {hasProperty("resizableInput") && (
-                    <Controller
-                        name="resizableInput"
-                        control={control}
-                        render={({ field }) => (
-                            <TogglePair
-                                label={{
-                                    mainLabel: "Resizable area input",
-                                    subLabel:
-                                        "This allows participant to resize text area.",
-                                }}
-                                value={field.value}
-                                onChange={(value) => {
-                                    field.onChange(value);
-                                }}
-                                id={element.internalId}
-                            />
-                        )}
                         shouldUnregister={true}
                     />
                 )}

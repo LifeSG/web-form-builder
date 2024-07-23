@@ -2,14 +2,20 @@ import { Form } from "@lifesg/react-design-system/form";
 import { Text } from "@lifesg/react-design-system/text";
 import { Toggle } from "@lifesg/react-design-system/toggle";
 import { IComplexLabel } from "@lifesg/web-frontend-engine/components/fields";
-import { useEffect, useState } from "react";
-import { Row } from "./toggle-pair.styles";
+import { ReactNode, useEffect, useState } from "react";
+import { Row, ToggleWrapper } from "./toggle-pair.styles";
+
+interface IOptionProps {
+    icon?: ReactNode;
+    title: string;
+}
 
 interface IProps {
     label?: IComplexLabel;
     value?: boolean;
     id?: string;
     onChange: (value: boolean) => void;
+    options?: IOptionProps[];
 }
 
 export const TogglePair = ({
@@ -17,32 +23,20 @@ export const TogglePair = ({
     value: defaultValue,
     label,
     id,
+    options,
 }: IProps) => {
-    // =========================================================================
-    // CONST, STATE, REFS
-    // =========================================================================
     const [value, setValue] = useState(defaultValue);
 
-    // =============================================================================
-    // HELPER FUNCTIONS
-    // =============================================================================
-    const handleChange = (value: boolean) => {
-        setValue(value);
-        onChange(value);
-    };
-
-    // =========================================================================
-    // EFFECTS
-    // =========================================================================
     useEffect(() => {
         if (value !== defaultValue) {
             setValue(defaultValue);
         }
     }, [defaultValue, id]);
 
-    // =========================================================================
-    // RENDER FUNCTIONS
-    // =========================================================================
+    const handleChange = (value: boolean) => {
+        setValue(value);
+        onChange(value);
+    };
 
     return (
         <div>
@@ -51,23 +45,31 @@ export const TogglePair = ({
             >
                 {label?.mainLabel}
             </Form.Label>
-            <Row>
-                <Toggle
-                    type="yes"
-                    checked={value === true}
-                    onChange={() => handleChange(true)}
-                    indicator
-                >
-                    Yes
-                </Toggle>
-                <Toggle
-                    type="no"
-                    checked={value === false}
-                    onChange={() => handleChange(false)}
-                    indicator
-                >
-                    No
-                </Toggle>
+            <Row $marginRequired={options ? false : true}>
+                <>
+                    <ToggleWrapper
+                        type="yes"
+                        checked={value === true}
+                        onChange={() => handleChange(true)}
+                        indicator={options ? false : true}
+                    >
+                        {options && options[0]?.icon && options[0]?.icon}
+                        {options && options[0]?.title
+                            ? options[0]?.title
+                            : "Yes"}
+                    </ToggleWrapper>
+                    <ToggleWrapper
+                        type="no"
+                        checked={value === false}
+                        onChange={() => handleChange(false)}
+                        indicator={options ? false : true}
+                    >
+                        {options && options[1]?.icon && options[1]?.icon}
+                        {options && options[1]?.title
+                            ? options[1]?.title
+                            : "No"}
+                    </ToggleWrapper>
+                </>
             </Row>
         </div>
     );

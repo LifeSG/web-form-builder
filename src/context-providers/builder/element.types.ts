@@ -49,6 +49,10 @@ export interface IPrefillAttributes {
     path?: string;
 }
 
+export interface IPillItemAttributes {
+    content: string;
+}
+
 type MobileCol = 1 | 2 | 3 | 4;
 type MobileColRange = MobileCol | 5;
 type TabletCol = MobileCol | 5 | 6 | 7 | 8;
@@ -62,7 +66,7 @@ export interface IColumns {
 }
 
 export interface IBaseFieldAttributes extends IBaseAttributes {
-    label: string | IComplexLabel;
+    label: string;
     required: boolean;
     requiredErrorMsg?: string | undefined;
     columns: IColumns;
@@ -74,6 +78,9 @@ export interface ITextareaFieldAttributes
     extends IBaseTextBasedFieldAttributes {
     resizableInput?: boolean;
     preSelectedValue?: string;
+    pills?: boolean;
+    pillItems?: IPillItemAttributes[];
+    pillPosition?: "top" | "bottom" | null;
 }
 
 export interface IBaseTextBasedFieldAttributes extends IBaseFieldAttributes {

@@ -170,11 +170,18 @@ export const TEXT_BASED_SCHEMA = (elementType: EElementType) => {
     });
 };
 
-export const TEXT_AREA_SCHEMA = (elementType: EElementType) => {
+export const TEXT_AREA_SCHEMA = () => {
     return yup.object().shape({
         placeholder: yup.string().optional(),
         preSelectedValue: yup.string().optional(),
         resizableInput: yup.boolean().required().default(true),
+        pills: yup.boolean().required().default(true),
+        pillItems: yup.array().of(
+            yup.object().shape({
+                content: yup.string().required("Pill content required."),
+            })
+        ),
+        pillPosition: yup.string().required().default("top"),
         validation: yup.array().of(
             yup.object().shape({
                 validationType: yup.string().required("Validation required."),
