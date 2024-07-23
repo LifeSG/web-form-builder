@@ -8,7 +8,7 @@ const ELEMENT_CARD_SIZE_MAP = {
     expanded: {
         right: {
             desktop4k: "4 / span 3",
-            desktopL: "4 / span 4",
+            desktopL: "5 / span 4",
             tablet: "4 / span 3",
         },
         left: {
