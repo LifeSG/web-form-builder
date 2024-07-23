@@ -1,11 +1,10 @@
 import { EElementType } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import * as yup from "yup";
+import { PREFILL_ACTIONID_REGEX, PREFILL_PATH_REGEX } from "./base-helper";
 
 const VALIDATION_DOMAIN_REGEX =
     /^@[^\s]+(\.[^\s]+)*(?:\s*,\s*@[^,\s]+(\.[^,\s]+)*)*$/;
-const PREFILL_ACTIONID_REGEX = /^[a-zA-Z0-9_-]+$/;
-const PREFILL_PATH_REGEX = /^[a-zA-Z0-9._-]+$/;
 
 // =============================================================================
 // HELPER FUNCTIONS

@@ -1,11 +1,10 @@
-import { ISchemaProps } from "src";
 import {
     EElementType,
     IElementIdentifier,
     TElementMap,
 } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
-import { Translator } from "src/translator";
+import { ISchemaProps, Translator } from "src/translator";
 import {
     generateMockElement,
     generateMockElementSchema,
@@ -375,6 +374,7 @@ describe("Translator", () => {
                             },
                         ],
                         conditionalRendering: [],
+                        prefill: [],
                     });
 
                 expect(generatedSchema.newElements).toEqual(
@@ -450,6 +450,7 @@ describe("Translator", () => {
                                     )[1],
                                 },
                             ],
+                            prefill: [],
                         }),
                         ...generateMockElement({
                             type: EElementType.TEXT,
@@ -460,11 +461,114 @@ describe("Translator", () => {
                             )[1],
                             requiredErrorMsg: "Input is required",
                             conditionalRendering: [],
+                            prefill: [],
                         }),
                     };
 
                 expect(generatedSchema.newElements).toEqual(
                     MOCK__EMAIL_ELEMENT_WITH_CONDITIONAL_RENDERING
+                );
+            });
+
+            it("should translate with myinfo prefill from the schema & be generated into new elements", () => {
+                const MOCK_EMAIL_SCHEMA_WITH_MYINFO_PREFILL =
+                    generateMockSchema(
+                        {
+                            mock123: [
+                                {
+                                    prefillMode: "Myinfo",
+                                    path: "testpath",
+                                },
+                            ],
+                        },
+                        generateMockElementSchema({
+                            id: "mock123",
+                            label: {
+                                mainLabel: "Email address",
+                            },
+                            uiType: EElementType.EMAIL,
+                            validation: [
+                                {
+                                    required: true,
+                                    errorMessage: "Email address is required",
+                                },
+                            ],
+                        })
+                    );
+
+                const generatedSchema = Translator.parseSchema(
+                    MOCK_EMAIL_SCHEMA_WITH_MYINFO_PREFILL as ISchemaProps
+                );
+
+                const MOCK__EMAIL_ELEMENT_WITH_MYINFO_PREFILL: TElementMap =
+                    generateMockElement({
+                        type: EElementType.EMAIL,
+                        id: "mock123",
+                        internalId: Object.keys(generatedSchema.newElements)[0],
+                        requiredErrorMsg: "Email address is required",
+                        prefill: [
+                            {
+                                prefillMode: "Myinfo",
+                                path: "testpath",
+                            },
+                        ],
+                        conditionalRendering: [],
+                    });
+
+                expect(generatedSchema.newElements).toEqual(
+                    MOCK__EMAIL_ELEMENT_WITH_MYINFO_PREFILL
+                );
+            });
+
+            it("should translate with previous source prefill from the schema & be generated into new elements", () => {
+                const MOCK_EMAIL_SCHEMA_WITH_PREVIOUS_SOURCE_PREFILL =
+                    generateMockSchema(
+                        {
+                            mock123: [
+                                {
+                                    prefillMode: "Previous source",
+                                    path: "testpath",
+                                    actionId: "ui_action_id",
+                                },
+                            ],
+                        },
+                        generateMockElementSchema({
+                            id: "mock123",
+                            label: {
+                                mainLabel: "Email address",
+                            },
+                            uiType: EElementType.EMAIL,
+                            validation: [
+                                {
+                                    required: true,
+                                    errorMessage: "Email address is required",
+                                },
+                            ],
+                        })
+                    );
+
+                const generatedSchema = Translator.parseSchema(
+                    MOCK_EMAIL_SCHEMA_WITH_PREVIOUS_SOURCE_PREFILL as ISchemaProps
+                );
+
+                const MOCK__EMAIL_ELEMENT_WITH_PREVIOUS_SOURCE_PREFILL: TElementMap =
+                    generateMockElement({
+                        type: EElementType.EMAIL,
+                        id: "mock123",
+                        internalId: Object.keys(generatedSchema.newElements)[0],
+                        requiredErrorMsg: "Email address is required",
+                        conditionalRendering: [],
+                        prefill: [
+                            {
+                                prefillMode: "Previous source",
+                                path: "testpath",
+                                actionId: "ui_action_id",
+                            },
+                        ],
+                    });
+
+                expect(generatedSchema.newElements).toEqual(
+                    MOCK__EMAIL_ELEMENT_WITH_PREVIOUS_SOURCE_PREFILL
                 );
             });
         });
@@ -515,6 +619,7 @@ describe("Translator", () => {
                         required: true,
                         requiredErrorMsg: "Input is required",
                         conditionalRendering: [],
+                        prefill: [],
                     }),
                     ...generateMockElement({
                         type: EElementType.NUMERIC,
@@ -524,6 +629,7 @@ describe("Translator", () => {
                         required: true,
                         requiredErrorMsg: "Number is required",
                         conditionalRendering: [],
+                        prefill: [],
                     }),
                 };
 
