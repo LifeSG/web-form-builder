@@ -153,20 +153,18 @@ export const MainPanel = () => {
 
         if (active.rect.current.translated.top > dragStartY.current) {
             // move down
-            elementIndex = elementStartingRefs.current
-                .toReversed()
-                .findIndex(
-                    (elementRect) =>
-                        active.rect.current.translated.bottom + 16 >
-                        elementRect.y + elementRect.height / 2
-                );
+            elementIndex = [...elementStartingRefs.current.reverse()].findIndex(
+                (elementRect) =>
+                    active.rect.current.translated.bottom + 16 >
+                    elementRect.y + elementRect.height / 2
+            );
         } else {
             // move up
-           elementIndex = [...elementStartingRefs.current.reverse()].findIndex(
-               (elementRect) =>
-                   active.rect.current.translated.bottom + 16 >
-                   elementRect.y + elementRect.height / 2
-           );
+            elementIndex = [...elementStartingRefs.current.reverse()].findIndex(
+                (elementRect) =>
+                    active.rect.current.translated.bottom + 16 >
+                    elementRect.y + elementRect.height / 2
+            );
         }
         const updatedOrderedIdentifiers = arrayMove(
             orderedIdentifiers,
