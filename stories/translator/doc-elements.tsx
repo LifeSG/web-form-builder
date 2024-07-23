@@ -77,9 +77,7 @@ export const DocElement = () => {
     };
 
     const handleFormPreviewButton = () => {
-        if (formBuilderRef.current && schema && pageMode === "schema-mode") {
-            formBuilderRef.current.parseSchema(schema);
-        } else if (pageMode === "form-builder-mode") {
+        if (pageMode === "form-builder-mode") {
             const generatedSchema = formBuilderRef.current.generateSchema();
             setSchema(generatedSchema);
         }
