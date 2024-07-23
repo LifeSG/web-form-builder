@@ -162,11 +162,11 @@ export const MainPanel = () => {
                 );
         } else {
             // move up
-            elementIndex = elementStartingRefs.current.findIndex(
-                (elementRect) =>
-                    active.rect.current.translated.top - 16 <
-                    elementRect.y + elementRect.height / 2
-            );
+           elementIndex = [...elementStartingRefs.current.reverse()].findIndex(
+               (elementRect) =>
+                   active.rect.current.translated.bottom + 16 >
+                   elementRect.y + elementRect.height / 2
+           );
         }
         const updatedOrderedIdentifiers = arrayMove(
             orderedIdentifiers,
