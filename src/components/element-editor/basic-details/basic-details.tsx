@@ -3,11 +3,7 @@ import { Text } from "@lifesg/react-design-system/text";
 import { Controller, useFormContext } from "react-hook-form";
 import { IconDropdown } from "src/components/common/icon-dropdown";
 import { TogglePair } from "src/components/common/toggle-pair/toggle-pair";
-import {
-    EElementType,
-    ITextareaFieldAttributes,
-    useBuilder,
-} from "src/context-providers";
+import { EElementType, useBuilder } from "src/context-providers";
 import { TFormFieldValues } from "src/schemas";
 import {
     FieldEditorAccordionItem,

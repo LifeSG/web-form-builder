@@ -1,6 +1,6 @@
 import { BinIcon } from "@lifesg/react-icons/bin";
-import { ChildrenWrapper, Wrapper } from "./child-entry.styles";
 import { DeleteButton } from "../delete-button/delete-button";
+import { ChildrenWrapper, Wrapper } from "./child-entry.styles";
 
 interface IProps {
     onDelete: () => void;

@@ -1,8 +1,4 @@
-import {
-    EElementType,
-    IElementIdentifier,
-    TElementMap,
-} from "src/context-providers";
+import { EElementType, TElementMap } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import { ISchemaProps, Translator } from "src/translator";
 import {

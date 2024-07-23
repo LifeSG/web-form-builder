@@ -27,7 +27,7 @@ export namespace SchemaHelper {
                     return yup
                         .object()
                         .concat(baseSchema)
-                        .concat(TEXT_AREA_SCHEMA(type));
+                        .concat(TEXT_AREA_SCHEMA());
                 case EElementType.DROPDOWN:
                     return yup
                         .object()

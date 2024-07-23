@@ -5,7 +5,6 @@ import {
     INumericFieldSchema,
     ITextFieldSchema,
 } from "@lifesg/web-frontend-engine/components/fields";
-import { TRenderRules } from "@lifesg/web-frontend-engine/context-providers";
 import {
     EElementType,
     IValidation,
