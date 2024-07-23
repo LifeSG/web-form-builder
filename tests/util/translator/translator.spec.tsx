@@ -43,7 +43,7 @@ describe("Translator", () => {
                         uiType: EElementType.EMAIL,
                     })
                 );
-                const orderedIdentifiers: IElementIdentifier[] = [
+                const orderedIdentifiers = [
                     { internalId: "mockId1", position: 1 },
                 ];
 

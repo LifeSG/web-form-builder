@@ -194,7 +194,7 @@ export namespace TextBasedField {
                 ),
             }),
             conditionalRendering: showIf
-                ? parseConditionalRenderingObject(showIf as TRenderRules[])
+                ? parseConditionalRenderingObject(showIf)
                 : [],
 
             prefill: parsePrefillObject(prefill, key) || [],

@@ -24,7 +24,6 @@ interface IProps {
 interface ISchemaViewProps {
     data?: ISchemaProps;
     onChange?: (schema: ISchemaProps) => void;
-    setSchemaProvided?: (value: boolean) => void;
 }
 
 const FormPreview = ({ data }: IProps) => {
