@@ -9,6 +9,8 @@ interface IDeleteButtonProps {
 export const PillFieldsWrapper = styled.div`
     display: flex;
     width: 100%;
+    gap: 0.5rem;
+
     & > * {
         width: 100%;
         margin-bottom: 1rem;
@@ -19,7 +21,6 @@ export const PillFieldsWrapper = styled.div`
         width: 1.522rem;
         cursor: pointer;
         align-self: center;
-        margin-right: 0.468rem;
     }
 `;
 
@@ -29,14 +30,41 @@ export const PrefillItemInput = styled(Form.Input)`
 
 export const DeleteButton = styled.div<IDeleteButtonProps>`
     align-self: center;
-    width: auto;
-    margin-left: 0.937rem;
-    margin-bottom: 0.6rem;
     svg {
         color: ${({ $disable }) =>
             $disable ? Color.Neutral[3] : Color.Accent.Light[1]};
         width: 1.522rem;
         height: 1.625rem;
-        cursor: pointer;
+        cursor: ${({ $disable }) => ($disable ? "not-allowed" : "pointer")};
     }
 `;
+
+// export const DropdownItemsChildWrapper = styled.div`
+//     display: flex;
+//     align-items: start;
+//     justify-content: center;
+//     margin-bottom: 1rem;
+//     & > *:nth-child(1) {
+//         margin-right: 0.5rem;
+//     }
+//     & > *:nth-child(2) {
+//         margin-right: 1rem;
+//     }
+//     & > *:nth-child(3) {
+//         margin-right: 1rem;
+//     }
+//     & > * {
+//         margin-bottom: 0 !important;
+//     }
+// `;
+
+// export const DropdownItemsDragHandleButton = styled.div`
+//     margin-top: 0.875rem;
+//     svg {
+//         color: ${Color.Accent.Light[1]};
+//         width: 1.25rem;
+//         height: 1.25rem;
+//         align-items: center;
+//         cursor: grab;
+//     }
+// `;

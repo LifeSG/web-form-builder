@@ -9,37 +9,35 @@ import {
     ITextareaFieldAttributes,
 } from "src/context-providers";
 import { CSS } from "@dnd-kit/utilities";
-import { ControllerRenderProps, FieldErrors } from "react-hook-form";
+import {
+    Controller,
+    ControllerRenderProps,
+    FieldErrors,
+    useFormContext,
+} from "react-hook-form";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSSProperties } from "react";
+import { PopoverTrigger } from "@lifesg/react-design-system/popover-v2";
+import { Button } from "@lifesg/react-design-system/button";
 
 interface IProps {
-    item: {
-        id: string;
-        content: string;
-    };
-    field: ControllerRenderProps<
-        ITextareaFieldAttributes,
-        `pillItems.${number}.content`
-    >;
+    item: any;
     index: number;
-    errors: FieldErrors<ITextareaFieldAttributes>;
     onDelete: () => void;
     disableDelete: boolean;
 }
 
-export const PillItem = ({
-    item,
-    field,
-    index,
-    errors,
-    onDelete,
-    disableDelete,
-}: IProps) => {
+export const PillItem = ({ item, index, onDelete, disableDelete }: IProps) => {
+    const {
+        control,
+        formState: { errors },
+    } = useFormContext<ITextareaFieldAttributes>();
+
     const { attributes, listeners, setNodeRef, transform, transition } =
         useSortable({ id: item.id });
+
     const style: CSSProperties = {
-        transform: transform ? CSS.Transform.toString(transform) : undefined,
+        transform: CSS.Transform.toString(transform),
         transition,
         display: "flex",
         width: "100%",
@@ -50,26 +48,46 @@ export const PillItem = ({
             <PillFieldsWrapper>
                 <DragHandleIcon data-testid="drag-handle" />
                 <div>
-                    <PrefillItemInput
-                        name={`pillItems.${index}`}
-                        label=""
-                        placeholder="Enter short text"
-                        value={field.value}
-                        onChange={(value) => {
-                            field.onChange(value);
-                        }}
-                        errorMessage={
-                            errors?.pillItems?.[index]?.content?.message
-                        }
+                    <Controller
+                        key={item.id}
+                        name={`pillItems.${index}.content`}
+                        control={control}
+                        render={({ field }) => (
+                            <PrefillItemInput
+                                name={`pillItems.${index}.content`}
+                                label=""
+                                placeholder="Enter short text"
+                                value={field.value}
+                                onChange={(value) => {
+                                    field.onChange(value);
+                                }}
+                                errorMessage={
+                                    errors?.pillItems?.[index]?.content?.message
+                                }
+                            />
+                        )}
+                        shouldUnregister
                     />
                 </div>
             </PillFieldsWrapper>
             <DeleteButton
                 $disable={disableDelete}
                 data-testid="delete-button"
-                onClick={onDelete}
+                onClick={disableDelete ? () => {} : onDelete}
             >
-                <BinIcon />
+                {disableDelete ? (
+                    <PopoverTrigger
+                        popoverContent={
+                            "Item deletion is not allowed when there are less than 3 items."
+                        }
+                        trigger="hover"
+                        position="bottom"
+                    >
+                        <BinIcon />
+                    </PopoverTrigger>
+                ) : (
+                    <BinIcon />
+                )}
             </DeleteButton>
         </div>
     );

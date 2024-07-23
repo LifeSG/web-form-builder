@@ -37,17 +37,13 @@ export const PillFields = ({ id }: IProps) => {
         control,
         formState: { errors },
     } = useFormContext<ITextareaFieldAttributes>();
-    const { fields, append, remove } = useFieldArray({
+    const { fields, append, remove, move } = useFieldArray({
         control,
         name: "pillItems",
         shouldUnregister: true,
     });
-    const items = fields.map((field) => ({
-        id: field.id,
-        content: field.content,
-    }));
 
-    const [pillItems, setPillItems] = useState(fields);
+    // const [pillItems, setPillItems] = useState(fields);
 
     const sensors = useSensors(
         useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
@@ -56,7 +52,7 @@ export const PillFields = ({ id }: IProps) => {
         })
     );
 
-    const disableDeleteButton = pillItems.length <= 2;
+    const disableDeleteButton = fields.length <= 2;
     // =========================================================================
     // EVENT HANDLERS
     // =========================================================================
@@ -64,12 +60,13 @@ export const PillFields = ({ id }: IProps) => {
         const { active, over } = event;
 
         if (over && active.id !== over.id) {
-            const oldIndex = pillItems.findIndex(
-                (item) => item.id === active.id
-            );
-            const newIndex = pillItems.findIndex((item) => item.id === over.id);
-            const updatedPills = arrayMove(pillItems, oldIndex, newIndex);
-            setPillItems(updatedPills);
+            const oldIndex = fields.findIndex((item) => item.id === active.id);
+            const newIndex = fields.findIndex((item) => item.id === over.id);
+            console.log("active & over:", active, over);
+            console.log("old & new index:", oldIndex, newIndex);
+            move(oldIndex, newIndex);
+            console.log("check:", fields);
+            // setPillItems(updatedPills);
         }
     };
 
@@ -84,30 +81,20 @@ export const PillFields = ({ id }: IProps) => {
     // =============================================================================
     // EFFECTS
     // =============================================================================
-    useEffect(() => {
-        setPillItems(fields);
-    }, [fields]);
+    // useEffect(() => {
+    //     setPillItems(fields);
+    // }, [fields]);
 
     // =============================================================================
     // RENDER FUNCTIONS
     // =============================================================================
     const renderPillItems = () =>
-        items.map((item, index) => (
-            <Controller
-                key={index}
-                name={`pillItems.${index}.content`}
-                control={control}
-                render={({ field }) => (
-                    <PillItem
-                        item={item}
-                        field={field}
-                        index={index}
-                        errors={errors}
-                        onDelete={() => handleDeleteButtonClick(index)}
-                        disableDelete={disableDeleteButton}
-                    />
-                )}
-                shouldUnregister
+        fields.map((item, index) => (
+            <PillItem
+                item={item}
+                index={index}
+                onDelete={() => handleDeleteButtonClick(index)}
+                disableDelete={disableDeleteButton}
             />
         ));
 
@@ -118,11 +105,11 @@ export const PillFields = ({ id }: IProps) => {
             onDragEnd={handleDragEnd}
         >
             <SortableContext
-                items={pillItems}
+                items={fields}
                 strategy={verticalListSortingStrategy}
             >
                 <Form.Label>Pill Items</Form.Label>
-                <div>{pillItems.length > 0 && renderPillItems()}</div>
+                <div>{fields.length > 0 && renderPillItems()}</div>
                 <AddMultiEntryButton
                     icon={<PlusIcon />}
                     styleType="light"
