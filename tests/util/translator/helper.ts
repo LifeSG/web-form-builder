@@ -19,7 +19,7 @@ interface MockElementProps {
     description?: string;
     columns?: IColumns;
     placeholder?: string;
-    label?: string | IComplexLabel;
+    label?: string;
     validation?: IValidation[];
     conditionalRendering?: IConditionalRendering[];
     prefill?: IPrefillAttributes[];

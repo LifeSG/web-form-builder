@@ -56,14 +56,10 @@ describe("ValidationChild", () => {
                             } as const,
                         },
                     },
+                    selectedElementType: EElementType.TEXTAREA,
                 },
             }
         );
-        // expect(screen.getByText("Select")).toBeInTheDocument();
-        // expect(screen.getByPlaceholderText("Enter rule")).toBeInTheDocument();
-        // expect(
-        //     screen.getByPlaceholderText("Set error message")
-        // ).toBeInTheDocument();
         expect(
             screen.getByText(
                 "Adding of this validation will result in character counter displayed under the textarea."
@@ -72,11 +68,20 @@ describe("ValidationChild", () => {
     });
 
     it("should render fields with prefilled values when values are provided", () => {
-        renderComponent({
-            onDelete: mockDelete,
-            options: mockOptions,
-            index: mockIndex,
-        });
+        renderComponent(
+            {
+                onDelete: mockDelete,
+                options: mockOptions,
+                index: mockIndex,
+            },
+            {
+                formContext: {
+                    currentValues: {
+                        validation: mockValue,
+                    },
+                },
+            }
+        );
         const getValidationTypeField = screen.getByRole("button", {
             name: "Option 1",
         });

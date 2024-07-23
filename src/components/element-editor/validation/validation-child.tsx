@@ -19,7 +19,7 @@ export const ValidationChild = ({ onDelete, options, index }: IProps) => {
         control,
         watch,
     } = useFormContext<TOverallTextBasedSchema>();
-    const { focusedElement } = useBuilder();
+    const { focusedElement, selectedElementType } = useBuilder();
     const validationType = watch(`validation.${index}.validationType`);
 
     // =========================================================================
@@ -27,7 +27,7 @@ export const ValidationChild = ({ onDelete, options, index }: IProps) => {
     // =========================================================================
 
     const renderAlert = () => {
-        if (focusedElement.element.type === EElementType.TEXTAREA) {
+        if (selectedElementType === EElementType.TEXTAREA) {
             return (
                 <Alert type="info" showIcon>
                     Adding of this validation will result in character counter

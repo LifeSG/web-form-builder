@@ -466,8 +466,8 @@ describe("Translator", () => {
 
             it("should translate with myinfo prefill from the schema & be generated into new elements", () => {
                 const MOCK_EMAIL_SCHEMA_WITH_MYINFO_PREFILL =
-                    generateMockSchema(
-                        {
+                    generateMockSchema({
+                        prefill: {
                             mock123: [
                                 {
                                     prefillMode: "Myinfo",
@@ -475,7 +475,7 @@ describe("Translator", () => {
                                 },
                             ],
                         },
-                        generateMockElementSchema({
+                        children: generateMockElementSchema({
                             id: "mock123",
                             label: {
                                 mainLabel: "Email address",
@@ -487,8 +487,8 @@ describe("Translator", () => {
                                     errorMessage: "Email address is required",
                                 },
                             ],
-                        })
-                    );
+                        }),
+                    });
 
                 const generatedSchema = Translator.parseSchema(
                     MOCK_EMAIL_SCHEMA_WITH_MYINFO_PREFILL as ISchemaProps
@@ -516,8 +516,8 @@ describe("Translator", () => {
 
             it("should translate with previous source prefill from the schema & be generated into new elements", () => {
                 const MOCK_EMAIL_SCHEMA_WITH_PREVIOUS_SOURCE_PREFILL =
-                    generateMockSchema(
-                        {
+                    generateMockSchema({
+                        prefill: {
                             mock123: [
                                 {
                                     prefillMode: "Previous source",
@@ -526,7 +526,7 @@ describe("Translator", () => {
                                 },
                             ],
                         },
-                        generateMockElementSchema({
+                        children: generateMockElementSchema({
                             id: "mock123",
                             label: {
                                 mainLabel: "Email address",
@@ -538,8 +538,8 @@ describe("Translator", () => {
                                     errorMessage: "Email address is required",
                                 },
                             ],
-                        })
-                    );
+                        }),
+                    });
 
                 const generatedSchema = Translator.parseSchema(
                     MOCK_EMAIL_SCHEMA_WITH_PREVIOUS_SOURCE_PREFILL as ISchemaProps

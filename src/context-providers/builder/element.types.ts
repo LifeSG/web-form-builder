@@ -82,7 +82,7 @@ export interface IColumns {
 }
 
 export interface IBaseFieldAttributes extends IBaseAttributes {
-    label: string | IComplexLabel;
+    label: string;
     required: boolean;
     requiredErrorMsg?: string | undefined;
     columns: IColumns;
@@ -93,7 +93,7 @@ export interface IBaseFieldAttributes extends IBaseAttributes {
 export interface ITextareaFieldAttributes
     extends IBaseTextBasedFieldAttributes {
     resizableInput?: boolean;
-    preSelectedValue?: string;
+    preselectedValue?: string;
 }
 
 export interface IBaseTextBasedFieldAttributes extends IBaseFieldAttributes {

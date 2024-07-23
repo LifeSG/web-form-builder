@@ -87,7 +87,7 @@ export namespace ElementObjectGenerator {
                     requiredErrorMsg: "",
                     label: ELEMENT_BUTTON_LABELS[type],
                     description: "",
-                    preSelectedValue: "",
+                    preselectedValue: "",
                     resizableInput: true,
                     columns: { desktop: 12, tablet: 8, mobile: 4 },
                     validation: [],

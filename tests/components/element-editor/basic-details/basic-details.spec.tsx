@@ -66,7 +66,9 @@ describe("BasicDetails", () => {
                     elements: MOCK_TEXT_AREA_ELEMENTS,
                 },
                 formContext: {
-                    elementType: EElementType.TEXTAREA,
+                    defaultValues: {
+                        type: EElementType.TEXTAREA,
+                    },
                 },
             });
 
