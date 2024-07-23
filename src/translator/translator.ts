@@ -77,10 +77,14 @@ export namespace Translator {
     export const parseSchema = (formSchema: ISchemaProps) => {
         const schemaToParse = formSchema?.schema?.sections?.section?.children
             ?.grid?.["children"] as Record<string, TFrontendEngineFieldSchema>;
-        const parsedElements = parseSchemaBasedOnType(
-            schemaToParse,
-            formSchema.prefill
-        );
-        return updateParsedElements(parsedElements);
+        if (Object.values(schemaToParse).length !== 0) {
+            const parsedElements = parseSchemaBasedOnType(
+                schemaToParse,
+                formSchema.prefill
+            );
+            return updateParsedElements(parsedElements);
+        } else {
+            return null;
+        }
     };
 }
