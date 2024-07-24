@@ -8,6 +8,9 @@ import * as yup from "yup";
 const ID_REGEX = /^[a-z]+(?:[A-Z0-9][a-z0-9]*)*(?:[-_][a-z0-9]+)*$/gm;
 
 export namespace BaseSchemaHelper {
+    export type TBaseSchema = yup.InferType<
+        ReturnType<typeof getTextFieldBasedSchema>
+    >;
     export const getTextFieldBasedSchema = (
         elements: TElementMap,
         focusedElement: IFocusedElement

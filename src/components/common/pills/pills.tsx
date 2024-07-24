@@ -9,19 +9,17 @@ import {
 } from "@dnd-kit/core";
 import {
     SortableContext,
-    arrayMove,
     sortableKeyboardCoordinates,
     verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { Form } from "@lifesg/react-design-system";
 import { PlusIcon } from "@lifesg/react-icons/plus";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { TogglePair } from "src/components/common/toggle-pair/toggle-pair";
 import { ITextareaFieldAttributes } from "src/context-providers";
 import { BottomPositionIcon } from "src/icons/bottom-position-icon";
 import { TopPositionIcon } from "src/icons/top-position-icon";
-import { SimpleIdGenerator } from "src/util/simple-id-generator";
 import { PillItem } from "./pill-items";
 import { AddMultiEntryButton } from "./pills.styles";
 
@@ -43,8 +41,6 @@ export const PillFields = ({ id }: IProps) => {
         shouldUnregister: true,
     });
 
-    // const [pillItems, setPillItems] = useState(fields);
-
     const sensors = useSensors(
         useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
         useSensor(KeyboardSensor, {
@@ -62,11 +58,7 @@ export const PillFields = ({ id }: IProps) => {
         if (over && active.id !== over.id) {
             const oldIndex = fields.findIndex((item) => item.id === active.id);
             const newIndex = fields.findIndex((item) => item.id === over.id);
-            console.log("active & over:", active, over);
-            console.log("old & new index:", oldIndex, newIndex);
             move(oldIndex, newIndex);
-            console.log("check:", fields);
-            // setPillItems(updatedPills);
         }
     };
 
@@ -78,12 +70,16 @@ export const PillFields = ({ id }: IProps) => {
         remove(index);
     };
 
-    // =============================================================================
+    // =========================================================================
     // EFFECTS
-    // =============================================================================
-    // useEffect(() => {
-    //     setPillItems(fields);
-    // }, [fields]);
+    // =========================================================================
+    useEffect(() => {
+        if (fields.length === 0) {
+            append([{ content: "" }, { content: "" }], {
+                shouldFocus: false,
+            });
+        }
+    }, []);
 
     // =============================================================================
     // RENDER FUNCTIONS
@@ -91,6 +87,7 @@ export const PillFields = ({ id }: IProps) => {
     const renderPillItems = () =>
         fields.map((item, index) => (
             <PillItem
+                key={item.id}
                 item={item}
                 index={index}
                 onDelete={() => handleDeleteButtonClick(index)}

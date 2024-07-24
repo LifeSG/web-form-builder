@@ -176,11 +176,56 @@ export const TEXT_AREA_SCHEMA = () => {
         preSelectedValue: yup.string().optional(),
         resizableInput: yup.boolean().required().default(true),
         pills: yup.boolean().required().default(true),
-        pillItems: yup.array().of(
-            yup.object().shape({
-                content: yup.string().required("Pill content required."),
-            })
-        ),
+        pillItems: yup
+            .array()
+            .of(
+                yup.object().shape({
+                    content: yup.string().optional(),
+                })
+            )
+            .test(
+                "min-2-valid-items",
+                "At least 2 items with valid content are required.",
+                function (pillItems) {
+                    if (!Array.isArray(pillItems)) {
+                        return this.createError({
+                            message: "Invalid data format for pill items.",
+                        });
+                    }
+
+                    const validItemsCount = pillItems
+                        .slice(0, 2)
+                        .reduce((count, item) => {
+                            return item.content && item.content.trim() !== ""
+                                ? count + 1
+                                : count;
+                        }, 0);
+
+                    if (validItemsCount === 2) {
+                        return true;
+                    }
+
+                    const errors = pillItems
+                        .slice(0, 2)
+                        .reduce((acc, item, index) => {
+                            if (!item.content || item.content.trim() === "") {
+                                acc.push(
+                                    this.createError({
+                                        path: `${this.path}[${index}].content`,
+                                        message:
+                                            "Pill item content is required.",
+                                    })
+                                );
+                            }
+                            return acc;
+                        }, []);
+
+                    return errors.length > 0
+                        ? new yup.ValidationError(errors)
+                        : true;
+                }
+            ),
+
         pillPosition: yup.string().required().default("top"),
         validation: yup.array().of(
             yup.object().shape({

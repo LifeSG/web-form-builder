@@ -1,9 +1,10 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import {
     EElementType,
     EToastTypes,
+    IPillItemAttributes,
     TElement,
     useDisplay,
 } from "src/context-providers";
@@ -33,26 +34,27 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
         toggleSubmitting,
     } = useBuilder();
     const { showToast } = useDisplay();
+    const element = focusedElement?.element;
+    const schema = SchemaHelper.buildSchema(EElementType.TEXTAREA);
     const methods = useForm({
         mode: "onTouched",
         defaultValues: {
             requiredErrorMsg: "",
         },
         // TODO: insert proper type; email is a placeholder
-        resolver: yupResolver(
-            SchemaHelper.buildSchema(focusedElement?.element?.type)
-        ),
+        resolver: yupResolver(schema),
     });
 
     const {
         formState: { isSubmitSuccessful },
+        getValues,
     } = methods;
 
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
     const onFormSubmit = useCallback(
-        async (values) => {
+        async (values: TElement) => {
             if (onSubmit) {
                 toggleSubmitting(true);
                 await onSubmit(values);
@@ -62,6 +64,14 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
                 message: "Changes are saved successfully.",
                 type: EToastTypes.SUCCESS_TOAST,
             };
+
+            if ("pillItems" in values) {
+                const validPillItems = (
+                    getValues("pillItems") as IPillItemAttributes[]
+                ).filter((item) => item.content.length > 0);
+                values.pillItems = validPillItems;
+            }
+
             updateElement(values);
             updateFocusedElement(false, values);
             showToast(newToast);

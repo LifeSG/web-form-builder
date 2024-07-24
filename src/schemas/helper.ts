@@ -3,9 +3,12 @@ import * as yup from "yup";
 import { EElementType } from "../context-providers/builder/element.types";
 import { BaseSchemaHelper } from "./base-helper";
 import { TEXT_AREA_SCHEMA, TEXT_BASED_SCHEMA } from "./text-based-fields";
+import { TOverallTextBasedSchema } from "./types";
 
 export namespace SchemaHelper {
-    export const buildSchema = (type: EElementType) => {
+    export const buildSchema = (
+        type: EElementType
+    ): yup.ObjectSchema<TOverallTextBasedSchema> => {
         try {
             const { elements, focusedElement } = useBuilder();
 
@@ -26,7 +29,7 @@ export namespace SchemaHelper {
                     return yup
                         .object()
                         .concat(baseTextFieldBasedSchema)
-                        .concat(TEXT_AREA_SCHEMA(type));
+                        .concat(TEXT_AREA_SCHEMA());
             }
         } catch (error) {
             console.error("Error in schema helper:", error);

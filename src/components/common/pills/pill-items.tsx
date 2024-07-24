@@ -1,24 +1,16 @@
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { PopoverTrigger } from "@lifesg/react-design-system/popover-v2";
 import { BinIcon, DragHandleIcon } from "@lifesg/react-icons";
+import { CSSProperties } from "react";
+import { Controller, useFormContext } from "react-hook-form";
+import { ITextareaFieldAttributes } from "src/context-providers";
 import {
     DeleteButton,
+    PillDragHandleButton,
     PillFieldsWrapper,
     PrefillItemInput,
 } from "./pill-items.styles";
-import {
-    IPillItemAttributes,
-    ITextareaFieldAttributes,
-} from "src/context-providers";
-import { CSS } from "@dnd-kit/utilities";
-import {
-    Controller,
-    ControllerRenderProps,
-    FieldErrors,
-    useFormContext,
-} from "react-hook-form";
-import { useSortable } from "@dnd-kit/sortable";
-import { CSSProperties } from "react";
-import { PopoverTrigger } from "@lifesg/react-design-system/popover-v2";
-import { Button } from "@lifesg/react-design-system/button";
 
 interface IProps {
     item: any;
@@ -46,7 +38,9 @@ export const PillItem = ({ item, index, onDelete, disableDelete }: IProps) => {
     return (
         <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
             <PillFieldsWrapper>
-                <DragHandleIcon data-testid="drag-handle" />
+                <PillDragHandleButton>
+                    <DragHandleIcon data-testid="drag-handle" />
+                </PillDragHandleButton>
                 <div>
                     <Controller
                         key={item.id}
@@ -69,26 +63,26 @@ export const PillItem = ({ item, index, onDelete, disableDelete }: IProps) => {
                         shouldUnregister
                     />
                 </div>
-            </PillFieldsWrapper>
-            <DeleteButton
-                $disable={disableDelete}
-                data-testid="delete-button"
-                onClick={disableDelete ? () => {} : onDelete}
-            >
-                {disableDelete ? (
-                    <PopoverTrigger
-                        popoverContent={
-                            "Item deletion is not allowed when there are less than 3 items."
-                        }
-                        trigger="hover"
-                        position="bottom"
-                    >
+                <DeleteButton
+                    $disable={disableDelete}
+                    data-testid="delete-button"
+                    onClick={disableDelete ? () => {} : onDelete}
+                >
+                    {disableDelete ? (
+                        <PopoverTrigger
+                            popoverContent={
+                                "Item deletion is not allowed when there are less than 3 items."
+                            }
+                            trigger="hover"
+                            position="bottom"
+                        >
+                            <BinIcon />
+                        </PopoverTrigger>
+                    ) : (
                         <BinIcon />
-                    </PopoverTrigger>
-                ) : (
-                    <BinIcon />
-                )}
-            </DeleteButton>
+                    )}
+                </DeleteButton>
+            </PillFieldsWrapper>
         </div>
     );
 };
