@@ -165,7 +165,7 @@ export namespace TextBasedField {
     ) => {
         const { showIf, uiType, validation, label, ...rest } = element;
 
-        let requiredValidation: IYupValidationRule = { required: false };
+        let requiredValidation: IYupValidationRule = {};
         const fieldValidation = [];
 
         validation?.forEach((rule) => {
@@ -182,7 +182,7 @@ export namespace TextBasedField {
             label: (label as IComplexLabel).mainLabel,
             description: (label as IComplexLabel).subLabel,
             type: uiType as EElementType,
-            required: requiredValidation.required as boolean,
+            required: !!requiredValidation.required,
             requiredErrorMsg: requiredValidation.errorMessage,
             id: key,
             internalId: newInternalId,
