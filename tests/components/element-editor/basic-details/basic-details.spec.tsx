@@ -81,6 +81,54 @@ describe("BasicDetails", () => {
             expect(resizableAreaInput).toBeInTheDocument();
             expect(preSelectedField).toBeInTheDocument();
         });
+
+        it("should render the pills fields if element has pills field", async () => {
+            renderComponent(EElementType.TEXTAREA, {
+                builderContext: {
+                    focusedElement: MOCK_FOCUSED_TEXT_AREA_ELEMENT,
+                    elements: MOCK_TEXT_AREA_ELEMENTS,
+                },
+            });
+
+            const pillsField = await screen.findByText("Pills");
+            const pillItemsField = await screen.findByText("Pill Items");
+            const pillPositionField = await screen.findByText("Pill Items");
+            expect(pillsField).toBeInTheDocument();
+            expect(pillItemsField).toBeInTheDocument();
+            expect(pillPositionField).toBeInTheDocument();
+        });
+
+        it("should render the popover when hovering over the disabled delete button when there are less than 2 pillItems", async () => {
+            renderComponent(EElementType.TEXTAREA, {
+                builderContext: {
+                    focusedElement: MOCK_FOCUSED_TEXT_AREA_ELEMENT,
+                    elements: MOCK_TEXT_AREA_ELEMENTS,
+                },
+            });
+
+            fireEvent.mouseOver(deleteButton());
+            const popoverText = await screen.findByTestId(
+                "delete-button-popover-0"
+            );
+            expect(popoverText).toBeInTheDocument();
+        });
+
+        it("should not render the popover when hovering over the disabled delete button when there are more than 2 pillItems", async () => {
+            renderComponent(EElementType.TEXTAREA, {
+                builderContext: {
+                    focusedElement: MOCK_FOCUSED_TEXT_AREA_ELEMENT,
+                    elements: MOCK_TEXT_AREA_ELEMENTS,
+                },
+            });
+            const addOptionButton = screen.getByRole("button", {
+                name: "Add option",
+            });
+
+            fireEvent.click(addOptionButton);
+            fireEvent.mouseOver(deleteButton());
+            const popoverText = screen.queryByTestId("delete-button-popover-0");
+            expect(popoverText).not.toBeInTheDocument();
+        });
     });
 
     describe("rendering the error messages for the fields", () => {
@@ -175,6 +223,9 @@ const getLabelField = async () => {
     return screen.findByLabelText("Element Name");
 };
 
+const deleteButton: () => HTMLElement = () =>
+    screen.getByTestId("delete-button-0");
+
 // =============================================================================
 // MOCKS
 // =============================================================================
@@ -212,6 +263,9 @@ const MOCK_FOCUSED_TEXT_AREA_ELEMENT = {
         description: "hellooo",
         preSelectedValue: "",
         resizableInput: true,
+        pills: true,
+        pillItems: [{ content: "" }, { content: "" }],
+        pillPosition: "top",
         label: ELEMENT_BUTTON_LABELS[EElementType.TEXTAREA],
         columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
     },
@@ -225,6 +279,9 @@ const MOCK_TEXT_AREA_ELEMENTS = {
         description: "hellooo",
         preSelectedValue: "",
         resizableInput: true,
+        pills: true,
+        pillItems: [{ content: "" }, { content: "" }],
+        pillPosition: "top",
         label: ELEMENT_BUTTON_LABELS[EElementType.TEXTAREA],
         columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
     },

@@ -65,7 +65,7 @@ export const PillItem = ({ item, index, onDelete, disableDelete }: IProps) => {
                 </div>
                 <DeleteButton
                     $disable={disableDelete}
-                    data-testid="delete-button"
+                    data-testid={`delete-button-${index}`}
                     onClick={disableDelete ? () => {} : onDelete}
                 >
                     {disableDelete ? (
@@ -75,6 +75,7 @@ export const PillItem = ({ item, index, onDelete, disableDelete }: IProps) => {
                             }
                             trigger="hover"
                             position="bottom"
+                            data-testid={`delete-button-popover-${index}`}
                         >
                             <BinIcon />
                         </PopoverTrigger>
