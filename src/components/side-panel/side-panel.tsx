@@ -99,7 +99,7 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
         if (!focusedElement) {
             return;
         }
-        methods.reset(focusedElement.element);
+        methods.reset(focusedElement?.element);
     }, [focusedElement?.element, methods.reset]);
 
     // =========================================================================

@@ -82,7 +82,7 @@ export namespace TextBasedField {
 
         if (element.required) {
             validation.push({
-                required: true,
+                required: element.required,
                 ...(element.requiredErrorMsg && {
                     errorMessage: element.requiredErrorMsg,
                 }),
@@ -173,7 +173,7 @@ export namespace TextBasedField {
         let requiredValidation: IYupValidationRule = {};
         const fieldValidation = [];
 
-        validation.forEach((rule) => {
+        validation?.forEach((rule) => {
             if (Object.prototype.hasOwnProperty.call(rule, "required")) {
                 requiredValidation = rule;
             } else {
@@ -187,7 +187,7 @@ export namespace TextBasedField {
             label: (label as IComplexLabel).mainLabel,
             description: (label as IComplexLabel).subLabel,
             type: uiType as EElementType,
-            required: requiredValidation.required as boolean,
+            required: !!requiredValidation.required,
             requiredErrorMsg: requiredValidation.errorMessage,
             id: key,
             internalId: newInternalId,
