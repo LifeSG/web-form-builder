@@ -1,8 +1,4 @@
-import {
-    EElementType,
-    EValidationType,
-    IBaseTextBasedFieldAttributes,
-} from "src/context-providers";
+import { EElementType, EValidationType } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import * as yup from "yup";
 import { PREFILL_ACTIONID_REGEX, PREFILL_PATH_REGEX } from "./base-helper";
@@ -31,17 +27,15 @@ yup.addMethod(yup.string, "validRegex", function (message) {
     };
 
     return this.test("validRegex", message, function (value) {
-        const { path, createError } = this;
         if (isValidRegex(value)) {
             return true;
         }
-        return createError({ path, message });
+        return false;
     });
 });
 
 yup.addMethod(yup.string, "isNumber", function (message) {
     return this.test("isNumber", message, function (value) {
-        const { path, createError } = this;
         if (
             !isNaN(Number(value)) &&
             Number.isInteger(Number(value)) &&
@@ -49,7 +43,7 @@ yup.addMethod(yup.string, "isNumber", function (message) {
         ) {
             return true;
         }
-        return createError({ path, message });
+        return false;
     });
 });
 
