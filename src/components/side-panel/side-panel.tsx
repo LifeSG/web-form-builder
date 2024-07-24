@@ -1,12 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import {
-    EElementType,
-    EToastTypes,
-    TElement,
-    useDisplay,
-} from "src/context-providers";
+import { EToastTypes, TElement, useDisplay } from "src/context-providers";
 import { SchemaHelper } from "src/schemas";
 import { EBuilderMode, useBuilder } from "../../context-providers";
 import { ElementEditor } from "../element-editor";
