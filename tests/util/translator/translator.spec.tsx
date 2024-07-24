@@ -41,11 +41,6 @@ describe("Translator", () => {
                             mainLabel: "Email address",
                         },
                         uiType: EElementType.EMAIL,
-                        validation: [
-                            {
-                                required: false,
-                            },
-                        ],
                     })
                 );
                 const orderedIdentifiers = [

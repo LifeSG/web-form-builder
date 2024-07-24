@@ -1,5 +1,3 @@
-import { IComplexLabel } from "@lifesg/web-frontend-engine/components/fields";
-
 /**
  * Refer to the uiType in the Frontend Engine when setting
  * the value.
