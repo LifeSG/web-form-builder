@@ -27,17 +27,15 @@ yup.addMethod(yup.string, "validRegex", function (message) {
     };
 
     return this.test("validRegex", message, function (value) {
-        const { path, createError } = this;
         if (isValidRegex(value)) {
             return true;
         }
-        return createError({ path, message });
+        return false;
     });
 });
 
 yup.addMethod(yup.string, "isNumber", function (message) {
     return this.test("isNumber", message, function (value) {
-        const { path, createError } = this;
         if (
             !isNaN(Number(value)) &&
             Number.isInteger(Number(value)) &&
@@ -45,7 +43,7 @@ yup.addMethod(yup.string, "isNumber", function (message) {
         ) {
             return true;
         }
-        return createError({ path, message });
+        return false;
     });
 });
 
