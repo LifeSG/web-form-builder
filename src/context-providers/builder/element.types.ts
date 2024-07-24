@@ -1,3 +1,5 @@
+import { IComplexLabel } from "@lifesg/web-frontend-engine/components/fields";
+
 /**
  * Refer to the uiType in the Frontend Engine when setting
  * the value.
@@ -70,14 +72,21 @@ export interface IColumns {
 }
 
 export interface IBaseFieldAttributes extends IBaseAttributes {
-    label: string | undefined;
+    label: string | IComplexLabel;
     required: boolean;
     requiredErrorMsg?: string | undefined;
     columns: IColumns;
+    placeholder?: string;
+    description?: string;
+}
+
+export interface ITextareaFieldAttributes
+    extends IBaseTextBasedFieldAttributes {
+    resizableInput?: boolean;
+    preSelectedValue?: string;
 }
 
 export interface IBaseTextBasedFieldAttributes extends IBaseFieldAttributes {
-    placeholder?: string;
     validation?: IValidation[];
     conditionalRendering?: IConditionalRendering[];
     prefill?: IPrefillAttributes[];
@@ -90,7 +99,7 @@ export type IContactField = IBaseTextBasedFieldAttributes;
 export type IEmailField = IBaseTextBasedFieldAttributes;
 export type INumericField = IBaseTextBasedFieldAttributes;
 export type ITextField = IBaseTextBasedFieldAttributes;
-export type ITextarea = IBaseTextBasedFieldAttributes;
+export type ITextarea = ITextareaFieldAttributes;
 
 export type TElement =
     | IEmailField

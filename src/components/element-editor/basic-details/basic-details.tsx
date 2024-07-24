@@ -3,11 +3,16 @@ import { Text } from "@lifesg/react-design-system/text";
 import { Controller, useFormContext } from "react-hook-form";
 import { IconDropdown } from "src/components/common/icon-dropdown";
 import { TogglePair } from "src/components/common/toggle-pair/toggle-pair";
-import { EElementType, useBuilder } from "src/context-providers";
+import {
+    EElementType,
+    ITextareaFieldAttributes,
+    useBuilder,
+} from "src/context-providers";
 import { IBaseTextBasedFieldValues } from "src/schemas";
 import {
     FieldEditorAccordionItem,
     MandatoryFieldBox,
+    StyledTextarea,
     Wrapper,
 } from "./basic-details.styles";
 
@@ -21,7 +26,7 @@ export const BasicDetails = () => {
         formState: { errors },
         watch,
         setValue,
-    } = useFormContext<IBaseTextBasedFieldValues>();
+    } = useFormContext<IBaseTextBasedFieldValues | ITextareaFieldAttributes>();
     const element = focusedElement.element;
 
     // =========================================================================
@@ -74,7 +79,7 @@ export const BasicDetails = () => {
                                 label="Element Name"
                                 rows={1}
                                 placeholder="Element Name"
-                                value={field.value}
+                                value={field.value as string}
                                 onChange={(e) => {
                                     field.onChange(e.target.value);
                                 }}
@@ -92,7 +97,9 @@ export const BasicDetails = () => {
                         control={control}
                         render={({ field }) => (
                             <TogglePair
-                                label="Mandatory field"
+                                label={{
+                                    mainLabel: "Mandatory field",
+                                }}
                                 value={field.value}
                                 onChange={(value) => {
                                     field.onChange(value);
@@ -150,8 +157,67 @@ export const BasicDetails = () => {
                     )}
                     shouldUnregister={true}
                 />
+                {hasProperty("description") && (
+                    <Controller
+                        name="description"
+                        control={control}
+                        render={({ field }) => {
+                            const handleTextareaChange = (
+                                e: React.ChangeEvent<HTMLTextAreaElement>
+                            ) => {
+                                field.onChange(e.target.value);
+                                e.target.style.height = "auto";
+                                e.target.style.height = `${Math.max(40, e.target.scrollHeight)}px`;
+                            };
 
-                {element?.hasOwnProperty("placeholder") && (
+                            return (
+                                <StyledTextarea
+                                    {...field}
+                                    label={{
+                                        children: "Description text (optional)",
+                                        subtitle: (
+                                            <Text.H6 weight={400}>
+                                                This displays as a description
+                                                under the label.
+                                            </Text.H6>
+                                        ),
+                                    }}
+                                    placeholder="Enter description text"
+                                    value={field.value || ""}
+                                    rows={1}
+                                    onChange={handleTextareaChange}
+                                    errorMessage={errors.description?.message}
+                                    maxLength={180}
+                                />
+                            );
+                        }}
+                        shouldUnregister={true}
+                    />
+                )}
+
+                {hasProperty("resizableInput") && (
+                    <Controller
+                        name="resizableInput"
+                        control={control}
+                        render={({ field }) => (
+                            <TogglePair
+                                label={{
+                                    mainLabel: "Resizable area input",
+                                    subLabel:
+                                        "This allows participant to resize text area.",
+                                }}
+                                value={field.value}
+                                onChange={(value) => {
+                                    field.onChange(value);
+                                }}
+                                id={element.internalId}
+                            />
+                        )}
+                        shouldUnregister={true}
+                    />
+                )}
+
+                {hasProperty("placeholder") && (
                     <Controller
                         name="placeholder"
                         control={control}
@@ -165,6 +231,33 @@ export const BasicDetails = () => {
                                     field.onChange(e.target.value);
                                 }}
                                 errorMessage={errors.placeholder?.message}
+                            />
+                        )}
+                        shouldUnregister={true}
+                    />
+                )}
+                {hasProperty("preSelectedValue") && (
+                    <Controller
+                        name="preSelectedValue"
+                        control={control}
+                        render={({ field }) => (
+                            <Form.Input
+                                {...field}
+                                label={{
+                                    children: "Pre-selected value (optional)",
+                                    subtitle: (
+                                        <Text.H6 weight={400}>
+                                            Note that prefill value will replace
+                                            the pre-selected value, if present.
+                                        </Text.H6>
+                                    ),
+                                }}
+                                placeholder="Enter pre-selected value"
+                                value={field.value || ""}
+                                onChange={(e) => {
+                                    field.onChange(e.target.value);
+                                }}
+                                errorMessage={errors.id?.message}
                             />
                         )}
                         shouldUnregister={true}

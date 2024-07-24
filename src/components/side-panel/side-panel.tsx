@@ -24,13 +24,13 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
-    const [isSubmitting, setIsSubmitting] = useState(false);
     const {
         showSidePanel,
         currentMode,
         focusedElement,
         updateElement,
         updateFocusedElement,
+        toggleSubmitting,
     } = useBuilder();
     const { showToast } = useDisplay();
     const methods = useForm({
@@ -54,9 +54,9 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
     const onFormSubmit = useCallback(
         async (values) => {
             if (onSubmit) {
-                setIsSubmitting(true);
+                toggleSubmitting(true);
                 await onSubmit(values);
-                setIsSubmitting(false);
+                toggleSubmitting(false);
             }
             const newToast = {
                 message: "Changes are saved successfully.",
@@ -111,15 +111,12 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
 
     return (
         <FormProvider {...methods}>
-            <form
-                onSubmit={methods.handleSubmit(onFormSubmit)}
-                {...{ inert: isSubmitting ? "" : undefined }}
-            >
+            <form onSubmit={methods.handleSubmit(onFormSubmit)}>
                 <Wrapper
                     $minimised={focusedElement ? false : !showSidePanel}
                     $offset={offset ? offset : 0}
                 >
-                    <SidePanelHeader isSubmitting={isSubmitting} />
+                    <SidePanelHeader />
                     <ContentWrapper>
                         <ContentSection
                             $isFocusedElement={focusedElement ? true : false}

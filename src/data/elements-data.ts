@@ -68,6 +68,10 @@ export const ELEMENT_VALIDATION_TYPES = {
                 EValidationType.MAX_LENGTH,
             ],
         },
+        [EElementType.TEXTAREA]: {
+            maxEntries: 1, // Set a negetive number so that it will allow unlimited entries as it will not be equal to 0
+            validationTypes: ["Maximum length"],
+        },
     },
 };
 

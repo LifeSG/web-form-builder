@@ -62,11 +62,17 @@ export interface IBuilderState {
      * Keeps track of the number of unique elements that have been added to the builder from the start.
      */
     elementCounter: number;
+    isSubmitting: boolean;
 }
 
 // =============================================================================
 // ACTIONS
 // =============================================================================
+
+export interface IToggleSubmittingAction {
+    type: "toggle-submitting";
+    payload: boolean;
+}
 
 export interface ITogglePanelAction {
     type: "toggle-panel";
@@ -150,6 +156,7 @@ export type TBuilderAction =
     | IRemoveFocusedElementAction
     | IUpdateElementAction
     | IUpdateFocusedElementAction
+    | IToggleSubmittingAction
     | IUpdateSchemaElementAction;
 
 // =============================================================================

@@ -30,7 +30,8 @@ export const getValidationOptionsByType = (
 ) => {
     switch (elementType) {
         case EElementType.EMAIL:
-            return ELEMENT_VALIDATION_TYPES["Text field"][EElementType.EMAIL]
+        case EElementType.TEXTAREA:
+            return ELEMENT_VALIDATION_TYPES["Text field"][elementType]
                 .validationTypes;
 
         case EElementType.TEXT: {

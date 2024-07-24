@@ -1,5 +1,6 @@
 import { IYupValidationRule } from "@lifesg/web-frontend-engine";
 import {
+    IComplexLabel,
     IEmailFieldSchema,
     INumericFieldSchema,
     ITextFieldSchema,
@@ -16,7 +17,9 @@ import { SimpleIdGenerator } from "src/util/simple-id-generator";
 import {
     createConditionalRenderingObject,
     parseConditionalRenderingObject,
+    parsePrefillObject,
 } from "./helper";
+import { IPrefillConfig } from "./types";
 
 export namespace TextBasedField {
     export type TElementSchema =
@@ -36,10 +39,10 @@ export namespace TextBasedField {
             const domainRegexString = (domains: IValidation) => {
                 if (domains) {
                     const domainsArr = domains?.validationRule.split(",");
-                    const translatedDomains = domainsArr?.map((domain) =>
+                    const generateSchemaDomains = domainsArr?.map((domain) =>
                         domain.trim().replace(/^@/, "").replace(/\./g, "\\.")
                     );
-                    const regexPattern = `^[a-zA-Z0-9._%+-]+@(${translatedDomains.join("|")})$`;
+                    const regexPattern = `^[a-zA-Z0-9._%+-]+@(${generateSchemaDomains.join("|")})$`;
                     return new RegExp(regexPattern);
                 }
             };
@@ -63,16 +66,20 @@ export namespace TextBasedField {
                 })
                 .join(", ");
 
-            return [
-                {
-                    validationType:
-                        ELEMENT_VALIDATION_TYPES["Text field"][
-                            EElementType.EMAIL
-                        ].validationTypes[0],
-                    validationRule: extractedDomains,
-                    validationErrorMessage: validation[0].errorMessage,
-                },
-            ];
+            const DOMAIN_REGEX = /@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}/;
+            const isDomain = DOMAIN_REGEX.exec(extractedDomains);
+            if (isDomain) {
+                return [
+                    {
+                        validationType:
+                            ELEMENT_VALIDATION_TYPES["Text field"][
+                                EElementType.EMAIL
+                            ].validationTypes[0],
+                        validationRule: extractedDomains,
+                        validationErrorMessage: validation[0].errorMessage,
+                    },
+                ];
+            }
         };
     }
 
@@ -182,7 +189,12 @@ export namespace TextBasedField {
         const validationObject = createValidationObject(element);
         const textBasedFieldSchema = {
             [element.id]: {
-                label: element.label,
+                label: {
+                    mainLabel: element.label,
+                    ...(element.description && {
+                        subLabel: element.description,
+                    }),
+                },
                 uiType: element.type,
                 columns: {
                     desktop: element.columns.desktop,
@@ -202,8 +214,12 @@ export namespace TextBasedField {
         return textBasedFieldSchema;
     };
 
-    export const parseToElement = (element: TElementSchema, key: string) => {
-        const { showIf, uiType, validation, ...rest } = element;
+    export const parseToElement = (
+        element: TElementSchema,
+        key: string,
+        prefill: IPrefillConfig
+    ) => {
+        const { showIf, uiType, validation, label, ...rest } = element;
 
         let requiredValidation: IYupValidationRule = {};
         const fieldValidation = [];
@@ -219,6 +235,8 @@ export namespace TextBasedField {
 
         const parsedElement = {
             ...rest,
+            label: (label as IComplexLabel).mainLabel,
+            description: (label as IComplexLabel).subLabel,
             type: uiType as EElementType,
             required: requiredValidation.required as boolean,
             requiredErrorMsg: requiredValidation.errorMessage,
@@ -230,11 +248,11 @@ export namespace TextBasedField {
                     fieldValidation
                 ),
             }),
-            ...(showIf && {
-                conditionalRendering: parseConditionalRenderingObject(
-                    showIf as TRenderRules[]
-                ),
-            }),
+            conditionalRendering: showIf
+                ? parseConditionalRenderingObject(showIf)
+                : [],
+
+            prefill: parsePrefillObject(prefill, key) || [],
         };
 
         return parsedElement as TElement;

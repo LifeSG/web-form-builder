@@ -34,7 +34,6 @@ export const ConditionalRendering = () => {
     // =====================================================================
     // HELPER FUNCTIONS
     // =====================================================================
-
     const getElementOptions = () => {
         const options: IOptions[] = [];
         Object.entries(elements).forEach(([key, value]) => {

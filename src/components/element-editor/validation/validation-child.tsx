@@ -1,3 +1,4 @@
+import { Alert } from "@lifesg/react-design-system/alert";
 import { Form } from "@lifesg/react-design-system/form";
 import { Controller, useFormContext } from "react-hook-form";
 import { ChildEntry } from "src/components/common";
@@ -25,6 +26,19 @@ export const ValidationChild = ({ onDelete, options, index }: IProps) => {
     // RENDER FUNCTIONS
     // =========================================================================
 
+    const renderAlert = () => {
+        if (focusedElement.element.type === EElementType.TEXTAREA) {
+            return (
+                <Alert type="info" showIcon>
+                    Adding of this validation will result in character counter
+                    displayed under the textarea.
+                </Alert>
+            );
+        } else {
+            return <></>;
+        }
+    };
+
     return (
         <ChildEntry onDelete={onDelete}>
             <FieldWrapper>
@@ -41,8 +55,10 @@ export const ValidationChild = ({ onDelete, options, index }: IProps) => {
                                 options={options}
                                 disabled={
                                     options.length === 1 &&
-                                    focusedElement.element.type ===
-                                        EElementType.EMAIL
+                                    (focusedElement.element.type ===
+                                        EElementType.TEXTAREA ||
+                                        focusedElement.element.type ===
+                                            EElementType.EMAIL)
                                 }
                                 onSelectOption={(option) => {
                                     field.onChange(option);
@@ -93,6 +109,7 @@ export const ValidationChild = ({ onDelete, options, index }: IProps) => {
                         );
                     }}
                 />
+                {renderAlert()}
             </FieldWrapper>
         </ChildEntry>
     );

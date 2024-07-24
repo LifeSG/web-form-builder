@@ -12,6 +12,13 @@ import {
 export const useBuilder = () => {
     const { state, dispatch } = useContext(BuilderContext);
 
+    const toggleSubmitting = useCallback((isSubmitting: boolean) => {
+        dispatch({
+            type: "toggle-submitting",
+            payload: isSubmitting,
+        });
+    }, []);
+
     const togglePanel = useCallback((isCollapsed: boolean) => {
         dispatch({
             type: "toggle-panel",
@@ -266,12 +273,27 @@ export const useBuilder = () => {
     }, []);
 
     const updateElementSchema = useCallback(
-        (elements?: TElementMap, orderedIdentifiers?: IElementIdentifier[]) => {
+        (
+            elements?: TElementMap,
+            orderedIdentifiers?: IElementIdentifier[],
+            newFocusedElement?: TElement
+        ) => {
             dispatch({
                 type: "update-schema-element",
                 payload: {
                     elements,
                     orderedIdentifiers,
+                },
+            });
+
+            dispatch({
+                type: "remove-focused-element",
+            });
+
+            dispatch({
+                type: "focus-element",
+                payload: {
+                    element: newFocusedElement,
                 },
             });
         },
@@ -292,12 +314,14 @@ export const useBuilder = () => {
     );
 
     return {
+        isSubmitting: state.isSubmitting,
         deletedElements: state.deletedElements,
         elements: state.elements,
         showSidePanel: state.showSidePanel,
         currentMode: state.mode,
         orderedIdentifiers: state.orderedIdentifiers,
         focusedElement: state.focusedElement,
+        toggleSubmitting,
         togglePanel,
         toggleMode,
         updateOrderedIdentifiers,
