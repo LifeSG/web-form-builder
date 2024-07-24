@@ -5,7 +5,6 @@ import {
     INumericFieldSchema,
     ITextFieldSchema,
 } from "@lifesg/web-frontend-engine/components/fields";
-import { TRenderRules } from "@lifesg/web-frontend-engine/context-providers";
 import { EElementType, IValidation, TElement } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import { SimpleIdGenerator } from "src/util/simple-id-generator";
