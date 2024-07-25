@@ -1,5 +1,5 @@
 import { ErrorDisplay } from "@lifesg/react-design-system/error-display";
-import { TModalProps } from "src/context-providers";
+import { IDiscardChangesModalProps } from "src/context-providers";
 import { useModal } from "../../../context-providers/display/modal-hook";
 import {
     ActionButton,
@@ -9,7 +9,7 @@ import {
 import { GenericModal } from "./generic-modal";
 
 interface IProps {
-    modal: TModalProps;
+    modal: IDiscardChangesModalProps;
 }
 
 export const DiscardChangesModal = ({ modal }: IProps) => {
