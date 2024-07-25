@@ -18,26 +18,27 @@ export const DeleteButton = ({
     // RENDER FUNCTIONS
     // =============================================================================
 
-    const renderButton = () => {
-        if (disabled) {
-            return (
-                <PopoverTrigger
-                    popoverContent={popoverMessage}
-                    trigger="hover"
-                    position="bottom-end"
-                >
-                    <StyledBinButton $disabled={true}>
-                        {children}
-                    </StyledBinButton>
-                </PopoverTrigger>
-            );
-        }
-        return (
-            <StyledBinButton data-testid="delete-button" onClick={onClick}>
-                {children}
-            </StyledBinButton>
-        );
-    };
+    const deleteButton = (
+        <StyledBinButton
+            $disabled={disabled}
+            data-testid={!disabled ? "delete-button" : undefined}
+            onClick={!disabled ? onClick : undefined}
+        >
+            {children}
+        </StyledBinButton>
+    );
 
-    return renderButton();
+    if (disabled) {
+        return (
+            <PopoverTrigger
+                popoverContent={popoverMessage}
+                trigger="hover"
+                position="bottom-end"
+            >
+                {deleteButton}
+            </PopoverTrigger>
+        );
+    }
+
+    return deleteButton;
 };

@@ -144,5 +144,7 @@ export const PreselectedValue = () => {
             return renderInputPreselectedValue();
         case EElementType.DROPDOWN:
             return renderDropdownPreselectedValue();
+        default:
+            return null;
     }
 };
