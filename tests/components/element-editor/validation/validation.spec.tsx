@@ -169,7 +169,7 @@ describe("Validation", () => {
 
     it("should hide the validation rule when the element is a numeric field and the selected validation type is whole numbers", async () => {
         setupJestCanvasMock();
-        renderComponent(EElementType.NUMERIC, {
+        renderComponent({
             builderContext: {
                 focusedElement: {
                     element: {
