@@ -190,7 +190,7 @@ export const TEXT_AREA_SCHEMA = () => {
                 "min-2-valid-items",
                 "At least 2 items with valid content are required.",
                 function (pillItems) {
-                    const validItemsCount = pillItems.reduce((count, item) => {
+                    const validItemsCount = pillItems?.reduce((count, item) => {
                         return item.content && item.content.trim() !== ""
                             ? count + 1
                             : count;
@@ -200,7 +200,7 @@ export const TEXT_AREA_SCHEMA = () => {
                         return true;
                     }
 
-                    const errors = pillItems.reduce((acc, item, index) => {
+                    const errors = pillItems?.reduce((acc, item, index) => {
                         if (!item.content || item.content.trim() === "") {
                             acc.push(
                                 this.createError({
@@ -212,7 +212,7 @@ export const TEXT_AREA_SCHEMA = () => {
                         return acc;
                     }, []);
 
-                    if (errors.length > 0) {
+                    if (errors?.length > 0) {
                         throw new yup.ValidationError(errors);
                     }
 
