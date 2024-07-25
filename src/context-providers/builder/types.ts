@@ -22,8 +22,9 @@ export enum ETextFieldMode {
 // STATE
 // =============================================================================
 export interface IElementIdentifier {
-    internalId: string;
+    internalId?: string;
     parentInternalId?: string;
+    size?: "full" | "left" | "right";
     position: number;
 }
 

@@ -72,7 +72,8 @@ export const useBuilder = () => {
                 {
                     internalId: newElement.internalId,
                     position: state.elementCounter,
-                },
+                    size: "full",
+                } as IElementIdentifier,
             ];
 
             dispatch({
