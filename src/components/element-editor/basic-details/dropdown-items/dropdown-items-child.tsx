@@ -2,7 +2,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Form } from "@lifesg/react-design-system/form";
 import { Text } from "@lifesg/react-design-system/text";
-import { BinIcon, DragHandleIcon, PlusCircleIcon } from "@lifesg/react-icons";
+import { DragHandleIcon, PlusCircleIcon } from "@lifesg/react-icons";
 import { CSSProperties } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { TOverallOptionGroupBasedSchema } from "src/schemas";
@@ -120,9 +120,7 @@ export const DropdownItemsChild = ({ onDelete, id, index }: IProps) => {
                     onClick={onDelete}
                     popoverMessage={renderPopoverMessage()}
                     disabled={isDeleteDisabled()}
-                >
-                    <BinIcon />
-                </DeleteButton>
+                />
             </DropdownItemsChildWrapper>
         </Wrapper>
     );
