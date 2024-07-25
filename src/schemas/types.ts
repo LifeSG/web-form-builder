@@ -5,7 +5,7 @@ import {
 import * as yup from "yup";
 import { BaseSchemaHelper } from "./base-helper";
 import { TOptionGroupBasedSchema } from "./option-group-based-fields";
-import { TTextBasedSchema } from "./text-based-fields";
+import { TTextAreaSchema, TTextBasedSchema } from "./text-based-fields";
 
 export type TBaseTextBasedFieldValues = Omit<
     IBaseTextBasedFieldAttributes,
@@ -22,7 +22,7 @@ export type TFormFieldValues =
     | TOverallOptionGroupBasedSchema;
 
 export type TOverallTextBasedSchema = BaseSchemaHelper.TBaseSchema &
-    TTextBasedSchema;
+    (TTextBasedSchema | TTextAreaSchema);
 
 export type TOverallOptionGroupBasedSchema = BaseSchemaHelper.TBaseSchema &
     TOptionGroupBasedSchema;

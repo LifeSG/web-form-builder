@@ -44,6 +44,43 @@ describe("BasicDetails", () => {
                 await screen.findByLabelText("Error message");
             expect(requiredErrorMessageField).toBeInTheDocument();
         });
+
+        it("should render the description if element has the description property", async () => {
+            renderComponent({
+                builderContext: {
+                    focusedElement: MOCK_FOCUSED_ELEMENT,
+                    elements: MOCK_ELEMENTS,
+                },
+            });
+
+            const descriptionField = await screen.findByText(
+                "Description text (optional)"
+            );
+            expect(descriptionField).toBeInTheDocument();
+        });
+
+        it("should render the preselected field & resizable area input field if element has the preselected value & resizable area input field property", async () => {
+            renderComponent({
+                builderContext: {
+                    focusedElement: MOCK_FOCUSED_TEXT_AREA_ELEMENT,
+                    elements: MOCK_TEXT_AREA_ELEMENTS,
+                },
+                formContext: {
+                    defaultValues: {
+                        type: EElementType.TEXTAREA,
+                    },
+                },
+            });
+
+            const resizableAreaInput = await screen.findByText(
+                "Resizable area input"
+            );
+            const preSelectedField = await screen.findByText(
+                "Pre-selected value (optional)"
+            );
+            expect(resizableAreaInput).toBeInTheDocument();
+            expect(preSelectedField).toBeInTheDocument();
+        });
     });
 
     describe("rendering the error messages for the fields", () => {
@@ -215,6 +252,7 @@ const MOCK_FOCUSED_ELEMENT = {
         type: EElementType.EMAIL,
         id: "mockElement",
         required: false,
+        description: "hellooo",
         label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
         columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
     },
@@ -245,7 +283,35 @@ const MOCK_ELEMENTS = {
         type: EElementType.EMAIL,
         id: "mockElement",
         required: false,
+        description: "hellooo",
         label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
+        columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
+    },
+};
+
+const MOCK_FOCUSED_TEXT_AREA_ELEMENT = {
+    element: {
+        internalId: "mock256",
+        type: EElementType.TEXTAREA,
+        id: "mockElement",
+        required: false,
+        description: "hellooo",
+        preSelectedValue: "",
+        resizableInput: true,
+        label: ELEMENT_BUTTON_LABELS[EElementType.TEXTAREA],
+        columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
+    },
+};
+const MOCK_TEXT_AREA_ELEMENTS = {
+    mock256: {
+        internalId: "mock256",
+        type: EElementType.TEXTAREA,
+        id: "mockElement",
+        required: false,
+        description: "hellooo",
+        preSelectedValue: "",
+        resizableInput: true,
+        label: ELEMENT_BUTTON_LABELS[EElementType.TEXTAREA],
         columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
     },
 };

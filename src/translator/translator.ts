@@ -7,7 +7,6 @@ import {
     IElementIdentifier,
     TElementMap,
 } from "src/context-providers";
-import { ISchemaProps } from "src/form-builder";
 import {
     createDefaultValuesObject,
     createPrefillObject,
@@ -16,6 +15,7 @@ import {
 } from "./helper";
 import { OptionGroupBasedField } from "./option-group-based-field";
 import { TextBasedField } from "./text-based-field";
+import { ISchemaProps } from "./types";
 
 export namespace Translator {
     export function generateSchema(
@@ -77,7 +77,14 @@ export namespace Translator {
     export const parseSchema = (formSchema: ISchemaProps) => {
         const schemaToParse = formSchema?.schema?.sections?.section?.children
             ?.grid?.["children"] as Record<string, TFrontendEngineFieldSchema>;
-        const parsedElements = parseSchemaBasedOnType(schemaToParse);
-        return updateParsedElements(parsedElements);
+        if (Object.values(schemaToParse).length !== 0) {
+            const parsedElements = parseSchemaBasedOnType(
+                schemaToParse,
+                formSchema.prefill
+            );
+            return updateParsedElements(parsedElements);
+        } else {
+            return null;
+        }
     };
 }

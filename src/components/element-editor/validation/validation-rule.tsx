@@ -39,6 +39,9 @@ export const ValidationRule: React.FC<IProps> = ({
                     }
                 />
             );
+        case ELEMENT_VALIDATION_TYPES["Text field"][EElementType.NUMERIC]
+            .validationTypes[0]:
+            return null;
         default:
             return (
                 <Form.Input

@@ -181,7 +181,10 @@ const renderComponent = (
 ) => {
     return render(
         TestHelper.withProviders(
-            overrideOptions,
+            {
+                ...overrideOptions,
+                includeFormProvider: false,
+            },
             <SidePanel onSubmit={onSubmit} />
         )
     );

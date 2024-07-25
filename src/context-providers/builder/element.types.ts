@@ -37,6 +37,16 @@ export enum EConditionType {
     NOT_EQUALS = "Not equals",
 }
 
+export enum EValidationType {
+    EMAIL_DOMAIN = "Email domain",
+    WHOLE_NUMBERS = "Whole numbers",
+    CUSTOM_REGEX = "Custom regex",
+    MIN_VALUE = "Minimum value",
+    MAX_VALUE = "Maximum value",
+    MIN_LENGTH = "Minimum length",
+    MAX_LENGTH = "Maximum length",
+}
+
 export interface IBaseAttributes {
     id: string | undefined;
     internalId: string;
@@ -80,15 +90,21 @@ export interface IColumns {
 }
 
 export interface IBaseFieldAttributes extends IBaseAttributes {
-    label: string | undefined;
+    label: string;
     required: boolean;
     requiredErrorMsg?: string | undefined;
     columns: IColumns;
+    placeholder?: string;
     description?: string;
 }
 
+export interface ITextareaFieldAttributes
+    extends IBaseTextBasedFieldAttributes {
+    resizableInput?: boolean;
+    preselectedValue?: string;
+}
+
 export interface IBaseTextBasedFieldAttributes extends IBaseFieldAttributes {
-    placeholder?: string;
     validation?: IValidation[];
     conditionalRendering?: IConditionalRendering[];
     prefill?: IPrefillAttributes[];
@@ -110,7 +126,7 @@ export type IContactField = IBaseTextBasedFieldAttributes;
 export type IEmailField = IBaseTextBasedFieldAttributes;
 export type INumericField = IBaseTextBasedFieldAttributes;
 export type ITextField = IBaseTextBasedFieldAttributes;
-export type ITextarea = IBaseTextBasedFieldAttributes;
+export type ITextarea = ITextareaFieldAttributes;
 export type IDropdown = IBaseOptionGroupBasedFieldAttributes;
 
 export type TTextBasedElement =

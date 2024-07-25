@@ -24,6 +24,7 @@ import {
     DroppableWrapper,
     ElementBaseCard,
     IdLabel,
+    CardWrapper,
 } from "./element-card.styles";
 
 interface IProps {
@@ -37,17 +38,28 @@ export const ElementCard = ({ element, onClick }: IProps) => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
-    const { label, id } = element;
-    const { focusedElement, deleteElement, duplicateElement } = useBuilder();
+    const { label, id } = element || {};
+    const {
+        focusedElement,
+        deleteElement,
+        duplicateElement,
+        orderedIdentifiers,
+    } = useBuilder();
     const { showToast } = useDisplay();
 
     const { isDragging } = useDraggable({
-        id: element.internalId,
+        id: element?.internalId,
     });
     const { attributes, listeners, setNodeRef, transform, transition } =
-        useSortable({ id: element.internalId });
+        useSortable({ id: element?.internalId });
     const { isOver, setNodeRef: droppableRef } = useDroppable({
-        id: element.internalId,
+        id: element?.internalId,
+    });
+
+    const size = orderedIdentifiers.find((identifier) => {
+        if (identifier.internalId === element?.internalId) {
+            return identifier.size;
+        }
     });
 
     const isFocused = checkIsFocused();
@@ -115,25 +127,25 @@ export const ElementCard = ({ element, onClick }: IProps) => {
     // RENDER FUNCTIONS
     // =========================================================================
     const droppableContent = isOver ? (
-        <DroppableWrapper isOver={isOver}>
+        <DroppableWrapper isOver={isOver} $size={size?.size}>
             <PlusCircleIcon />
             <DroppableText weight={600}>Drop your element here</DroppableText>
         </DroppableWrapper>
     ) : null;
 
     return (
-        <div ref={droppableRef}>
+        <CardWrapper ref={droppableRef}>
             {droppableContent}
             <div ref={setNodeRef} {...sortableProps}>
                 <ElementBaseCard
                     onClick={onClick}
                     focused={isFocused}
-                    id={element.internalId}
+                    id={element?.internalId}
                     $isDragging={isDragging}
                 >
-                    <Container data-testid={"card" + element.internalId}>
+                    <Container data-testid={"card" + element?.internalId}>
                         <DragHandle data-testid="drag-handle" />
-                        <CardIcon elementType={element.type} />
+                        <CardIcon elementType={element?.type} />
                         <DetailsContainer>
                             <Text.Body weight="semibold">{label}</Text.Body>
                             <IdLabel weight="semibold">ID: {id}</IdLabel>
@@ -163,6 +175,6 @@ export const ElementCard = ({ element, onClick }: IProps) => {
                     </Container>
                 </ElementBaseCard>
             </div>
-        </div>
+        </CardWrapper>
     );
 };
