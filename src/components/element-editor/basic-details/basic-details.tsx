@@ -11,7 +11,7 @@ import {
     Wrapper,
 } from "./basic-details.styles";
 import { DropdownItems } from "./dropdown-items/dropdown-items";
-import { PreselectedValue } from "./preselected-value";
+import { DropdownPreselectedValue } from "./dropdown-preselected-value";
 
 export const BasicDetails = () => {
     // =========================================================================
@@ -204,7 +204,7 @@ export const BasicDetails = () => {
                     />
                 )}
 
-                <PreselectedValue />
+                {type === EElementType.DROPDOWN && <DropdownPreselectedValue />}
             </Wrapper>
         </FieldEditorAccordionItem>
     );
