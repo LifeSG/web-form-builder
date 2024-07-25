@@ -5,13 +5,17 @@ import styled from "styled-components";
 // STYLE INTERFACES
 // =============================================================================
 
-interface IBinButtonProps {
-    $disabled?: boolean;
+interface IDroppableWrapperProps {
+    isOver: boolean;
 }
 
 // =============================================================================
 // STYLING
 // =============================================================================
+
+export const Wrapper = styled.div`
+    position: relative;
+`;
 
 export const DropdownItemsChildWrapper = styled.div`
     display: flex;
@@ -46,13 +50,22 @@ export const DropdownItemsDragHandleButton = styled.div`
     }
 `;
 
-export const StyledBinButton = styled.div<IBinButtonProps>`
-    margin-top: 0.625rem;
+export const DroppableWrapper = styled.div<IDroppableWrapperProps>`
+    border: 1px dashed ${Color.Primary};
+    border-radius: 0.25rem;
+    background: ${Color.Accent.Light[5]};
+    position: absolute;
+    height: auto;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.4rem;
+    gap: 0.25rem;
+
     svg {
-        color: ${({ $disabled }) =>
-            $disabled ? Color.Neutral[3] : Color.Accent.Light[1]};
-        width: 1.625rem;
-        height: 1.625rem;
-        cursor: ${({ $disabled }) => ($disabled ? "not-allowed" : "pointer")};
+        color: ${Color.Primary};
+        height: 2.08rem;
+        width: 2.08rem;
     }
 `;

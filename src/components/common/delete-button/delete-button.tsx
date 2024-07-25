@@ -1,5 +1,5 @@
 import { PopoverTrigger } from "@lifesg/react-design-system/popover-v2";
-import { StyledBinButton } from "../../element-editor/basic-details/dropdown-items/dropdown-items-child.styles";
+import { StyledBinButton } from "./delete-button.styles";
 
 interface IProps {
     onClick: () => void;
