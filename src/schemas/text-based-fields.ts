@@ -187,42 +187,33 @@ export const TEXT_AREA_SCHEMA = () => {
                 "min-2-valid-items",
                 "At least 2 items with valid content are required.",
                 function (pillItems) {
-                    if (!Array.isArray(pillItems)) {
-                        return this.createError({
-                            message: "Invalid data format for pill items.",
-                        });
-                    }
+                    const validItemsCount = pillItems.reduce((count, item) => {
+                        return item.content && item.content.trim() !== ""
+                            ? count + 1
+                            : count;
+                    }, 0);
 
-                    const validItemsCount = pillItems
-                        .slice(0, 2)
-                        .reduce((count, item) => {
-                            return item.content && item.content.trim() !== ""
-                                ? count + 1
-                                : count;
-                        }, 0);
-
-                    if (validItemsCount === 2) {
+                    if (validItemsCount >= 2) {
                         return true;
                     }
 
-                    const errors = pillItems
-                        .slice(0, 2)
-                        .reduce((acc, item, index) => {
-                            if (!item.content || item.content.trim() === "") {
-                                acc.push(
-                                    this.createError({
-                                        path: `${this.path}[${index}].content`,
-                                        message:
-                                            "Pill item content is required.",
-                                    })
-                                );
-                            }
-                            return acc;
-                        }, []);
+                    const errors = pillItems.reduce((acc, item, index) => {
+                        if (!item.content || item.content.trim() === "") {
+                            acc.push(
+                                this.createError({
+                                    path: `${this.path}[${index}].content`,
+                                    message: "Pill item content is required.",
+                                })
+                            );
+                        }
+                        return acc;
+                    }, []);
 
-                    return errors.length > 0
-                        ? new yup.ValidationError(errors)
-                        : true;
+                    if (errors.length > 0) {
+                        throw new yup.ValidationError(errors);
+                    }
+
+                    return true;
                 }
             ),
 
