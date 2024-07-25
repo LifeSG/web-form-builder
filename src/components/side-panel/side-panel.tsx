@@ -1,7 +1,13 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useCallback, useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { EToastTypes, TElement, useDisplay } from "src/context-providers";
+import {
+    EElementType,
+    EToastTypes,
+    IDropdownItemAttributes,
+    TElement,
+    useDisplay,
+} from "src/context-providers";
 import { SchemaHelper } from "src/schemas";
 import { EBuilderMode, useBuilder } from "../../context-providers";
 import { ElementEditor } from "../element-editor";
@@ -25,29 +31,32 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
         focusedElement,
         updateElement,
         updateFocusedElement,
+        selectedElementType,
         toggleSubmitting,
     } = useBuilder();
     const { showToast } = useDisplay();
+    const schema = SchemaHelper.buildSchema(
+        selectedElementType || EElementType.EMAIL
+    );
     const methods = useForm({
         mode: "onTouched",
+        resolver: yupResolver(schema),
         defaultValues: {
             requiredErrorMsg: "",
+            preselectedValue: null,
         },
-        // TODO: insert proper type; email is a placeholder
-        resolver: yupResolver(
-            SchemaHelper.buildSchema(focusedElement?.element?.type)
-        ),
     });
-
     const {
+        getValues,
         formState: { isSubmitSuccessful },
+        setValue,
     } = methods;
-
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
+
     const onFormSubmit = useCallback(
-        async (values) => {
+        async (values: TElement) => {
             if (onSubmit) {
                 toggleSubmitting(true);
                 await onSubmit(values);
@@ -57,6 +66,15 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
                 message: "Changes are saved successfully.",
                 type: EToastTypes.SUCCESS_TOAST,
             };
+            /** Remove empty dropdown items before updating element */
+            if ("dropdownItems" in values) {
+                const nonEmptyDropdownItems = (
+                    getValues("dropdownItems") as IDropdownItemAttributes[]
+                ).filter(
+                    (item) => item.label.length > 0 || item.value.length > 0
+                );
+                values.dropdownItems = nonEmptyDropdownItems;
+            }
             updateElement(values);
             updateFocusedElement(false, values);
             showToast(newToast);

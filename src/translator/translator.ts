@@ -2,12 +2,18 @@ import {
     IFrontendEngineData,
     TFrontendEngineFieldSchema,
 } from "@lifesg/web-frontend-engine";
-import { IElementIdentifier, TElementMap } from "src/context-providers";
 import {
+    EElementType,
+    IElementIdentifier,
+    TElementMap,
+} from "src/context-providers";
+import {
+    createDefaultValuesObject,
     createPrefillObject,
     parseSchemaBasedOnType,
     updateParsedElements,
 } from "./helper";
+import { OptionGroupBasedField } from "./option-group-based-field";
 import { TextBasedField } from "./text-based-field";
 import { ISchemaProps } from "./types";
 
@@ -17,6 +23,7 @@ export namespace Translator {
         orderedIdentifiers: IElementIdentifier[]
     ) {
         const prefill = createPrefillObject(elements);
+        const defaultValues = createDefaultValuesObject(elements);
 
         const newElements = orderedIdentifiers.reduce((acc, value) => {
             acc[value.internalId] = elements[value.internalId];
@@ -24,11 +31,27 @@ export namespace Translator {
         }, {} as TElementMap);
 
         const fields = Object.values(newElements).reduce((acc, element) => {
-            const generateSchema = TextBasedField.elementToSchema(element);
-            return { ...acc, ...generateSchema };
+            let translatedChild: Record<string, unknown>;
+            switch (element.type) {
+                case EElementType.EMAIL:
+                case EElementType.TEXT:
+                case EElementType.TEXTAREA:
+                case EElementType.CONTACT:
+                case EElementType.NUMERIC:
+                    translatedChild = TextBasedField.elementToSchema(element);
+                    break;
+                case EElementType.CHECKBOX:
+                case EElementType.RADIO:
+                case EElementType.DROPDOWN:
+                    translatedChild =
+                        OptionGroupBasedField.elementToSchema(element);
+                    break;
+            }
+            return { ...acc, ...translatedChild };
         }, {});
 
         const elementSchema: IFrontendEngineData = {
+            defaultValues,
             sections: {
                 section: {
                     children: {

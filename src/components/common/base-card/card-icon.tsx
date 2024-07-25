@@ -1,3 +1,4 @@
+import { ChevronDownIcon } from "@lifesg/react-icons/chevron-down";
 import { EnvelopeIcon } from "@lifesg/react-icons/envelope";
 import { PhoneIcon } from "@lifesg/react-icons/phone";
 import { EElementType } from "src/context-providers";
@@ -26,6 +27,9 @@ export const CardIcon = ({ elementType }: IProps) => {
             break;
         case EElementType.TEXTAREA:
             icon = <LongTextIcon />;
+            break;
+        case EElementType.DROPDOWN:
+            icon = <ChevronDownIcon />;
             break;
         default:
             break;

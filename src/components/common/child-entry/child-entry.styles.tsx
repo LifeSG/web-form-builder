@@ -8,19 +8,10 @@ export const Wrapper = styled.div`
     width: 100%;
     align-items: center;
     margin-bottom: 2rem;
+    padding-right: 1rem;
 `;
 
 export const ChildrenWrapper = styled.div`
     padding: 1rem;
     flex: 1;
-`;
-
-export const DeleteButton = styled.div`
-    padding: 1rem 1rem 1rem 0;
-    svg {
-        color: ${Color.Accent.Light[1]};
-        width: 1.9rem;
-        height: 1.9rem;
-        cursor: pointer;
-    }
 `;

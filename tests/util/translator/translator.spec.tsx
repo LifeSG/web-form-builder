@@ -1,8 +1,4 @@
-import {
-    EElementType,
-    IElementIdentifier,
-    TElementMap,
-} from "src/context-providers";
+import { EElementType, TElementMap } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import { ISchemaProps, Translator } from "src/translator";
 import {
@@ -33,18 +29,17 @@ describe("Translator", () => {
                     internalId: "mockId1",
                     required: false,
                 });
-                const MOCK_EMAIL_SCHEMA = generateMockSchema(
-                    {},
-                    generateMockElementSchema({
+                const MOCK_EMAIL_SCHEMA = generateMockSchema({
+                    children: generateMockElementSchema({
                         id: "mockId1",
                         label: {
                             mainLabel: "Email address",
                         },
                         uiType: EElementType.EMAIL,
-                    })
-                );
+                    }),
+                });
                 const orderedIdentifiers = [
-                    { internalId: "mockId1", position: 1 },
+                    { internalId: "mockId1", position: 0 },
                 ];
 
                 const generatedSchema = Translator.generateSchema(
@@ -73,9 +68,8 @@ describe("Translator", () => {
                         ],
                     });
 
-                const MOCK_EMAIL_SCHEMA_WITH_VALIDATION = generateMockSchema(
-                    {},
-                    generateMockElementSchema({
+                const MOCK_EMAIL_SCHEMA_WITH_VALIDATION = generateMockSchema({
+                    children: generateMockElementSchema({
                         id: "mockId1",
                         label: {
                             mainLabel: "Email address",
@@ -92,10 +86,10 @@ describe("Translator", () => {
                                     "Enter a email that has a '@gmail.com' domain",
                             },
                         ],
-                    })
-                );
+                    }),
+                });
                 const orderedIdentifiers = [
-                    { internalId: "mockId1", position: 1 },
+                    { internalId: "mockId1", position: 0 },
                 ];
                 const generatedSchema = Translator.generateSchema(
                     MOCK__EMAIL_ELEMENT_WITH_VALIDATION,
@@ -131,9 +125,8 @@ describe("Translator", () => {
                     };
 
                 const MOCK_EMAIL_SCHEMA_WITH_CONDITIONAL_RENDERING =
-                    generateMockSchema(
-                        {},
-                        {
+                    generateMockSchema({
+                        children: {
                             ...generateMockElementSchema({
                                 id: "mock123",
                                 label: {
@@ -171,11 +164,11 @@ describe("Translator", () => {
                                     },
                                 ],
                             }),
-                        }
-                    );
+                        },
+                    });
                 const orderedIdentifiers = [
-                    { internalId: "mock123", position: 1 },
-                    { internalId: "mock456", position: 2 },
+                    { internalId: "mock123", position: 0 },
+                    { internalId: "mock456", position: 1 },
                 ];
                 const generatedSchema = Translator.generateSchema(
                     MOCK__EMAIL_ELEMENT_WITH_CONDITIONAL_RENDERING,
@@ -201,8 +194,8 @@ describe("Translator", () => {
                     });
 
                 const MOCK_EMAIL_SCHEMA_WITH_MYINFO_PREFILL =
-                    generateMockSchema(
-                        {
+                    generateMockSchema({
+                        prefill: {
                             mock123: [
                                 {
                                     prefillMode: "Myinfo",
@@ -210,7 +203,7 @@ describe("Translator", () => {
                                 },
                             ],
                         },
-                        generateMockElementSchema({
+                        children: generateMockElementSchema({
                             id: "mock123",
                             label: {
                                 mainLabel: "Email address",
@@ -222,10 +215,10 @@ describe("Translator", () => {
                                     errorMessage: "Email address is required",
                                 },
                             ],
-                        })
-                    );
+                        }),
+                    });
                 const orderedIdentifiers = [
-                    { internalId: "mock123", position: 1 },
+                    { internalId: "mock123", position: 0 },
                 ];
                 const generatedSchema = Translator.generateSchema(
                     MOCK__EMAIL_ELEMENT_WITH_MYINFO_PREFILL,
@@ -252,8 +245,8 @@ describe("Translator", () => {
                     });
 
                 const MOCK_EMAIL_SCHEMA_WITH_PREVIOUS_SOURCE_PREFILL =
-                    generateMockSchema(
-                        {
+                    generateMockSchema({
+                        prefill: {
                             mock123: [
                                 {
                                     prefillMode: "Previous source",
@@ -262,7 +255,7 @@ describe("Translator", () => {
                                 },
                             ],
                         },
-                        generateMockElementSchema({
+                        children: generateMockElementSchema({
                             id: "mock123",
                             label: {
                                 mainLabel: "Email address",
@@ -274,10 +267,10 @@ describe("Translator", () => {
                                     errorMessage: "Email address is required",
                                 },
                             ],
-                        })
-                    );
+                        }),
+                    });
                 const orderedIdentifiers = [
-                    { internalId: "mock123", position: 1 },
+                    { internalId: "mock123", position: 0 },
                 ];
 
                 const generatedSchema = Translator.generateSchema(
@@ -300,9 +293,8 @@ describe("Translator", () => {
                         requiredErrorMsg: "Input is required",
                     });
 
-                const MOCK_TEXT_BASED_SCHEMA = generateMockSchema(
-                    {},
-                    generateMockElementSchema({
+                const MOCK_TEXT_BASED_SCHEMA = generateMockSchema({
+                    children: generateMockElementSchema({
                         id: "mockId1",
                         label: {
                             mainLabel: "Short text",
@@ -314,10 +306,10 @@ describe("Translator", () => {
                                 errorMessage: "Input is required",
                             },
                         ],
-                    })
-                );
+                    }),
+                });
                 const orderedIdentifiers = [
-                    { internalId: "mockId1", position: 1 },
+                    { internalId: "mockId1", position: 0 },
                 ];
 
                 const generatedSchema = Translator.generateSchema(
@@ -330,9 +322,8 @@ describe("Translator", () => {
 
         describe("Email field schema translation", () => {
             it("should translate validation from the schema & be generated into new elements", () => {
-                const MOCK_EMAIL_SCHEMA_WITH_VALIDATION = generateMockSchema(
-                    {},
-                    generateMockElementSchema({
+                const MOCK_EMAIL_SCHEMA_WITH_VALIDATION = generateMockSchema({
+                    children: generateMockElementSchema({
                         id: "mockId1",
                         label: {
                             mainLabel: "Email address",
@@ -349,8 +340,8 @@ describe("Translator", () => {
                                     "Enter a email that has a '@gmail.com' domain",
                             },
                         ],
-                    })
-                );
+                    }),
+                });
                 const generatedSchema = Translator.parseSchema(
                     MOCK_EMAIL_SCHEMA_WITH_VALIDATION as ISchemaProps
                 );
@@ -383,9 +374,8 @@ describe("Translator", () => {
             });
             it("should translate conditional rendering from the schema & be generated into new elements", () => {
                 const MOCK_EMAIL_SCHEMA_WITH_CONDITIONAL_RENDERING =
-                    generateMockSchema(
-                        {},
-                        {
+                    generateMockSchema({
+                        children: {
                             ...generateMockElementSchema({
                                 id: "mock123",
                                 label: {
@@ -423,8 +413,8 @@ describe("Translator", () => {
                                     },
                                 ],
                             }),
-                        }
-                    );
+                        },
+                    });
 
                 const generatedSchema = Translator.parseSchema(
                     MOCK_EMAIL_SCHEMA_WITH_CONDITIONAL_RENDERING as ISchemaProps
@@ -472,8 +462,8 @@ describe("Translator", () => {
 
             it("should translate with myinfo prefill from the schema & be generated into new elements", () => {
                 const MOCK_EMAIL_SCHEMA_WITH_MYINFO_PREFILL =
-                    generateMockSchema(
-                        {
+                    generateMockSchema({
+                        prefill: {
                             mock123: [
                                 {
                                     prefillMode: "Myinfo",
@@ -481,7 +471,7 @@ describe("Translator", () => {
                                 },
                             ],
                         },
-                        generateMockElementSchema({
+                        children: generateMockElementSchema({
                             id: "mock123",
                             label: {
                                 mainLabel: "Email address",
@@ -493,8 +483,8 @@ describe("Translator", () => {
                                     errorMessage: "Email address is required",
                                 },
                             ],
-                        })
-                    );
+                        }),
+                    });
 
                 const generatedSchema = Translator.parseSchema(
                     MOCK_EMAIL_SCHEMA_WITH_MYINFO_PREFILL as ISchemaProps
@@ -522,8 +512,8 @@ describe("Translator", () => {
 
             it("should translate with previous source prefill from the schema & be generated into new elements", () => {
                 const MOCK_EMAIL_SCHEMA_WITH_PREVIOUS_SOURCE_PREFILL =
-                    generateMockSchema(
-                        {
+                    generateMockSchema({
+                        prefill: {
                             mock123: [
                                 {
                                     prefillMode: "Previous source",
@@ -532,7 +522,7 @@ describe("Translator", () => {
                                 },
                             ],
                         },
-                        generateMockElementSchema({
+                        children: generateMockElementSchema({
                             id: "mock123",
                             label: {
                                 mainLabel: "Email address",
@@ -544,8 +534,8 @@ describe("Translator", () => {
                                     errorMessage: "Email address is required",
                                 },
                             ],
-                        })
-                    );
+                        }),
+                    });
 
                 const generatedSchema = Translator.parseSchema(
                     MOCK_EMAIL_SCHEMA_WITH_PREVIOUS_SOURCE_PREFILL as ISchemaProps
@@ -575,9 +565,8 @@ describe("Translator", () => {
 
         describe("Text based field schema translation", () => {
             it("should translate text based fields from the schema to the element", () => {
-                const MOCK_TEXT_BASED_SCHEMA = generateMockSchema(
-                    {},
-                    {
+                const MOCK_TEXT_BASED_SCHEMA = generateMockSchema({
+                    children: {
                         ...generateMockElementSchema({
                             id: "mockId1",
                             label: {
@@ -604,8 +593,8 @@ describe("Translator", () => {
                                 },
                             ],
                         }),
-                    }
-                );
+                    },
+                });
                 const generatedSchema = Translator.parseSchema(
                     MOCK_TEXT_BASED_SCHEMA as ISchemaProps
                 );

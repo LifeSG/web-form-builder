@@ -19,10 +19,16 @@ interface MockElementProps {
     description?: string;
     columns?: IColumns;
     placeholder?: string;
-    label?: string | IComplexLabel;
+    label?: string;
     validation?: IValidation[];
     conditionalRendering?: IConditionalRendering[];
     prefill?: IPrefillAttributes[];
+}
+
+interface MockSchemaProps {
+    defaultValues?: Record<string, unknown>;
+    prefill?: MockPrefillSchema;
+    children: MockChildrenSchema;
 }
 
 interface MockElementSchemaProps {
@@ -60,13 +66,15 @@ export const generateMockElement = (props: MockElementProps): TElementMap => {
     };
 };
 
-export const generateMockSchema = (
-    prefill: MockPrefillSchema,
-    children: MockChildrenSchema
-) => {
+export const generateMockSchema = ({
+    defaultValues = {},
+    prefill = {},
+    children,
+}: MockSchemaProps) => {
     return {
         prefill,
         schema: {
+            defaultValues,
             sections: {
                 section: {
                     children: {

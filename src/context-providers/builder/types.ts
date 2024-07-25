@@ -1,5 +1,5 @@
 import { Dispatch } from "react";
-import { TElement } from "./element.types";
+import { EElementType, TElement } from "./element.types";
 
 export enum EBuilderMode {
     /** Mode where we get to select the elements to add */
@@ -63,6 +63,7 @@ export interface IBuilderState {
      * Keeps track of the number of unique elements that have been added to the builder from the start.
      */
     elementCounter: number;
+    selectedElementType: EElementType | null;
     isSubmitting: boolean;
 }
 
@@ -146,6 +147,11 @@ export interface IUpdateFocusedElementAction {
     };
 }
 
+export interface ISelectElementTypeAction {
+    type: "select-element-type";
+    payload: EElementType;
+}
+
 export type TBuilderAction =
     | ITogglePanelAction
     | IUpdateOrderedIdentifiersAction
@@ -157,6 +163,7 @@ export type TBuilderAction =
     | IRemoveFocusedElementAction
     | IUpdateElementAction
     | IUpdateFocusedElementAction
+    | ISelectElementTypeAction
     | IToggleSubmittingAction
     | IUpdateSchemaElementAction;
 

@@ -1,6 +1,7 @@
 import {
     EElementType,
     IBaseAttributes,
+    IBaseOptionGroupBasedFieldAttributes,
     IBaseTextBasedFieldAttributes,
     ITextareaFieldAttributes,
     TElement,
@@ -86,12 +87,37 @@ export namespace ElementObjectGenerator {
                     requiredErrorMsg: "",
                     label: ELEMENT_BUTTON_LABELS[type],
                     description: "",
-                    preSelectedValue: "",
+                    preselectedValue: "",
                     resizableInput: true,
                     columns: { desktop: 12, tablet: 8, mobile: 4 },
                     validation: [],
                     conditionalRendering: [],
                     prefill: [],
+                };
+                return attributes;
+            }
+            case EElementType.DROPDOWN: {
+                const attributes: IBaseOptionGroupBasedFieldAttributes = {
+                    ...baseAttributes,
+                    placeholder: "",
+                    required: true,
+                    requiredErrorMsg: "",
+                    label: ELEMENT_BUTTON_LABELS[type],
+                    description: "",
+                    columns: { desktop: 12, tablet: 8, mobile: 4 },
+                    conditionalRendering: [],
+                    prefill: [],
+                    dropdownItems: [
+                        {
+                            label: "",
+                            value: "",
+                        },
+                        {
+                            label: "",
+                            value: "",
+                        },
+                    ],
+                    preselectedValue: null,
                 };
                 return attributes;
             }

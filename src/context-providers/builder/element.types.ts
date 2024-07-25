@@ -11,9 +11,24 @@ export enum EElementType {
     EMAIL = "email-field",
     NUMERIC = "numeric-field",
     RADIO = "radio",
+    DROPDOWN = "select",
     TEXT = "text-field",
     TEXTAREA = "textarea",
 }
+
+export const TextBasedElementTypes: Set<EElementType> = new Set([
+    EElementType.CONTACT,
+    EElementType.EMAIL,
+    EElementType.NUMERIC,
+    EElementType.TEXT,
+    EElementType.TEXTAREA,
+]);
+
+export const OptionGroupBasedElementTypes: Set<EElementType> = new Set([
+    EElementType.CHECKBOX,
+    EElementType.RADIO,
+    EElementType.DROPDOWN,
+]);
 
 export enum EConditionType {
     MORE_THAN = "More than",
@@ -57,6 +72,11 @@ export interface IPrefillAttributes {
     path?: string;
 }
 
+export interface IDropdownItemAttributes {
+    value: string;
+    label: string;
+}
+
 type MobileCol = 1 | 2 | 3 | 4;
 type MobileColRange = MobileCol | 5;
 type TabletCol = MobileCol | 5 | 6 | 7 | 8;
@@ -81,13 +101,22 @@ export interface IBaseFieldAttributes extends IBaseAttributes {
 export interface ITextareaFieldAttributes
     extends IBaseTextBasedFieldAttributes {
     resizableInput?: boolean;
-    preSelectedValue?: string;
+    preselectedValue?: string;
 }
 
 export interface IBaseTextBasedFieldAttributes extends IBaseFieldAttributes {
     validation?: IValidation[];
     conditionalRendering?: IConditionalRendering[];
     prefill?: IPrefillAttributes[];
+}
+
+export interface IBaseOptionGroupBasedFieldAttributes
+    extends IBaseFieldAttributes {
+    placeholder?: string;
+    conditionalRendering?: IConditionalRendering[];
+    prefill?: IPrefillAttributes[];
+    dropdownItems?: IDropdownItemAttributes[];
+    preselectedValue?: string;
 }
 
 // =============================================================================
@@ -98,10 +127,15 @@ export type IEmailField = IBaseTextBasedFieldAttributes;
 export type INumericField = IBaseTextBasedFieldAttributes;
 export type ITextField = IBaseTextBasedFieldAttributes;
 export type ITextarea = ITextareaFieldAttributes;
+export type IDropdown = IBaseOptionGroupBasedFieldAttributes;
 
-export type TElement =
+export type TTextBasedElement =
     | IEmailField
     | ITextField
     | ITextarea
     | INumericField
     | IContactField;
+
+export type TOptionGroupBasedElement = IDropdown;
+
+export type TElement = TTextBasedElement | TOptionGroupBasedElement;

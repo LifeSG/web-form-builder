@@ -1,7 +1,11 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import "jest-canvas-mock";
 import { SidePanel } from "src/components";
-import { EElementType, TElement } from "src/context-providers";
+import {
+    EElementType,
+    TElement,
+    TOptionGroupBasedElement,
+} from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data/elements-data";
 import { TestHelper } from "src/util/test-helper";
 
@@ -67,6 +71,7 @@ describe("SidePanel", () => {
                         focusedElement: {
                             element: MOCK_ELEMENT,
                         },
+                        selectedElementType: EElementType.EMAIL,
                         isSubmitting: true,
                     },
                 },
@@ -91,6 +96,7 @@ describe("SidePanel", () => {
                         focusedElement: {
                             element: MOCK_ELEMENT,
                         },
+                        selectedElementType: EElementType.EMAIL,
                     },
                 },
                 mockOnSubmit
@@ -101,6 +107,66 @@ describe("SidePanel", () => {
             fireEvent.click(saveButton);
 
             await waitFor(() => expect(mockOnSubmit).toHaveBeenCalled());
+        });
+
+        it("should remove empty dropdown items when saving if there are at least 2 valid dropdown items", async () => {
+            const MOCK_DROPDOWN_ELEMENT: TOptionGroupBasedElement = {
+                internalId: "mock123",
+                type: EElementType.DROPDOWN,
+                id: "mockElement",
+                required: false,
+                label: ELEMENT_BUTTON_LABELS[EElementType.DROPDOWN],
+                columns: { desktop: 12, tablet: 8, mobile: 4 },
+                dropdownItems: [
+                    { label: "", value: "" },
+                    { label: "", value: "" },
+                ],
+            };
+
+            renderComponent({
+                builderContext: {
+                    focusedElement: {
+                        element: MOCK_DROPDOWN_ELEMENT,
+                    },
+                    selectedElementType: EElementType.DROPDOWN,
+                },
+            });
+
+            const dropdownItemLabels = await screen.findAllByTestId(
+                "dropdown-item-label"
+            );
+            const dropdownItemValues = await screen.findAllByTestId(
+                "dropdown-item-value"
+            );
+
+            let saveButton = screen.getByTestId("save-changes-button");
+
+            expect(saveButton).toHaveTextContent("Saved");
+
+            expect(dropdownItemLabels).toHaveLength(2);
+
+            fireEvent.input(dropdownItemLabels[0], {
+                target: { value: "New Label" },
+            });
+            fireEvent.input(dropdownItemValues[0], {
+                target: { value: "New Value" },
+            });
+            fireEvent.input(dropdownItemLabels[1], {
+                target: { value: "New Label" },
+            });
+            fireEvent.input(dropdownItemValues[1], {
+                target: { value: "New Value" },
+            });
+
+            fireEvent.click(screen.getByText("Add Option"));
+
+            expect(getDropdownItemChildren()).toHaveLength(3);
+
+            fireEvent.click(saveButton);
+
+            waitFor(() => {
+                expect(getDropdownItemChildren()).toHaveLength(2);
+            });
         });
     });
 });
@@ -115,7 +181,10 @@ const renderComponent = (
 ) => {
     return render(
         TestHelper.withProviders(
-            overrideOptions,
+            {
+                ...overrideOptions,
+                includeFormProvider: false,
+            },
             <SidePanel onSubmit={onSubmit} />
         )
     );
@@ -126,6 +195,9 @@ const getToolbar = () => screen.queryByTestId("toolbar");
 const getAddElementsPanel = () => screen.getByTestId("add-elements-panel");
 
 const getElementEditor = () => screen.getByTestId("element-editor");
+
+const getDropdownItemChildren = () =>
+    screen.queryAllByTestId("dropdown-item-child");
 
 // =============================================================================
 // MOCKS

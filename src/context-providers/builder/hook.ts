@@ -316,6 +316,13 @@ export const useBuilder = () => {
         []
     );
 
+    const selectElementType = useCallback((type: EElementType) => {
+        dispatch({
+            type: "select-element-type",
+            payload: type,
+        });
+    }, []);
+
     return {
         isSubmitting: state.isSubmitting,
         deletedElements: state.deletedElements,
@@ -324,6 +331,7 @@ export const useBuilder = () => {
         currentMode: state.mode,
         orderedIdentifiers: state.orderedIdentifiers,
         focusedElement: state.focusedElement,
+        selectedElementType: state.selectedElementType,
         toggleSubmitting,
         togglePanel,
         toggleMode,
@@ -336,6 +344,7 @@ export const useBuilder = () => {
         updateElement,
         updateFocusedElement,
         duplicateElement,
+        selectElementType,
         updateElementSchema,
     };
 };

@@ -3,32 +3,30 @@ import { Text } from "@lifesg/react-design-system/text";
 import { Controller, useFormContext } from "react-hook-form";
 import { IconDropdown } from "src/components/common/icon-dropdown";
 import { TogglePair } from "src/components/common/toggle-pair/toggle-pair";
-import {
-    EElementType,
-    ITextareaFieldAttributes,
-    useBuilder,
-} from "src/context-providers";
-import { IBaseTextBasedFieldValues } from "src/schemas";
+import { EElementType, useBuilder } from "src/context-providers";
+import { TFormFieldValues } from "src/schemas";
 import {
     FieldEditorAccordionItem,
     MandatoryFieldBox,
     StyledTextarea,
     Wrapper,
 } from "./basic-details.styles";
+import { DropdownItems } from "./dropdown-items/dropdown-items";
+import { PreselectedValue } from "./preselected-value";
 
 export const BasicDetails = () => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
-    const { focusedElement } = useBuilder();
+    const { focusedElement, selectElementType } = useBuilder();
     const {
         control,
         formState: { errors },
         watch,
         setValue,
-    } = useFormContext<IBaseTextBasedFieldValues | ITextareaFieldAttributes>();
+    } = useFormContext<TFormFieldValues>();
     const element = focusedElement.element;
-
+    const type = watch("type");
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
@@ -56,6 +54,7 @@ export const BasicDetails = () => {
                             type={field.value}
                             id={element?.id}
                             onChange={(value: EElementType) => {
+                                selectElementType(value);
                                 setValue("type", value, {
                                     shouldTouch: true,
                                     shouldDirty: true,
@@ -67,7 +66,6 @@ export const BasicDetails = () => {
                     )}
                     shouldUnregister={true}
                 />
-
                 {hasProperty("label") && (
                     <Controller
                         name="label"
@@ -90,7 +88,6 @@ export const BasicDetails = () => {
                         shouldUnregister={true}
                     />
                 )}
-
                 <MandatoryFieldBox>
                     <Controller
                         name="required"
@@ -132,6 +129,8 @@ export const BasicDetails = () => {
                     )}
                 </MandatoryFieldBox>
 
+                {type === EElementType.DROPDOWN && <DropdownItems />}
+
                 <Controller
                     name="id"
                     control={control}
@@ -157,6 +156,7 @@ export const BasicDetails = () => {
                     )}
                     shouldUnregister={true}
                 />
+
                 {hasProperty("description") && (
                     <Controller
                         name="description"
@@ -236,33 +236,8 @@ export const BasicDetails = () => {
                         shouldUnregister={true}
                     />
                 )}
-                {hasProperty("preSelectedValue") && (
-                    <Controller
-                        name="preSelectedValue"
-                        control={control}
-                        render={({ field }) => (
-                            <Form.Input
-                                {...field}
-                                label={{
-                                    children: "Pre-selected value (optional)",
-                                    subtitle: (
-                                        <Text.H6 weight={400}>
-                                            Note that prefill value will replace
-                                            the pre-selected value, if present.
-                                        </Text.H6>
-                                    ),
-                                }}
-                                placeholder="Enter pre-selected value"
-                                value={field.value || ""}
-                                onChange={(e) => {
-                                    field.onChange(e.target.value);
-                                }}
-                                errorMessage={errors.id?.message}
-                            />
-                        )}
-                        shouldUnregister={true}
-                    />
-                )}
+
+                <PreselectedValue />
             </Wrapper>
         </FieldEditorAccordionItem>
     );

@@ -9,12 +9,12 @@ import {
     TElementMap,
 } from "src/context-providers/builder";
 import { ELEMENT_CONDITION_TYPES, SCHEMA_CONDITION_TYPES } from "src/data";
-import { TextBasedField } from "./text-based-field";
-import { IPrefillConfig } from "./types";
 import {
     PREFILL_ACTIONID_REGEX,
     PREFILL_PATH_REGEX,
 } from "src/schemas/base-helper";
+import { TextBasedField } from "./text-based-field";
+import { IPrefillConfig } from "./types";
 
 export const createPrefillObject = (elements: TElementMap) => {
     const prefill = Object.values(elements).reduce((acc, element) => {
@@ -71,6 +71,17 @@ export const createConditionalRenderingObject = (
     }, {});
 
     return Object.keys(conditionObj).length === 0 ? [] : [conditionObj];
+};
+
+export const createDefaultValuesObject = (elements: TElementMap) => {
+    const defaultValues = Object.values(elements).reduce((acc, element) => {
+        if ("preselectedValue" in element && element.preselectedValue) {
+            acc[element.id] = element.preselectedValue;
+        }
+        return acc;
+    }, {});
+
+    return defaultValues;
 };
 
 export const parseConditionalRenderingObject = (conditions: TRenderRules[]) => {

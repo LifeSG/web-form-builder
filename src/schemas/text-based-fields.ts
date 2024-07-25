@@ -168,15 +168,16 @@ export const TEXT_BASED_SCHEMA = (elementType: EElementType) => {
                 fieldKey: yup.string().required("Reference required."),
                 comparator: yup.string().required("Comparator required."),
                 value: yup.string().required("Reference value required."),
+                internalId: yup.string(),
             })
         ),
     });
 };
 
-export const TEXT_AREA_SCHEMA = (elementType: EElementType) => {
+export const TEXT_AREA_SCHEMA = () => {
     return yup.object().shape({
         placeholder: yup.string().optional(),
-        preSelectedValue: yup.string().optional(),
+        preselectedValue: yup.string().optional(),
         resizableInput: yup.boolean().required().default(true),
         validation: yup.array().of(
             yup.object().shape({
@@ -190,14 +191,7 @@ export const TEXT_AREA_SCHEMA = (elementType: EElementType) => {
                     then: (rule) =>
                         rule
                             .required("Numeric value required.")
-                            .test(
-                                "is-number",
-                                "Numeric value only.",
-                                (value) =>
-                                    !isNaN(Number(value)) &&
-                                    Number.isInteger(Number(value)) &&
-                                    parseInt(value) >= 0
-                            ),
+                            .isNumber("Numeric value only."),
                 }),
                 validationErrorMessage: yup
                     .string()
@@ -233,3 +227,11 @@ export const TEXT_AREA_SCHEMA = (elementType: EElementType) => {
         ),
     });
 };
+
+export type TTextBasedSchema = yup.InferType<
+    ReturnType<typeof TEXT_BASED_SCHEMA>
+>;
+
+export type TTextAreaSchema = yup.InferType<
+    ReturnType<typeof TEXT_AREA_SCHEMA>
+>;

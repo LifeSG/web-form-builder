@@ -1,10 +1,7 @@
-import { yupResolver } from "@hookform/resolvers/yup";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import "jest-canvas-mock";
-import { FormProvider, useForm } from "react-hook-form";
 import { PrefillChild } from "src/components/element-editor/prefill";
-import { EElementType, IPrefillAttributes } from "src/context-providers";
-import { SchemaHelper } from "src/schemas";
+import { IPrefillAttributes } from "src/context-providers";
 import { TestHelper } from "src/util/test-helper";
 
 describe("PrefillChild", () => {
@@ -14,21 +11,37 @@ describe("PrefillChild", () => {
     });
 
     it("should render the component with provided options and fields", () => {
-        renderComponent({
-            onDelete: mockDelete,
-            value: mockEmptyValue,
-            index: mockIndex,
-        });
+        renderComponent(
+            {
+                onDelete: mockDelete,
+                index: mockIndex,
+            },
+            {
+                formContext: {
+                    currentValues: {
+                        prefill: mockEmptyValue,
+                    },
+                },
+            }
+        );
         expect(screen.getByText("Select")).toBeInTheDocument();
         expect(screen.getByPlaceholderText("Enter a path")).toBeInTheDocument();
     });
 
     it("should render fields with prefilled values given the prefill mode is 'Previous source'", async () => {
-        renderComponent({
-            onDelete: mockDelete,
-            value: mockValue,
-            index: mockIndex,
-        });
+        renderComponent(
+            {
+                onDelete: mockDelete,
+                index: mockIndex,
+            },
+            {
+                formContext: {
+                    currentValues: {
+                        prefill: mockValue,
+                    },
+                },
+            }
+        );
 
         const submitButton = screen.getByText("Submit");
         fireEvent.click(submitButton);
@@ -50,11 +63,19 @@ describe("PrefillChild", () => {
                 path: "mockPath",
             },
         ];
-        renderComponent({
-            onDelete: mockDelete,
-            value: myInfoValue,
-            index: mockIndex,
-        });
+        renderComponent(
+            {
+                onDelete: mockDelete,
+                index: mockIndex,
+            },
+            {
+                formContext: {
+                    currentValues: {
+                        prefill: myInfoValue,
+                    },
+                },
+            }
+        );
         const getPrefillModeField = screen.getByRole("button", {
             name: "Myinfo",
         });
@@ -66,22 +87,38 @@ describe("PrefillChild", () => {
     });
 
     it("should fire the delete function on clicking the bin icon", () => {
-        renderComponent({
-            onDelete: mockDelete,
-            value: mockEmptyValue,
-            index: mockIndex,
-        });
+        renderComponent(
+            {
+                onDelete: mockDelete,
+                index: mockIndex,
+            },
+            {
+                formContext: {
+                    currentValues: {
+                        prefill: mockValue,
+                    },
+                },
+            }
+        );
         const deleteButton = screen.getByTestId("delete-button");
         fireEvent.click(deleteButton);
         expect(mockDelete).toBeCalled();
     });
 
     it("should render an error message when prefill fields are left empty", async () => {
-        renderComponent({
-            onDelete: mockDelete,
-            value: mockEmptyValue,
-            index: mockIndex,
-        });
+        renderComponent(
+            {
+                onDelete: mockDelete,
+                index: mockIndex,
+            },
+            {
+                formContext: {
+                    currentValues: {
+                        prefill: mockEmptyValue,
+                    },
+                },
+            }
+        );
         const submitButton = screen.getByText("Submit");
         fireEvent.click(submitButton);
         const sourceRequiredError = await screen.findByText("Source required.");
@@ -91,11 +128,19 @@ describe("PrefillChild", () => {
     });
 
     it("should render an error message when actionId field is left empty", async () => {
-        renderComponent({
-            onDelete: mockDelete,
-            value: [{ ...mockValue[0], actionId: "" }],
-            index: mockIndex,
-        });
+        renderComponent(
+            {
+                onDelete: mockDelete,
+                index: mockIndex,
+            },
+            {
+                formContext: {
+                    currentValues: {
+                        prefill: [{ ...mockValue[0], actionId: "" }],
+                    },
+                },
+            }
+        );
         const submitButton = screen.getByText("Submit");
         fireEvent.click(submitButton);
         const actionIDRequiredError = await screen.findByText(
@@ -105,11 +150,21 @@ describe("PrefillChild", () => {
     });
 
     it("should render an error message when actionId field input is invalid", async () => {
-        renderComponent({
-            onDelete: mockDelete,
-            value: [{ ...mockValue[0], actionId: "invalid.input" }],
-            index: mockIndex,
-        });
+        renderComponent(
+            {
+                onDelete: mockDelete,
+                index: mockIndex,
+            },
+            {
+                formContext: {
+                    currentValues: {
+                        prefill: [
+                            { ...mockValue[0], actionId: "invalid.input" },
+                        ],
+                    },
+                },
+            }
+        );
 
         const submitButton = screen.getByText("Submit");
         fireEvent.click(submitButton);
@@ -123,11 +178,21 @@ describe("PrefillChild", () => {
     });
 
     it("should render an error message when path field input is invalid", async () => {
-        renderComponent({
-            onDelete: mockDelete,
-            value: [{ ...mockEmptyValue[0], path: "invalid!input" }],
-            index: mockIndex,
-        });
+        renderComponent(
+            {
+                onDelete: mockDelete,
+                index: mockIndex,
+            },
+            {
+                formContext: {
+                    currentValues: {
+                        prefill: [
+                            { ...mockEmptyValue[0], path: "invalid!input" },
+                        ],
+                    },
+                },
+            }
+        );
 
         const getPathField = screen.getByPlaceholderText("Enter a path");
         fireEvent.focus(getPathField);
@@ -139,28 +204,18 @@ describe("PrefillChild", () => {
 
 type PrefillChildOptions = {
     onDelete?: () => void;
-    value?: IPrefillAttributes[];
     index?: number;
 };
 
 const MyTestComponent = ({
     prefillChildOptions = {},
 }: { prefillChildOptions?: PrefillChildOptions } = {}) => {
-    const { onDelete, value, index } = prefillChildOptions;
-    const methods = useForm({
-        mode: "onTouched",
-        resolver: yupResolver(SchemaHelper.buildSchema(EElementType.EMAIL)),
-    });
-    const onSubmit = jest.fn();
-    methods.setValue("prefill", value);
-
+    const { onDelete, index } = prefillChildOptions;
     return (
-        <FormProvider {...methods}>
-            <form onSubmit={methods.handleSubmit(onSubmit)}>
-                <PrefillChild onDelete={onDelete} index={index} />
-                <button type="submit">Submit</button>
-            </form>
-        </FormProvider>
+        <>
+            <PrefillChild onDelete={onDelete} index={index} />
+            <button type="submit">Submit</button>
+        </>
     );
 };
 
@@ -180,7 +235,6 @@ const renderComponent = (
 // MOCKS
 // =============================================================================
 const mockDelete = jest.fn();
-const mockOnChange = jest.fn();
 const mockValue: IPrefillAttributes[] = [
     {
         prefillMode: "Previous source",

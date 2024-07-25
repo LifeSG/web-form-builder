@@ -1,7 +1,11 @@
 import { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
-import { useBuilder } from "src/context-providers";
-import { IBaseTextBasedFieldValues } from "src/schemas";
+import {
+    EElementType,
+    TextBasedElementTypes,
+    useBuilder,
+} from "src/context-providers";
+import { TFormFieldValues } from "src/schemas";
 import { BasicDetails } from "./basic-details";
 import { ConditionalRendering } from "./conditional-rendering";
 import {
@@ -16,15 +20,23 @@ export const ElementEditor = () => {
     // =========================================================================
     // CONST, STATE, REF
     // =========================================================================
-    const { focusedElement, updateFocusedElement } = useBuilder();
+    const { focusedElement, updateFocusedElement, selectedElementType } =
+        useBuilder();
 
     const {
         formState: { isDirty },
         getFieldState,
-    } = useFormContext<IBaseTextBasedFieldValues>();
+    } = useFormContext<TFormFieldValues>();
 
     const { isTouched: isTypeTouched } = getFieldState("type");
 
+    // =========================================================================
+    // HELPER FUNCTIONS
+    // =========================================================================
+
+    const isTextBasedElement = (elementType: EElementType) => {
+        return TextBasedElementTypes.has(elementType);
+    };
     // =========================================================================
     // EFFECTS
     // =========================================================================
@@ -52,7 +64,7 @@ export const ElementEditor = () => {
             <AccordionWrapper>
                 <BasicDetails />
             </AccordionWrapper>
-            <Validation />
+            {isTextBasedElement(selectedElementType) && <Validation />}
             <ConditionalRendering />
             <Prefill />
         </Wrapper>

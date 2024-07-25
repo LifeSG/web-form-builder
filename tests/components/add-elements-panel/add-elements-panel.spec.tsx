@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import "jest-canvas-mock";
 import { AddElementsPanel } from "src/components/side-panel/add-elements-panel";
 import { EElementType } from "src/context-providers";
@@ -112,8 +112,7 @@ describe("AddElementsPanel", () => {
             });
         });
 
-        /** Will be skipped as Option group is not implemented yet */
-        it.skip("should not show the category option group when input given is a text field element", async () => {
+        it("should not show the category option group when input given is a text field element", async () => {
             renderComponent();
             const magnifyingGlass = screen.getByTestId("maginfying-glass");
             fireEvent.click(magnifyingGlass);
@@ -122,6 +121,32 @@ describe("AddElementsPanel", () => {
 
             await waitFor(() => {
                 const getCategory = screen.queryByText("Option group");
+                expect(getCategory).not.toBeInTheDocument();
+            });
+        });
+
+        it("should show the category option group when input given is a option group element", async () => {
+            renderComponent();
+            const magnifyingGlass = screen.getByTestId("maginfying-glass");
+            fireEvent.click(magnifyingGlass);
+            const searchInput = screen.getByTestId("input");
+            fireEvent.change(searchInput, { target: { value: "dropdown" } });
+
+            await waitFor(() => {
+                const getCategory = screen.queryByText("Option group");
+                expect(getCategory).toBeInTheDocument();
+            });
+        });
+
+        it("should not show the category text field when input given is a option group element", async () => {
+            renderComponent();
+            const magnifyingGlass = screen.getByTestId("maginfying-glass");
+            fireEvent.click(magnifyingGlass);
+            const searchInput = screen.getByTestId("input");
+            fireEvent.change(searchInput, { target: { value: "dropdown" } });
+
+            await waitFor(() => {
+                const getCategory = screen.queryByText("Text field");
                 expect(getCategory).not.toBeInTheDocument();
             });
         });
