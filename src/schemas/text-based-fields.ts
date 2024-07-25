@@ -1,4 +1,4 @@
-import { EElementType } from "src/context-providers";
+import { EElementType, EValidationType } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import * as yup from "yup";
 import { PREFILL_ACTIONID_REGEX, PREFILL_PATH_REGEX } from "./base-helper";
@@ -56,11 +56,7 @@ const generateValidationSchema = (elementType: EElementType) => {
                         .string()
                         .required("Validation required."),
                     validationRule: yup.string().when("validationType", {
-                        is: (value: string) => {
-                            return ELEMENT_VALIDATION_TYPES["Text field"][
-                                EElementType.EMAIL
-                            ].validationTypes.includes(value);
-                        },
+                        is: EValidationType.EMAIL_DOMAIN,
                         then: (rule) =>
                             rule
                                 .required("Email domain required.")
@@ -86,33 +82,16 @@ const generateValidationSchema = (elementType: EElementType) => {
                     validationRule: yup
                         .string()
                         .when("validationType", {
-                            is: (value: string) => {
-                                const validationTypes =
-                                    ELEMENT_VALIDATION_TYPES["Text field"][
-                                        EElementType.TEXT
-                                    ].validationTypes;
-                                return (
-                                    validationTypes.includes(value) &&
-                                    value === "Custom regex"
-                                );
-                            },
+                            is: EValidationType.CUSTOM_REGEX,
                             then: (rule) =>
                                 rule
                                     .required("Custom regex required.")
                                     .validRegex("Regex not valid."),
                         })
                         .when("validationType", {
-                            is: (value: string) => {
-                                const validationTypes =
-                                    ELEMENT_VALIDATION_TYPES["Text field"][
-                                        EElementType.TEXT
-                                    ].validationTypes;
-                                return (
-                                    validationTypes.includes(value) &&
-                                    (value === "Minimum length" ||
-                                        value === "Maximum length")
-                                );
-                            },
+                            is:
+                                EValidationType.MIN_LENGTH ||
+                                EValidationType.MAX_LENGTH,
                             then: (rule) =>
                                 rule
                                     .required("Numeric value required.")
@@ -133,19 +112,13 @@ const generateValidationSchema = (elementType: EElementType) => {
                         .string()
                         .required("Validation required."),
                     validationRule: yup.string().when("validationType", {
-                        is: ELEMENT_VALIDATION_TYPES["Text field"][
-                            EElementType.NUMERIC
-                        ].validationTypes[0],
+                        is: EValidationType.WHOLE_NUMBERS,
                         then: (rule) => rule.optional(),
                         otherwise: (rule) =>
                             rule.when("validationType", {
                                 is:
-                                    ELEMENT_VALIDATION_TYPES["Text field"][
-                                        EElementType.NUMERIC
-                                    ].validationTypes[1] ||
-                                    ELEMENT_VALIDATION_TYPES["Text field"][
-                                        EElementType.NUMERIC
-                                    ].validationTypes[2],
+                                    EValidationType.MIN_VALUE ||
+                                    EValidationType.MAX_VALUE,
                                 then: (rule) =>
                                     rule
                                         .required("Numeric value required.")

@@ -46,6 +46,7 @@ export const Validation = () => {
         switch (elementType) {
             case EElementType.EMAIL:
             case EElementType.TEXT:
+            case EElementType.NUMERIC:
             case EElementType.TEXTAREA:
                 return (
                     validationValues?.length ===

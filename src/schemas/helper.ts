@@ -19,6 +19,7 @@ export namespace SchemaHelper {
             switch (type) {
                 case EElementType.EMAIL:
                 case EElementType.TEXT:
+                case EElementType.NUMERIC:
                     return yup
                         .object()
                         .concat(baseSchema)
