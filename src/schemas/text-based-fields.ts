@@ -1,14 +1,10 @@
-import {
-    EElementType,
-    IBaseTextBasedFieldAttributes,
-} from "src/context-providers";
+import { EElementType, EValidationType } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import * as yup from "yup";
+import { PREFILL_ACTIONID_REGEX, PREFILL_PATH_REGEX } from "./base-helper";
 
 const VALIDATION_DOMAIN_REGEX =
     /^@[^\s]+(\.[^\s]+)*(?:\s*,\s*@[^,\s]+(\.[^,\s]+)*)*$/;
-const PREFILL_ACTIONID_REGEX = /^[a-zA-Z0-9_-]+$/;
-const PREFILL_PATH_REGEX = /^[a-zA-Z0-9._-]+$/;
 
 // =============================================================================
 // HELPER FUNCTIONS
@@ -16,6 +12,7 @@ const PREFILL_PATH_REGEX = /^[a-zA-Z0-9._-]+$/;
 declare module "yup" {
     interface StringSchema {
         validRegex(message: string): this;
+        isNumber(message: string): this;
     }
 }
 
@@ -30,11 +27,23 @@ yup.addMethod(yup.string, "validRegex", function (message) {
     };
 
     return this.test("validRegex", message, function (value) {
-        const { path, createError } = this;
         if (isValidRegex(value)) {
             return true;
         }
-        return createError({ path, message });
+        return false;
+    });
+});
+
+yup.addMethod(yup.string, "isNumber", function (message) {
+    return this.test("isNumber", message, function (value) {
+        if (
+            !isNaN(Number(value)) &&
+            Number.isInteger(Number(value)) &&
+            parseInt(value) >= 0
+        ) {
+            return true;
+        }
+        return false;
     });
 });
 
@@ -47,9 +56,7 @@ const generateValidationSchema = (elementType: EElementType) => {
                         .string()
                         .required("Validation required."),
                     validationRule: yup.string().when("validationType", {
-                        is: ELEMENT_VALIDATION_TYPES["Text field"][
-                            EElementType.EMAIL
-                        ].validationTypes[0],
+                        is: EValidationType.EMAIL_DOMAIN,
                         then: (rule) =>
                             rule
                                 .required("Email domain required.")
@@ -75,47 +82,51 @@ const generateValidationSchema = (elementType: EElementType) => {
                     validationRule: yup
                         .string()
                         .when("validationType", {
-                            is: ELEMENT_VALIDATION_TYPES["Text field"][
-                                EElementType.TEXT
-                            ].validationTypes[0],
+                            is: EValidationType.CUSTOM_REGEX,
                             then: (rule) =>
                                 rule
                                     .required("Custom regex required.")
-                                    .test(
-                                        "valid-regex",
-                                        "Regex not valid.",
-                                        (value) => {
-                                            try {
-                                                new RegExp(value);
-                                                return true;
-                                            } catch {
-                                                return false;
-                                            }
-                                        }
-                                    ),
+                                    .validRegex("Regex not valid."),
                         })
                         .when("validationType", {
                             is:
-                                ELEMENT_VALIDATION_TYPES["Text field"][
-                                    EElementType.TEXT
-                                ].validationTypes[1] ||
-                                ELEMENT_VALIDATION_TYPES["Text field"][
-                                    EElementType.TEXT
-                                ].validationTypes[2],
+                                EValidationType.MIN_LENGTH ||
+                                EValidationType.MAX_LENGTH,
                             then: (rule) =>
                                 rule
                                     .required("Numeric value required.")
-                                    .test(
-                                        "is-number",
-                                        "Numeric value only.",
-                                        (value) =>
-                                            !isNaN(Number(value)) &&
-                                            Number.isInteger(Number(value)) &&
-                                            parseInt(value) >= 0
-                                    ),
+                                    .isNumber("Numeric value only."),
                             otherwise: (rule) =>
                                 rule.required("Validation rule required."),
                         }),
+                    validationErrorMessage: yup
+                        .string()
+                        .required("Error message required."),
+                })
+            );
+        }
+        case EElementType.NUMERIC: {
+            return yup.array().of(
+                yup.object().shape({
+                    validationType: yup
+                        .string()
+                        .required("Validation required."),
+                    validationRule: yup.string().when("validationType", {
+                        is: EValidationType.WHOLE_NUMBERS,
+                        then: (rule) => rule.optional(),
+                        otherwise: (rule) =>
+                            rule.when("validationType", {
+                                is:
+                                    EValidationType.MIN_VALUE ||
+                                    EValidationType.MAX_VALUE,
+                                then: (rule) =>
+                                    rule
+                                        .required("Numeric value required.")
+                                        .isNumber("Numeric value only."),
+                                otherwise: (rule) =>
+                                    rule.required("Validation rule required."),
+                            }),
+                    }),
                     validationErrorMessage: yup
                         .string()
                         .required("Error message required."),
@@ -129,9 +140,70 @@ const generateValidationSchema = (elementType: EElementType) => {
 // SCHEMAS
 // =============================================================================
 export const TEXT_BASED_SCHEMA = (elementType: EElementType) => {
-    return yup.object<IBaseTextBasedFieldAttributes>().shape({
+    return yup.object().shape({
         placeholder: yup.string().optional(),
         validation: generateValidationSchema(elementType),
+        prefill: yup.array().of(
+            yup.object().shape({
+                prefillMode: yup.string().required("Source required."),
+                actionId: yup.string().when("prefillMode", {
+                    is: "Previous source",
+                    then: (rule) =>
+                        rule
+                            .required("Action ID required.")
+                            .matches(
+                                PREFILL_ACTIONID_REGEX,
+                                "Invalid action ID."
+                            ),
+                    otherwise: (rule) => rule.optional(),
+                }),
+                path: yup
+                    .string()
+                    .required("Path required.")
+                    .matches(PREFILL_PATH_REGEX, "Invalid path."),
+            })
+        ),
+        conditionalRendering: yup.array().of(
+            yup.object().shape({
+                fieldKey: yup.string().required("Reference required."),
+                comparator: yup.string().required("Comparator required."),
+                value: yup.string().required("Reference value required."),
+            })
+        ),
+    });
+};
+
+export const TEXT_AREA_SCHEMA = (elementType: EElementType) => {
+    return yup.object().shape({
+        placeholder: yup.string().optional(),
+        preSelectedValue: yup.string().optional(),
+        resizableInput: yup.boolean().required().default(true),
+        validation: yup.array().of(
+            yup.object().shape({
+                validationType: yup.string().required("Validation required."),
+                validationRule: yup.string().when("validationType", {
+                    is: (value: string) => {
+                        return ELEMENT_VALIDATION_TYPES["Text field"][
+                            EElementType.TEXTAREA
+                        ].validationTypes.includes(value);
+                    },
+                    then: (rule) =>
+                        rule
+                            .required("Numeric value required.")
+                            .test(
+                                "is-number",
+                                "Numeric value only.",
+                                (value) =>
+                                    !isNaN(Number(value)) &&
+                                    Number.isInteger(Number(value)) &&
+                                    parseInt(value) >= 0
+                            ),
+                }),
+                validationErrorMessage: yup
+                    .string()
+                    .required("Error message required."),
+            })
+        ),
         prefill: yup.array().of(
             yup.object().shape({
                 prefillMode: yup.string().required("Source required."),

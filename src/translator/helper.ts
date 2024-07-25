@@ -4,11 +4,17 @@ import {
     EConditionType,
     EElementType,
     IConditionalRendering,
+    IPrefillAttributes,
     TElement,
     TElementMap,
 } from "src/context-providers/builder";
 import { ELEMENT_CONDITION_TYPES, SCHEMA_CONDITION_TYPES } from "src/data";
 import { TextBasedField } from "./text-based-field";
+import { IPrefillConfig } from "./types";
+import {
+    PREFILL_ACTIONID_REGEX,
+    PREFILL_PATH_REGEX,
+} from "src/schemas/base-helper";
 
 export const createPrefillObject = (elements: TElementMap) => {
     const prefill = Object.values(elements).reduce((acc, element) => {
@@ -19,6 +25,22 @@ export const createPrefillObject = (elements: TElementMap) => {
     }, {});
 
     return prefill;
+};
+
+export const parsePrefillObject = (
+    prefill: IPrefillConfig,
+    key: string
+): IPrefillAttributes[] => {
+    const prefillAttributes = prefill[key] as IPrefillAttributes[];
+    return prefillAttributes?.filter((value) => {
+        return (
+            PREFILL_PATH_REGEX.exec(value?.path) !== null &&
+            (!value?.actionId ||
+                PREFILL_ACTIONID_REGEX.exec(value?.actionId) !== null) &&
+            (value?.prefillMode === "Myinfo" ||
+                value?.prefillMode === "Previous source")
+        );
+    });
 };
 
 export const createConditionalRenderingObject = (
@@ -78,10 +100,11 @@ export const parseConditionalRenderingObject = (conditions: TRenderRules[]) => {
 };
 
 export const parseSchemaBasedOnType = (
-    schemaToTranslate: Record<string, TFrontendEngineFieldSchema>
+    schemaToParse: Record<string, TFrontendEngineFieldSchema>,
+    prefill: IPrefillConfig
 ) => {
     const parsedElements = [];
-    Object.entries(schemaToTranslate).forEach(([key, element]) => {
+    Object.entries(schemaToParse).forEach(([key, element]) => {
         const { uiType } = element;
         switch (uiType) {
             case EElementType.CONTACT:
@@ -92,7 +115,8 @@ export const parseSchemaBasedOnType = (
                 parsedElements.push(
                     TextBasedField.parseToElement(
                         element as TextBasedField.TElementSchema,
-                        key
+                        key,
+                        prefill
                     )
                 );
                 break;

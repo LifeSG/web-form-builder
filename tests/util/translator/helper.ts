@@ -1,4 +1,5 @@
 import { IYupValidationRule } from "@lifesg/web-frontend-engine";
+import { IComplexLabel } from "@lifesg/web-frontend-engine/components/fields";
 import { TRenderRules } from "@lifesg/web-frontend-engine/context-providers";
 import {
     EElementType,
@@ -9,16 +10,16 @@ import {
     TElementMap,
 } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data";
-
 interface MockElementProps {
     type: EElementType;
     id: string;
     internalId: string;
     required?: boolean;
     requiredErrorMsg?: string;
+    description?: string;
     columns?: IColumns;
     placeholder?: string;
-    label?: string;
+    label?: string | IComplexLabel;
     validation?: IValidation[];
     conditionalRendering?: IConditionalRendering[];
     prefill?: IPrefillAttributes[];
@@ -26,7 +27,7 @@ interface MockElementProps {
 
 interface MockElementSchemaProps {
     id: string;
-    label: string;
+    label: IComplexLabel;
     uiType: EElementType;
     placeholder?: string;
     validation?: IYupValidationRule[];
@@ -39,7 +40,7 @@ interface MockPrefillSchema {
 
 interface MockChildrenSchema {
     [key: string]: {
-        label: string;
+        label: IComplexLabel;
         uiType: EElementType;
         columns: IColumns;
         placeholder?: string;
