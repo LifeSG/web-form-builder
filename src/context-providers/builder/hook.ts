@@ -286,16 +286,18 @@ export const useBuilder = () => {
                 },
             });
 
-            dispatch({
-                type: "remove-focused-element",
-            });
+            if (newFocusedElement) {
+                dispatch({
+                    type: "remove-focused-element",
+                });
 
-            dispatch({
-                type: "focus-element",
-                payload: {
-                    element: newFocusedElement,
-                },
-            });
+                dispatch({
+                    type: "focus-element",
+                    payload: {
+                        element: newFocusedElement,
+                    },
+                });
+            }
         },
         []
     );
