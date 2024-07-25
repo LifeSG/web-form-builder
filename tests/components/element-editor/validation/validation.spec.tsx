@@ -4,7 +4,7 @@ import "jest-canvas-mock";
 import { setupJestCanvasMock } from "jest-canvas-mock";
 import { FormProvider, useForm } from "react-hook-form";
 import { Validation } from "src/components/element-editor/validation/validation";
-import { EElementType } from "src/context-providers";
+import { EElementType, EValidationType } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data";
 import { SchemaHelper } from "src/schemas";
 import { TestHelper } from "src/util/test-helper";
@@ -26,7 +26,10 @@ describe("Validation", () => {
     it("should contain the component with the title, buttonLabel & children being passed into it", () => {
         renderComponent(EElementType.EMAIL, {
             builderContext: {
-                focusedElement: { element: MOCK_ELEMENT, isDirty: true },
+                focusedElement: {
+                    element: MOCK_TEXT_BASED_ELEMENT(EElementType.EMAIL),
+                    isDirty: true,
+                },
             },
         });
         expect(screen.getByText("Additional Validation")).toBeInTheDocument();
@@ -36,13 +39,16 @@ describe("Validation", () => {
     it("should fire onAdd and render the validation-child component when the button is being clicked", () => {
         renderComponent(EElementType.EMAIL, {
             builderContext: {
-                focusedElement: { element: MOCK_ELEMENT, isDirty: true },
+                focusedElement: {
+                    element: MOCK_TEXT_BASED_ELEMENT(EElementType.EMAIL),
+                    isDirty: true,
+                },
             },
         });
         fireEvent.click(getAddValidationButton());
         expect(
             screen.getByRole("button", {
-                name: "Email domain",
+                name: EValidationType.EMAIL_DOMAIN,
             })
         ).toBeInTheDocument();
         expect(
@@ -60,7 +66,7 @@ describe("Validation", () => {
         renderComponent(EElementType.EMAIL, {
             builderContext: {
                 focusedElement: {
-                    element: MOCK_ELEMENT,
+                    element: MOCK_TEXT_BASED_ELEMENT(EElementType.EMAIL),
                     isDirty: true,
                 },
             },
@@ -89,7 +95,10 @@ describe("Validation", () => {
         renderComponent(EElementType.TEXT, {
             builderContext: {
                 focusedElement: {
-                    element: { ...MOCK_ELEMENT, type: EElementType.TEXT },
+                    element: {
+                        ...MOCK_TEXT_BASED_ELEMENT(EElementType.TEXT),
+                        type: EElementType.TEXT,
+                    },
                     isDirty: true,
                 },
             },
@@ -113,7 +122,7 @@ describe("Validation", () => {
             builderContext: {
                 focusedElement: {
                     element: {
-                        ...MOCK_ELEMENT,
+                        ...MOCK_TEXT_BASED_ELEMENT(EElementType.TEXT),
                         type: EElementType.TEXT,
                     },
                     isDirty: true,
@@ -128,7 +137,7 @@ describe("Validation", () => {
         });
         fireEvent.click(inputValidationType);
 
-        const option = screen.getByText("Minimum length");
+        const option = screen.getByText(EValidationType.MIN_LENGTH);
         fireEvent.click(option);
 
         const inputName = screen.getByPlaceholderText("Enter rule");
@@ -143,6 +152,34 @@ describe("Validation", () => {
 
         const option2 = screen.getAllByTestId("list-item");
         expect(option2.length).toBe(2);
+    });
+
+    it("should hide the validation rule when the element is a numeric field and the selected validation type is whole numbers", async () => {
+        setupJestCanvasMock();
+        renderComponent(EElementType.NUMERIC, {
+            builderContext: {
+                focusedElement: {
+                    element: {
+                        ...MOCK_TEXT_BASED_ELEMENT(EElementType.NUMERIC),
+                        type: EElementType.NUMERIC,
+                    },
+                    isDirty: true,
+                },
+            },
+        });
+
+        fireEvent.click(getAddValidationButton());
+
+        const inputValidationType = screen.getByRole("button", {
+            name: "Select",
+        });
+        fireEvent.click(inputValidationType);
+
+        const option = screen.getByText(EValidationType.WHOLE_NUMBERS);
+        fireEvent.click(option);
+
+        const inputName = screen.queryByPlaceholderText("Enter rule");
+        expect(inputName).not.toBeInTheDocument();
     });
 });
 
@@ -181,12 +218,14 @@ const getAddValidationButton: () => HTMLElement = () =>
 // =============================================================================
 // MOCKS
 // =============================================================================
-const MOCK_ELEMENT = {
-    internalId: "mock123",
-    type: EElementType.EMAIL,
-    id: "mockElement",
-    required: false,
-    label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
-    validation: [],
-    columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
+const MOCK_TEXT_BASED_ELEMENT = (elementType: EElementType) => {
+    return {
+        internalId: "mock123",
+        type: elementType,
+        id: "mockElement",
+        required: false,
+        label: ELEMENT_BUTTON_LABELS[elementType],
+        validation: [],
+        columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
+    };
 };

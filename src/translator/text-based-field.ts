@@ -5,7 +5,12 @@ import {
     INumericFieldSchema,
     ITextFieldSchema,
 } from "@lifesg/web-frontend-engine/components/fields";
-import { EElementType, IValidation, TElement } from "src/context-providers";
+import {
+    EElementType,
+    EValidationType,
+    IValidation,
+    TElement,
+} from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import { SimpleIdGenerator } from "src/util/simple-id-generator";
 import {
@@ -20,6 +25,11 @@ export namespace TextBasedField {
         | ITextFieldSchema
         | IEmailFieldSchema
         | INumericFieldSchema;
+
+    export interface ISchemaValidation {
+        [key: string]: string | number | boolean;
+        errorMessage?: string;
+    }
 
     namespace Email {
         export const createEmailValidationSchema = (
@@ -72,6 +82,46 @@ export namespace TextBasedField {
         };
     }
 
+    const createTextFieldValidationSchema = (validation: IValidation[]) => {
+        const validationObj = validation.reduce<ISchemaValidation[]>(
+            (acc, value) => {
+                switch (value.validationType) {
+                    case EValidationType.MAX_VALUE:
+                    case EValidationType.MAX_LENGTH:
+                        acc.push({
+                            max: parseInt(value.validationRule),
+                            errorMessage: value.validationErrorMessage,
+                        });
+                        break;
+                    case EValidationType.MIN_VALUE:
+                    case EValidationType.MIN_LENGTH:
+                        acc.push({
+                            min: parseInt(value.validationRule),
+                            errorMessage: value.validationErrorMessage,
+                        });
+                        break;
+                    case EValidationType.WHOLE_NUMBERS:
+                        acc.push({
+                            integer: true,
+                            errorMessage: value.validationErrorMessage,
+                        });
+                        break;
+                    case EValidationType.CUSTOM_REGEX:
+                        acc.push({
+                            matches: value.validationRule,
+                            errorMessage: value.validationErrorMessage,
+                        });
+                        break;
+                    default:
+                        break;
+                }
+                return acc;
+            },
+            []
+        );
+        return validationObj;
+    };
+
     const createValidationObject = (element: TElement) => {
         const validation: IYupValidationRule[] = [];
 
@@ -96,8 +146,13 @@ export namespace TextBasedField {
                 case EElementType.TEXT:
                 case EElementType.TEXTAREA:
                 case EElementType.CONTACT:
-                case EElementType.NUMERIC:
+                case EElementType.NUMERIC: {
+                    const validationChild = createTextFieldValidationSchema(
+                        element.validation
+                    );
+                    validation.push(...validationChild);
                     break;
+                }
                 case EElementType.CHECKBOX:
                 case EElementType.RADIO:
                     break;

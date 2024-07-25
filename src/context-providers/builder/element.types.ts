@@ -22,6 +22,16 @@ export enum EConditionType {
     NOT_EQUALS = "Not equals",
 }
 
+export enum EValidationType {
+    EMAIL_DOMAIN = "Email domain",
+    WHOLE_NUMBERS = "Whole numbers",
+    CUSTOM_REGEX = "Custom regex",
+    MIN_VALUE = "Minimum value",
+    MAX_VALUE = "Maximum value",
+    MIN_LENGTH = "Minimum length",
+    MAX_LENGTH = "Maximum length",
+}
+
 export interface IBaseAttributes {
     id: string | undefined;
     internalId: string;
