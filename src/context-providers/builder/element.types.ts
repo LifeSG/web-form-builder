@@ -1,5 +1,3 @@
-import { IComplexLabel } from "@lifesg/web-frontend-engine/components/fields";
-
 /**
  * Refer to the uiType in the Frontend Engine when setting
  * the value.
@@ -22,6 +20,16 @@ export enum EConditionType {
     LESS_THAN = "Less than",
     EQUALS = "Equals",
     NOT_EQUALS = "Not equals",
+}
+
+export enum EValidationType {
+    EMAIL_DOMAIN = "Email domain",
+    WHOLE_NUMBERS = "Whole numbers",
+    CUSTOM_REGEX = "Custom regex",
+    MIN_VALUE = "Minimum value",
+    MAX_VALUE = "Maximum value",
+    MIN_LENGTH = "Minimum length",
+    MAX_LENGTH = "Maximum length",
 }
 
 export interface IBaseAttributes {

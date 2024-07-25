@@ -16,12 +16,7 @@ import {
     verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { ErrorDisplay } from "@lifesg/react-design-system/error-display";
-import {
-    EModalType,
-    TElement,
-    useBuilder,
-    useDisplay,
-} from "src/context-providers";
+import { EModalType, TElement, useBuilder } from "src/context-providers";
 import { useModal } from "src/context-providers/display/modal-hook";
 import { ElementCard } from "../element-card";
 import {

@@ -5,20 +5,31 @@ import {
     INumericFieldSchema,
     ITextFieldSchema,
 } from "@lifesg/web-frontend-engine/components/fields";
-import { TRenderRules } from "@lifesg/web-frontend-engine/context-providers";
-import { EElementType, IValidation, TElement } from "src/context-providers";
+import {
+    EElementType,
+    EValidationType,
+    IValidation,
+    TElement,
+} from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import { SimpleIdGenerator } from "src/util/simple-id-generator";
 import {
     createConditionalRenderingObject,
     parseConditionalRenderingObject,
+    parsePrefillObject,
 } from "./helper";
+import { IPrefillConfig } from "./types";
 
 export namespace TextBasedField {
     export type TElementSchema =
         | ITextFieldSchema
         | IEmailFieldSchema
         | INumericFieldSchema;
+
+    export interface ISchemaValidation {
+        [key: string]: string | number | boolean;
+        errorMessage?: string;
+    }
 
     namespace Email {
         export const createEmailValidationSchema = (
@@ -27,10 +38,10 @@ export namespace TextBasedField {
             const domainRegexString = (domains: IValidation) => {
                 if (domains) {
                     const domainsArr = domains?.validationRule.split(",");
-                    const translatedDomains = domainsArr?.map((domain) =>
+                    const generateSchemaDomains = domainsArr?.map((domain) =>
                         domain.trim().replace(/^@/, "").replace(/\./g, "\\.")
                     );
-                    const regexPattern = `^[a-zA-Z0-9._%+-]+@(${translatedDomains.join("|")})$`;
+                    const regexPattern = `^[a-zA-Z0-9._%+-]+@(${generateSchemaDomains.join("|")})$`;
                     return new RegExp(regexPattern);
                 }
             };
@@ -54,25 +65,69 @@ export namespace TextBasedField {
                 })
                 .join(", ");
 
-            return [
-                {
-                    validationType:
-                        ELEMENT_VALIDATION_TYPES["Text field"][
-                            EElementType.EMAIL
-                        ].validationTypes[0],
-                    validationRule: extractedDomains,
-                    validationErrorMessage: validation[0].errorMessage,
-                },
-            ];
+            const DOMAIN_REGEX = /@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}/;
+            const isDomain = DOMAIN_REGEX.exec(extractedDomains);
+            if (isDomain) {
+                return [
+                    {
+                        validationType:
+                            ELEMENT_VALIDATION_TYPES["Text field"][
+                                EElementType.EMAIL
+                            ].validationTypes[0],
+                        validationRule: extractedDomains,
+                        validationErrorMessage: validation[0].errorMessage,
+                    },
+                ];
+            }
         };
     }
+
+    const createTextFieldValidationSchema = (validation: IValidation[]) => {
+        const validationObj = validation.reduce<ISchemaValidation[]>(
+            (acc, value) => {
+                switch (value.validationType) {
+                    case EValidationType.MAX_VALUE:
+                    case EValidationType.MAX_LENGTH:
+                        acc.push({
+                            max: parseInt(value.validationRule),
+                            errorMessage: value.validationErrorMessage,
+                        });
+                        break;
+                    case EValidationType.MIN_VALUE:
+                    case EValidationType.MIN_LENGTH:
+                        acc.push({
+                            min: parseInt(value.validationRule),
+                            errorMessage: value.validationErrorMessage,
+                        });
+                        break;
+                    case EValidationType.WHOLE_NUMBERS:
+                        acc.push({
+                            integer: true,
+                            errorMessage: value.validationErrorMessage,
+                        });
+                        break;
+                    case EValidationType.CUSTOM_REGEX:
+                        acc.push({
+                            matches: value.validationRule,
+                            errorMessage: value.validationErrorMessage,
+                        });
+                        break;
+                    default:
+                        break;
+                }
+                return acc;
+            },
+            []
+        );
+        return validationObj;
+    };
 
     const createValidationObject = (element: TElement) => {
         const validation: IYupValidationRule[] = [];
 
         if (element.required) {
             validation.push({
-                required: true,
+                required: element.required,
                 ...(element.requiredErrorMsg && {
                     errorMessage: element.requiredErrorMsg,
                 }),
@@ -91,8 +146,13 @@ export namespace TextBasedField {
                 case EElementType.TEXT:
                 case EElementType.TEXTAREA:
                 case EElementType.CONTACT:
-                case EElementType.NUMERIC:
+                case EElementType.NUMERIC: {
+                    const validationChild = createTextFieldValidationSchema(
+                        element.validation
+                    );
+                    validation.push(...validationChild);
                     break;
+                }
                 case EElementType.CHECKBOX:
                 case EElementType.RADIO:
                     break;
@@ -153,13 +213,17 @@ export namespace TextBasedField {
         return textBasedFieldSchema;
     };
 
-    export const parseToElement = (element: TElementSchema, key: string) => {
+    export const parseToElement = (
+        element: TElementSchema,
+        key: string,
+        prefill: IPrefillConfig
+    ) => {
         const { showIf, uiType, validation, label, ...rest } = element;
 
         let requiredValidation: IYupValidationRule = {};
         const fieldValidation = [];
 
-        validation.forEach((rule) => {
+        validation?.forEach((rule) => {
             if (Object.prototype.hasOwnProperty.call(rule, "required")) {
                 requiredValidation = rule;
             } else {
@@ -173,7 +237,7 @@ export namespace TextBasedField {
             label: (label as IComplexLabel).mainLabel,
             description: (label as IComplexLabel).subLabel,
             type: uiType as EElementType,
-            required: requiredValidation.required as boolean,
+            required: !!requiredValidation.required,
             requiredErrorMsg: requiredValidation.errorMessage,
             id: key,
             internalId: newInternalId,
@@ -183,11 +247,11 @@ export namespace TextBasedField {
                     fieldValidation
                 ),
             }),
-            ...(showIf && {
-                conditionalRendering: parseConditionalRenderingObject(
-                    showIf as TRenderRules[]
-                ),
-            }),
+            conditionalRendering: showIf
+                ? parseConditionalRenderingObject(showIf)
+                : [],
+
+            prefill: parsePrefillObject(prefill, key) || [],
         };
 
         return parsedElement as TElement;
