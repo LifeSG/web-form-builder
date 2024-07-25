@@ -143,7 +143,10 @@ export const updateParsedElements = (parsedElements: TElement[]) => {
 
     Object.values(parsedElements).forEach((parsedElement: TElement) => {
         newElements[parsedElement.internalId] = parsedElement;
-        newOrderedIdentifiers.push({ internalId: parsedElement.internalId });
+        newOrderedIdentifiers.push({
+            internalId: parsedElement.internalId,
+            size: "full",
+        });
 
         if (parsedElement?.conditionalRendering?.length > 0) {
             parsedElement.conditionalRendering.forEach((condition, index) => {
