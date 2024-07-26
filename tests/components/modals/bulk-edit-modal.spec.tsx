@@ -57,7 +57,7 @@ describe("Bulk Edit Modal", () => {
         expect(mockHideModal).toBeCalled();
     });
 
-    it("should run the onClickActionButton function when the 'Save' button is clicked", () => {
+    it("should run the onClickActionButton function when the 'Save' button is clicked", async () => {
         renderComponent({
             displayContext: {
                 modals: [bulkEditModal],
@@ -66,7 +66,56 @@ describe("Bulk Edit Modal", () => {
         const saveButton = getSaveButton();
         fireEvent.click(saveButton);
 
-        waitFor(() => {
+        await waitFor(() => {
+            expect(mockOnClickActionButton).toBeCalled();
+        });
+    });
+
+    it("should show an error message when the 'Save' button is clicked and the form is invalid", async () => {
+        renderComponent({
+            displayContext: {
+                modals: [bulkEditModal],
+            },
+        });
+
+        const textArea = screen.getByRole("textbox");
+
+        fireEvent.change(textArea, {
+            target: {
+                value: "a",
+            },
+        });
+
+        const saveButton = getSaveButton();
+        fireEvent.click(saveButton);
+
+        await waitFor(() => {
+            const errorMessage = screen.getByText(
+                'Incorrect format. Check that all labels and values are filled and separated with "|".'
+            );
+            expect(errorMessage).toBeInTheDocument();
+        });
+    });
+
+    it("should save successfully when the 'Save' button is clicked and the form is valid", async () => {
+        renderComponent({
+            displayContext: {
+                modals: [bulkEditModal],
+            },
+        });
+
+        const textArea = screen.getByRole("textbox");
+
+        fireEvent.change(textArea, {
+            target: {
+                value: "a | b",
+            },
+        });
+
+        const saveButton = getSaveButton();
+        fireEvent.click(saveButton);
+
+        await waitFor(() => {
             expect(mockOnClickActionButton).toBeCalled();
         });
     });
