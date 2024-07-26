@@ -1,7 +1,7 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import "jest-canvas-mock";
 import { Modals } from "src/components";
-import { EModalType, IDiscardChangesModalProps } from "src/context-providers";
+import { EModalType, IBulkEditModalProps } from "src/context-providers";
 import { TestHelper } from "src/util/test-helper";
 
 // =============================================================================
@@ -22,7 +22,7 @@ jest.mock("src/context-providers/display/modal-hook.tsx", () => {
     };
 });
 
-describe("Discard changes modals", () => {
+describe("Bulk Edit Modal", () => {
     beforeEach(() => {
         global.ResizeObserver = jest.fn().mockImplementation(() => ({
             observe: jest.fn(),
@@ -36,40 +36,39 @@ describe("Discard changes modals", () => {
         jest.resetAllMocks();
     });
 
-    it("should show the discardModal when discard changes modal type is being passed in", () => {
+    it("should show the bulk edit modal when it is being passed in to modal hook", () => {
         renderComponent({
             displayContext: {
-                modals: [newModal],
+                modals: [bulkEditModal],
             },
         });
-        const getModalTitle = screen.getByText("Discard changes?");
-        const discardChangesButton = getDiscardChangesButton();
-        const keepEditingButton = getKeepEditingButton();
-        expect(getModalTitle).toBeInTheDocument();
-        expect(discardChangesButton).toBeInTheDocument();
-        expect(keepEditingButton).toBeInTheDocument();
+        const modal = screen.getByTestId("bulk-edit-modal");
+        expect(modal).toBeInTheDocument();
     });
 
-    it("should hide the modal when the 'Keep editing' button is pressed", async () => {
+    it("should hide the modal when the 'Cancel' button is pressed", async () => {
         renderComponent({
             displayContext: {
-                modals: [newModal],
+                modals: [bulkEditModal],
             },
         });
-        const keepEditingButton = getKeepEditingButton();
-        fireEvent.click(keepEditingButton);
+        const cancelButton = getCancelButton();
+        fireEvent.click(cancelButton);
         expect(mockHideModal).toBeCalled();
     });
 
-    it("should run the onClickActionButton function when the 'Discard changes' button is clicked", () => {
+    it("should run the onClickActionButton function when the 'Save' button is clicked", () => {
         renderComponent({
             displayContext: {
-                modals: [newModal],
+                modals: [bulkEditModal],
             },
         });
-        const discardChangesButton = getDiscardChangesButton();
-        fireEvent.click(discardChangesButton);
-        expect(mockOnClickActionButton).toBeCalled();
+        const saveButton = getSaveButton();
+        fireEvent.click(saveButton);
+
+        waitFor(() => {
+            expect(mockOnClickActionButton).toBeCalled();
+        });
     });
 });
 
@@ -87,21 +86,22 @@ const renderComponent = (overrideOptions?: TestHelper.RenderOptions) => {
     );
 };
 
-const getDiscardChangesButton = () =>
+const getCancelButton = () =>
     screen.getByRole("button", {
-        name: "Discard changes",
+        name: "Cancel",
     });
 
-const getKeepEditingButton = () =>
+const getSaveButton = () =>
     screen.getByRole("button", {
-        name: "Keep editing",
+        name: "Save",
     });
 
 // =============================================================================
 // MOCKS
 // =============================================================================
 const mockOnClickActionButton = jest.fn();
-const newModal: IDiscardChangesModalProps = {
-    type: EModalType.DiscardChanges,
+const bulkEditModal: IBulkEditModalProps = {
+    type: EModalType.BulkEdit,
     onClickActionButton: mockOnClickActionButton,
+    dropdownItemsString: "",
 };

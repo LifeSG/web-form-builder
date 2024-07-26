@@ -62,7 +62,7 @@ export const BulkEditModal = ({ modal }: IProps) => {
         <GenericModal type={modal?.type}>
             <FormProvider {...methods}>
                 <form onSubmit={methods.handleSubmit(onSubmit)}>
-                    <Wrapper>
+                    <Wrapper data-testid="bulk-edit-modal">
                         <Text.H3 weight={600}>Bulk Edit</Text.H3>
                         <Text.Body weight={400}>
                             To add multiple entries at once, input each item on
