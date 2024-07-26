@@ -72,7 +72,8 @@ export const useBuilder = () => {
                 {
                     internalId: newElement.internalId,
                     position: state.elementCounter,
-                },
+                    size: "full",
+                } as IElementIdentifier,
             ];
 
             dispatch({
@@ -273,7 +274,11 @@ export const useBuilder = () => {
     }, []);
 
     const updateElementSchema = useCallback(
-        (elements?: TElementMap, orderedIdentifiers?: IElementIdentifier[]) => {
+        (
+            elements?: TElementMap,
+            orderedIdentifiers?: IElementIdentifier[],
+            newFocusedElement?: TElement
+        ) => {
             dispatch({
                 type: "update-schema-element",
                 payload: {
@@ -281,6 +286,19 @@ export const useBuilder = () => {
                     orderedIdentifiers,
                 },
             });
+
+            if (newFocusedElement) {
+                dispatch({
+                    type: "remove-focused-element",
+                });
+
+                dispatch({
+                    type: "focus-element",
+                    payload: {
+                        element: newFocusedElement,
+                    },
+                });
+            }
         },
         []
     );

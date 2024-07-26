@@ -1,13 +1,13 @@
 import { Form } from "@lifesg/react-design-system/form";
 import { Text } from "@lifesg/react-design-system/text";
-import { BinIcon, DragHandleIcon } from "@lifesg/react-icons";
+import { DragHandleIcon } from "@lifesg/react-icons";
 import { Controller, useFormContext } from "react-hook-form";
+import { TOverallOptionGroupBasedSchema } from "src/schemas";
+import { DeleteButton } from "../../../common/delete-button/delete-button";
 import {
     DropdownItemsChildWrapper,
     DropdownItemsDragHandleButton,
 } from "./dropdown-items-child.styles";
-import { TOverallOptionGroupBasedSchema } from "src/schemas";
-import { DeleteButton } from "../../../common/delete-button/delete-button";
 
 interface IProps {
     onDelete: () => void;
@@ -83,9 +83,7 @@ export const DropdownItemsChild = ({ onDelete, index }: IProps) => {
                 onClick={onDelete}
                 popoverMessage={renderPopoverMessage()}
                 disabled={isDeleteDisabled()}
-            >
-                <BinIcon />
-            </DeleteButton>
+            />
         </DropdownItemsChildWrapper>
     );
 };

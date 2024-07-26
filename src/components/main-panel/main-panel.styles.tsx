@@ -1,6 +1,7 @@
 import { MediaQuery } from "@lifesg/react-design-system/media";
 import { Text } from "@lifesg/react-design-system/text";
 import styled, { css } from "styled-components";
+import { generateElementCardView } from "../common/columns/columns.styles";
 
 // =============================================================================
 // STLE INTERFACES
@@ -10,7 +11,7 @@ interface IWrapperStyleProps {
 }
 
 interface IElementItemWrapperProps extends IWrapperStyleProps {
-    $size: "full" | "half";
+    $size: "full" | "left" | "right";
 }
 
 // =============================================================================
@@ -27,16 +28,12 @@ export const Wrapper = styled.div<IWrapperStyleProps>`
                     ${MediaQuery.MaxWidth.desktop4k} {
                         grid-column: 4 / span 6;
                     }
-
                     ${MediaQuery.MaxWidth.desktopL} {
                         grid-column: 3 / span 8;
                     }
-
                     ${MediaQuery.MaxWidth.desktopM} {
                         grid-column: 3 / span 8;
                     }
-
-                    /* To accommodate to desktops of 1024px */
                     ${MediaQuery.MaxWidth.tablet} {
                         grid-column: 2 / span 6;
                     }
@@ -46,16 +43,12 @@ export const Wrapper = styled.div<IWrapperStyleProps>`
                     ${MediaQuery.MaxWidth.desktop4k} {
                         grid-column: 5 / span 6;
                     }
-
                     ${MediaQuery.MaxWidth.desktopL} {
                         grid-column: 6 / span 6;
                     }
-
                     ${MediaQuery.MaxWidth.desktopM} {
                         grid-column: 6 / span 6;
                     }
-
-                    /* To accommodate to desktops of 1024px */
                     ${MediaQuery.MaxWidth.tablet} {
                         grid-column: 5 / span 4;
                     }
@@ -79,16 +72,12 @@ export const EmptyDisplayWrapper = styled.div<IWrapperStyleProps>`
                     ${MediaQuery.MaxWidth.desktop4k} {
                         grid-column: 4 / span 6;
                     }
-
                     ${MediaQuery.MaxWidth.desktopL} {
                         grid-column: 3 / span 9;
                     }
-
                     ${MediaQuery.MaxWidth.desktopM} {
                         grid-column: 3 / span 9;
                     }
-
-                    /* To accommodate to desktops of 1024px */
                     ${MediaQuery.MaxWidth.tablet} {
                         grid-column: 2 / span 7;
                     }
@@ -98,16 +87,12 @@ export const EmptyDisplayWrapper = styled.div<IWrapperStyleProps>`
                     ${MediaQuery.MaxWidth.desktop4k} {
                         grid-column: 5 / span 7;
                     }
-
                     ${MediaQuery.MaxWidth.desktopL} {
                         grid-column: 6 / span 7;
                     }
-
                     ${MediaQuery.MaxWidth.desktopM} {
                         grid-column: 6 / span 7;
                     }
-
-                    /* To accommodate to desktops of 1024px */
                     ${MediaQuery.MaxWidth.tablet} {
                         grid-column: 5 / span 4;
                     }
@@ -137,12 +122,10 @@ export const ElementsWrapper = styled.ul<IWrapperStyleProps>`
                         grid-template-columns: repeat(6, minmax(0, 1fr));
                         column-gap: 2rem;
                     }
-
                     ${MediaQuery.MaxWidth.desktopL} {
                         grid-template-columns: repeat(8, minmax(0, 1fr));
                         column-gap: 2rem;
                     }
-
                     ${MediaQuery.MaxWidth.tablet} {
                         grid-template-columns: repeat(6, minmax(0, 1fr));
                         column-gap: 1.5rem;
@@ -154,7 +137,6 @@ export const ElementsWrapper = styled.ul<IWrapperStyleProps>`
                         grid-template-columns: repeat(6, minmax(0, 1fr));
                         column-gap: 2rem;
                     }
-
                     ${MediaQuery.MaxWidth.tablet} {
                         grid-template-columns: repeat(4, minmax(0, 1fr));
                         column-gap: 1.5rem;
@@ -165,32 +147,5 @@ export const ElementsWrapper = styled.ul<IWrapperStyleProps>`
 `;
 
 export const ElementItemWrapper = styled.li<IElementItemWrapperProps>`
-    ${({ $mode, $size }) => {
-        switch ($mode) {
-            case "expanded":
-                return css`
-                    ${MediaQuery.MaxWidth.desktop4k} {
-                        grid-column: auto / span ${$size === "full" ? 6 : 3};
-                    }
-
-                    ${MediaQuery.MaxWidth.desktopL} {
-                        grid-column: auto / span ${$size === "full" ? 8 : 4};
-                    }
-
-                    ${MediaQuery.MaxWidth.tablet} {
-                        grid-column: auto / span ${$size === "full" ? 6 : 3};
-                    }
-                `;
-            case "minimised":
-                return css`
-                    ${MediaQuery.MaxWidth.desktop4k} {
-                        grid-column: auto / span ${$size === "full" ? 6 : 3};
-                    }
-
-                    ${MediaQuery.MaxWidth.tablet} {
-                        grid-column: auto / span ${$size === "full" ? 4 : 2};
-                    }
-                `;
-        }
-    }}
+    ${({ $mode, $size }) => generateElementCardView($size, $mode)}
 `;

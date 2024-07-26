@@ -3,6 +3,7 @@ import {
     IBaseAttributes,
     IBaseOptionGroupBasedFieldAttributes,
     IBaseTextBasedFieldAttributes,
+    ITextareaFieldAttributes,
     TElement,
 } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS, ELEMENT_ID_PREFIX } from "src/data";
@@ -63,15 +64,31 @@ export namespace ElementObjectGenerator {
             case EElementType.EMAIL:
             case EElementType.NUMERIC:
             case EElementType.CONTACT:
-            case EElementType.TEXT:
-            case EElementType.TEXTAREA: {
+            case EElementType.TEXT: {
                 const attributes: IBaseTextBasedFieldAttributes = {
+                    ...baseAttributes,
+                    placeholder: "",
+                    required: true,
+                    requiredErrorMsg: "",
+                    description: "",
+                    label: ELEMENT_BUTTON_LABELS[type],
+                    columns: { desktop: 12, tablet: 8, mobile: 4 },
+                    validation: [],
+                    conditionalRendering: [],
+                    prefill: [],
+                };
+                return attributes;
+            }
+            case EElementType.TEXTAREA: {
+                const attributes: ITextareaFieldAttributes = {
                     ...baseAttributes,
                     placeholder: "",
                     required: true,
                     requiredErrorMsg: "",
                     label: ELEMENT_BUTTON_LABELS[type],
                     description: "",
+                    preselectedValue: "",
+                    resizableInput: true,
                     columns: { desktop: 12, tablet: 8, mobile: 4 },
                     validation: [],
                     conditionalRendering: [],

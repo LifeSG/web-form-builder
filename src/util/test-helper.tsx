@@ -39,7 +39,6 @@ interface FormContextProps {
     currentValues?: {
         [x: string]: any;
     };
-    onSubmit?: (data: any) => void;
 }
 
 export namespace TestHelper {
@@ -47,10 +46,16 @@ export namespace TestHelper {
         builderContext?: Partial<IBuilderState>;
         displayContext?: Partial<IDisplayState>;
         formContext?: FormContextProps;
+        includeFormProvider?: boolean;
     }
 
     export const withProviders = (
-        { builderContext, displayContext, formContext }: RenderOptions = {},
+        {
+            builderContext,
+            displayContext,
+            formContext,
+            includeFormProvider = true,
+        }: RenderOptions = {},
         component: React.ReactNode
     ) => {
         return (
@@ -67,9 +72,13 @@ export namespace TestHelper {
                             dispatch: noop,
                         }}
                     >
-                        <InnerFormProvider formContext={formContext}>
-                            {component}
-                        </InnerFormProvider>
+                        {includeFormProvider ? (
+                            <InnerFormProvider formContext={formContext}>
+                                {component}
+                            </InnerFormProvider>
+                        ) : (
+                            component
+                        )}
                     </DisplayContext.Provider>
                 </BuilderContext.Provider>
             </ThemeProvider>

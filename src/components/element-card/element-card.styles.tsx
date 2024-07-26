@@ -3,6 +3,7 @@ import { Text, TextStyleHelper } from "@lifesg/react-design-system/text";
 import { DragHandleIcon } from "@lifesg/react-icons";
 import styled, { css } from "styled-components";
 import { BaseCard, IProps } from "../common";
+import { generateElementCardView } from "../common/columns/columns.styles";
 
 // =============================================================================
 // STYLE INTERFACES
@@ -12,6 +13,7 @@ interface IActionButtonStyleProps {
 }
 interface IDroppableWrapperProps {
     isOver: boolean;
+    $size: "full" | "left" | "right";
 }
 
 interface IElementCardProps extends IProps {
@@ -92,28 +94,27 @@ export const ActionButton = styled.button<IActionButtonStyleProps>`
 `;
 
 export const DroppableWrapper = styled.div<IDroppableWrapperProps>`
-    ${({ isOver }) =>
-        isOver
-            ? css`
-                  border: 1px dashed ${Color.Primary};
-                  border-radius: 0.25rem;
-                  background: ${Color.Accent.Light[5]};
-                  height: 100%;
-                  z-index: -1;
-              `
-            : css`
-                  border: 1px solid transparent;
-              `}
     position: absolute;
-    flex-direction: column;
-    height: auto;
-    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    height: auto;
+    width: 100%;
     padding: 0.4rem;
     gap: 0.25rem;
+    border: 1px solid transparent;
+    z-index: -1;
+
+    ${({ $size }) => generateElementCardView($size)}
+
+    ${({ isOver }) =>
+        isOver &&
+        css`
+            border: 1px dashed ${Color.Primary};
+            border-radius: 0.25rem;
+            background: ${Color.Accent.Light[5]};
+        `}
 
     svg {
         color: ${Color.Primary};
@@ -130,4 +131,8 @@ export const DroppableText = styled(Text.Body)`
 
 export const ElementBaseCard = styled(BaseCard)<IElementCardProps>`
     cursor: ${({ $isDragging }) => ($isDragging ? "grabbing" : "pointer")};
+`;
+
+export const CardWrapper = styled.div`
+    position: relative;
 `;

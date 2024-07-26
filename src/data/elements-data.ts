@@ -1,6 +1,7 @@
 import {
     EConditionType,
     EElementType,
+    EValidationType,
 } from "src/context-providers/builder/element.types";
 
 interface IElementCategoryAttributes {
@@ -51,15 +52,27 @@ export const ELEMENT_VALIDATION_TYPES = {
     "Text field": {
         [EElementType.EMAIL]: {
             maxEntries: 1,
-            validationTypes: ["Email domain"],
+            validationTypes: [EValidationType.EMAIL_DOMAIN],
+        },
+        [EElementType.NUMERIC]: {
+            maxEntries: 3,
+            validationTypes: [
+                EValidationType.WHOLE_NUMBERS,
+                EValidationType.MIN_VALUE,
+                EValidationType.MAX_VALUE,
+            ],
         },
         [EElementType.TEXT]: {
             maxEntries: -1, // Set a negetive number so that it will allow unlimited entries as it will not be equal to 0
             validationTypes: [
-                "Custom regex",
-                "Minimum length",
-                "Maximum length",
+                EValidationType.CUSTOM_REGEX,
+                EValidationType.MIN_LENGTH,
+                EValidationType.MAX_LENGTH,
             ],
+        },
+        [EElementType.TEXTAREA]: {
+            maxEntries: 1, // Set a negetive number so that it will allow unlimited entries as it will not be equal to 0
+            validationTypes: ["Maximum length"],
         },
     },
 };

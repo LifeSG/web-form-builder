@@ -8,6 +8,7 @@ import { TFormFieldValues } from "src/schemas";
 import {
     FieldEditorAccordionItem,
     MandatoryFieldBox,
+    StyledTextarea,
     Wrapper,
 } from "./basic-details.styles";
 import { DropdownItems } from "./dropdown-items/dropdown-items";
@@ -76,7 +77,7 @@ export const BasicDetails = () => {
                                 label="Element Name"
                                 rows={1}
                                 placeholder="Element Name"
-                                value={field.value}
+                                value={field.value as string}
                                 onChange={(e) => {
                                     field.onChange(e.target.value);
                                 }}
@@ -93,7 +94,9 @@ export const BasicDetails = () => {
                         control={control}
                         render={({ field }) => (
                             <TogglePair
-                                label="Mandatory field"
+                                label={{
+                                    mainLabel: "Mandatory field",
+                                }}
                                 value={field.value}
                                 onChange={(value) => {
                                     field.onChange(value);
@@ -154,37 +157,67 @@ export const BasicDetails = () => {
                     shouldUnregister={true}
                 />
 
-                {element?.hasOwnProperty("description") && (
+                {hasProperty("description") && (
                     <Controller
                         name="description"
                         control={control}
+                        render={({ field }) => {
+                            const handleTextareaChange = (
+                                e: React.ChangeEvent<HTMLTextAreaElement>
+                            ) => {
+                                field.onChange(e.target.value);
+                                e.target.style.height = "auto";
+                                e.target.style.height = `${Math.max(40, e.target.scrollHeight)}px`;
+                            };
+
+                            return (
+                                <StyledTextarea
+                                    {...field}
+                                    label={{
+                                        children: "Description text (optional)",
+                                        subtitle: (
+                                            <Text.H6 weight={400}>
+                                                This displays as a description
+                                                under the label.
+                                            </Text.H6>
+                                        ),
+                                    }}
+                                    placeholder="Enter description text"
+                                    value={field.value || ""}
+                                    rows={1}
+                                    onChange={handleTextareaChange}
+                                    errorMessage={errors.description?.message}
+                                    maxLength={180}
+                                />
+                            );
+                        }}
+                        shouldUnregister={true}
+                    />
+                )}
+
+                {hasProperty("resizableInput") && (
+                    <Controller
+                        name="resizableInput"
+                        control={control}
                         render={({ field }) => (
-                            <Form.Textarea
-                                {...field}
+                            <TogglePair
                                 label={{
-                                    children: "Description text (optional)",
-                                    subtitle: (
-                                        <Text.H6 weight={400}>
-                                            This displays as a description under
-                                            the label.
-                                        </Text.H6>
-                                    ),
+                                    mainLabel: "Resizable area input",
+                                    subLabel:
+                                        "This allows participant to resize text area.",
                                 }}
-                                placeholder="Enter description text"
-                                value={field.value || ""}
-                                rows={1}
-                                onChange={(e) => {
-                                    field.onChange(e.target.value);
+                                value={field.value}
+                                onChange={(value) => {
+                                    field.onChange(value);
                                 }}
-                                errorMessage={errors.placeholder?.message}
-                                maxLength={180}
+                                id={element.internalId}
                             />
                         )}
                         shouldUnregister={true}
                     />
                 )}
 
-                {element?.hasOwnProperty("placeholder") && (
+                {hasProperty("placeholder") && (
                     <Controller
                         name="placeholder"
                         control={control}

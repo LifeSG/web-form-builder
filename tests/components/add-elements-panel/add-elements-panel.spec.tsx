@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import "jest-canvas-mock";
 import { AddElementsPanel } from "src/components/side-panel/add-elements-panel";
 import { EElementType } from "src/context-providers";
