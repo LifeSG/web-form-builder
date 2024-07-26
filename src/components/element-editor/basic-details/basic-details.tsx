@@ -3,7 +3,11 @@ import { Text } from "@lifesg/react-design-system/text";
 import { Controller, useFormContext } from "react-hook-form";
 import { IconDropdown } from "src/components/common/icon-dropdown";
 import { TogglePair } from "src/components/common/toggle-pair/toggle-pair";
-import { EElementType, useBuilder } from "src/context-providers";
+import {
+    EElementType,
+    TextBasedElementTypes,
+    useBuilder,
+} from "src/context-providers";
 import { TFormFieldValues } from "src/schemas";
 import {
     FieldEditorAccordionItem,
@@ -13,6 +17,7 @@ import {
 } from "./basic-details.styles";
 import { DropdownItems } from "./dropdown-items/dropdown-items";
 import { DropdownPreselectedValue } from "./dropdown-preselected-value";
+import { TextBasedPreselectedValue } from "./text-based-preselected-value";
 
 export const BasicDetails = () => {
     // =========================================================================
@@ -26,7 +31,7 @@ export const BasicDetails = () => {
         setValue,
     } = useFormContext<TFormFieldValues>();
     const element = focusedElement.element;
-    const type = watch("type");
+    const type = watch("type") as EElementType;
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
@@ -237,6 +242,9 @@ export const BasicDetails = () => {
                     />
                 )}
 
+                {TextBasedElementTypes.has(type) && (
+                    <TextBasedPreselectedValue />
+                )}
                 {type === EElementType.DROPDOWN && <DropdownPreselectedValue />}
             </Wrapper>
         </FieldEditorAccordionItem>
