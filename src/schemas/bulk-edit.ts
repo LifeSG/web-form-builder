@@ -1,4 +1,4 @@
-import { isEmpty } from "lodash";
+import isEmpty from "lodash/isEmpty";
 import * as Yup from "yup";
 import { getNonEmptyLines, getValidDropdownItem } from "./bulk-edit-helper";
 

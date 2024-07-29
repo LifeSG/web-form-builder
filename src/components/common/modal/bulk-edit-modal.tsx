@@ -6,8 +6,8 @@ import { IBulkEditModalProps } from "src/context-providers";
 import { BULK_EDIT_SCHEMA, TBulkEditData } from "src/schemas/bulk-edit";
 import { useModal } from "../../../context-providers/display/modal-hook";
 import { Wrapper } from "./bulk-edit-modal.styles";
-import { ActionButton, ButtonWrapper } from "./discard-changes-modal.styles";
 import { GenericModal } from "./generic-modal";
+import { ActionButton, ButtonWrapper } from "./modals.styles";
 
 interface IProps {
     modal: IBulkEditModalProps;
@@ -30,11 +30,11 @@ export const BulkEditModal = ({ modal }: IProps) => {
     // HELPER FUNCTIONS
     // ============================================================================
 
-    const handleOnClickCancel = () => {
+    const handleClickCancel = () => {
         hideModal(type);
     };
 
-    const onSubmit = (data: TBulkEditData) => {
+    const handleFormSubmit = (data: TBulkEditData) => {
         onClickActionButton(data.items);
         hideModal(type);
     };
@@ -48,7 +48,7 @@ export const BulkEditModal = ({ modal }: IProps) => {
             <ButtonWrapper>
                 <ActionButton
                     type="button"
-                    onClick={handleOnClickCancel}
+                    onClick={handleClickCancel}
                     styleType="light"
                 >
                     Cancel
@@ -61,7 +61,7 @@ export const BulkEditModal = ({ modal }: IProps) => {
     return (
         <GenericModal type={modal?.type}>
             <FormProvider {...methods}>
-                <form onSubmit={methods.handleSubmit(onSubmit)}>
+                <form onSubmit={methods.handleSubmit(handleFormSubmit)}>
                     <Wrapper data-testid="bulk-edit-modal">
                         <Text.H3 weight={600}>Bulk Edit</Text.H3>
                         <Text.Body weight={400}>

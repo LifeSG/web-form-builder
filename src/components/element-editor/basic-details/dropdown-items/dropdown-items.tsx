@@ -2,7 +2,7 @@ import { Form } from "@lifesg/react-design-system/form";
 import { Text } from "@lifesg/react-design-system/text";
 import { PencilIcon } from "@lifesg/react-icons/pencil";
 import { PlusIcon } from "@lifesg/react-icons/plus";
-import { isEmpty } from "lodash";
+import isEmpty from "lodash/isEmpty";
 import { useEffect } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import {
