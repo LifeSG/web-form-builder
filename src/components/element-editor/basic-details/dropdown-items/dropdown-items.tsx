@@ -1,3 +1,17 @@
+import {
+    closestCenter,
+    DndContext,
+    DragEndEvent,
+    KeyboardSensor,
+    PointerSensor,
+    useSensor,
+    useSensors,
+} from "@dnd-kit/core";
+import {
+    SortableContext,
+    sortableKeyboardCoordinates,
+    verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 import { Form } from "@lifesg/react-design-system/form";
 import { Text } from "@lifesg/react-design-system/text";
 import { PencilIcon } from "@lifesg/react-icons/pencil";
@@ -29,12 +43,19 @@ export const DropdownItems = () => {
     // =========================================================================
     const { control, getValues, trigger } =
         useFormContext<TOptionGroupBasedSchema>();
-    const { fields, append, remove, replace } = useFieldArray({
+    const { fields, append, remove, move, replace } = useFieldArray({
         control,
         name: "dropdownItems",
         shouldUnregister: true,
     });
     const { showModal } = useModal();
+
+    const sensors = useSensors(
+        useSensor(PointerSensor),
+        useSensor(KeyboardSensor, {
+            coordinateGetter: sortableKeyboardCoordinates,
+        })
+    );
 
     // =========================================================================
     // EFFECTS
@@ -102,6 +123,17 @@ export const DropdownItems = () => {
         showModal(bulkEditModal);
     };
 
+    const handleDragEnd = (event: DragEndEvent) => {
+        const { active, over } = event;
+
+        if (over && active.id !== over.id) {
+            const oldIndex = fields.findIndex((item) => item.id === active.id);
+            const newIndex = fields.findIndex((item) => item.id === over.id);
+
+            move(oldIndex, newIndex);
+        }
+    };
+
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
@@ -111,6 +143,7 @@ export const DropdownItems = () => {
             return (
                 <DropdownItemsChild
                     key={field.id}
+                    id={field.id}
                     index={index}
                     onDelete={() => handleDeleteButtonClick(index)}
                 />
@@ -151,7 +184,18 @@ export const DropdownItems = () => {
                     the backend.
                 </Text.H6>
             </Form.Label>
-            {renderChildren()}
+            <DndContext
+                sensors={sensors}
+                onDragEnd={handleDragEnd}
+                collisionDetection={closestCenter}
+            >
+                <SortableContext
+                    items={fields}
+                    strategy={verticalListSortingStrategy}
+                >
+                    {renderChildren()}
+                </SortableContext>
+            </DndContext>
             {renderButtons()}
         </DropdownItemsWrapper>
     );
