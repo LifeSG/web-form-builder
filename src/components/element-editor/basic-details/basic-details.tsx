@@ -2,6 +2,7 @@ import { Form } from "@lifesg/react-design-system/form";
 import { Text } from "@lifesg/react-design-system/text";
 import { Controller, useFormContext } from "react-hook-form";
 import { IconDropdown } from "src/components/common/icon-dropdown";
+import { Pills } from "src/components/common/pills";
 import { TogglePair } from "src/components/common/toggle-pair/toggle-pair";
 import {
     EElementType,
@@ -13,22 +14,18 @@ import {
     FieldEditorAccordionItem,
     MandatoryFieldBox,
     StyledTextarea,
+    ToggleWrapper,
     Wrapper,
 } from "./basic-details.styles";
-import { TopPositionIcon } from "../../../icons/top-position-icon";
-import { BottomPositionIcon } from "../../../icons/bottom-position-icon";
-import { PillFields } from "src/components/common/pills";
-import { useEffect } from "react";
 
 export const BasicDetails = () => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
-    const { focusedElement, updateFocusedElement, elements } = useBuilder();
+    const { focusedElement } = useBuilder();
     const {
         control,
-        formState: { errors, isDirty },
-        reset,
+        formState: { errors },
         watch,
         setValue,
     } = useFormContext<IBaseTextBasedFieldValues | ITextareaFieldAttributes>();
@@ -41,21 +38,6 @@ export const BasicDetails = () => {
     const hasProperty = (key: string) => {
         return key in element;
     };
-
-    // =========================================================================
-    // USE EFFECTS
-    // =========================================================================
-
-    useEffect(() => {
-        updateFocusedElement(!!isDirty);
-    }, [isDirty, updateFocusedElement]);
-
-    useEffect(() => {
-        reset(element, {
-            keepDirty: true,
-            keepValues: true,
-        });
-    }, []);
 
     // =========================================================================
     // RENDER FUNCTIONS
@@ -113,24 +95,23 @@ export const BasicDetails = () => {
                 )}
 
                 <MandatoryFieldBox>
-                    <Controller
-                        name="required"
-                        control={control}
-                        render={({ field }) => (
-                            <TogglePair
-                                label={{
-                                    mainLabel: "Mandatory field",
-                                }}
-                                value={field.value}
-                                onChange={(value) => {
-                                    field.onChange(value);
-                                }}
-                                id={element.internalId}
-                            />
-                        )}
-                        shouldUnregister={true}
-                    />
-
+                    <ToggleWrapper>
+                        <Controller
+                            name="required"
+                            control={control}
+                            render={({ field }) => (
+                                <TogglePair
+                                    label={{
+                                        mainLabel: "Mandatory field",
+                                    }}
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    id={element.internalId}
+                                />
+                            )}
+                            shouldUnregister={true}
+                        />
+                    </ToggleWrapper>
                     {watch("required", true) && (
                         <Controller
                             name="requiredErrorMsg"
@@ -179,53 +160,51 @@ export const BasicDetails = () => {
                     shouldUnregister={true}
                 />
                 {hasProperty("resizableInput") && (
-                    <Controller
-                        name="resizableInput"
-                        control={control}
-                        render={({ field }) => (
-                            <TogglePair
-                                label={{
-                                    mainLabel: "Resizable area input",
-                                    subLabel:
-                                        "This allows participant to resize text area.",
-                                }}
-                                value={field.value}
-                                onChange={(value) => {
-                                    field.onChange(value);
-                                }}
-                                id={element.internalId}
-                            />
-                        )}
-                        shouldUnregister={true}
-                    />
-                )}
-
-                {hasProperty("pills") && (
-                    <MandatoryFieldBox>
+                    <ToggleWrapper>
                         <Controller
-                            name="pills"
+                            name="resizableInput"
                             control={control}
                             render={({ field }) => (
                                 <TogglePair
                                     label={{
-                                        mainLabel: "Pills",
+                                        mainLabel: "Resizable area input",
                                         subLabel:
-                                            "This allows a list of selectable short texts to display in pill form. This helps participant to fill up text area fast with less typing.",
+                                            "This allows participant to resize text area.",
                                     }}
                                     value={field.value}
-                                    onChange={(value) => {
-                                        field.onChange(value);
-                                    }}
+                                    onChange={field.onChange}
                                     id={element.internalId}
                                 />
                             )}
                             shouldUnregister={true}
                         />
+                    </ToggleWrapper>
+                )}
+
+                {hasProperty("pills") && (
+                    <MandatoryFieldBox>
+                        <ToggleWrapper>
+                            <Controller
+                                name="pills"
+                                control={control}
+                                render={({ field }) => (
+                                    <TogglePair
+                                        label={{
+                                            mainLabel: "Pills",
+                                            subLabel:
+                                                "This allows a list of selectable short texts to display in pill form. This helps participant to fill up text area fast with less typing.",
+                                        }}
+                                        value={field.value}
+                                        onChange={field.onChange}
+                                        id={element.internalId}
+                                    />
+                                )}
+                                shouldUnregister={true}
+                            />
+                        </ToggleWrapper>
 
                         {watch("pills", true) && (
-                            <>
-                                <PillFields id={element.internalId} />
-                            </>
+                            <Pills id={element.internalId} />
                         )}
                     </MandatoryFieldBox>
                 )}

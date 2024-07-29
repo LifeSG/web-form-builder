@@ -22,7 +22,7 @@ export const BottomPositionIcon: React.FC<SVGProps<SVGSVGElement>> = (
             height="12"
             rx="1"
             stroke="currentColor"
-            stroke-width="4"
+            strokeWidth="4"
             mask="url(#path-1-inside-1_6699_38328)"
         />
         <rect x="2" y="19.5" width="22" height="2" rx="1" fill="currentColor" />

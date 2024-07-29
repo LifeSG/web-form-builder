@@ -12,14 +12,14 @@ import {
     sortableKeyboardCoordinates,
     verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { Form } from "@lifesg/react-design-system";
+import { Form } from "@lifesg/react-design-system/form";
 import { PlusIcon } from "@lifesg/react-icons/plus";
 import { useEffect } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { TogglePair } from "src/components/common/toggle-pair/toggle-pair";
 import { ITextareaFieldAttributes } from "src/context-providers";
-import { BottomPositionIcon } from "src/icons/bottom-position-icon";
-import { TopPositionIcon } from "src/icons/top-position-icon";
+import { BottomPositionIcon } from "../icons/bottom-position-icon";
+import { TopPositionIcon } from "../icons/top-position-icon";
 import { PillItem } from "./pill-items";
 import { AddMultiEntryButton } from "./pills.styles";
 
@@ -27,14 +27,11 @@ interface IProps {
     id: string;
 }
 
-export const PillFields = ({ id }: IProps) => {
+export const Pills = ({ id }: IProps) => {
     // =========================================================================
     // CONST, STATE, REF
     // =========================================================================
-    const {
-        control,
-        formState: { errors },
-    } = useFormContext<ITextareaFieldAttributes>();
+    const { control } = useFormContext<ITextareaFieldAttributes>();
     const { fields, append, remove, move } = useFieldArray({
         control,
         name: "pillItems",
@@ -42,7 +39,7 @@ export const PillFields = ({ id }: IProps) => {
     });
 
     const sensors = useSensors(
-        useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+        useSensor(PointerSensor),
         useSensor(KeyboardSensor, {
             coordinateGetter: sortableKeyboardCoordinates,
         })
@@ -106,7 +103,7 @@ export const PillFields = ({ id }: IProps) => {
                 strategy={verticalListSortingStrategy}
             >
                 <Form.Label>Pill Items</Form.Label>
-                <div>{fields.length > 0 && renderPillItems()}</div>
+                {renderPillItems()}
                 <AddMultiEntryButton
                     icon={<PlusIcon />}
                     styleType="light"
@@ -130,7 +127,10 @@ export const PillFields = ({ id }: IProps) => {
                         value={field.value === "top"}
                         options={[
                             { icon: <TopPositionIcon />, title: "Top" },
-                            { icon: <BottomPositionIcon />, title: "Bottom" },
+                            {
+                                icon: <BottomPositionIcon />,
+                                title: "Bottom",
+                            },
                         ]}
                         onChange={(value) =>
                             field.onChange(value ? "top" : "bottom")

@@ -45,31 +45,25 @@ export const TogglePair = ({
             >
                 {label?.mainLabel}
             </Form.Label>
-            <Row $marginRequired={options ? false : true}>
-                <>
-                    <ToggleWrapper
-                        type="yes"
-                        checked={value === true}
-                        onChange={() => handleChange(true)}
-                        indicator={options ? false : true}
-                    >
-                        {options && options[0]?.icon && options[0]?.icon}
-                        {options && options[0]?.title
-                            ? options[0]?.title
-                            : "Yes"}
-                    </ToggleWrapper>
-                    <ToggleWrapper
-                        type="no"
-                        checked={value === false}
-                        onChange={() => handleChange(false)}
-                        indicator={options ? false : true}
-                    >
-                        {options && options[1]?.icon && options[1]?.icon}
-                        {options && options[1]?.title
-                            ? options[1]?.title
-                            : "No"}
-                    </ToggleWrapper>
-                </>
+            <Row>
+                <ToggleWrapper
+                    type="yes"
+                    checked={value === true}
+                    onChange={() => handleChange(true)}
+                    indicator={options ? false : true}
+                >
+                    {options?.[0]?.icon}
+                    {options?.[0]?.title || "Yes"}
+                </ToggleWrapper>
+                <ToggleWrapper
+                    type="no"
+                    checked={value === false}
+                    onChange={() => handleChange(false)}
+                    indicator={options ? false : true}
+                >
+                    {options?.[1]?.icon}
+                    {options?.[1]?.title || "No"}
+                </ToggleWrapper>
             </Row>
         </div>
     );
