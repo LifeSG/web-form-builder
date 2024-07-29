@@ -1,13 +1,10 @@
-import { yupResolver } from "@hookform/resolvers/yup";
 import { fireEvent, render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
-import { FormProvider, useForm } from "react-hook-form";
 import {
     ConditionalRenderingChild,
     IOptions,
 } from "src/components/element-editor/conditional-rendering";
-import { EElementType, IConditionalRendering } from "src/context-providers";
-import { SchemaHelper } from "src/schemas";
+import { IConditionalRendering } from "src/context-providers";
 import { TestHelper } from "src/util/test-helper";
 
 describe("ConditionalRenderingChild", () => {
@@ -25,12 +22,20 @@ describe("ConditionalRenderingChild", () => {
     });
 
     it("should render the component with provided options and fields", () => {
-        renderComponent({
-            onDelete: mockDelete,
-            options: mockOptions,
-            value: mockValue,
-            index: mockIndex,
-        });
+        renderComponent(
+            {
+                onDelete: mockDelete,
+                options: mockOptions,
+                index: mockIndex,
+            },
+            {
+                formContext: {
+                    currentValues: {
+                        conditionalRendering: mockValue,
+                    },
+                },
+            }
+        );
 
         expect(screen.getByText("Select")).toBeInTheDocument();
         expect(screen.getByText("Equals")).toBeInTheDocument();
@@ -38,12 +43,20 @@ describe("ConditionalRenderingChild", () => {
     });
 
     it("should fire the delete function on clicking the bin icon", () => {
-        renderComponent({
-            onDelete: mockDelete,
-            options: mockOptions,
-            value: mockValue,
-            index: mockIndex,
-        });
+        renderComponent(
+            {
+                onDelete: mockDelete,
+                options: mockOptions,
+                index: mockIndex,
+            },
+            {
+                formContext: {
+                    currentValues: {
+                        conditionalRendering: mockValue,
+                    },
+                },
+            }
+        );
 
         const deleteButton = screen.getByTestId("delete-button");
         fireEvent.click(deleteButton);
@@ -51,12 +64,20 @@ describe("ConditionalRenderingChild", () => {
     });
 
     it("should render an error message when validation error message field is left empty", async () => {
-        renderComponent({
-            onDelete: mockDelete,
-            options: mockOptions,
-            value: mockValue,
-            index: mockIndex,
-        });
+        renderComponent(
+            {
+                onDelete: mockDelete,
+                options: mockOptions,
+                index: mockIndex,
+            },
+            {
+                formContext: {
+                    currentValues: {
+                        conditionalRendering: mockValue,
+                    },
+                },
+            }
+        );
         const submitButton = screen.getByText("Submit");
         fireEvent.click(submitButton);
         const referenceError = await screen.findByText("Reference required.");
@@ -73,33 +94,23 @@ describe("ConditionalRenderingChild", () => {
 interface IConditionalRenderingChildOptions {
     onDelete?: () => void;
     options?: IOptions[];
-    value?: IConditionalRendering[];
     index?: number;
 }
 
 const MyTestComponent = ({
     onDelete,
-    value,
     options,
     index,
 }: IConditionalRenderingChildOptions) => {
-    const methods = useForm({
-        mode: "onTouched",
-        resolver: yupResolver(SchemaHelper.buildSchema(EElementType.EMAIL)),
-    });
-    const onSubmit = jest.fn;
-    methods.setValue("conditionalRendering", value);
     return (
-        <FormProvider {...methods}>
-            <form onSubmit={methods.handleSubmit(onSubmit)}>
-                <ConditionalRenderingChild
-                    onDelete={onDelete}
-                    options={options}
-                    index={index}
-                />
-                <button type="submit">Submit</button>
-            </form>
-        </FormProvider>
+        <>
+            <ConditionalRenderingChild
+                onDelete={onDelete}
+                options={options}
+                index={index}
+            />
+            <button type="submit">Submit</button>
+        </>
     );
 };
 

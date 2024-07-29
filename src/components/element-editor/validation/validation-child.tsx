@@ -3,7 +3,7 @@ import { Form } from "@lifesg/react-design-system/form";
 import { Controller, useFormContext } from "react-hook-form";
 import { ChildEntry } from "src/components/common";
 import { EElementType, useBuilder } from "src/context-providers";
-import { IBaseTextBasedFieldValues } from "src/schemas";
+import { TOverallTextBasedSchema } from "src/schemas";
 import { ValidationRule } from "./validation-rule";
 import { FieldWrapper } from "./validation.styles";
 
@@ -18,8 +18,8 @@ export const ValidationChild = ({ onDelete, options, index }: IProps) => {
         formState: { errors },
         control,
         watch,
-    } = useFormContext<IBaseTextBasedFieldValues>();
-    const { focusedElement } = useBuilder();
+    } = useFormContext<TOverallTextBasedSchema>();
+    const { focusedElement, selectedElementType } = useBuilder();
     const validationType = watch(`validation.${index}.validationType`);
 
     // =========================================================================
@@ -27,7 +27,7 @@ export const ValidationChild = ({ onDelete, options, index }: IProps) => {
     // =========================================================================
 
     const renderAlert = () => {
-        if (focusedElement.element.type === EElementType.TEXTAREA) {
+        if (selectedElementType === EElementType.TEXTAREA) {
             return (
                 <Alert type="info" showIcon>
                     Adding of this validation will result in character counter

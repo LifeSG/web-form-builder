@@ -1,9 +1,17 @@
 import { Text } from "@lifesg/react-design-system/text";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
-import { EElementType, useBuilder } from "src/context-providers";
+import {
+    EElementType,
+    TTextBasedElement,
+    useBuilder,
+} from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
-import { IBaseTextBasedFieldValues, SchemaHelper } from "src/schemas";
+import {
+    SchemaHelper,
+    TOverallTextBasedSchema,
+    TOverallTextBasedYupSchema,
+} from "src/schemas";
 import * as Yup from "yup";
 import { getValidationOptionsByType } from "./helper";
 import { ValidationChild } from "./validation-child";
@@ -12,19 +20,24 @@ export const Validation = () => {
     // =========================================================================
     // CONST, STATES, REFS
     // =========================================================================
-    const { focusedElement } = useBuilder();
-    const { watch, control } = useFormContext<IBaseTextBasedFieldValues>();
+    const { focusedElement, selectedElementType } = useBuilder();
+    const { watch, control } = useFormContext<TOverallTextBasedSchema>(); //Validation is only present in text-based-fields.
     const { fields, append, remove } = useFieldArray({
         control,
         name: "validation",
         shouldUnregister: true,
     });
-    const elementType = watch("type", focusedElement.element.type);
-    const schema = SchemaHelper.buildSchema(elementType);
+    const schema = SchemaHelper.buildSchema(
+        selectedElementType
+    ) as TOverallTextBasedYupSchema;
     const validationValues = watch(
         "validation",
-        focusedElement.element.validation
+        (focusedElement.element as TTextBasedElement).validation
     );
+    const elementType = watch(
+        "type",
+        focusedElement.element.type
+    ) as EElementType;
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
@@ -49,6 +62,7 @@ export const Validation = () => {
     const hasInvalidAndEmptyFields = () => {
         try {
             const validationSchema = schema.pick(["validation"]);
+
             validationSchema.validateSync({
                 validation: validationValues,
                 abortEarly: false,

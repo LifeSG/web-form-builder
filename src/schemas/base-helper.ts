@@ -1,8 +1,4 @@
-import {
-    IBaseFieldAttributes,
-    IFocusedElement,
-    TElementMap,
-} from "src/context-providers";
+import { IFocusedElement, TElementMap } from "src/context-providers";
 import * as yup from "yup";
 
 const ID_REGEX = /^[a-z]+(?:[A-Z0-9][a-z0-9]*)*(?:[-_][a-z0-9]+)*$/gm;
@@ -10,18 +6,16 @@ export const PREFILL_ACTIONID_REGEX = /^[a-zA-Z0-9_-]+$/;
 export const PREFILL_PATH_REGEX = /^[a-zA-Z0-9._-]+$/;
 
 export namespace BaseSchemaHelper {
-    export type TBaseSchema = yup.InferType<
-        ReturnType<typeof getTextFieldBasedSchema>
-    >;
-    export const getTextFieldBasedSchema = (
+    export const getBaseSchema = (
         elements: TElementMap,
         focusedElement: IFocusedElement
     ) =>
-        yup.object<IBaseFieldAttributes>().shape({
+        yup.object().shape({
             type: yup.string().required("Element type required."),
             label: yup.string().required("Label required."),
             required: yup.boolean().required().default(true),
             requiredErrorMsg: yup.string().optional(),
+            description: yup.string().optional(),
             id: yup
                 .string()
                 .required("ID required.")
@@ -32,6 +26,6 @@ export namespace BaseSchemaHelper {
                         .filter((id) => id !== focusedElement?.element.id),
                     "ID must not be duplicated."
                 ),
-            description: yup.string().optional(),
         });
+    export type TBaseSchema = yup.InferType<ReturnType<typeof getBaseSchema>>;
 }

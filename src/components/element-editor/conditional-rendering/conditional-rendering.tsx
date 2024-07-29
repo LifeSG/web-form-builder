@@ -2,12 +2,8 @@ import { Text } from "@lifesg/react-design-system/text";
 import { useCallback } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
-import {
-    EConditionType,
-    EElementType,
-    useBuilder,
-} from "src/context-providers";
-import { IBaseTextBasedFieldValues, SchemaHelper } from "src/schemas";
+import { EConditionType, useBuilder } from "src/context-providers";
+import { SchemaHelper, TFormFieldValues } from "src/schemas";
 import * as Yup from "yup";
 import { ConditionalRenderingChild } from "./conditional-rendering-child";
 
@@ -21,15 +17,15 @@ export const ConditionalRendering = () => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
-    const { watch, control } = useFormContext<IBaseTextBasedFieldValues>();
+    const { watch, control } = useFormContext<TFormFieldValues>();
     const { fields, append, remove } = useFieldArray({
         control,
         name: "conditionalRendering",
         shouldUnregister: true,
     });
-    const { focusedElement, elements } = useBuilder();
+    const { focusedElement, elements, selectedElementType } = useBuilder();
     const element = focusedElement?.element;
-    const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
+    const schema = SchemaHelper.buildSchema(selectedElementType);
     const conditionalRenderingValues = watch("conditionalRendering");
     // =====================================================================
     // HELPER FUNCTIONS

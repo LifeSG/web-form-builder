@@ -1,6 +1,6 @@
 import { Text } from "@lifesg/react-design-system/text";
 import { MagnifierIcon } from "@lifesg/react-icons/magnifier";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { ElementSelectorCard } from "src/components/element-selector-card";
 import { EElementType, useBuilder } from "src/context-providers";
 import { ELEMENTS_CATEGORIES, ELEMENT_BUTTON_LABELS } from "src/data";

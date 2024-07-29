@@ -72,7 +72,8 @@ export const useBuilder = () => {
                 {
                     internalId: newElement.internalId,
                     position: state.elementCounter,
-                },
+                    size: "full",
+                } as IElementIdentifier,
             ];
 
             dispatch({
@@ -286,16 +287,18 @@ export const useBuilder = () => {
                 },
             });
 
-            dispatch({
-                type: "remove-focused-element",
-            });
+            if (newFocusedElement) {
+                dispatch({
+                    type: "remove-focused-element",
+                });
 
-            dispatch({
-                type: "focus-element",
-                payload: {
-                    element: newFocusedElement,
-                },
-            });
+                dispatch({
+                    type: "focus-element",
+                    payload: {
+                        element: newFocusedElement,
+                    },
+                });
+            }
         },
         []
     );
@@ -313,6 +316,13 @@ export const useBuilder = () => {
         []
     );
 
+    const selectElementType = useCallback((type: EElementType) => {
+        dispatch({
+            type: "select-element-type",
+            payload: type,
+        });
+    }, []);
+
     return {
         isSubmitting: state.isSubmitting,
         deletedElements: state.deletedElements,
@@ -321,6 +331,7 @@ export const useBuilder = () => {
         currentMode: state.mode,
         orderedIdentifiers: state.orderedIdentifiers,
         focusedElement: state.focusedElement,
+        selectedElementType: state.selectedElementType,
         toggleSubmitting,
         togglePanel,
         toggleMode,
@@ -333,6 +344,7 @@ export const useBuilder = () => {
         updateElement,
         updateFocusedElement,
         duplicateElement,
+        selectElementType,
         updateElementSchema,
     };
 };

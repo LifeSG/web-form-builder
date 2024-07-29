@@ -1,7 +1,7 @@
 import { Form } from "@lifesg/react-design-system/form";
 import { Controller, useFormContext } from "react-hook-form";
 import { ChildEntry } from "src/components/common";
-import { IBaseTextBasedFieldValues } from "src/schemas";
+import { TFormFieldValues } from "src/schemas";
 import { FieldWrapper } from "./prefill.styles";
 
 interface IProps {
@@ -18,7 +18,7 @@ export const PrefillChild = ({ onDelete, index }: IProps) => {
         formState: { errors },
         control,
         watch,
-    } = useFormContext<IBaseTextBasedFieldValues>();
+    } = useFormContext<TFormFieldValues>();
 
     // =========================================================================
     // RENDER FUNCTIONS

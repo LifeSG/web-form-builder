@@ -31,28 +31,29 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
         focusedElement,
         updateElement,
         updateFocusedElement,
+        selectedElementType,
         toggleSubmitting,
     } = useBuilder();
     const { showToast } = useDisplay();
-    const element = focusedElement?.element;
-    const schema = SchemaHelper.buildSchema(EElementType.TEXTAREA);
+    const schema = SchemaHelper.buildSchema(
+        selectedElementType || EElementType.EMAIL
+    );
     const methods = useForm({
         mode: "onTouched",
+        resolver: yupResolver(schema),
         defaultValues: {
             requiredErrorMsg: "",
+            preselectedValue: null,
         },
-        // TODO: insert proper type; email is a placeholder
-        resolver: yupResolver(schema),
     });
-
     const {
-        formState: { isSubmitSuccessful },
         getValues,
+        formState: { isSubmitSuccessful },
     } = methods;
-
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
+
     const onFormSubmit = useCallback(
         async (values: TElement) => {
             if (onSubmit) {
@@ -64,6 +65,15 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
                 message: "Changes are saved successfully.",
                 type: EToastTypes.SUCCESS_TOAST,
             };
+            /** Remove empty dropdown items before updating element */
+            if ("dropdownItems" in values) {
+                const nonEmptyDropdownItems = (
+                    getValues("dropdownItems") as IDropdownItemAttributes[]
+                ).filter(
+                    (item) => item.label.length > 0 || item.value.length > 0
+                );
+                values.dropdownItems = nonEmptyDropdownItems;
+            }
 
             if ("pillItems" in values) {
                 const validPillItems = (

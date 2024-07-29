@@ -10,6 +10,7 @@ import {
     EValidationType,
     IValidation,
     TElement,
+    TTextBasedElement,
 } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import { SimpleIdGenerator } from "src/util/simple-id-generator";
@@ -122,7 +123,7 @@ export namespace TextBasedField {
         return validationObj;
     };
 
-    const createValidationObject = (element: TElement) => {
+    const createValidationObject = (element: TTextBasedElement) => {
         const validation: IYupValidationRule[] = [];
 
         if (element.required) {
@@ -181,7 +182,7 @@ export namespace TextBasedField {
         }
     };
 
-    export const elementToSchema = (element: TElement) => {
+    export const elementToSchema = (element: TTextBasedElement) => {
         const conditionalRenderingObject = createConditionalRenderingObject(
             element?.conditionalRendering
         );

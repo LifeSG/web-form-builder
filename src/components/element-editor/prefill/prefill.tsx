@@ -1,22 +1,23 @@
 import { Text } from "@lifesg/react-design-system/text";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
-import { EElementType } from "src/context-providers";
-import { IBaseTextBasedFieldValues, SchemaHelper } from "src/schemas";
+import { useBuilder } from "src/context-providers";
+import { SchemaHelper, TFormFieldValues } from "src/schemas";
 import * as Yup from "yup";
 import { PrefillChild } from "./prefill-child";
 export const Prefill = () => {
     // =========================================================================
     // CONST, STATES, REFS
     // =========================================================================
-    const { watch, control } = useFormContext<IBaseTextBasedFieldValues>();
+    const { selectedElementType } = useBuilder();
+    const { watch, control } = useFormContext<TFormFieldValues>();
     const { fields, append, remove } = useFieldArray({
         control,
         name: "prefill",
         shouldUnregister: true,
     });
     const prefillValues = watch("prefill");
-    const schema = SchemaHelper.buildSchema(EElementType.EMAIL);
+    const schema = SchemaHelper.buildSchema(selectedElementType);
 
     // =========================================================================
     // HELPER FUNCTIONS

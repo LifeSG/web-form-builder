@@ -1,12 +1,9 @@
-import { yupResolver } from "@hookform/resolvers/yup";
 import { fireEvent, render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
 import { setupJestCanvasMock } from "jest-canvas-mock";
-import { FormProvider, useForm } from "react-hook-form";
 import { Validation } from "src/components/element-editor/validation/validation";
 import { EElementType, EValidationType } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data";
-import { SchemaHelper } from "src/schemas";
 import { TestHelper } from "src/util/test-helper";
 
 describe("Validation", () => {
@@ -24,12 +21,15 @@ describe("Validation", () => {
     });
 
     it("should contain the component with the title, buttonLabel & children being passed into it", () => {
-        renderComponent(EElementType.EMAIL, {
+        renderComponent({
             builderContext: {
                 focusedElement: {
                     element: MOCK_TEXT_BASED_ELEMENT(EElementType.EMAIL),
                     isDirty: true,
                 },
+            },
+            formContext: {
+                elementType: EElementType.EMAIL,
             },
         });
         expect(screen.getByText("Additional Validation")).toBeInTheDocument();
@@ -37,12 +37,15 @@ describe("Validation", () => {
     });
 
     it("should fire onAdd and render the validation-child component when the button is being clicked", () => {
-        renderComponent(EElementType.EMAIL, {
+        renderComponent({
             builderContext: {
                 focusedElement: {
                     element: MOCK_TEXT_BASED_ELEMENT(EElementType.EMAIL),
                     isDirty: true,
                 },
+            },
+            formContext: {
+                elementType: EElementType.EMAIL,
             },
         });
         fireEvent.click(getAddValidationButton());
@@ -63,12 +66,15 @@ describe("Validation", () => {
     });
 
     it("should disable the button and show a popover when a maximum number of entries is reached when the inputs are filled up", async () => {
-        renderComponent(EElementType.EMAIL, {
+        renderComponent({
             builderContext: {
                 focusedElement: {
                     element: MOCK_TEXT_BASED_ELEMENT(EElementType.EMAIL),
                     isDirty: true,
                 },
+            },
+            formContext: {
+                elementType: EElementType.EMAIL,
             },
         });
         fireEvent.click(getAddValidationButton());
@@ -92,7 +98,7 @@ describe("Validation", () => {
     });
 
     it("should disable the button and show a popover when for other element types", async () => {
-        renderComponent(EElementType.TEXT, {
+        renderComponent({
             builderContext: {
                 focusedElement: {
                     element: {
@@ -101,6 +107,10 @@ describe("Validation", () => {
                     },
                     isDirty: true,
                 },
+                selectedElementType: EElementType.TEXT,
+            },
+            formContext: {
+                elementType: EElementType.TEXT,
             },
         });
 
@@ -118,7 +128,7 @@ describe("Validation", () => {
     });
     it("should remove the validation option when min or max length validation has been used.", async () => {
         setupJestCanvasMock();
-        renderComponent(EElementType.TEXT, {
+        renderComponent({
             builderContext: {
                 focusedElement: {
                     element: {
@@ -127,6 +137,9 @@ describe("Validation", () => {
                     },
                     isDirty: true,
                 },
+            },
+            formContext: {
+                elementType: EElementType.TEXT,
             },
         });
 
@@ -156,7 +169,7 @@ describe("Validation", () => {
 
     it("should hide the validation rule when the element is a numeric field and the selected validation type is whole numbers", async () => {
         setupJestCanvasMock();
-        renderComponent(EElementType.NUMERIC, {
+        renderComponent({
             builderContext: {
                 focusedElement: {
                     element: {
@@ -187,28 +200,13 @@ describe("Validation", () => {
 // HELPER FUNCTIONS
 // =============================================================================
 
-const MyTestComponent = ({ elementType }: { elementType: EElementType }) => {
-    const methods = useForm({
-        mode: "onTouched",
-        resolver: yupResolver(SchemaHelper.buildSchema(elementType)),
-    });
-
-    return (
-        <FormProvider {...methods}>
-            <Validation />
-        </FormProvider>
-    );
+const MyTestComponent = () => {
+    return <Validation />;
 };
 
-const renderComponent = (
-    element: EElementType,
-    overrideOptions?: TestHelper.RenderOptions
-) => {
+const renderComponent = (overrideOptions?: TestHelper.RenderOptions) => {
     return render(
-        TestHelper.withProviders(
-            overrideOptions,
-            <MyTestComponent elementType={element} />
-        )
+        TestHelper.withProviders(overrideOptions, <MyTestComponent />)
     );
 };
 
