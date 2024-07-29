@@ -4,6 +4,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import {
     EElementType,
     EToastTypes,
+    IDropdownItemAttributes,
     IPillItemAttributes,
     TElement,
     useDisplay,
