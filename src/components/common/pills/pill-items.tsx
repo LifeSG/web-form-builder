@@ -1,100 +1,101 @@
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import { Form } from "@lifesg/react-design-system/form";
-import { Text } from "@lifesg/react-design-system/text";
-import { DragHandleIcon, PlusCircleIcon } from "@lifesg/react-icons";
-import { CSSProperties } from "react";
-import { Controller, useFormContext } from "react-hook-form";
-import { ITextareaFieldAttributes } from "src/context-providers";
-import { DeleteButton } from "../delete-button/delete-button";
 import {
-    DroppableWrapper,
-    PillDragHandleButton,
-    PillFieldsWrapper,
-    Wrapper,
-} from "./pill-items.styles";
+    DndContext,
+    DragEndEvent,
+    KeyboardSensor,
+    PointerSensor,
+    closestCenter,
+    useSensor,
+    useSensors,
+} from "@dnd-kit/core";
+import {
+    SortableContext,
+    sortableKeyboardCoordinates,
+    verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { Form } from "@lifesg/react-design-system/form";
+import { PlusIcon } from "@lifesg/react-icons/plus";
+import { useFieldArray, useFormContext } from "react-hook-form";
+import { ITextareaFieldAttributes } from "src/context-providers";
+import { PillItemsChild } from "./pill-items-child";
+import { AddMultiEntryButton, PillItemsWrapper } from "./pill-items.styles";
 
-interface IProps {
-    item: any;
-    index: number;
-    onDelete: () => void;
-    disableDelete: boolean;
-}
-
-export const PillItem = ({ item, index, onDelete, disableDelete }: IProps) => {
-    const {
+export const PillItems = () => {
+    // =========================================================================
+    // CONST, STATE, REF
+    // =========================================================================
+    const { control } = useFormContext<ITextareaFieldAttributes>();
+    const { fields, append, remove, move } = useFieldArray({
         control,
-        formState: { errors },
-    } = useFormContext<ITextareaFieldAttributes>();
+        name: "pillItems",
+        shouldUnregister: true,
+    });
 
-    const {
-        attributes,
-        listeners,
-        setNodeRef,
-        transform,
-        transition,
-        isDragging,
-        isOver,
-    } = useSortable({ id: item.id });
+    const sensors = useSensors(
+        useSensor(PointerSensor),
+        useSensor(KeyboardSensor, {
+            coordinateGetter: sortableKeyboardCoordinates,
+        })
+    );
 
-    const style: CSSProperties = {
-        transform: CSS.Transform.toString(transform),
-        transition,
-        position: "relative",
-        opacity: isDragging ? "70%" : "100%",
-        zIndex: isDragging ? 1 : "auto",
+    const disableDeleteButton = fields.length <= 2;
+    // =========================================================================
+    // EVENT HANDLERS
+    // =========================================================================
+    const handleDragEnd = (event: DragEndEvent) => {
+        const { active, over } = event;
+
+        if (over && active.id !== over.id) {
+            const oldIndex = fields.findIndex((item) => item.id === active.id);
+            const newIndex = fields.findIndex((item) => item.id === over.id);
+            move(oldIndex, newIndex);
+        }
     };
 
-    // =========================================================================
+    const handleAddButtonClick = () => {
+        append({ content: "" });
+    };
+
+    const handleDeleteButtonClick = (index: number) => {
+        remove(index);
+    };
+
+    // =============================================================================
     // RENDER FUNCTIONS
-    // =========================================================================
-
-    const droppableContent = isOver ? (
-        <DroppableWrapper isOver={isOver}>
-            <PlusCircleIcon />
-        </DroppableWrapper>
-    ) : null;
-
-    const renderPopoverMessage = () => {
-        return (
-            <Text.Body>
-                Item deletion is not allowed when there are less than 3 items.
-            </Text.Body>
-        );
-    };
-
+    // =============================================================================
+    const renderPillItems = () =>
+        fields.map((item, index) => (
+            <PillItemsChild
+                key={item.id}
+                item={item}
+                index={index}
+                onDelete={() => handleDeleteButtonClick(index)}
+                disableDelete={disableDeleteButton}
+            />
+        ));
     return (
-        <Wrapper>
-            {droppableContent}
-            <div ref={setNodeRef} style={style} {...attributes}>
-                <PillFieldsWrapper>
-                    <PillDragHandleButton {...listeners}>
-                        <DragHandleIcon data-testid="drag-handle" />
-                    </PillDragHandleButton>
-                    <Controller
-                        key={item.id}
-                        name={`pillItems.${index}.content`}
-                        control={control}
-                        render={({ field }) => (
-                            <Form.Input
-                                placeholder="Enter short text"
-                                value={field.value}
-                                onChange={(value) => {
-                                    field.onChange(value);
-                                }}
-                                errorMessage={
-                                    errors?.pillItems?.[index]?.content?.message
-                                }
-                            />
-                        )}
-                    />
-                    <DeleteButton
-                        onClick={onDelete}
-                        popoverMessage={renderPopoverMessage()}
-                        disabled={disableDelete}
-                    />
-                </PillFieldsWrapper>
-            </div>
-        </Wrapper>
+        <PillItemsWrapper>
+            <Form.Label>Pill items</Form.Label>
+            <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragEnd={handleDragEnd}
+            >
+                <SortableContext
+                    items={fields}
+                    strategy={verticalListSortingStrategy}
+                >
+                    {renderPillItems()}
+                </SortableContext>
+            </DndContext>
+            <AddMultiEntryButton
+                icon={<PlusIcon />}
+                styleType="light"
+                onClick={handleAddButtonClick}
+                role="button"
+                type="button"
+            >
+                Add option
+            </AddMultiEntryButton>
+        </PillItemsWrapper>
     );
 };

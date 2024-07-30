@@ -4,7 +4,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import { IconDropdown } from "src/components/common/icon-dropdown";
 import { Pills } from "src/components/common/pills";
 import { TogglePair } from "src/components/common/toggle-pair/toggle-pair";
-import { EElementType, ITextarea, useBuilder } from "src/context-providers";
+import { EElementType, useBuilder } from "src/context-providers";
 import { TFormFieldValues } from "src/schemas";
 import {
     FieldEditorAccordionItem,
@@ -179,54 +179,7 @@ export const BasicDetails = () => {
                                 shouldUnregister={true}
                             />
                         </ToggleWrapper>
-                        <MandatoryFieldBox>
-                            <ToggleWrapper>
-                                <Controller
-                                    name="pills"
-                                    control={control}
-                                    defaultValue={false}
-                                    render={({ field }) => (
-                                        <TogglePair
-                                            label={{
-                                                mainLabel: "Pills",
-                                                subLabel:
-                                                    "This allows a list of selectable short texts to display in pill form. This helps participant to fill up text area fast with less typing.",
-                                            }}
-                                            value={field.value}
-                                            onChange={(value) => {
-                                                if (!value) {
-                                                    /** Without this, the form remains dirtied when toggling Pills to true and back to false */
-                                                    unregister([
-                                                        "pillItems",
-                                                        "pillPosition",
-                                                    ]);
-                                                } else {
-                                                    setValue("pillItems", [
-                                                        {
-                                                            content: "",
-                                                        },
-                                                        {
-                                                            content: "",
-                                                        },
-                                                    ]);
-                                                    setValue(
-                                                        "pillPosition",
-                                                        "top"
-                                                    );
-                                                }
-                                                field.onChange(value);
-                                            }}
-                                        />
-                                    )}
-                                    shouldUnregister={true}
-                                />
-                            </ToggleWrapper>
-
-                            {watch(
-                                "pills",
-                                (focusedElement?.element as ITextarea).pills
-                            ) && <Pills />}
-                        </MandatoryFieldBox>
+                        <Pills />
                     </>
                 )}
 

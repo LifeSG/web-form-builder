@@ -1,9 +1,9 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
-import { Pills } from "src/components/common/pills";
+import { PillItems } from "src/components/common/pills/pill-items";
 import { TestHelper } from "src/util/test-helper";
 
-describe("Pills", () => {
+describe("Pill Items", () => {
     beforeEach(() => {
         global.ResizeObserver = jest.fn().mockImplementation(() => ({
             observe: jest.fn(),
@@ -61,5 +61,5 @@ describe("Pills", () => {
 // =============================================================================
 
 const renderComponent = (overrideOptions?: TestHelper.RenderOptions) => {
-    return render(TestHelper.withProviders(overrideOptions, <Pills />));
+    return render(TestHelper.withProviders(overrideOptions, <PillItems />));
 };

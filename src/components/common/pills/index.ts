@@ -1,4 +1,4 @@
-export * from "./pill-items";
-export * from "./pill-items.styles";
+export * from "./pill-items-child";
+export * from "./pill-items-child.styles";
 export * from "./pills";
-export * from "./pills.styles";
+export * from "./pill-items.styles";
