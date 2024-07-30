@@ -105,7 +105,7 @@ export interface IBaseFieldAttributes extends IBaseAttributes {
 export interface ITextareaFieldAttributes
     extends IBaseTextBasedFieldAttributes {
     resizableInput?: boolean;
-    preSelectedValue?: string;
+    preselectedValue?: string;
     pills?: boolean;
     pillItems?: IPillItemAttributes[];
     pillPosition?: "top" | "bottom" | null;
@@ -115,6 +115,7 @@ export interface IBaseTextBasedFieldAttributes extends IBaseFieldAttributes {
     validation?: IValidation[];
     conditionalRendering?: IConditionalRendering[];
     prefill?: IPrefillAttributes[];
+    preselectedValue?: string;
 }
 
 export interface IBaseOptionGroupBasedFieldAttributes

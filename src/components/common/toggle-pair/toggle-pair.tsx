@@ -1,8 +1,7 @@
 import { Form } from "@lifesg/react-design-system/form";
 import { Text } from "@lifesg/react-design-system/text";
-import { Toggle } from "@lifesg/react-design-system/toggle";
 import { IComplexLabel } from "@lifesg/web-frontend-engine/components/fields";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode } from "react";
 import { Row, ToggleWrapper } from "./toggle-pair.styles";
 
 interface IOptionProps {
@@ -13,28 +12,12 @@ interface IOptionProps {
 interface IProps {
     label?: IComplexLabel;
     value?: boolean;
-    id?: string;
     onChange: (value: boolean) => void;
     options?: IOptionProps[];
 }
 
-export const TogglePair = ({
-    onChange,
-    value: defaultValue,
-    label,
-    id,
-    options,
-}: IProps) => {
-    const [value, setValue] = useState(defaultValue);
-
-    useEffect(() => {
-        if (value !== defaultValue) {
-            setValue(defaultValue);
-        }
-    }, [defaultValue, id]);
-
+export const TogglePair = ({ onChange, value, label, options }: IProps) => {
     const handleChange = (value: boolean) => {
-        setValue(value);
         onChange(value);
     };
 

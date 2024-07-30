@@ -1,8 +1,8 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { PopoverTrigger } from "@lifesg/react-design-system/popover-v2";
 import { Form } from "@lifesg/react-design-system/form";
-import { PlusCircleIcon, BinIcon, DragHandleIcon } from "@lifesg/react-icons";
+import { PopoverTrigger } from "@lifesg/react-design-system/popover-v2";
+import { BinIcon, DragHandleIcon, PlusCircleIcon } from "@lifesg/react-icons";
 import { CSSProperties } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { ITextareaFieldAttributes } from "src/context-providers";
@@ -69,7 +69,6 @@ export const PillItem = ({ item, index, onDelete, disableDelete }: IProps) => {
                         control={control}
                         render={({ field }) => (
                             <Form.Input
-                                name={`pillItems.${index}.content`}
                                 placeholder="Enter short text"
                                 value={field.value}
                                 onChange={(value) => {

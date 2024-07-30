@@ -44,7 +44,10 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
         resolver: yupResolver(schema),
         defaultValues: {
             requiredErrorMsg: "",
-            preselectedValue: null,
+            preselectedValue:
+                selectedElementType === EElementType.DROPDOWN ? null : "",
+            pills: false,
+            resizableInput: false,
         },
     });
     const {
@@ -107,7 +110,7 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
         if (!focusedElement) {
             return;
         }
-        methods.reset(focusedElement?.element);
+        methods.reset(focusedElement.element);
     }, [focusedElement?.element, methods.reset]);
 
     // =========================================================================

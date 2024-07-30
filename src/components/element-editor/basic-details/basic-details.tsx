@@ -26,6 +26,7 @@ export const BasicDetails = () => {
         formState: { errors },
         watch,
         setValue,
+        unregister,
     } = useFormContext<TFormFieldValues>();
     const element = focusedElement.element;
     const type = watch("type");
@@ -103,7 +104,6 @@ export const BasicDetails = () => {
                                     }}
                                     value={field.value}
                                     onChange={field.onChange}
-                                    id={element.internalId}
                                 />
                             )}
                             shouldUnregister={true}
@@ -158,54 +158,73 @@ export const BasicDetails = () => {
                     )}
                     shouldUnregister={true}
                 />
-                {hasProperty("resizableInput") && (
-                    <ToggleWrapper>
-                        <Controller
-                            name="resizableInput"
-                            control={control}
-                            render={({ field }) => (
-                                <TogglePair
-                                    label={{
-                                        mainLabel: "Resizable area input",
-                                        subLabel:
-                                            "This allows participant to resize text area.",
-                                    }}
-                                    value={field.value}
-                                    onChange={field.onChange}
-                                    id={element.internalId}
-                                />
-                            )}
-                            shouldUnregister={true}
-                        />
-                    </ToggleWrapper>
-                )}
-
-                {hasProperty("pills") && (
-                    <MandatoryFieldBox>
+                {type === EElementType.TEXTAREA && (
+                    <>
                         <ToggleWrapper>
                             <Controller
-                                name="pills"
+                                name="resizableInput"
                                 control={control}
+                                defaultValue={false}
                                 render={({ field }) => (
                                     <TogglePair
                                         label={{
-                                            mainLabel: "Pills",
+                                            mainLabel: "Resizable area input",
                                             subLabel:
-                                                "This allows a list of selectable short texts to display in pill form. This helps participant to fill up text area fast with less typing.",
+                                                "This allows participant to resize text area.",
                                         }}
                                         value={field.value}
                                         onChange={field.onChange}
-                                        id={element.internalId}
                                     />
                                 )}
                                 shouldUnregister={true}
                             />
                         </ToggleWrapper>
+                        <MandatoryFieldBox>
+                            <ToggleWrapper>
+                                <Controller
+                                    name="pills"
+                                    control={control}
+                                    defaultValue={false}
+                                    render={({ field }) => (
+                                        <TogglePair
+                                            label={{
+                                                mainLabel: "Pills",
+                                                subLabel:
+                                                    "This allows a list of selectable short texts to display in pill form. This helps participant to fill up text area fast with less typing.",
+                                            }}
+                                            value={field.value}
+                                            onChange={(value) => {
+                                                if (!value) {
+                                                    /** Without this, the form remains dirtied when toggling Pills to true and back to false */
+                                                    unregister([
+                                                        "pillItems",
+                                                        "pillPosition",
+                                                    ]);
+                                                } else {
+                                                    setValue("pillItems", [
+                                                        {
+                                                            content: "",
+                                                        },
+                                                        {
+                                                            content: "",
+                                                        },
+                                                    ]);
+                                                    setValue(
+                                                        "pillPosition",
+                                                        "top"
+                                                    );
+                                                }
+                                                field.onChange(value);
+                                            }}
+                                        />
+                                    )}
+                                    shouldUnregister={true}
+                                />
+                            </ToggleWrapper>
 
-                        {watch("pills", true) && (
-                            <Pills id={element.internalId} />
-                        )}
-                    </MandatoryFieldBox>
+                            {watch("pills", false) && <Pills />}
+                        </MandatoryFieldBox>
+                    </>
                 )}
 
                 {hasProperty("description") && (

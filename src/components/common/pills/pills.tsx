@@ -14,7 +14,6 @@ import {
 } from "@dnd-kit/sortable";
 import { Form } from "@lifesg/react-design-system/form";
 import { PlusIcon } from "@lifesg/react-icons/plus";
-import { useEffect } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { TogglePair } from "src/components/common/toggle-pair/toggle-pair";
 import { ITextareaFieldAttributes } from "src/context-providers";
@@ -23,11 +22,7 @@ import { TopPositionIcon } from "../icons/top-position-icon";
 import { PillItem } from "./pill-items";
 import { AddMultiEntryButton } from "./pills.styles";
 
-interface IProps {
-    id: string;
-}
-
-export const Pills = ({ id }: IProps) => {
+export const Pills = () => {
     // =========================================================================
     // CONST, STATE, REF
     // =========================================================================
@@ -66,17 +61,6 @@ export const Pills = ({ id }: IProps) => {
     const handleDeleteButtonClick = (index: number) => {
         remove(index);
     };
-
-    // =========================================================================
-    // EFFECTS
-    // =========================================================================
-    useEffect(() => {
-        if (fields.length === 0) {
-            append([{ content: "" }, { content: "" }], {
-                shouldFocus: false,
-            });
-        }
-    }, []);
 
     // =============================================================================
     // RENDER FUNCTIONS
@@ -135,7 +119,6 @@ export const Pills = ({ id }: IProps) => {
                         onChange={(value) =>
                             field.onChange(value ? "top" : "bottom")
                         }
-                        id={id}
                     />
                 )}
                 shouldUnregister
