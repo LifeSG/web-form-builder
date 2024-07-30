@@ -26,10 +26,10 @@ describe("Pills", () => {
                     },
                 },
             });
-
-            fireEvent.mouseOver(deleteButton());
-            const popoverText = await screen.findByTestId(
-                "delete-button-popover-0"
+            const deleteButton = screen.getAllByTestId("delete-button")[0];
+            fireEvent.mouseOver(deleteButton);
+            const popoverText = screen.queryByText(
+                "Item deletion is not allowed when there are less than 3 items."
             );
             expect(popoverText).toBeInTheDocument();
         });
@@ -46,13 +46,11 @@ describe("Pills", () => {
                     },
                 },
             });
-            const addOptionButton = screen.getByRole("button", {
-                name: "Add option",
-            });
-
-            fireEvent.click(addOptionButton);
-            fireEvent.mouseOver(deleteButton());
-            const popoverText = screen.queryByTestId("delete-button-popover-0");
+            const deleteButton = screen.getAllByTestId("delete-button")[0];
+            fireEvent.mouseOver(deleteButton);
+            const popoverText = screen.queryByText(
+                "Item deletion is not allowed when there are less than 3 items."
+            );
             expect(popoverText).not.toBeInTheDocument();
         });
     });
@@ -65,6 +63,3 @@ describe("Pills", () => {
 const renderComponent = (overrideOptions?: TestHelper.RenderOptions) => {
     return render(TestHelper.withProviders(overrideOptions, <Pills />));
 };
-
-const deleteButton: () => HTMLElement = () =>
-    screen.getByTestId("delete-button-0");

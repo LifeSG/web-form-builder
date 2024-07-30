@@ -1,10 +1,6 @@
 import { Color } from "@lifesg/react-design-system/color";
 import styled from "styled-components";
 
-interface IDeleteButtonProps {
-    $disable: boolean;
-}
-
 interface IDroppableWrapperProps {
     isOver: boolean;
 }
@@ -59,16 +55,5 @@ export const PillDragHandleButton = styled.div`
         height: 1.25rem;
         align-items: center;
         cursor: grab;
-    }
-`;
-
-export const DeleteButton = styled.div<IDeleteButtonProps>`
-    margin-top: 0.625rem;
-    svg {
-        color: ${({ $disable }) =>
-            $disable ? Color.Neutral[3] : Color.Accent.Light[1]};
-        width: 1.625rem;
-        height: 1.625rem;
-        cursor: ${({ $disable }) => ($disable ? "not-allowed" : "pointer")};
     }
 `;

@@ -1,13 +1,13 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Form } from "@lifesg/react-design-system/form";
-import { PopoverTrigger } from "@lifesg/react-design-system/popover-v2";
-import { BinIcon, DragHandleIcon, PlusCircleIcon } from "@lifesg/react-icons";
+import { Text } from "@lifesg/react-design-system/text";
+import { DragHandleIcon, PlusCircleIcon } from "@lifesg/react-icons";
 import { CSSProperties } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { ITextareaFieldAttributes } from "src/context-providers";
+import { DeleteButton } from "../delete-button/delete-button";
 import {
-    DeleteButton,
     DroppableWrapper,
     PillDragHandleButton,
     PillFieldsWrapper,
@@ -55,6 +55,14 @@ export const PillItem = ({ item, index, onDelete, disableDelete }: IProps) => {
         </DroppableWrapper>
     ) : null;
 
+    const renderPopoverMessage = () => {
+        return (
+            <Text.Body>
+                Item deletion is not allowed when there are less than 3 items.
+            </Text.Body>
+        );
+    };
+
     return (
         <Wrapper>
             {droppableContent}
@@ -81,25 +89,10 @@ export const PillItem = ({ item, index, onDelete, disableDelete }: IProps) => {
                         )}
                     />
                     <DeleteButton
-                        $disable={disableDelete}
-                        data-testid={`delete-button-${index}`}
-                        onClick={disableDelete ? () => {} : onDelete}
-                    >
-                        {disableDelete ? (
-                            <PopoverTrigger
-                                popoverContent={
-                                    "Item deletion is not allowed when there are less than 3 items."
-                                }
-                                trigger="hover"
-                                position="bottom"
-                                data-testid={`delete-button-popover-${index}`}
-                            >
-                                <BinIcon />
-                            </PopoverTrigger>
-                        ) : (
-                            <BinIcon />
-                        )}
-                    </DeleteButton>
+                        onClick={onDelete}
+                        popoverMessage={renderPopoverMessage()}
+                        disabled={disableDelete}
+                    />
                 </PillFieldsWrapper>
             </div>
         </Wrapper>
