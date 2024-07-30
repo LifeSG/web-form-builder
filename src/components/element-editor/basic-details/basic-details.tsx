@@ -4,7 +4,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import { IconDropdown } from "src/components/common/icon-dropdown";
 import { Pills } from "src/components/common/pills";
 import { TogglePair } from "src/components/common/toggle-pair/toggle-pair";
-import { EElementType, useBuilder } from "src/context-providers";
+import { EElementType, ITextarea, useBuilder } from "src/context-providers";
 import { TFormFieldValues } from "src/schemas";
 import {
     FieldEditorAccordionItem,
@@ -29,7 +29,7 @@ export const BasicDetails = () => {
         unregister,
     } = useFormContext<TFormFieldValues>();
     const element = focusedElement.element;
-    const type = watch("type");
+    const type = watch("type", focusedElement.element?.type);
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
@@ -222,7 +222,10 @@ export const BasicDetails = () => {
                                 />
                             </ToggleWrapper>
 
-                            {watch("pills", false) && <Pills />}
+                            {watch(
+                                "pills",
+                                (focusedElement?.element as ITextarea).pills
+                            ) && <Pills />}
                         </MandatoryFieldBox>
                     </>
                 )}

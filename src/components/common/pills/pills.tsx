@@ -86,7 +86,7 @@ export const Pills = () => {
                 items={fields}
                 strategy={verticalListSortingStrategy}
             >
-                <Form.Label>Pill Items</Form.Label>
+                <Form.Label>Pill items</Form.Label>
                 {renderPillItems()}
                 <AddMultiEntryButton
                     icon={<PlusIcon />}

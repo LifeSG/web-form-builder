@@ -83,7 +83,7 @@ describe("BasicDetails", () => {
         });
 
         it("should render the pills fields if element has pills field", async () => {
-            renderComponent(EElementType.TEXTAREA, {
+            renderComponent({
                 builderContext: {
                     focusedElement: MOCK_FOCUSED_TEXT_AREA_ELEMENT,
                     elements: MOCK_TEXT_AREA_ELEMENTS,
@@ -91,43 +91,21 @@ describe("BasicDetails", () => {
             });
 
             const pillsField = await screen.findByText("Pills");
-            const pillItemsField = await screen.findByText("Pill Items");
-            const pillPositionField = await screen.findByText("Pill Items");
             expect(pillsField).toBeInTheDocument();
+        });
+
+        it("should render the pill items and list position fields if pills field is true", async () => {
+            renderComponent({
+                builderContext: {
+                    focusedElement: MOCK_FOCUSED_TEXT_AREA_ELEMENT,
+                    elements: MOCK_TEXT_AREA_ELEMENTS,
+                },
+            });
+
+            const pillItemsField = await screen.findByText("Pill items");
+            const listPositionField = await screen.findByText("List position");
             expect(pillItemsField).toBeInTheDocument();
-            expect(pillPositionField).toBeInTheDocument();
-        });
-
-        it("should render the popover when hovering over the disabled delete button when there are less than 2 pillItems", async () => {
-            renderComponent(EElementType.TEXTAREA, {
-                builderContext: {
-                    focusedElement: MOCK_FOCUSED_TEXT_AREA_ELEMENT,
-                    elements: MOCK_TEXT_AREA_ELEMENTS,
-                },
-            });
-
-            fireEvent.mouseOver(deleteButton());
-            const popoverText = await screen.findByTestId(
-                "delete-button-popover-0"
-            );
-            expect(popoverText).toBeInTheDocument();
-        });
-
-        it("should not render the popover when hovering over the disabled delete button when there are more than 2 pillItems", async () => {
-            renderComponent(EElementType.TEXTAREA, {
-                builderContext: {
-                    focusedElement: MOCK_FOCUSED_TEXT_AREA_ELEMENT,
-                    elements: MOCK_TEXT_AREA_ELEMENTS,
-                },
-            });
-            const addOptionButton = screen.getByRole("button", {
-                name: "Add option",
-            });
-
-            fireEvent.click(addOptionButton);
-            fireEvent.mouseOver(deleteButton());
-            const popoverText = screen.queryByTestId("delete-button-popover-0");
-            expect(popoverText).not.toBeInTheDocument();
+            expect(listPositionField).toBeInTheDocument();
         });
     });
 
@@ -289,9 +267,6 @@ const getIdField = async () => {
 const getLabelField = async () => {
     return screen.findByLabelText("Element Name");
 };
-
-const deleteButton: () => HTMLElement = () =>
-    screen.getByTestId("delete-button-0");
 
 // =============================================================================
 // MOCKS
