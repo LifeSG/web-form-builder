@@ -47,6 +47,13 @@ export enum EValidationType {
     MAX_LENGTH = "Maximum length",
 }
 
+export enum EValidationTypeFEE {
+    MIN = "min",
+    MAX = "max",
+    INTEGER = "integer",
+    MATCHES = "matches",
+}
+
 export interface IBaseAttributes {
     id: string | undefined;
     internalId: string;

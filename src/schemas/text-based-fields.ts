@@ -1,5 +1,4 @@
 import { EElementType, EValidationType } from "src/context-providers";
-import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import * as yup from "yup";
 import { PREFILL_ACTIONID_REGEX, PREFILL_PATH_REGEX } from "./base-helper";
 
@@ -183,11 +182,7 @@ export const TEXT_AREA_SCHEMA = () => {
             yup.object().shape({
                 validationType: yup.string().required("Validation required."),
                 validationRule: yup.string().when("validationType", {
-                    is: (value: string) => {
-                        return ELEMENT_VALIDATION_TYPES["Text field"][
-                            EElementType.TEXTAREA
-                        ].validationTypes.includes(value);
-                    },
+                    is: EValidationType.MAX_LENGTH,
                     then: (rule) =>
                         rule
                             .required("Numeric value required.")

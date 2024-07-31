@@ -1,7 +1,6 @@
 import { Form } from "@lifesg/react-design-system/form";
 import { ControllerRenderProps, FieldErrors } from "react-hook-form";
-import { EElementType } from "src/context-providers";
-import { ELEMENT_VALIDATION_TYPES } from "src/data";
+import { EValidationType } from "src/context-providers";
 import { TBaseTextBasedFieldValues } from "src/schemas";
 
 interface IProps {
@@ -24,8 +23,7 @@ export const ValidationRule: React.FC<IProps> = ({
     errors,
 }) => {
     switch (validationType) {
-        case ELEMENT_VALIDATION_TYPES["Text field"][EElementType.EMAIL]
-            .validationTypes[0]:
+        case EValidationType.EMAIL_DOMAIN:
             return (
                 <Form.Textarea
                     {...fieldWithoutRef}
@@ -39,8 +37,7 @@ export const ValidationRule: React.FC<IProps> = ({
                     }
                 />
             );
-        case ELEMENT_VALIDATION_TYPES["Text field"][EElementType.NUMERIC]
-            .validationTypes[0]:
+        case EValidationType.WHOLE_NUMBERS:
             return null;
         default:
             return (
