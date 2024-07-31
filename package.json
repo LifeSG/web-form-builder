@@ -46,7 +46,7 @@
         "@babel/preset-react": "^7.16.7",
         "@babel/preset-typescript": "^7.16.7",
         "@lifesg/react-icons": "^1.4.0",
-        "@lifesg/react-design-system": "^2.6.0-canary.4",
+        "@lifesg/react-design-system": "^2.7.0-canary.3",
         "@lifesg/web-frontend-engine": "^1.10.3",
         "@rollup/plugin-commonjs": "^25.0.7",
         "@rollup/plugin-image": "^3.0.3",
@@ -100,7 +100,7 @@
     },
     "peerDependencies": {
         "@lifesg/react-icons": "^1.4.0",
-        "@lifesg/react-design-system": "^2.6.0-canary.4",
+        "@lifesg/react-design-system": "^2.7.0-canary.3",
         "@lifesg/web-frontend-engine": "^1.10.3",
         "react": "^17.0.2 || ^18.0.0",
         "react-dom": "^17.0.2 || ^18.0.0",

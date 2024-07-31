@@ -1,7 +1,13 @@
 import { Color } from "@lifesg/react-design-system/color";
 import { CrossIcon } from "@lifesg/react-icons/cross";
+import { useFormContext } from "react-hook-form";
 import { useModal } from "src/context-providers/display/modal-hook";
-import { EBuilderMode, EModalType, useBuilder } from "../../context-providers";
+import {
+    EBuilderMode,
+    EModalType,
+    IDiscardChangesModalProps,
+    useBuilder,
+} from "../../context-providers";
 import { IconButton } from "../common";
 import {
     HeaderChevronIcon,
@@ -9,7 +15,6 @@ import {
     SaveChangesButton,
     Wrapper,
 } from "./side-panel-header.styles";
-import { useFormContext } from "react-hook-form";
 
 export const SidePanelHeader = () => {
     // =========================================================================
@@ -54,7 +59,7 @@ export const SidePanelHeader = () => {
 
     const handleCrossButtonClick = () => {
         if (isDirty) {
-            const newModal = {
+            const newModal: IDiscardChangesModalProps = {
                 type: EModalType.DiscardChanges,
                 onClickActionButton: handleModalOnClick,
             };

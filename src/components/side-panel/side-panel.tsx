@@ -49,7 +49,6 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
     const {
         getValues,
         formState: { isSubmitSuccessful },
-        setValue,
     } = methods;
     // =========================================================================
     // HELPER FUNCTIONS

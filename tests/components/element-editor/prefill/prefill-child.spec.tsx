@@ -5,6 +5,14 @@ import { IPrefillAttributes } from "src/context-providers";
 import { TestHelper } from "src/util/test-helper";
 
 describe("PrefillChild", () => {
+    beforeEach(() => {
+        global.ResizeObserver = jest.fn().mockImplementation(() => ({
+            observe: jest.fn(),
+            unobserve: jest.fn(),
+            disconnect: jest.fn(),
+        }));
+    });
+
     afterEach(() => {
         jest.restoreAllMocks();
         jest.resetAllMocks();
