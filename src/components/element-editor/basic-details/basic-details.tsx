@@ -78,7 +78,6 @@ export const BasicDetails = () => {
                         render={({ field }) => (
                             <Form.Textarea
                                 {...field}
-                                required
                                 label="Element Name"
                                 rows={1}
                                 placeholder="Element Name"
@@ -124,6 +123,7 @@ export const BasicDetails = () => {
                                     onChange={(e) => {
                                         field.onChange(e.target.value);
                                     }}
+                                    placeholder="Enter error message"
                                     errorMessage={
                                         errors.requiredErrorMsg?.message
                                     }
