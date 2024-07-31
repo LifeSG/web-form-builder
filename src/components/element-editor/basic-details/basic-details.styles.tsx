@@ -61,5 +61,7 @@ export const StyledTextarea = styled(Form.Textarea)`
 `;
 
 export const ToggleWrapper = styled("div")`
-    margin-bottom: 2rem;
+    &:not(:last-child) {
+        margin-bottom: 2rem;
+    }
 `;
