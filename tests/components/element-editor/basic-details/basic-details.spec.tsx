@@ -144,6 +144,10 @@ describe("BasicDetails", () => {
                     elementType: EElementType.DROPDOWN,
                     defaultValues: {
                         type: EElementType.DROPDOWN,
+                        dropdownItems: [
+                            { label: "Option 1", value: "Option 1" },
+                            { label: "", value: "" },
+                        ],
                     },
                 },
             });
@@ -194,6 +198,10 @@ describe("BasicDetails", () => {
                     elementType: EElementType.DROPDOWN,
                     defaultValues: {
                         type: EElementType.DROPDOWN,
+                        dropdownItems: [
+                            { label: "", value: "" },
+                            { label: "", value: "" },
+                        ],
                     },
                 },
             });
