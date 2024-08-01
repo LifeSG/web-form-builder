@@ -1,4 +1,4 @@
-import { DeleteButton } from "../delete-button/delete-button";
+import { DeleteButton } from "../delete-button";
 import { ChildrenWrapper, Wrapper } from "./child-entry.styles";
 
 interface IProps {

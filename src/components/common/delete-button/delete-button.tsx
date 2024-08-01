@@ -15,7 +15,7 @@ export const DeleteButton = ({ onClick, disabled, popoverMessage }: IProps) => {
 
     const deleteButton = (
         <StyledBinButton
-            $disabled={disabled}
+            disabled={disabled}
             data-testid="delete-button"
             onClick={!disabled ? onClick : undefined}
         >
