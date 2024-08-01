@@ -1,6 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Form } from "@lifesg/react-design-system/form";
 import { Text } from "@lifesg/react-design-system/text";
+import isEmpty from "lodash/isEmpty";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import { IBulkEditModalProps } from "src/context-providers";
 import { BULK_EDIT_SCHEMA, TBulkEditData } from "src/schemas/bulk-edit";
@@ -26,6 +27,8 @@ export const BulkEditModal = ({ modal }: IProps) => {
             items: dropdownItemsString,
         },
     });
+
+    const dropdownItemsErrors = methods.formState.errors;
     // ============================================================================
     // HELPER FUNCTIONS
     // ============================================================================
@@ -53,7 +56,9 @@ export const BulkEditModal = ({ modal }: IProps) => {
                 >
                     Cancel
                 </ActionButton>
-                <ActionButton>Save</ActionButton>
+                <ActionButton disabled={!isEmpty(dropdownItemsErrors)}>
+                    Save
+                </ActionButton>
             </ButtonWrapper>
         );
     };
