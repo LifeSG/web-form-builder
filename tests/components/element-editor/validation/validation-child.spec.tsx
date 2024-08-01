@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
 import { ValidationChild } from "src/components/element-editor/validation";
-import { EElementType } from "src/context-providers";
+import { EElementType, EValidationType } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS, ELEMENT_VALIDATION_TYPES } from "src/data";
 import { TestHelper } from "src/util/test-helper";
 
@@ -350,9 +350,7 @@ const mockEmptyValue = [
 
 const mockEmailValidationValue = [
     {
-        validationType:
-            ELEMENT_VALIDATION_TYPES["Text field"][EElementType.EMAIL]
-                .validationTypes[0],
+        validationType: EValidationType.EMAIL_DOMAIN,
         validationRule: "mockRule",
         validationErrorMessage: "mockErrorMessage",
     },
@@ -360,9 +358,7 @@ const mockEmailValidationValue = [
 
 const mockEmptyEmailValidationValue = [
     {
-        validationType:
-            ELEMENT_VALIDATION_TYPES["Text field"][EElementType.EMAIL]
-                .validationTypes[0],
+        validationType: EValidationType.EMAIL_DOMAIN,
         validationRule: "",
         validationErrorMessage: "mockErrorMessage",
     },
