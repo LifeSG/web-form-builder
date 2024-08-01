@@ -33,7 +33,7 @@ export const BasicDetails = () => {
         setValue,
     } = useFormContext<TFormFieldValues>();
     const element = focusedElement.element;
-    const type = watch("type", focusedElement.element?.type);
+    const type = watch("type", focusedElement.element?.type) as EElementType;
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
