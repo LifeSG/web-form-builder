@@ -29,6 +29,7 @@ export const BasicDetails = () => {
         formState: { errors },
         watch,
         setValue,
+        resetField,
     } = useFormContext<TFormFieldValues>();
     const element = focusedElement.element;
     const type = watch("type") as EElementType;
@@ -103,6 +104,15 @@ export const BasicDetails = () => {
                                 }}
                                 value={field.value}
                                 onChange={(value) => {
+                                    if (value) {
+                                        setTimeout(() => {
+                                            resetField("requiredErrorMsg", {
+                                                defaultValue:
+                                                    focusedElement.element
+                                                        .requiredErrorMsg,
+                                            });
+                                        });
+                                    }
                                     field.onChange(value);
                                 }}
                                 id={element.internalId}
