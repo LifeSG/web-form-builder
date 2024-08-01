@@ -14,7 +14,11 @@ export namespace BaseSchemaHelper {
             type: yup.string().required("Element type required."),
             label: yup.string().required("Label required."),
             required: yup.boolean().required().default(true),
-            requiredErrorMsg: yup.string().optional(),
+            requiredErrorMsg: yup.string().when("required", {
+                is: true,
+                then: (rule) => rule.required("Error message required."),
+                otherwise: (rule) => rule.optional(),
+            }),
             description: yup.string().optional(),
             id: yup
                 .string()

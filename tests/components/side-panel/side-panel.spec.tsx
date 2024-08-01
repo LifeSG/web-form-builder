@@ -164,7 +164,7 @@ describe("SidePanel", () => {
 
             fireEvent.click(saveButton);
 
-            waitFor(() => {
+            await waitFor(() => {
                 expect(getDropdownItemChildren()).toHaveLength(2);
             });
         });

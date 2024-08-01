@@ -8,11 +8,11 @@ import {
 import {
     EElementType,
     EValidationType,
+    EValidationTypeFEE,
     IValidation,
     TElement,
     TTextBasedElement,
 } from "src/context-providers";
-import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import { SimpleIdGenerator } from "src/util/simple-id-generator";
 import {
     createConditionalRenderingObject,
@@ -71,10 +71,7 @@ export namespace TextBasedField {
             if (isDomain) {
                 return [
                     {
-                        validationType:
-                            ELEMENT_VALIDATION_TYPES["Text field"][
-                                EElementType.EMAIL
-                            ].validationTypes[0],
+                        validationType: EValidationType.EMAIL_DOMAIN,
                         validationRule: extractedDomains,
                         validationErrorMessage: validation[0].errorMessage,
                     },
@@ -120,6 +117,48 @@ export namespace TextBasedField {
             },
             []
         );
+        return validationObj;
+    };
+
+    export const parseTextBasedFieldValidation = (
+        validation: IYupValidationRule[]
+    ): IValidation[] => {
+        const validationObj = validation.reduce<IValidation[]>((acc, value) => {
+            Object.keys(value).forEach((key) => {
+                switch (key) {
+                    case EValidationTypeFEE.INTEGER:
+                        acc.push({
+                            validationType: EValidationType.WHOLE_NUMBERS,
+                            validationErrorMessage: value.errorMessage,
+                        });
+                        break;
+                    case EValidationTypeFEE.MAX:
+                        acc.push({
+                            validationType: EValidationType.MAX_VALUE,
+                            validationRule: value.max.toString(),
+                            validationErrorMessage: value.errorMessage,
+                        });
+                        break;
+                    case EValidationTypeFEE.MIN:
+                        acc.push({
+                            validationType: EValidationType.MIN_VALUE,
+                            validationRule: value.min.toString(),
+                            validationErrorMessage: value.errorMessage,
+                        });
+                        break;
+                    case EValidationTypeFEE.MATCHES:
+                        acc.push({
+                            validationType: EValidationType.CUSTOM_REGEX,
+                            validationRule: value.matches,
+                            validationErrorMessage: value.errorMessage,
+                        });
+                        break;
+                    default:
+                        break;
+                }
+            });
+            return acc;
+        }, []);
         return validationObj;
     };
 
@@ -175,6 +214,7 @@ export namespace TextBasedField {
             case EElementType.NUMERIC:
             case EElementType.TEXT:
             case EElementType.TEXTAREA:
+                return parseTextBasedFieldValidation(validation);
             case EElementType.CONTACT:
             case EElementType.CHECKBOX:
             case EElementType.RADIO:
@@ -236,18 +276,19 @@ export namespace TextBasedField {
         const parsedElement = {
             ...rest,
             label: (label as IComplexLabel).mainLabel,
-            description: (label as IComplexLabel).subLabel,
+            description: (label as IComplexLabel).subLabel || "",
             type: uiType as EElementType,
             required: !!requiredValidation.required,
-            requiredErrorMsg: requiredValidation.errorMessage,
+            requiredErrorMsg: requiredValidation.errorMessage || "",
             id: key,
             internalId: newInternalId,
-            ...(fieldValidation.length > 0 && {
-                validation: parseValidationObject(
-                    uiType as EElementType,
-                    fieldValidation
-                ),
-            }),
+            validation:
+                (fieldValidation.length > 0 &&
+                    parseValidationObject(
+                        uiType as EElementType,
+                        fieldValidation
+                    )) ||
+                [],
             conditionalRendering: showIf
                 ? parseConditionalRenderingObject(showIf)
                 : [],

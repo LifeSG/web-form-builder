@@ -1,5 +1,8 @@
-import { EElementType, TElementMap } from "src/context-providers";
-import { ELEMENT_VALIDATION_TYPES } from "src/data";
+import {
+    EElementType,
+    EValidationType,
+    TElementMap,
+} from "src/context-providers";
 import { ISchemaProps, Translator } from "src/translator";
 import {
     generateMockElement,
@@ -57,10 +60,7 @@ describe("Translator", () => {
                         requiredErrorMsg: "Email address is required",
                         validation: [
                             {
-                                validationType:
-                                    ELEMENT_VALIDATION_TYPES["Text field"][
-                                        EElementType.EMAIL
-                                    ].validationTypes[0],
+                                validationType: EValidationType.EMAIL_DOMAIN,
                                 validationRule: "@gmail.com",
                                 validationErrorMessage:
                                     "Enter a email that has a '@gmail.com' domain",
@@ -353,12 +353,10 @@ describe("Translator", () => {
                         id: "mockId1",
                         internalId: Object.keys(generatedSchema.newElements)[0],
                         requiredErrorMsg: "Email address is required",
+                        description: "",
                         validation: [
                             {
-                                validationType:
-                                    ELEMENT_VALIDATION_TYPES["Text field"][
-                                        EElementType.EMAIL
-                                    ].validationTypes[0],
+                                validationType: EValidationType.EMAIL_DOMAIN,
                                 validationRule: "@gmail.com",
                                 validationErrorMessage:
                                     "Enter a email that has a '@gmail.com' domain",
@@ -430,6 +428,8 @@ describe("Translator", () => {
                                 generatedSchema.newElements
                             )[0],
                             requiredErrorMsg: "Email address is required",
+                            description: "",
+                            validation: [],
                             conditionalRendering: [
                                 {
                                     fieldKey: "mock456",
@@ -450,6 +450,8 @@ describe("Translator", () => {
                                 generatedSchema.newElements
                             )[1],
                             requiredErrorMsg: "Input is required",
+                            description: "",
+                            validation: [],
                             conditionalRendering: [],
                             prefill: [],
                         }),
@@ -496,6 +498,8 @@ describe("Translator", () => {
                         id: "mock123",
                         internalId: Object.keys(generatedSchema.newElements)[0],
                         requiredErrorMsg: "Email address is required",
+                        description: "",
+                        validation: [],
                         prefill: [
                             {
                                 prefillMode: "Myinfo",
@@ -547,6 +551,8 @@ describe("Translator", () => {
                         id: "mock123",
                         internalId: Object.keys(generatedSchema.newElements)[0],
                         requiredErrorMsg: "Email address is required",
+                        description: "",
+                        validation: [],
                         conditionalRendering: [],
                         prefill: [
                             {
@@ -607,6 +613,8 @@ describe("Translator", () => {
                         internalId: Object.keys(generatedSchema.newElements)[0],
                         required: true,
                         requiredErrorMsg: "Input is required",
+                        description: "",
+                        validation: [],
                         conditionalRendering: [],
                         prefill: [],
                     }),
@@ -617,6 +625,8 @@ describe("Translator", () => {
                         internalId: Object.keys(generatedSchema.newElements)[1],
                         required: true,
                         requiredErrorMsg: "Number is required",
+                        description: "",
+                        validation: [],
                         conditionalRendering: [],
                         prefill: [],
                     }),

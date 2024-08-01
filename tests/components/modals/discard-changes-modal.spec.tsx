@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
 import { Modals } from "src/components";
-import { EModalType } from "src/context-providers";
+import { EModalType, IDiscardChangesModalProps } from "src/context-providers";
 import { TestHelper } from "src/util/test-helper";
 
 // =============================================================================
@@ -78,15 +78,7 @@ describe("Discard changes modals", () => {
 // =============================================================================
 
 const MyTestComponent = () => {
-    const onSubmit = mockShowModal();
-    return (
-        <>
-            <Modals />
-            <button type="submit" onClick={onSubmit}>
-                Submit
-            </button>
-        </>
-    );
+    return <Modals />;
 };
 
 const renderComponent = (overrideOptions?: TestHelper.RenderOptions) => {
@@ -108,9 +100,8 @@ const getKeepEditingButton = () =>
 // =============================================================================
 // MOCKS
 // =============================================================================
-const mockButtonLabel = "button";
 const mockOnClickActionButton = jest.fn();
-const newModal = {
+const newModal: IDiscardChangesModalProps = {
     type: EModalType.DiscardChanges,
     onClickActionButton: mockOnClickActionButton,
 };

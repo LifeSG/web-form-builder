@@ -4,7 +4,11 @@ import { Controller, useFormContext } from "react-hook-form";
 import { IconDropdown } from "src/components/common/icon-dropdown";
 import { Pills } from "src/components/common/pills";
 import { TogglePair } from "src/components/common/toggle-pair/toggle-pair";
-import { EElementType, useBuilder } from "src/context-providers";
+import {
+    EElementType,
+    TextBasedElementTypes,
+    useBuilder,
+} from "src/context-providers";
 import { TFormFieldValues } from "src/schemas";
 import {
     FieldEditorAccordionItem,
@@ -14,7 +18,8 @@ import {
     Wrapper,
 } from "./basic-details.styles";
 import { DropdownItems } from "./dropdown-items/dropdown-items";
-import { PreselectedValue } from "./preselected-value";
+import { DropdownPreselectedValue } from "./dropdown-preselected-value";
+import { TextBasedPreselectedValue } from "./text-based-preselected-value";
 
 export const BasicDetails = () => {
     // =========================================================================
@@ -76,7 +81,6 @@ export const BasicDetails = () => {
                         render={({ field }) => (
                             <Form.Textarea
                                 {...field}
-                                required
                                 label="Element Name"
                                 rows={1}
                                 placeholder="Element Name"
@@ -119,6 +123,7 @@ export const BasicDetails = () => {
                                     onChange={(e) => {
                                         field.onChange(e.target.value);
                                     }}
+                                    placeholder="Enter error message"
                                     errorMessage={
                                         errors.requiredErrorMsg?.message
                                     }
@@ -238,7 +243,10 @@ export const BasicDetails = () => {
                     />
                 )}
 
-                <PreselectedValue />
+                {TextBasedElementTypes.has(type) && (
+                    <TextBasedPreselectedValue />
+                )}
+                {type === EElementType.DROPDOWN && <DropdownPreselectedValue />}
             </Wrapper>
         </FieldEditorAccordionItem>
     );

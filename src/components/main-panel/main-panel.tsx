@@ -20,6 +20,7 @@ import debounce from "lodash/debounce";
 import { useEffect, useRef } from "react";
 import {
     EModalType,
+    IDiscardChangesModalProps,
     IElementIdentifier,
     TElement,
     useBuilder,
@@ -103,7 +104,7 @@ export const MainPanel = () => {
             isDirty &&
             element?.internalId !== focusedElement?.element?.internalId
         ) {
-            const newModal = {
+            const newModal: IDiscardChangesModalProps = {
                 type: EModalType.DiscardChanges,
                 onClickActionButton: () => handleModalOnClick(element),
             };
