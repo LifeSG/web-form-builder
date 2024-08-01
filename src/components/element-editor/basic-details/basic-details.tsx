@@ -26,7 +26,6 @@ export const BasicDetails = () => {
         formState: { errors },
         watch,
         setValue,
-        unregister,
     } = useFormContext<TFormFieldValues>();
     const element = focusedElement.element;
     const type = watch("type", focusedElement.element?.type);
@@ -97,13 +96,12 @@ export const BasicDetails = () => {
                         <Controller
                             name="required"
                             control={control}
-                            render={({ field }) => (
+                            render={({ field: { ref, ...withoutRef } }) => (
                                 <TogglePair
+                                    {...withoutRef}
                                     label={{
                                         mainLabel: "Mandatory field",
                                     }}
-                                    value={field.value}
-                                    onChange={field.onChange}
                                 />
                             )}
                             shouldUnregister={true}
@@ -165,15 +163,14 @@ export const BasicDetails = () => {
                                 name="resizableInput"
                                 control={control}
                                 defaultValue={false}
-                                render={({ field }) => (
+                                render={({ field: { ref, ...withoutRef } }) => (
                                     <TogglePair
+                                        {...withoutRef}
                                         label={{
                                             mainLabel: "Resizable area input",
                                             subLabel:
                                                 "This allows participant to resize text area.",
                                         }}
-                                        value={field.value}
-                                        onChange={field.onChange}
                                     />
                                 )}
                                 shouldUnregister={true}

@@ -42,13 +42,7 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
     const methods = useForm({
         mode: "onTouched",
         resolver: yupResolver(schema),
-        defaultValues: {
-            requiredErrorMsg: "",
-            preselectedValue:
-                selectedElementType === EElementType.DROPDOWN ? null : "",
-            pills: false,
-            resizableInput: false,
-        },
+        defaultValues: focusedElement?.element,
     });
     const {
         getValues,

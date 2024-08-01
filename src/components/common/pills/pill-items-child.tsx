@@ -6,7 +6,7 @@ import { DragHandleIcon, PlusCircleIcon } from "@lifesg/react-icons";
 import { CSSProperties } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { ITextareaFieldAttributes } from "src/context-providers";
-import { DeleteButton } from "../delete-button/delete-button";
+import { DeleteButton } from "../delete-button";
 import {
     DroppableWrapper,
     PillDragHandleButton,
@@ -15,14 +15,14 @@ import {
 } from "./pill-items-child.styles";
 
 interface IProps {
-    item: any;
+    id: string;
     index: number;
     onDelete: () => void;
     disableDelete: boolean;
 }
 
 export const PillItemsChild = ({
-    item,
+    id,
     index,
     onDelete,
     disableDelete,
@@ -40,7 +40,7 @@ export const PillItemsChild = ({
         transition,
         isDragging,
         isOver,
-    } = useSortable({ id: item.id });
+    } = useSortable({ id });
 
     const style: CSSProperties = {
         transform: CSS.Transform.toString(transform),
@@ -77,16 +77,12 @@ export const PillItemsChild = ({
                         <DragHandleIcon data-testid="drag-handle" />
                     </PillDragHandleButton>
                     <Controller
-                        key={item.id}
                         name={`pillItems.${index}.content`}
                         control={control}
                         render={({ field }) => (
                             <Form.Input
+                                {...field}
                                 placeholder="Enter short text"
-                                value={field.value}
-                                onChange={(value) => {
-                                    field.onChange(value);
-                                }}
                                 errorMessage={
                                     errors?.pillItems?.[index]?.content?.message
                                 }

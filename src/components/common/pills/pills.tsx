@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { TogglePair } from "src/components/common/toggle-pair/toggle-pair";
 import { MandatoryFieldBox } from "src/components/element-editor/basic-details/basic-details.styles";
@@ -14,11 +15,27 @@ export const Pills = () => {
     // =========================================================================
     // CONST, STATE, REF
     // =========================================================================
-    const { control, unregister, setValue, watch } =
+    const { control, unregister, setValue, watch, resetField } =
         useFormContext<ITextareaFieldAttributes>();
 
     const { focusedElement } = useBuilder();
-    const element = focusedElement?.element as ITextarea;
+    const element: ITextarea = focusedElement?.element;
+    const watchPills = watch("pills");
+
+    // =========================================================================
+    // EFFECTS
+    // =========================================================================
+
+    /** This useEffect repopulates the defaultValues of pillPosition when it is remounted. */
+    useEffect(() => {
+        if (watchPills) {
+            if (element?.pillItems) {
+                resetField("pillPosition", {
+                    defaultValue: element.pillPosition,
+                });
+            }
+        }
+    }, [watchPills]);
 
     // =============================================================================
     // RENDER FUNCTIONS
@@ -38,19 +55,29 @@ export const Pills = () => {
                     }}
                     value={field.value}
                     onChange={(value) => {
-                        if (!value) {
-                            /** Without this, the form remains dirtied when toggling Pills to true and back to false */
-                            unregister(["pillItems", "pillPosition"]);
+                        if (value) {
+                            setValue(
+                                "pillItems",
+                                [
+                                    {
+                                        content: "",
+                                    },
+                                    {
+                                        content: "",
+                                    },
+                                ],
+                                {
+                                    shouldDirty: true,
+                                }
+                            );
+                            setValue("pillPosition", "top", {
+                                shouldDirty: true,
+                            });
                         } else {
-                            setValue("pillItems", [
-                                {
-                                    content: "",
-                                },
-                                {
-                                    content: "",
-                                },
-                            ]);
-                            setValue("pillPosition", "top");
+                            /** Without unregister, isDirty remains true even though current values match default values,
+                             * until a re-render occurs. This behaviour seems to be caused by the un-mounting/re-mounting of the pillItems' useFieldArray.
+                             * By using unregister, it triggers a re-render to evaluate the correct isDirty state. */
+                            unregister(["pillItems", "pillPosition"]);
                         }
                         field.onChange(value);
                     }}
