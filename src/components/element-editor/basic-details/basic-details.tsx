@@ -62,7 +62,6 @@ export const BasicDetails = () => {
                                 onChange={(value) => {
                                     field.onChange(value);
                                 }}
-                                id={element.internalId}
                             />
                         )}
                         shouldUnregister={true}

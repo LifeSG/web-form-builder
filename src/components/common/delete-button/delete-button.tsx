@@ -15,8 +15,9 @@ export const DeleteButton = ({ onClick, disabled, popoverMessage }: IProps) => {
 
     const deleteButton = (
         <StyledBinButton
-            $disabled={disabled}
-            data-testid={!disabled ? "delete-button" : undefined}
+            type="button"
+            disabled={disabled}
+            data-testid="delete-button"
             onClick={!disabled ? onClick : undefined}
         >
             <BinIcon />
@@ -29,6 +30,7 @@ export const DeleteButton = ({ onClick, disabled, popoverMessage }: IProps) => {
                 popoverContent={popoverMessage}
                 trigger="hover"
                 position="bottom-end"
+                data-testid="delete-button-popover"
             >
                 {deleteButton}
             </PopoverTrigger>
