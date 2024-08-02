@@ -10,10 +10,16 @@ import { Wrapper } from "./icon-dropdown.styles";
 interface IProps {
     type?: string;
     onChange?: (option: unknown) => void;
+    onBlur?: () => void;
     errorMessage?: string;
 }
 
-export const IconDropdown = ({ type, onChange, errorMessage }: IProps) => {
+export const IconDropdown = ({
+    type,
+    onChange,
+    onBlur,
+    errorMessage,
+}: IProps) => {
     // =============================================================================
     // RENDER FUNCTIONS
     // =============================================================================
@@ -42,6 +48,7 @@ export const IconDropdown = ({ type, onChange, errorMessage }: IProps) => {
             )}
             onSelectOption={(option) => onChange(option)}
             errorMessage={errorMessage && errorMessage}
+            onBlur={onBlur}
         />
     );
 };

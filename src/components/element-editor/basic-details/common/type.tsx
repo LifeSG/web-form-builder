@@ -1,4 +1,8 @@
-import { Controller, useFormContext } from "react-hook-form";
+import {
+    Controller,
+    ControllerRenderProps,
+    useFormContext,
+} from "react-hook-form";
 import { IconDropdown } from "src/components/common/icon-dropdown";
 import { EElementType, useBuilder } from "src/context-providers";
 import { TFormFieldValues } from "src/schemas";
@@ -16,6 +20,19 @@ export const Type = () => {
     } = useFormContext<TFormFieldValues>();
 
     // =========================================================================
+    // HELPER FUNCTIONS
+    // =========================================================================
+
+    const handleChange = (
+        value: EElementType,
+        field: ControllerRenderProps<TFormFieldValues, "type">
+    ) => {
+        selectElementType(value);
+        setValue("validation", []);
+        field.onChange(value);
+    };
+
+    // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
 
@@ -25,14 +42,10 @@ export const Type = () => {
             control={control}
             render={({ field }) => (
                 <IconDropdown
+                    onBlur={field.onBlur}
                     type={field.value}
                     onChange={(value: EElementType) => {
-                        selectElementType(value);
-                        setValue("type", value, {
-                            shouldTouch: true,
-                            shouldDirty: true,
-                        });
-                        setValue("validation", []);
+                        handleChange(value, field);
                     }}
                     errorMessage={errors.type?.message}
                 />

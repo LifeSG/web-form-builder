@@ -12,13 +12,15 @@ import {
     ToggleWrapper,
     Wrapper,
 } from "./basic-details.styles";
-import { Description } from "./common/description";
-import { Id } from "./common/id";
-import { Label } from "./common/label";
-import { MandatoryField } from "./common/mandatory-field";
-import { Placeholder } from "./common/placeholder";
-import { TextBasedPreselectedValue } from "./common/text-based-preselected-value";
-import { Type } from "./common/type";
+import {
+    Description,
+    Id,
+    Label,
+    MandatoryField,
+    Placeholder,
+    TextBasedPreselectedValue,
+    Type,
+} from "./common";
 import { DropdownItems } from "./dropdown-items/dropdown-items";
 import { DropdownPreselectedValue } from "./dropdown-preselected-value";
 
@@ -28,7 +30,7 @@ export const BasicDetails = () => {
     // =========================================================================
     const { focusedElement } = useBuilder();
     const { control, watch } = useFormContext<TFormFieldValues>();
-    const type = watch("type", focusedElement?.element?.type) as EElementType;
+    const type = watch("type", focusedElement?.element?.type);
 
     // =========================================================================
     // RENDER FUNCTIONS

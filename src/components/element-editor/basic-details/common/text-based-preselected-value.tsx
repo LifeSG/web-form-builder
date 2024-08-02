@@ -35,9 +35,7 @@ export const TextBasedPreselectedValue = () => {
                     }}
                     placeholder="Enter pre-selected value"
                     value={field.value || ""}
-                    onChange={(e) => {
-                        field.onChange(e.target.value);
-                    }}
+                    errorMessage={errors.preselectedValue?.message}
                 />
             )}
             shouldUnregister={true}

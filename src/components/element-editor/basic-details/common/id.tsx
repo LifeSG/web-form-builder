@@ -35,9 +35,6 @@ export const Id = () => {
                     }}
                     placeholder="Create an ID"
                     value={field.value || ""}
-                    onChange={(e) => {
-                        field.onChange(e.target.value);
-                    }}
                     errorMessage={errors.id?.message}
                 />
             )}
