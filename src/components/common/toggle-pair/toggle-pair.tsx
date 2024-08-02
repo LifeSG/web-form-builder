@@ -1,48 +1,25 @@
 import { Form } from "@lifesg/react-design-system/form";
 import { Text } from "@lifesg/react-design-system/text";
-import { Toggle } from "@lifesg/react-design-system/toggle";
 import { IComplexLabel } from "@lifesg/web-frontend-engine/components/fields";
-import { useEffect, useState } from "react";
-import { Row } from "./toggle-pair.styles";
+import { ReactNode } from "react";
+import { Row, ToggleWrapper } from "./toggle-pair.styles";
+
+interface IOptionProps {
+    icon?: ReactNode;
+    title: string;
+}
 
 interface IProps {
     label?: IComplexLabel;
     value?: boolean;
-    id?: string;
     onChange: (value: boolean) => void;
+    options?: IOptionProps[];
 }
 
-export const TogglePair = ({
-    onChange,
-    value: defaultValue,
-    label,
-    id,
-}: IProps) => {
-    // =========================================================================
-    // CONST, STATE, REFS
-    // =========================================================================
-    const [value, setValue] = useState(defaultValue);
-
-    // =============================================================================
-    // HELPER FUNCTIONS
-    // =============================================================================
+export const TogglePair = ({ onChange, value, label, options }: IProps) => {
     const handleChange = (value: boolean) => {
-        setValue(value);
         onChange(value);
     };
-
-    // =========================================================================
-    // EFFECTS
-    // =========================================================================
-    useEffect(() => {
-        if (value !== defaultValue) {
-            setValue(defaultValue);
-        }
-    }, [defaultValue, id]);
-
-    // =========================================================================
-    // RENDER FUNCTIONS
-    // =========================================================================
 
     return (
         <div>
@@ -52,22 +29,24 @@ export const TogglePair = ({
                 {label?.mainLabel}
             </Form.Label>
             <Row>
-                <Toggle
+                <ToggleWrapper
                     type="yes"
                     checked={value === true}
                     onChange={() => handleChange(true)}
-                    indicator
+                    indicator={options ? false : true}
                 >
-                    Yes
-                </Toggle>
-                <Toggle
+                    {options?.[0]?.icon}
+                    {options?.[0]?.title || "Yes"}
+                </ToggleWrapper>
+                <ToggleWrapper
                     type="no"
                     checked={value === false}
                     onChange={() => handleChange(false)}
-                    indicator
+                    indicator={options ? false : true}
                 >
-                    No
-                </Toggle>
+                    {options?.[1]?.icon}
+                    {options?.[1]?.title || "No"}
+                </ToggleWrapper>
             </Row>
         </div>
     );

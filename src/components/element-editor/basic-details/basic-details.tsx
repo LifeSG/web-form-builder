@@ -2,6 +2,7 @@ import { Form } from "@lifesg/react-design-system/form";
 import { Text } from "@lifesg/react-design-system/text";
 import { Controller, useFormContext } from "react-hook-form";
 import { IconDropdown } from "src/components/common/icon-dropdown";
+import { Pills } from "src/components/common/pills";
 import { TogglePair } from "src/components/common/toggle-pair/toggle-pair";
 import {
     EElementType,
@@ -13,6 +14,7 @@ import {
     FieldEditorAccordionItem,
     MandatoryFieldBox,
     StyledTextarea,
+    ToggleWrapper,
     Wrapper,
 } from "./basic-details.styles";
 import { DropdownItems } from "./dropdown-items/dropdown-items";
@@ -31,7 +33,7 @@ export const BasicDetails = () => {
         setValue,
     } = useFormContext<TFormFieldValues>();
     const element = focusedElement.element;
-    const type = watch("type") as EElementType;
+    const type = watch("type", focusedElement.element?.type) as EElementType;
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
@@ -43,6 +45,7 @@ export const BasicDetails = () => {
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
+
     return (
         <FieldEditorAccordionItem
             type="default"
@@ -93,24 +96,21 @@ export const BasicDetails = () => {
                     />
                 )}
                 <MandatoryFieldBox>
-                    <Controller
-                        name="required"
-                        control={control}
-                        render={({ field }) => (
-                            <TogglePair
-                                label={{
-                                    mainLabel: "Mandatory field",
-                                }}
-                                value={field.value}
-                                onChange={(value) => {
-                                    field.onChange(value);
-                                }}
-                                id={element.internalId}
-                            />
-                        )}
-                        shouldUnregister={true}
-                    />
-
+                    <ToggleWrapper>
+                        <Controller
+                            name="required"
+                            control={control}
+                            render={({ field: { ref, ...withoutRef } }) => (
+                                <TogglePair
+                                    {...withoutRef}
+                                    label={{
+                                        mainLabel: "Mandatory field",
+                                    }}
+                                />
+                            )}
+                            shouldUnregister={true}
+                        />
+                    </ToggleWrapper>
                     {watch("required", true) && (
                         <Controller
                             name="requiredErrorMsg"
@@ -161,6 +161,29 @@ export const BasicDetails = () => {
                     )}
                     shouldUnregister={true}
                 />
+                {type === EElementType.TEXTAREA && (
+                    <>
+                        <ToggleWrapper>
+                            <Controller
+                                name="resizableInput"
+                                control={control}
+                                defaultValue={false}
+                                render={({ field: { ref, ...withoutRef } }) => (
+                                    <TogglePair
+                                        {...withoutRef}
+                                        label={{
+                                            mainLabel: "Resizable area input",
+                                            subLabel:
+                                                "This allows participant to resize text area.",
+                                        }}
+                                    />
+                                )}
+                                shouldUnregister={true}
+                            />
+                        </ToggleWrapper>
+                        <Pills />
+                    </>
+                )}
 
                 {hasProperty("description") && (
                     <Controller
@@ -196,28 +219,6 @@ export const BasicDetails = () => {
                                 />
                             );
                         }}
-                        shouldUnregister={true}
-                    />
-                )}
-
-                {hasProperty("resizableInput") && (
-                    <Controller
-                        name="resizableInput"
-                        control={control}
-                        render={({ field }) => (
-                            <TogglePair
-                                label={{
-                                    mainLabel: "Resizable area input",
-                                    subLabel:
-                                        "This allows participant to resize text area.",
-                                }}
-                                value={field.value}
-                                onChange={(value) => {
-                                    field.onChange(value);
-                                }}
-                                id={element.internalId}
-                            />
-                        )}
                         shouldUnregister={true}
                     />
                 )}

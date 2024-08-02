@@ -178,6 +178,49 @@ export const TEXT_AREA_SCHEMA = () => {
         placeholder: yup.string().optional(),
         preselectedValue: yup.string().optional(),
         resizableInput: yup.boolean().required().default(true),
+        pills: yup.boolean().required().default(true),
+        pillItems: yup
+            .array()
+            .of(
+                yup.object().shape({
+                    content: yup.string().optional(),
+                })
+            )
+            .test(
+                "min-2-valid-items",
+                "At least 2 items with valid content are required.",
+                function (pillItems) {
+                    const validItemsCount = pillItems?.reduce((count, item) => {
+                        return item.content && item.content.trim() !== ""
+                            ? count + 1
+                            : count;
+                    }, 0);
+
+                    if (validItemsCount >= 2) {
+                        return true;
+                    }
+
+                    const errors = pillItems?.reduce((acc, item, index) => {
+                        if (!item.content || item.content.trim() === "") {
+                            acc.push(
+                                this.createError({
+                                    path: `${this.path}[${index}].content`,
+                                    message: "Pill item content is required.",
+                                })
+                            );
+                        }
+                        return acc;
+                    }, []);
+
+                    if (errors?.length > 0) {
+                        throw new yup.ValidationError(errors);
+                    }
+
+                    return true;
+                }
+            ),
+
+        pillPosition: yup.string().required().default("top"),
         validation: yup.array().of(
             yup.object().shape({
                 validationType: yup.string().required("Validation required."),

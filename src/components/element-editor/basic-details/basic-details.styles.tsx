@@ -32,7 +32,7 @@ export const FieldEditorAccordionItem = styled(
     border-top: ${({ $hideTopBorder }) =>
         $hideTopBorder ? `1px solid ${Color.Neutral[6]}` : "0"};
 
-    margin-top: ${({ $hideTopBorder }) => ($hideTopBorder ? `0` : "-1rem")};
+    margin-top: ${({ $hideTopBorder }) => ($hideTopBorder ? "0" : "-1rem")};
 
     #content-container {
         padding: 0;
@@ -40,7 +40,7 @@ export const FieldEditorAccordionItem = styled(
 
     [data-testid="accordion-item-title"] {
         margin: ${({ $hideTopBorder }) =>
-            $hideTopBorder ? `1rem 0 1rem 1rem` : "0 0 0 1rem"};
+            $hideTopBorder ? "1rem 0 1rem 1rem" : "0 0 0 1rem"};
     }
 
     [data-testid="accordion-item-expandable-container"] {
@@ -50,11 +50,17 @@ export const FieldEditorAccordionItem = styled(
 
     [data-testid="accordion-item-expand-collapse-button"] {
         margin: ${({ $hideTopBorder }) =>
-            $hideTopBorder ? `0 0.1rem 0 1rem` : "0 0.1rem 0 0"};
+            $hideTopBorder ? "0 0.1rem 0 1rem" : "0 0.1rem 0 0"};
     }
 `;
 
 export const StyledTextarea = styled(Form.Textarea)`
     min-height: 40px;
     overflow: hidden;
+`;
+
+export const ToggleWrapper = styled.div`
+    &:not(:last-child) {
+        margin-bottom: 2rem;
+    }
 `;
