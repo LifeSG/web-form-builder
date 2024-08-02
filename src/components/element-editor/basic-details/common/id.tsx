@@ -4,10 +4,18 @@ import { Controller, useFormContext } from "react-hook-form";
 import { TFormFieldValues } from "src/schemas";
 
 export const Id = () => {
+    // =========================================================================
+    // CONST, STATE, REF
+    // =========================================================================
+
     const {
         control,
         formState: { errors },
     } = useFormContext<TFormFieldValues>();
+
+    // =========================================================================
+    // RENDER FUNCTIONS
+    // =========================================================================
 
     return (
         <Controller

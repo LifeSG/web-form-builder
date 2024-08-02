@@ -4,12 +4,20 @@ import { EElementType, useBuilder } from "src/context-providers";
 import { TFormFieldValues } from "src/schemas";
 
 export const Type = () => {
+    // =========================================================================
+    // CONST, STATE, REF
+    // =========================================================================
+
     const { selectElementType } = useBuilder();
     const {
         control,
         formState: { errors },
         setValue,
     } = useFormContext<TFormFieldValues>();
+
+    // =========================================================================
+    // RENDER FUNCTIONS
+    // =========================================================================
 
     return (
         <Controller

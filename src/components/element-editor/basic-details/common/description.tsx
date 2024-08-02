@@ -4,10 +4,18 @@ import { TFormFieldValues } from "src/schemas";
 import { StyledTextarea } from "../basic-details.styles";
 
 export const Description = () => {
+    // =========================================================================
+    // CONST, STATE, REF
+    // =========================================================================
+
     const {
         control,
         formState: { errors },
     } = useFormContext<TFormFieldValues>();
+
+    // =========================================================================
+    // RENDER FUNCTIONS
+    // =========================================================================
 
     return (
         <Controller

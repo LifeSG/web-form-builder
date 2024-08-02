@@ -6,6 +6,10 @@ import { TFormFieldValues } from "src/schemas";
 import { MandatoryFieldBox } from "../basic-details.styles";
 
 export const MandatoryField = () => {
+    // =========================================================================
+    // CONST, STATE, REF
+    // =========================================================================
+
     const { focusedElement } = useBuilder();
     const {
         control,
@@ -14,6 +18,10 @@ export const MandatoryField = () => {
     } = useFormContext<TFormFieldValues>();
 
     const element = focusedElement.element;
+
+    // =========================================================================
+    // RENDER FUNCTIONS
+    // =========================================================================
 
     return (
         <MandatoryFieldBox>
