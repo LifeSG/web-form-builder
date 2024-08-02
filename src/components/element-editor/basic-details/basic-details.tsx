@@ -1,4 +1,5 @@
 import { Controller, useFormContext } from "react-hook-form";
+import { Pills } from "src/components/common/pills";
 import { TogglePair } from "src/components/common/toggle-pair/toggle-pair";
 import {
     EElementType,
@@ -6,7 +7,11 @@ import {
     useBuilder,
 } from "src/context-providers";
 import { TFormFieldValues } from "src/schemas";
-import { FieldEditorAccordionItem, Wrapper } from "./basic-details.styles";
+import {
+    FieldEditorAccordionItem,
+    ToggleWrapper,
+    Wrapper,
+} from "./basic-details.styles";
 import { Description } from "./common/description";
 import { Id } from "./common/id";
 import { Label } from "./common/label";
@@ -23,7 +28,6 @@ export const BasicDetails = () => {
     // =========================================================================
     const { focusedElement } = useBuilder();
     const { control, watch } = useFormContext<TFormFieldValues>();
-    const element = focusedElement.element;
     const type = watch("type") as EElementType;
 
     // =========================================================================
@@ -48,24 +52,29 @@ export const BasicDetails = () => {
                 <Description />
 
                 {type == EElementType.TEXTAREA && (
-                    <Controller
-                        name="resizableInput"
-                        control={control}
-                        render={({ field }) => (
-                            <TogglePair
-                                label={{
-                                    mainLabel: "Resizable area input",
-                                    subLabel:
-                                        "This allows participant to resize text area.",
-                                }}
-                                value={field.value}
-                                onChange={(value) => {
-                                    field.onChange(value);
-                                }}
+                    <>
+                        <ToggleWrapper>
+                            <Controller
+                                name="resizableInput"
+                                control={control}
+                                render={({ field }) => (
+                                    <TogglePair
+                                        label={{
+                                            mainLabel: "Resizable area input",
+                                            subLabel:
+                                                "This allows participant to resize text area.",
+                                        }}
+                                        value={field.value}
+                                        onChange={(value) => {
+                                            field.onChange(value);
+                                        }}
+                                    />
+                                )}
+                                shouldUnregister={true}
                             />
-                        )}
-                        shouldUnregister={true}
-                    />
+                        </ToggleWrapper>
+                        <Pills />
+                    </>
                 )}
 
                 <Placeholder />

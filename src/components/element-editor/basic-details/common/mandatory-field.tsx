@@ -3,7 +3,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import { TogglePair } from "src/components/common/toggle-pair/toggle-pair";
 import { useBuilder } from "src/context-providers";
 import { TFormFieldValues } from "src/schemas";
-import { MandatoryFieldBox } from "../basic-details.styles";
+import { MandatoryFieldBox, ToggleWrapper } from "../basic-details.styles";
 
 export const MandatoryField = () => {
     // =========================================================================
@@ -25,24 +25,24 @@ export const MandatoryField = () => {
 
     return (
         <MandatoryFieldBox>
-            <Controller
-                name="required"
-                control={control}
-                render={({ field }) => (
-                    <TogglePair
-                        label={{
-                            mainLabel: "Mandatory field",
-                        }}
-                        value={field.value}
-                        onChange={(value) => {
-                            field.onChange(value);
-                        }}
-                        id={element.internalId}
-                    />
-                )}
-                shouldUnregister={true}
-            />
-
+            <ToggleWrapper>
+                <Controller
+                    name="required"
+                    control={control}
+                    render={({ field }) => (
+                        <TogglePair
+                            label={{
+                                mainLabel: "Mandatory field",
+                            }}
+                            value={field.value}
+                            onChange={(value) => {
+                                field.onChange(value);
+                            }}
+                        />
+                    )}
+                    shouldUnregister={true}
+                />
+            </ToggleWrapper>
             {watch("required", true) && (
                 <Controller
                     name="requiredErrorMsg"
