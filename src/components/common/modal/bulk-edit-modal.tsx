@@ -2,6 +2,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Form } from "@lifesg/react-design-system/form";
 import { Text } from "@lifesg/react-design-system/text";
 import isEmpty from "lodash/isEmpty";
+import { useEffect } from "react";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import { IBulkEditModalProps } from "src/context-providers";
 import { BULK_EDIT_SCHEMA, TBulkEditData } from "src/schemas/bulk-edit";
@@ -29,6 +30,15 @@ export const BulkEditModal = ({ modal }: IProps) => {
     });
 
     const dropdownItemsErrors = methods.formState.errors;
+
+    // =========================================================================
+    // EFFECTS
+    // =========================================================================
+
+    useEffect(() => {
+        methods.trigger("items");
+    }, []);
+
     // ============================================================================
     // HELPER FUNCTIONS
     // ============================================================================
