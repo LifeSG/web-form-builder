@@ -8,13 +8,12 @@ import { CardIcon } from "../base-card";
 import { Wrapper } from "./icon-dropdown.styles";
 
 interface IProps {
-    id?: string;
     type?: string;
     onChange?: (option: unknown) => void;
     errorMessage?: string;
 }
 
-export const IconDropdown = ({ id, type, onChange, errorMessage }: IProps) => {
+export const IconDropdown = ({ type, onChange, errorMessage }: IProps) => {
     // =============================================================================
     // RENDER FUNCTIONS
     // =============================================================================
@@ -24,8 +23,6 @@ export const IconDropdown = ({ id, type, onChange, errorMessage }: IProps) => {
 
     return (
         <Form.Select
-            key={"element - " + id}
-            id={id}
             label={"Element type"}
             options={renderOptions()}
             renderCustomSelectedOption={(option: EElementType) => {
