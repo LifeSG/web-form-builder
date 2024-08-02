@@ -7,7 +7,7 @@ import { IconDropdown } from "src/components/common/icon-dropdown";
 import { EElementType, useBuilder } from "src/context-providers";
 import { TFormFieldValues } from "src/schemas";
 
-export const Type = () => {
+export const TypeField = () => {
     // =========================================================================
     // CONST, STATE, REF
     // =========================================================================

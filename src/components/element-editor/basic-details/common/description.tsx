@@ -7,7 +7,7 @@ import {
 import { TFormFieldValues } from "src/schemas";
 import { StyledTextarea } from "../basic-details.styles";
 
-export const Description = () => {
+export const DescriptionField = () => {
     // =========================================================================
     // CONST, STATE, REF
     // =========================================================================

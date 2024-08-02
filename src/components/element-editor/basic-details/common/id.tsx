@@ -3,7 +3,7 @@ import { Text } from "@lifesg/react-design-system/text";
 import { Controller, useFormContext } from "react-hook-form";
 import { TFormFieldValues } from "src/schemas";
 
-export const Id = () => {
+export const IdField = () => {
     // =========================================================================
     // CONST, STATE, REF
     // =========================================================================

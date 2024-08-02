@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
-import { Id } from "src/components/element-editor/basic-details/common";
+import { IdField } from "src/components/element-editor/basic-details/common";
 import { TestHelper } from "src/util/test-helper";
 
 describe("Basic Details Id Component", () => {
@@ -33,5 +33,5 @@ describe("Basic Details Id Component", () => {
 // HELPER FUNCTIONS
 // =============================================================================
 const renderComponent = (overrideOptions?: TestHelper.RenderOptions) => {
-    return render(TestHelper.withProviders(overrideOptions, <Id />));
+    return render(TestHelper.withProviders(overrideOptions, <IdField />));
 };

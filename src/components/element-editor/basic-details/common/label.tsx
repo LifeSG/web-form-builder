@@ -2,7 +2,7 @@ import { Form } from "@lifesg/react-design-system/form";
 import { Controller, useFormContext } from "react-hook-form";
 import { TFormFieldValues } from "src/schemas";
 
-export const Label = () => {
+export const LabelField = () => {
     // =========================================================================
     // CONST, STATE, REF
     // =========================================================================

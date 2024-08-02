@@ -13,13 +13,13 @@ import {
     Wrapper,
 } from "./basic-details.styles";
 import {
-    Description,
-    Id,
-    Label,
+    DescriptionField,
+    IdField,
+    LabelField,
     MandatoryField,
-    Placeholder,
-    TextBasedPreselectedValue,
-    Type,
+    PlaceholderField,
+    TextBasedPreselectedValueField,
+    TypeField,
 } from "./common";
 import { DropdownItems } from "./dropdown-items/dropdown-items";
 import { DropdownPreselectedValue } from "./dropdown-preselected-value";
@@ -44,14 +44,14 @@ export const BasicDetails = () => {
             $hideTopBorder={focusedElement.isDirty}
         >
             <Wrapper>
-                <Type />
-                <Label />
+                <TypeField />
+                <LabelField />
                 <MandatoryField />
 
                 {type === EElementType.DROPDOWN && <DropdownItems />}
 
-                <Id />
-                <Description />
+                <IdField />
+                <DescriptionField />
 
                 {type == EElementType.TEXTAREA && (
                     <>
@@ -79,10 +79,10 @@ export const BasicDetails = () => {
                     </>
                 )}
 
-                <Placeholder />
+                <PlaceholderField />
 
                 {TextBasedElementTypes.has(type) && (
-                    <TextBasedPreselectedValue />
+                    <TextBasedPreselectedValueField />
                 )}
 
                 {type === EElementType.DROPDOWN && <DropdownPreselectedValue />}
