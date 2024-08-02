@@ -74,7 +74,12 @@ export const PillItems = () => {
     };
 
     const handleAddButtonClick = () => {
-        append({ content: "" });
+        append(
+            { content: "" },
+            {
+                shouldFocus: false,
+            }
+        );
     };
 
     const handleDeleteButtonClick = (index: number) => {
