@@ -5,6 +5,7 @@ import {
     EElementType,
     EToastTypes,
     IDropdownItemAttributes,
+    IPillItemAttributes,
     TElement,
     useDisplay,
 } from "src/context-providers";
@@ -41,10 +42,7 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
     const methods = useForm({
         mode: "onTouched",
         resolver: yupResolver(schema),
-        defaultValues: {
-            requiredErrorMsg: "",
-            preselectedValue: null,
-        },
+        defaultValues: focusedElement?.element,
     });
     const {
         getValues,
@@ -74,6 +72,14 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
                 );
                 values.dropdownItems = nonEmptyDropdownItems;
             }
+
+            if ("pillItems" in values) {
+                const validPillItems = (
+                    getValues("pillItems") as IPillItemAttributes[]
+                ).filter((item) => item.content.length > 0);
+                values.pillItems = validPillItems;
+            }
+
             updateElement(values);
             updateFocusedElement(false, values);
             showToast(newToast);
@@ -98,7 +104,7 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
         if (!focusedElement) {
             return;
         }
-        methods.reset(focusedElement?.element);
+        methods.reset(focusedElement.element);
     }, [focusedElement?.element, methods.reset]);
 
     // =========================================================================

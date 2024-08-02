@@ -33,7 +33,6 @@ export const TextBasedPreselectedValue = () => {
                     onChange={(e) => {
                         field.onChange(e.target.value);
                     }}
-                    errorMessage={errors.id?.message}
                 />
             )}
             shouldUnregister={true}

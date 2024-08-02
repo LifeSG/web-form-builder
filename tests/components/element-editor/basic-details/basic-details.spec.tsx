@@ -81,6 +81,32 @@ describe("BasicDetails", () => {
             expect(resizableAreaInput).toBeInTheDocument();
             expect(preSelectedField).toBeInTheDocument();
         });
+
+        it("should render the pills fields if element has pills field", async () => {
+            renderComponent({
+                builderContext: {
+                    focusedElement: MOCK_FOCUSED_TEXT_AREA_ELEMENT,
+                    elements: MOCK_TEXT_AREA_ELEMENTS,
+                },
+            });
+
+            const pillsField = await screen.findByText("Pills");
+            expect(pillsField).toBeInTheDocument();
+        });
+
+        it("should render the pill items and list position fields if pills field is true", async () => {
+            renderComponent({
+                builderContext: {
+                    focusedElement: MOCK_FOCUSED_TEXT_AREA_ELEMENT,
+                    elements: MOCK_TEXT_AREA_ELEMENTS,
+                },
+            });
+
+            const pillItemsField = await screen.findByText("Pill items");
+            const listPositionField = await screen.findByText("List position");
+            expect(pillItemsField).toBeInTheDocument();
+            expect(listPositionField).toBeInTheDocument();
+        });
     });
 
     describe("rendering the error messages for the fields", () => {
@@ -306,6 +332,9 @@ const MOCK_FOCUSED_TEXT_AREA_ELEMENT = {
         description: "hellooo",
         preSelectedValue: "",
         resizableInput: true,
+        pills: true,
+        pillItems: [{ content: "" }, { content: "" }],
+        pillPosition: "top",
         label: ELEMENT_BUTTON_LABELS[EElementType.TEXTAREA],
         columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
     },
@@ -319,6 +348,9 @@ const MOCK_TEXT_AREA_ELEMENTS = {
         description: "hellooo",
         preSelectedValue: "",
         resizableInput: true,
+        pills: true,
+        pillItems: [{ content: "" }, { content: "" }],
+        pillPosition: "top",
         label: ELEMENT_BUTTON_LABELS[EElementType.TEXTAREA],
         columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
     },
