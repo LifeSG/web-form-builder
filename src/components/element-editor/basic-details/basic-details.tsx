@@ -1,90 +1,56 @@
-import { Controller, useFormContext } from "react-hook-form";
-import { Pills } from "src/components/common/pills";
-import { TogglePair } from "src/components/common/toggle-pair/toggle-pair";
-import {
-    EElementType,
-    TextBasedElementTypes,
-    useBuilder,
-} from "src/context-providers";
+import { useFormContext, useWatch } from "react-hook-form";
+import { EElementType, useBuilder } from "src/context-providers";
 import { TFormFieldValues } from "src/schemas";
 import {
+    AccordionWrapper,
     FieldEditorAccordionItem,
-    ToggleWrapper,
     Wrapper,
 } from "./basic-details.styles";
-import { Description } from "./common/description";
-import { Id } from "./common/id";
-import { Label } from "./common/label";
-import { MandatoryField } from "./common/mandatory-field";
-import { Placeholder } from "./common/placeholder";
-import { TextBasedPreselectedValue } from "./common/text-based-preselected-value";
-import { Type } from "./common/type";
-import { DropdownItems } from "./dropdown-items/dropdown-items";
-import { DropdownPreselectedValue } from "./dropdown-preselected-value";
+import { ContactBasicDetails } from "./contact";
+import { DropdownBasicDetails } from "./dropdown";
+import { EmailBasicDetails } from "./email";
+import { NumericBasicDetails } from "./numeric";
+import { TextBasicDetails } from "./text";
+import { TextAreaBasicDetails } from "./text-area";
 
 export const BasicDetails = () => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
-    const { focusedElement } = useBuilder();
-    const { control, watch } = useFormContext<TFormFieldValues>();
-    const type = watch("type", focusedElement?.element?.type) as EElementType;
+    const { focusedElement, selectedElementType } = useBuilder();
 
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
+    const renderBasicDetails = () => {
+        switch (selectedElementType) {
+            case EElementType.EMAIL:
+                return <EmailBasicDetails />;
+            case EElementType.TEXT:
+                return <TextBasicDetails />;
+            case EElementType.TEXTAREA:
+                return <TextAreaBasicDetails />;
+            case EElementType.NUMERIC:
+                return <NumericBasicDetails />;
+            case EElementType.CONTACT:
+                return <ContactBasicDetails />;
+            case EElementType.DROPDOWN:
+                return <DropdownBasicDetails />;
+            default:
+                return null;
+        }
+    };
 
     return (
-        <FieldEditorAccordionItem
-            type="default"
-            expanded
-            title="Basic"
-            $hideTopBorder={focusedElement.isDirty}
-        >
-            <Wrapper>
-                <Type />
-                <Label />
-                <MandatoryField />
-
-                {type === EElementType.DROPDOWN && <DropdownItems />}
-
-                <Id />
-                <Description />
-
-                {type == EElementType.TEXTAREA && (
-                    <>
-                        <ToggleWrapper>
-                            <Controller
-                                name="resizableInput"
-                                control={control}
-                                render={({ field }) => (
-                                    <TogglePair
-                                        label={{
-                                            mainLabel: "Resizable area input",
-                                            subLabel:
-                                                "This allows participant to resize text area.",
-                                        }}
-                                        value={field.value}
-                                        onChange={(value) => {
-                                            field.onChange(value);
-                                        }}
-                                    />
-                                )}
-                                shouldUnregister={true}
-                            />
-                        </ToggleWrapper>
-                        <Pills />
-                    </>
-                )}
-
-                <Placeholder />
-
-                {TextBasedElementTypes.has(type) && (
-                    <TextBasedPreselectedValue />
-                )}
-
-                {type === EElementType.DROPDOWN && <DropdownPreselectedValue />}
-            </Wrapper>
-        </FieldEditorAccordionItem>
+        <AccordionWrapper>
+            <FieldEditorAccordionItem
+                type="default"
+                expanded
+                title="Basic"
+                $hideTopBorder={focusedElement.isDirty}
+            >
+                <Wrapper>{renderBasicDetails()}</Wrapper>
+            </FieldEditorAccordionItem>
+        </AccordionWrapper>
     );
 };

@@ -177,8 +177,8 @@ export const TEXT_AREA_SCHEMA = () => {
     return yup.object().shape({
         placeholder: yup.string().optional(),
         preselectedValue: yup.string().optional(),
-        resizableInput: yup.boolean().required().default(true),
-        pills: yup.boolean().required().default(true),
+        resizableInput: yup.boolean().required().default(false),
+        pills: yup.boolean().required().default(false),
         pillItems: yup
             .array()
             .of(

@@ -3,7 +3,7 @@ import { Text } from "@lifesg/react-design-system/text";
 import { Controller, useFormContext } from "react-hook-form";
 import { TOverallTextBasedSchema } from "src/schemas";
 
-export const TextBasedPreselectedValue = () => {
+export const PreselectedValueTextBased = () => {
     // ===========================================================================
     // CONST, STATE, REFS
     // ===========================================================================

@@ -64,3 +64,9 @@ export const ToggleWrapper = styled.div`
         margin-bottom: 2rem;
     }
 `;
+
+export const AccordionWrapper = styled(Accordion)`
+    & > div:first-child {
+        display: none;
+    }
+`;

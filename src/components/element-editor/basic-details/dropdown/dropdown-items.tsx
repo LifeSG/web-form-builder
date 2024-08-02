@@ -35,6 +35,7 @@ import {
     DropdownItemsButtonsWrapper,
     DropdownItemsWrapper,
 } from "./dropdown-items.styles";
+import { useEffect } from "react";
 
 export const DropdownItems = () => {
     // =========================================================================
@@ -55,6 +56,24 @@ export const DropdownItems = () => {
             coordinateGetter: sortableKeyboardCoordinates,
         })
     );
+
+    // =========================================================================
+    // EFFECTS
+    // =========================================================================
+
+    useEffect(() => {
+        if (fields.length < 2) {
+            append(
+                [
+                    { label: "", value: "" },
+                    { label: "", value: "" },
+                ],
+                {
+                    shouldFocus: false,
+                }
+            );
+        }
+    }, []);
 
     // =========================================================================
     // HELPER FUNCTIONS
