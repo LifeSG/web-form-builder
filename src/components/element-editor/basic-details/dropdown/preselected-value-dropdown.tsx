@@ -15,8 +15,6 @@ export const PreselectedValueDropdown = () => {
         formState: { errors },
         watch,
         setValue,
-        getValues,
-        resetField,
     } = useFormContext<TOverallOptionGroupBasedSchema>();
 
     const preselectedValue = watch("preselectedValue");

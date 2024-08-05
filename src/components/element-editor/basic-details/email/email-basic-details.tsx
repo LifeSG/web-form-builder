@@ -9,7 +9,6 @@ import {
 } from "../common";
 
 export const EmailBasicDetails = () => {
-    console.log("EmailBasicDetails");
     return (
         <>
             <Type />

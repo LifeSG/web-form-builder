@@ -2,6 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
 import { act } from "react-dom/test-utils";
 import { DropdownItems } from "src/components/element-editor/basic-details/dropdown/dropdown-items";
+import { EElementType } from "src/context-providers";
 import { TestHelper } from "src/util/test-helper";
 
 describe("Dropdown Items", () => {
@@ -101,6 +102,38 @@ describe("Dropdown Items", () => {
             expect(dropdownItems).toHaveLength(2);
         });
     });
+
+    describe("submitting the form for dropdown element", () => {
+        it("should not be able to submit the form if there are not at least 2 valid dropdown items", async () => {
+            renderComponent({
+                builderContext: {
+                    selectedElementType: EElementType.DROPDOWN,
+                },
+                formContext: {
+                    defaultValues: {
+                        dropdownItems: [
+                            { label: "", value: "" },
+                            { label: "", value: "" },
+                        ],
+                    },
+                },
+            });
+
+            const submitButton = screen.getByText("Submit");
+            fireEvent.click(submitButton);
+
+            const labelError = await screen.findAllByText(
+                "Option label required."
+            );
+            const valueError = await screen.findAllByText(
+                "Option value required."
+            );
+
+            // Initially there are 2 empty dropdown items
+            expect(labelError).toHaveLength(2);
+            expect(valueError).toHaveLength(2);
+        });
+    });
 });
 
 // =============================================================================
@@ -108,7 +141,12 @@ describe("Dropdown Items", () => {
 // =============================================================================
 
 const MyTestComponent = () => {
-    return <DropdownItems />;
+    return (
+        <>
+            <DropdownItems />
+            <button type="submit">Submit</button>
+        </>
+    );
 };
 
 const renderComponent = (overrideOptions?: TestHelper.RenderOptions) => {
