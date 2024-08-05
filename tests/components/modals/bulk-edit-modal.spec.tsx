@@ -58,12 +58,17 @@ describe("Bulk Edit Modal", () => {
     });
 
     it("should run the onClickActionButton function when the 'Save' button is clicked", async () => {
-        renderComponent({
-            displayContext: {
-                modals: [bulkEditModal],
-            },
+        await waitFor(() => {
+            renderComponent({
+                displayContext: {
+                    modals: [bulkEditModal],
+                },
+            });
         });
+
         const saveButton = getSaveButton();
+        expect(saveButton).toBeEnabled();
+
         fireEvent.click(saveButton);
 
         await waitFor(() => {
@@ -72,12 +77,13 @@ describe("Bulk Edit Modal", () => {
     });
 
     it("should show an error message when the 'Save' button is clicked and the form is invalid", async () => {
-        renderComponent({
-            displayContext: {
-                modals: [bulkEditModal],
-            },
+        await waitFor(() => {
+            renderComponent({
+                displayContext: {
+                    modals: [bulkEditModal],
+                },
+            });
         });
-
         const textArea = screen.getByRole("textbox");
 
         fireEvent.change(textArea, {
@@ -98,10 +104,12 @@ describe("Bulk Edit Modal", () => {
     });
 
     it("should save successfully when the 'Save' button is clicked and the form is valid", async () => {
-        renderComponent({
-            displayContext: {
-                modals: [bulkEditModal],
-            },
+        await waitFor(() => {
+            renderComponent({
+                displayContext: {
+                    modals: [bulkEditModal],
+                },
+            });
         });
 
         const textArea = screen.getByRole("textbox");
