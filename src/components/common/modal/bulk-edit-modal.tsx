@@ -26,6 +26,9 @@ export const BulkEditModal = ({ modal }: IProps) => {
             items: dropdownItemsString,
         },
     });
+
+    const isValid = methods.formState.isValid;
+
     // ============================================================================
     // HELPER FUNCTIONS
     // ============================================================================
@@ -53,7 +56,7 @@ export const BulkEditModal = ({ modal }: IProps) => {
                 >
                     Cancel
                 </ActionButton>
-                <ActionButton>Save</ActionButton>
+                <ActionButton disabled={!isValid}>Save</ActionButton>
             </ButtonWrapper>
         );
     };
@@ -88,7 +91,7 @@ export const BulkEditModal = ({ modal }: IProps) => {
                                         field.onChange(e.target.value)
                                     }
                                     errorMessage={
-                                        methods.formState.errors.items?.message
+                                        methods.formState.errors?.items?.message
                                     }
                                 />
                             )}

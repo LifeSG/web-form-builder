@@ -31,6 +31,7 @@ export const BasicDetails = () => {
         formState: { errors },
         watch,
         setValue,
+        resetField,
     } = useFormContext<TFormFieldValues>();
     const element = focusedElement.element;
     const type = watch("type", focusedElement.element?.type) as EElementType;
@@ -100,11 +101,25 @@ export const BasicDetails = () => {
                         <Controller
                             name="required"
                             control={control}
-                            render={({ field: { ref, ...withoutRef } }) => (
+                            render={({
+                                field: { ref, onChange, ...withoutRef },
+                            }) => (
                                 <TogglePair
                                     {...withoutRef}
                                     label={{
                                         mainLabel: "Mandatory field",
+                                    }}
+                                    onChange={(value) => {
+                                        if (value) {
+                                            setTimeout(() => {
+                                                resetField("requiredErrorMsg", {
+                                                    defaultValue:
+                                                        focusedElement.element
+                                                            .requiredErrorMsg,
+                                                });
+                                            });
+                                        }
+                                        onChange(value);
                                     }}
                                 />
                             )}
