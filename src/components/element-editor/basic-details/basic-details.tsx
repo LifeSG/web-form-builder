@@ -1,6 +1,4 @@
-import { useFormContext, useWatch } from "react-hook-form";
 import { EElementType, useBuilder } from "src/context-providers";
-import { TFormFieldValues } from "src/schemas";
 import {
     AccordionWrapper,
     FieldEditorAccordionItem,

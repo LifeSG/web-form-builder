@@ -28,12 +28,11 @@ export const Type = () => {
                     type={field.value}
                     onChange={(value: EElementType) => {
                         selectElementType(value);
-                        setValue("type", value, {
-                            shouldTouch: true,
-                            shouldDirty: true,
-                        });
                         setValue("validation", []);
+                        // setTimeout is used here to ensure the value is updated after the mounting of the new basic details components
+                        setTimeout(() => field.onChange(value));
                     }}
+                    onBlur={field.onBlur}
                     errorMessage={errors.type?.message}
                 />
             )}

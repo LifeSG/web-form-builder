@@ -141,6 +141,7 @@ const generateValidationSchema = (elementType: EElementType) => {
 export const TEXT_BASED_SCHEMA = (elementType: EElementType) => {
     return yup.object().shape({
         placeholder: yup.string().optional(),
+        preselectedValue: yup.string().optional(),
         validation: generateValidationSchema(elementType),
         prefill: yup.array().of(
             yup.object().shape({
