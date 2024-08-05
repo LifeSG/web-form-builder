@@ -2,7 +2,7 @@ import { Form } from "@lifesg/react-design-system/form";
 import { Controller, useFormContext } from "react-hook-form";
 import { TFormFieldValues } from "src/schemas";
 
-export const LabelField = () => {
+export const PlaceholderField = () => {
     // =========================================================================
     // CONST, STATE, REF
     // =========================================================================
@@ -18,20 +18,15 @@ export const LabelField = () => {
 
     return (
         <Controller
-            name="label"
+            name="placeholder"
             control={control}
             render={({ field }) => (
-                <Form.Textarea
+                <Form.Input
                     {...field}
-                    label="Element Name"
-                    rows={1}
-                    placeholder="Enter element name"
-                    value={field.value as string}
-                    onChange={(e) => {
-                        field.onChange(e.target.value);
-                    }}
-                    errorMessage={errors.label?.message}
-                    maxLength={40}
+                    label="Placeholder text (optional)"
+                    placeholder="Enter placeholder text"
+                    value={field.value || ""}
+                    errorMessage={errors.placeholder?.message}
                 />
             )}
             shouldUnregister={true}

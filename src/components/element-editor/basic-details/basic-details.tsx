@@ -67,9 +67,7 @@ export const BasicDetails = () => {
                                                 "This allows participant to resize text area.",
                                         }}
                                         value={field.value}
-                                        onChange={(value) => {
-                                            field.onChange(value);
-                                        }}
+                                        onChange={field.onChange}
                                     />
                                 )}
                                 shouldUnregister={true}

@@ -31,9 +31,7 @@ export const MandatoryField = () => {
                                 mainLabel: "Mandatory field",
                             }}
                             value={field.value}
-                            onChange={(value) => {
-                                field.onChange(value);
-                            }}
+                            onChange={field.onChange}
                         />
                     )}
                     shouldUnregister={true}
@@ -48,7 +46,6 @@ export const MandatoryField = () => {
                             {...field}
                             label="Error message"
                             value={field.value || ""}
-                            onChange={field.onChange}
                             placeholder="Enter error message"
                             errorMessage={errors.requiredErrorMsg?.message}
                         />
