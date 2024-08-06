@@ -1,4 +1,6 @@
+import { useFormContext } from "react-hook-form";
 import { EElementType, useBuilder } from "src/context-providers";
+import { TFormFieldValues } from "src/schemas";
 import {
     AccordionWrapper,
     FieldEditorAccordionItem,
@@ -15,13 +17,15 @@ export const BasicDetails = () => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
-    const { focusedElement, selectedElementType } = useBuilder();
+    const { focusedElement } = useBuilder();
+    const { watch } = useFormContext<TFormFieldValues>();
+    const type = watch("type");
 
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
     const renderBasicDetails = () => {
-        switch (selectedElementType) {
+        switch (type) {
             case EElementType.EMAIL:
                 return <EmailBasicDetails />;
             case EElementType.TEXT:

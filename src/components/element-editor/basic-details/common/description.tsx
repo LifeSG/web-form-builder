@@ -51,7 +51,6 @@ export const Description = () => {
                     />
                 );
             }}
-            shouldUnregister={true}
         />
     );
 };

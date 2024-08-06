@@ -32,7 +32,6 @@ export const Placeholder = () => {
                     errorMessage={errors.placeholder?.message}
                 />
             )}
-            shouldUnregister={true}
         />
     );
 };

@@ -40,7 +40,6 @@ export const MandatoryField = () => {
                             }}
                         />
                     )}
-                    shouldUnregister={true}
                 />
             </ToggleWrapper>
             {watch("required", true) && (

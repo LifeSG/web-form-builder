@@ -7,7 +7,7 @@ import {
     Type,
 } from "../common";
 import { DropdownItems } from "./dropdown-items";
-import { PreselectedValueDropdown } from "./preselected-value-dropdown";
+import { DropdownPreselectedValue } from "./dropdown-preselected-value";
 
 export const DropdownBasicDetails = () => {
     return (
@@ -19,7 +19,7 @@ export const DropdownBasicDetails = () => {
             <DropdownItems />
             <Description />
             <Placeholder />
-            <PreselectedValueDropdown />
+            <DropdownPreselectedValue />
         </>
     );
 };

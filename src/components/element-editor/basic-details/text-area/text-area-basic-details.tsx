@@ -5,7 +5,7 @@ import {
     Label,
     MandatoryField,
     Placeholder,
-    PreselectedValueTextBased,
+    TextBasedPreselectedValue,
     Type,
 } from "../common";
 import { ResizableInput } from "./resizable-input";
@@ -21,7 +21,7 @@ export const TextAreaBasicDetails = () => {
             <ResizableInput />
             <Pills />
             <Placeholder />
-            <PreselectedValueTextBased />
+            <TextBasedPreselectedValue />
         </>
     );
 };

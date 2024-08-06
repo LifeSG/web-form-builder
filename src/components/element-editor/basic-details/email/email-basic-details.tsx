@@ -4,7 +4,7 @@ import {
     Label,
     MandatoryField,
     Placeholder,
-    PreselectedValueTextBased,
+    TextBasedPreselectedValue,
     Type,
 } from "../common";
 
@@ -17,7 +17,7 @@ export const EmailBasicDetails = () => {
             <Id />
             <Description />
             <Placeholder />
-            <PreselectedValueTextBased />
+            <TextBasedPreselectedValue />
         </>
     );
 };

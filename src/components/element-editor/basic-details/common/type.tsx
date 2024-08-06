@@ -27,16 +27,24 @@ export const Type = () => {
                 <IconDropdown
                     type={field.value}
                     onChange={(value: EElementType) => {
+                        if (value === field.value) {
+                            return;
+                        }
                         selectElementType(value);
                         setValue("validation", []);
-                        // setTimeout is used here to ensure the value is updated after the mounting of the new basic details components
-                        setTimeout(() => field.onChange(value));
+                        /** The purpose of this setValue is to deliberately clear the preselectedValue
+                         * when the input type of the preselectedValue is different. Currently,
+                         * the preselectedValue is different only when the input type is dropdown.
+                         */
+                        if (field.value === EElementType.DROPDOWN) {
+                            setValue("preselectedValue", "");
+                        }
+                        field.onChange(value);
                     }}
                     onBlur={field.onBlur}
                     errorMessage={errors.type?.message}
                 />
             )}
-            shouldUnregister={true}
         />
     );
 };

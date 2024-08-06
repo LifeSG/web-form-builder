@@ -34,7 +34,6 @@ export const Label = () => {
                     maxLength={40}
                 />
             )}
-            shouldUnregister={true}
         />
     );
 };
