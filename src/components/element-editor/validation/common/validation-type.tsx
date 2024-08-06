@@ -9,10 +9,16 @@ interface IProps {
 }
 
 export const ValidationType = ({ options, index, disabled }: IProps) => {
+    // ===========================================================================
+    // CONST, STATE, REF
+    // ===========================================================================
     const {
         formState: { errors },
         control,
     } = useFormContext<TOverallTextBasedSchema>();
+    // =========================================================================
+    // RENDER FUNCTIONS
+    // =========================================================================
     return (
         <Controller
             name={`validation.${index}.validationType`}

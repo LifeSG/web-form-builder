@@ -7,10 +7,16 @@ interface IProps {
 }
 
 export const ValidationErrorMessage = ({ index }: IProps) => {
+    // ===========================================================================
+    // CONST, STATE, REF
+    // ===========================================================================
     const {
         formState: { errors },
         control,
     } = useFormContext<TOverallTextBasedSchema>();
+    // =========================================================================
+    // RENDER FUNCTIONS
+    // =========================================================================
     return (
         <Controller
             name={`validation.${index}.validationErrorMessage`}
