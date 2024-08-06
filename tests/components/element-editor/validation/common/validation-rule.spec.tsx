@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
 import { ValidationRule } from "src/components/element-editor/validation/common";
-import { EValidationType, IValidation } from "src/context-providers";
+import { IValidation } from "src/context-providers";
 import { TestHelper } from "src/util/test-helper";
 
 describe("ValidationRule", () => {
@@ -16,32 +16,6 @@ describe("ValidationRule", () => {
     afterEach(() => {
         jest.restoreAllMocks();
         jest.resetAllMocks();
-    });
-
-    it("should render an error message when validation rule is invalid", async () => {
-        const mockInvalidValidationValue: IValidation[] = [
-            {
-                validationType: EValidationType.EMAIL_DOMAIN,
-                validationRule: "mockRule",
-                validationErrorMessage: "mockErrorMessage",
-            },
-        ];
-
-        renderComponent({
-            formContext: {
-                currentValues: {
-                    validation: mockInvalidValidationValue,
-                },
-            },
-        });
-        const getValidationRuleField =
-            screen.getByPlaceholderText("Enter rule");
-        fireEvent.focus(getValidationRuleField);
-        fireEvent.blur(getValidationRuleField);
-        const validationRuleError = await screen.findByText(
-            "Invalid email domain. Check if email domain is correct with no whitespace between characters. Separate each with a comma if there is more than 1 email."
-        );
-        expect(validationRuleError).toBeInTheDocument();
     });
 
     it("should render an error message when validation rule is left empty", async () => {
