@@ -4,7 +4,7 @@ import { PillItems } from "src/components/common/pills/pill-items";
 import { EElementType } from "src/context-providers";
 import { TestHelper } from "src/util/test-helper";
 
-describe("Pill Items", () => {
+describe("PillItems", () => {
     beforeEach(() => {
         global.ResizeObserver = jest.fn().mockImplementation(() => ({
             observe: jest.fn(),

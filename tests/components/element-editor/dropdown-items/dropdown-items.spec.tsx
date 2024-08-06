@@ -5,7 +5,7 @@ import { DropdownItems } from "src/components/element-editor/basic-details/dropd
 import { EElementType } from "src/context-providers";
 import { TestHelper } from "src/util/test-helper";
 
-describe("Dropdown Items", () => {
+describe("DropdownItems", () => {
     beforeEach(() => {
         global.ResizeObserver = jest.fn().mockImplementation(() => ({
             observe: jest.fn(),

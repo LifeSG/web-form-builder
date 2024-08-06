@@ -21,13 +21,11 @@ describe("BasicDetails", () => {
 
     describe("rendering label & required error message fields", () => {
         it("should render label if element has label property", async () => {
-            await waitFor(() => {
-                renderComponent({
-                    builderContext: {
-                        focusedElement: MOCK_FOCUSED_ELEMENT,
-                        selectedElementType: EElementType.EMAIL,
-                    },
-                });
+            renderComponent({
+                builderContext: {
+                    focusedElement: MOCK_FOCUSED_ELEMENT,
+                    selectedElementType: EElementType.EMAIL,
+                },
             });
             const labelField = await getLabelField();
             expect(labelField).toBeInTheDocument();

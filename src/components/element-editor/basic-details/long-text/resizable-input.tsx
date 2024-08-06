@@ -20,19 +20,19 @@ export const ResizableInput = () => {
                 name="resizableInput"
                 control={control}
                 defaultValue={false}
-                render={({ field }) => (
-                    <TogglePair
-                        label={{
-                            mainLabel: "Resizable area input",
-                            subLabel:
-                                "This allows participant to resize text area.",
-                        }}
-                        value={field.value}
-                        onChange={(value) => {
-                            field.onChange(value);
-                        }}
-                    />
-                )}
+                render={({ field }) => {
+                    const { ref, ...fieldWithoutRef } = field;
+                    return (
+                        <TogglePair
+                            {...fieldWithoutRef}
+                            label={{
+                                mainLabel: "Resizable area input",
+                                subLabel:
+                                    "This allows participant to resize text area.",
+                            }}
+                        />
+                    );
+                }}
                 shouldUnregister={true}
             />
         </ToggleWrapper>
