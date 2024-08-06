@@ -1,8 +1,9 @@
 import { Form } from "@lifesg/react-design-system/form";
+import { Text } from "@lifesg/react-design-system/text";
 import { Controller, useFormContext } from "react-hook-form";
 import { TFormFieldValues } from "src/schemas";
 
-export const Label = () => {
+export const IdField = () => {
     // =========================================================================
     // CONST, STATE, REF
     // =========================================================================
@@ -18,20 +19,23 @@ export const Label = () => {
 
     return (
         <Controller
-            name="label"
+            name="id"
             control={control}
             render={({ field }) => (
-                <Form.Textarea
+                <Form.Input
                     {...field}
-                    label="Element Name"
-                    rows={1}
-                    placeholder="Enter element name"
-                    value={field.value as string}
-                    onChange={(e) => {
-                        field.onChange(e.target.value);
+                    label={{
+                        children: "ID",
+                        subtitle: (
+                            <Text.H6 weight={400}>
+                                ID is used to differentiate element from the
+                                others in the UI schema.
+                            </Text.H6>
+                        ),
                     }}
-                    errorMessage={errors.label?.message}
-                    maxLength={40}
+                    placeholder="Create an ID"
+                    value={field.value || ""}
+                    errorMessage={errors.id?.message}
                 />
             )}
         />

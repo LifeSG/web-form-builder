@@ -1,9 +1,9 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
-import { Id } from "src/components/element-editor/basic-details/common";
+import { LabelField } from "src/components/element-editor/basic-details/common";
 import { TestHelper } from "src/util/test-helper";
 
-describe("Basic Details Id Component", () => {
+describe("LabelField", () => {
     beforeEach(() => {
         global.ResizeObserver = jest.fn().mockImplementation(() => ({
             observe: jest.fn(),
@@ -20,11 +20,12 @@ describe("Basic Details Id Component", () => {
     it("should display error message if field is touched and left empty", async () => {
         renderComponent();
 
-        const idInput = await screen.findByPlaceholderText("Create an ID");
-        fireEvent.focus(idInput);
-        fireEvent.change(idInput, { target: { value: null } });
-        fireEvent.blur(idInput);
-        const errorMessage = await screen.findByText("ID required.");
+        const labelInput =
+            await screen.findByPlaceholderText("Enter element name");
+        fireEvent.focus(labelInput);
+        fireEvent.change(labelInput, { target: { value: null } });
+        fireEvent.blur(labelInput);
+        const errorMessage = await screen.findByText("Label required.");
         expect(errorMessage).toBeInTheDocument();
     });
 });
@@ -33,5 +34,5 @@ describe("Basic Details Id Component", () => {
 // HELPER FUNCTIONS
 // =============================================================================
 const renderComponent = (overrideOptions?: TestHelper.RenderOptions) => {
-    return render(TestHelper.withProviders(overrideOptions, <Id />));
+    return render(TestHelper.withProviders(overrideOptions, <LabelField />));
 };

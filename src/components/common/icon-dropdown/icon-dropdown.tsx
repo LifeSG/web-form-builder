@@ -49,6 +49,7 @@ export const IconDropdown = ({
             onSelectOption={(option) => onChange(option)}
             onBlur={onBlur}
             errorMessage={errorMessage && errorMessage}
+            onBlur={onBlur}
         />
     );
 };

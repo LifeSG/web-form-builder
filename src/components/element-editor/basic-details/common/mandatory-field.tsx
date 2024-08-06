@@ -1,7 +1,6 @@
 import { Form } from "@lifesg/react-design-system/form";
 import { Controller, useFormContext } from "react-hook-form";
 import { TogglePair } from "src/components/common/toggle-pair/toggle-pair";
-import { useBuilder } from "src/context-providers";
 import { TFormFieldValues } from "src/schemas";
 import { MandatoryFieldBox, ToggleWrapper } from "../basic-details.styles";
 
@@ -10,14 +9,11 @@ export const MandatoryField = () => {
     // CONST, STATE, REF
     // =========================================================================
 
-    const { focusedElement } = useBuilder();
     const {
         control,
         formState: { errors },
         watch,
     } = useFormContext<TFormFieldValues>();
-
-    const element = focusedElement.element;
 
     // =========================================================================
     // RENDER FUNCTIONS
@@ -35,9 +31,7 @@ export const MandatoryField = () => {
                                 mainLabel: "Mandatory field",
                             }}
                             value={field.value}
-                            onChange={(value) => {
-                                field.onChange(value);
-                            }}
+                            onChange={field.onChange}
                         />
                     )}
                 />
@@ -51,9 +45,6 @@ export const MandatoryField = () => {
                             {...field}
                             label="Error message"
                             value={field.value || ""}
-                            onChange={(e) => {
-                                field.onChange(e.target.value);
-                            }}
                             placeholder="Enter error message"
                             errorMessage={errors.requiredErrorMsg?.message}
                         />

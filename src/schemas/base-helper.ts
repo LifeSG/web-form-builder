@@ -17,8 +17,8 @@ export namespace BaseSchemaHelper {
         yup.object().shape({
             type: yup
                 .string()
-                .required("Element type required.")
-                .oneOf(Object.values(EElementType), "Invalid element type."),
+                .oneOf(Object.values(EElementType))
+                .required("Element type required."),
             label: yup.string().required("Label required."),
             required: yup.boolean().required().default(true),
             requiredErrorMsg: yup.string().when("required", {

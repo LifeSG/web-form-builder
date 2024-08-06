@@ -1,9 +1,13 @@
-import { Controller, useFormContext } from "react-hook-form";
+import {
+    Controller,
+    ControllerRenderProps,
+    useFormContext,
+} from "react-hook-form";
 import { IconDropdown } from "src/components/common/icon-dropdown";
 import { EElementType, useBuilder } from "src/context-providers";
 import { TFormFieldValues } from "src/schemas";
 
-export const Type = () => {
+export const TypeField = () => {
     // =========================================================================
     // CONST, STATE, REF
     // =========================================================================
@@ -16,6 +20,19 @@ export const Type = () => {
     } = useFormContext<TFormFieldValues>();
 
     // =========================================================================
+    // HELPER FUNCTIONS
+    // =========================================================================
+
+    const handleChange = (
+        value: EElementType,
+        field: ControllerRenderProps<TFormFieldValues, "type">
+    ) => {
+        selectElementType(value);
+        setValue("validation", []);
+        field.onChange(value);
+    };
+
+    // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
 
@@ -25,26 +42,15 @@ export const Type = () => {
             control={control}
             render={({ field }) => (
                 <IconDropdown
+                    onBlur={field.onBlur}
                     type={field.value}
                     onChange={(value: EElementType) => {
-                        if (value === field.value) {
-                            return;
-                        }
-                        selectElementType(value);
-                        setValue("validation", []);
-                        /** The purpose of this setValue is to deliberately clear the preselectedValue
-                         * when the input type of the preselectedValue is different. Currently,
-                         * the preselectedValue is different only when the input type is dropdown.
-                         */
-                        if (field.value === EElementType.DROPDOWN) {
-                            setValue("preselectedValue", "");
-                        }
-                        field.onChange(value);
+                        handleChange(value, field);
                     }}
-                    onBlur={field.onBlur}
                     errorMessage={errors.type?.message}
                 />
             )}
+            shouldUnregister={true}
         />
     );
 };

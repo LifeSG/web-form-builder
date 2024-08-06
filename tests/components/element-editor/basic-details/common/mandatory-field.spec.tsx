@@ -5,7 +5,7 @@ import { EElementType, TElement } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data";
 import { TestHelper } from "src/util/test-helper";
 
-describe("Basic Details Mandatory Field Component", () => {
+describe("MandatoryField", () => {
     beforeEach(() => {
         global.ResizeObserver = jest.fn().mockImplementation(() => ({
             observe: jest.fn(),
