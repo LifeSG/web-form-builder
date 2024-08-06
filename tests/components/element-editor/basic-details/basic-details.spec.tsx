@@ -1,11 +1,11 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import "jest-canvas-mock";
 import { BasicDetails } from "src/components/element-editor/basic-details";
 import { EElementType } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data";
 import { TestHelper } from "src/util/test-helper";
 
-describe("Basic Details", () => {
+describe("BasicDetails", () => {
     beforeEach(() => {
         global.ResizeObserver = jest.fn().mockImplementation(() => ({
             observe: jest.fn(),
@@ -21,11 +21,13 @@ describe("Basic Details", () => {
 
     describe("rendering label & required error message fields", () => {
         it("should render label if element has label property", async () => {
-            renderComponent({
-                builderContext: {
-                    focusedElement: MOCK_FOCUSED_ELEMENT,
-                    selectedElementType: EElementType.EMAIL,
-                },
+            await waitFor(() => {
+                renderComponent({
+                    builderContext: {
+                        focusedElement: MOCK_FOCUSED_ELEMENT,
+                        selectedElementType: EElementType.EMAIL,
+                    },
+                });
             });
             const labelField = await getLabelField();
             expect(labelField).toBeInTheDocument();

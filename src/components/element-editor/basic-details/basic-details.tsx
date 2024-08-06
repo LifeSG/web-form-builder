@@ -19,7 +19,7 @@ export const BasicDetails = () => {
     // =========================================================================
     const { focusedElement } = useBuilder();
     const { watch } = useFormContext<TFormFieldValues>();
-    const type = watch("type");
+    const type = watch("type", focusedElement?.element?.type);
 
     // =========================================================================
     // RENDER FUNCTIONS
