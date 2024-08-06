@@ -13,8 +13,10 @@ import {
     TOverallTextBasedYupSchema,
 } from "src/schemas";
 import * as Yup from "yup";
+import { ValidationChild } from "./common/validation-child";
+import { EmailValidationChild } from "./email/email-validation-child";
 import { getValidationOptionsByType } from "./helper";
-import { ValidationChild } from "./validation-child";
+import { NumericValidationChild } from "./numeric/numeric-validation-child";
 
 export const Validation = () => {
     // =========================================================================
@@ -94,9 +96,8 @@ export const Validation = () => {
         switch (elementType) {
             case EElementType.EMAIL:
             case EElementType.TEXTAREA:
-                return ELEMENT_VALIDATION_TYPES["Text field"][
-                    focusedElement?.element?.type
-                ].validationTypes[0];
+                return ELEMENT_VALIDATION_TYPES["Text field"][elementType]
+                    .validationTypes[0];
             default:
                 return "";
         }
@@ -124,17 +125,54 @@ export const Validation = () => {
     // =========================================================================
 
     const renderChildren = () => {
-        return fields.map((field, index) => (
-            <ValidationChild
-                key={field.id}
-                onDelete={() => handleDelete(index)}
-                options={getValidationOptionsByType(
-                    validationValues,
-                    elementType
-                )}
-                index={index}
-            />
-        ));
+        const options = getValidationOptionsByType(
+            validationValues,
+            elementType
+        );
+
+        return fields.map((field, index) => {
+            switch (elementType) {
+                case EElementType.EMAIL:
+                    return (
+                        <EmailValidationChild
+                            key={field.id}
+                            index={index}
+                            onDelete={() => handleDelete(index)}
+                        />
+                    );
+                case EElementType.TEXTAREA:
+                    return (
+                        <ValidationChild
+                            key={field.id}
+                            index={index}
+                            options={options}
+                            disabled={options.length === 1}
+                            onDelete={() => handleDelete(index)}
+                        />
+                    );
+                case EElementType.NUMERIC:
+                    return (
+                        <NumericValidationChild
+                            key={field.id}
+                            index={index}
+                            options={options}
+                            onDelete={() => handleDelete(index)}
+                        />
+                    );
+                case EElementType.TEXT:
+                case EElementType.CONTACT:
+                    return (
+                        <ValidationChild
+                            key={field.id}
+                            index={index}
+                            options={options}
+                            onDelete={() => handleDelete(index)}
+                        />
+                    );
+                default:
+                    return null;
+            }
+        });
     };
 
     return (

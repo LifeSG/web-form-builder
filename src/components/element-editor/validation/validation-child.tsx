@@ -4,13 +4,14 @@ import { Controller, useFormContext } from "react-hook-form";
 import { ChildEntry } from "src/components/common";
 import { EElementType, useBuilder } from "src/context-providers";
 import { TOverallTextBasedSchema } from "src/schemas";
+import { ValidationErrorMessage } from "./common/validation-error-message";
 import { ValidationRule } from "./validation-rule";
 import { FieldWrapper } from "./validation.styles";
 
 interface IProps {
     onDelete: () => void;
     options: string[];
-    index?: number;
+    index: number;
 }
 
 export const ValidationChild = ({ onDelete, options, index }: IProps) => {
@@ -71,7 +72,6 @@ export const ValidationChild = ({ onDelete, options, index }: IProps) => {
                         );
                     }}
                 />
-
                 <Controller
                     name={`validation.${index}.validationRule`}
                     control={control}
@@ -87,28 +87,7 @@ export const ValidationChild = ({ onDelete, options, index }: IProps) => {
                         );
                     }}
                 />
-
-                <Controller
-                    name={`validation.${index}.validationErrorMessage`}
-                    control={control}
-                    render={({ field }) => {
-                        const { ref, ...fieldWithoutRef } = field;
-                        return (
-                            <Form.Input
-                                {...fieldWithoutRef}
-                                placeholder="Set error message"
-                                value={fieldWithoutRef.value}
-                                onChange={(event) => {
-                                    field.onChange(event.target.value);
-                                }}
-                                errorMessage={
-                                    errors?.validation?.[index]
-                                        ?.validationErrorMessage?.message
-                                }
-                            />
-                        );
-                    }}
-                />
+                <ValidationErrorMessage index={index} />
                 {renderAlert()}
             </FieldWrapper>
         </ChildEntry>
