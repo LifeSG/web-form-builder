@@ -38,7 +38,6 @@ export const TextBasedPreselectedValueField = () => {
                     errorMessage={errors.preselectedValue?.message}
                 />
             )}
-            shouldUnregister={true}
         />
     );
 };

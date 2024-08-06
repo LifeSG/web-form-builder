@@ -1,24 +1,24 @@
 import {
-    Description,
-    Id,
-    Label,
+    DescriptionField,
+    IdField,
+    LabelField,
     MandatoryField,
-    Placeholder,
-    Type,
+    PlaceholderField,
+    TypeField,
 } from "../common";
 import { DropdownItems } from "./dropdown-items";
-import { DropdownPreselectedValue } from "./dropdown-preselected-value";
+import { DropdownPreselectedValue } from "./dropdown-preselected-value-field";
 
 export const DropdownBasicDetails = () => {
     return (
         <>
-            <Type />
-            <Label />
+            <TypeField />
+            <LabelField />
             <MandatoryField />
-            <Id />
+            <IdField />
             <DropdownItems />
-            <Description />
-            <Placeholder />
+            <DescriptionField />
+            <PlaceholderField />
             <DropdownPreselectedValue />
         </>
     );

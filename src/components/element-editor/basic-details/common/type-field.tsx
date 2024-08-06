@@ -27,8 +27,18 @@ export const TypeField = () => {
         value: EElementType,
         field: ControllerRenderProps<TFormFieldValues, "type">
     ) => {
+        if (value === field.value) {
+            return;
+        }
         selectElementType(value);
         setValue("validation", []);
+        /** The purpose of this setValue is to deliberately clear the preselectedValue
+         * when the input type of the preselectedValue is different. Currently,
+         * the preselectedValue is different only when the input type is dropdown.
+         */
+        if (field.value === EElementType.DROPDOWN) {
+            setValue("preselectedValue", "");
+        }
         field.onChange(value);
     };
 
@@ -50,7 +60,6 @@ export const TypeField = () => {
                     errorMessage={errors.type?.message}
                 />
             )}
-            shouldUnregister={true}
         />
     );
 };

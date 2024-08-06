@@ -1,23 +1,23 @@
 import {
-    Description,
-    Id,
-    Label,
+    DescriptionField,
+    IdField,
+    LabelField,
     MandatoryField,
-    Placeholder,
-    TextBasedPreselectedValue,
-    Type,
+    PlaceholderField,
+    TextBasedPreselectedValueField,
+    TypeField,
 } from "../common";
 
 export const EmailBasicDetails = () => {
     return (
         <>
-            <Type />
-            <Label />
+            <TypeField />
+            <LabelField />
             <MandatoryField />
-            <Id />
-            <Description />
-            <Placeholder />
-            <TextBasedPreselectedValue />
+            <IdField />
+            <DescriptionField />
+            <PlaceholderField />
+            <TextBasedPreselectedValueField />
         </>
     );
 };

@@ -56,7 +56,6 @@ export const DescriptionField = () => {
                     maxLength={180}
                 />
             )}
-            shouldUnregister={true}
         />
     );
 };

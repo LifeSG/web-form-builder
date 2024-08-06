@@ -1,27 +1,27 @@
 import { Pills } from "src/components/common/pills";
 import {
-    Description,
-    Id,
-    Label,
+    DescriptionField,
+    IdField,
+    LabelField,
     MandatoryField,
-    Placeholder,
-    TextBasedPreselectedValue,
-    Type,
+    PlaceholderField,
+    TextBasedPreselectedValueField,
+    TypeField,
 } from "../common";
 import { ResizableInput } from "./resizable-input";
 
 export const LongTextBasicDetails = () => {
     return (
         <>
-            <Type />
-            <Label />
+            <TypeField />
+            <LabelField />
             <MandatoryField />
-            <Id />
-            <Description />
+            <IdField />
+            <DescriptionField />
             <ResizableInput />
             <Pills />
-            <Placeholder />
-            <TextBasedPreselectedValue />
+            <PlaceholderField />
+            <TextBasedPreselectedValueField />
         </>
     );
 };
