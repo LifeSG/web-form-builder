@@ -10,7 +10,7 @@ import {
 } from "../common";
 import { ResizableInput } from "./resizable-input";
 
-export const TextAreaBasicDetails = () => {
+export const LongTextBasicDetails = () => {
     return (
         <>
             <Type />

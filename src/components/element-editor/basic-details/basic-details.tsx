@@ -11,7 +11,7 @@ import { DropdownBasicDetails } from "./dropdown";
 import { EmailBasicDetails } from "./email";
 import { NumericBasicDetails } from "./numeric";
 import { TextBasicDetails } from "./text";
-import { TextAreaBasicDetails } from "./text-area";
+import { LongTextBasicDetails } from "./long-text";
 
 export const BasicDetails = () => {
     // =========================================================================
@@ -31,7 +31,7 @@ export const BasicDetails = () => {
             case EElementType.TEXT:
                 return <TextBasicDetails />;
             case EElementType.TEXTAREA:
-                return <TextAreaBasicDetails />;
+                return <LongTextBasicDetails />;
             case EElementType.NUMERIC:
                 return <NumericBasicDetails />;
             case EElementType.CONTACT:
