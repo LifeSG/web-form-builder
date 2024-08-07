@@ -24,6 +24,7 @@ export const TextBasedPreselectedValueField = () => {
             render={({ field }) => (
                 <Form.Input
                     {...field}
+                    data-testid="preselected-value-field"
                     label={{
                         children: "Pre-selected value (optional)",
                         subtitle: (

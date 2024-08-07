@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
 import { BasicDetails } from "src/components/element-editor/basic-details";
 import { EElementType, TElement } from "src/context-providers";
@@ -121,6 +121,114 @@ describe("BasicDetails", () => {
             expect(dropdownBasicDetails).toBeInTheDocument();
         });
     });
+
+    describe("resetting of form fields when element type changes", () => {
+        it("should replace element name, mandatory field's error message, and ID with values that correspond to the new element type", async () => {
+            renderComponent({
+                builderContext: {
+                    focusedElement: {
+                        element: MOCK_FOCUSED_ELEMENT(EElementType.EMAIL),
+                        isDirty: false,
+                    },
+                    selectedElementType: EElementType.EMAIL,
+                },
+                formContext: {
+                    defaultValues: MOCK_FOCUSED_ELEMENT(EElementType.EMAIL),
+                },
+            });
+
+            // Check initial state
+
+            const textBasicDetails = await screen.findByTestId(
+                "email-basic-details"
+            );
+            expect(textBasicDetails).toBeInTheDocument();
+
+            let elementName = screen.getByTestId("label-field");
+            let errorMessageField = screen.getByTestId(
+                "required-error-message-field"
+            );
+            let elementId = screen.getByTestId("id-field");
+
+            expect(elementName).toHaveValue("Email address");
+            expect(errorMessageField).toHaveValue("This is a required field.");
+            expect(elementId).toHaveValue("email-field");
+
+            // Change element type to TEXT
+
+            fireEvent.click(screen.getByTestId("type-field"));
+
+            const textOption = await screen.findByText("Short text");
+            expect(textOption).toBeInTheDocument();
+
+            fireEvent.click(textOption);
+
+            // Check that new element type's values are set
+            elementName = screen.getByTestId("label-field");
+            errorMessageField = screen.getByTestId(
+                "required-error-message-field"
+            );
+            elementId = screen.getByTestId("id-field");
+
+            expect(elementName).toHaveValue("Short text");
+            expect(errorMessageField).toHaveValue("This is a required field.");
+            expect(elementId).toHaveValue("short-text-field");
+        });
+
+        it("should clear all other field values that do not have default values", async () => {
+            renderComponent({
+                builderContext: {
+                    focusedElement: {
+                        element: MOCK_FOCUSED_ELEMENT(EElementType.EMAIL),
+                        isDirty: false,
+                    },
+                    selectedElementType: EElementType.EMAIL,
+                },
+                formContext: {
+                    defaultValues: MOCK_FOCUSED_ELEMENT(EElementType.EMAIL),
+                },
+            });
+
+            let descriptionField = screen.getByTestId("description-field");
+            let placeholderField = screen.getByTestId("placeholder-field");
+            let preselectedValueField = screen.getByTestId(
+                "preselected-value-field"
+            );
+
+            fireEvent.change(descriptionField, {
+                target: { value: "description" },
+            });
+            fireEvent.change(placeholderField, {
+                target: { value: "placeholder" },
+            });
+            fireEvent.change(preselectedValueField, {
+                target: { value: "preselectedValue" },
+            });
+
+            expect(descriptionField).toHaveValue("description");
+            expect(placeholderField).toHaveValue("placeholder");
+            expect(preselectedValueField).toHaveValue("preselectedValue");
+
+            // Change element type to TEXT
+            fireEvent.click(screen.getByTestId("type-field"));
+
+            const textOption = await screen.findByText("Short text");
+            expect(textOption).toBeInTheDocument();
+
+            fireEvent.click(textOption);
+
+            // Check that the fields are cleared
+            descriptionField = screen.getByTestId("description-field");
+            placeholderField = screen.getByTestId("placeholder-field");
+            preselectedValueField = screen.getByTestId(
+                "preselected-value-field"
+            );
+
+            expect(descriptionField).toHaveValue("");
+            expect(placeholderField).toHaveValue("");
+            expect(preselectedValueField).toHaveValue("");
+        });
+    });
 });
 
 // =============================================================================
@@ -139,8 +247,9 @@ const MOCK_FOCUSED_ELEMENT = (elementType: EElementType) => {
     const element: TElement = {
         internalId: "mock123",
         type: elementType,
-        id: "mockElement",
-        required: false,
+        id: "email-field",
+        required: true,
+        requiredErrorMsg: "This is a required field.",
         description: "hellooo",
         label: ELEMENT_BUTTON_LABELS[elementType],
         columns: { desktop: 12, tablet: 8, mobile: 4 } as const,

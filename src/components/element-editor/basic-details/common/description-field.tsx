@@ -41,6 +41,7 @@ export const DescriptionField = () => {
             render={({ field }) => (
                 <StyledTextarea
                     {...field}
+                    data-testid="description-field"
                     label={{
                         children: "Description text (optional)",
                         subtitle: (

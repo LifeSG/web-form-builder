@@ -23,6 +23,7 @@ export const PlaceholderField = () => {
             render={({ field }) => (
                 <Form.Input
                     {...field}
+                    data-testid="placeholder-field"
                     label="Placeholder text (optional)"
                     placeholder="Enter placeholder text"
                     value={field.value || ""}

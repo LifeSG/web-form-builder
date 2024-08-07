@@ -41,6 +41,7 @@ export const MandatoryField = () => {
                     render={({ field }) => (
                         <Form.Input
                             {...field}
+                            data-testid="required-error-message-field"
                             label="Error message"
                             value={field.value || ""}
                             placeholder="Enter error message"

@@ -23,6 +23,7 @@ export const LabelField = () => {
             render={({ field }) => (
                 <Form.Textarea
                     {...field}
+                    data-testid="label-field"
                     label="Element Name"
                     rows={1}
                     placeholder="Enter element name"
