@@ -1,5 +1,5 @@
-import styled from "styled-components";
 import { Form } from "@lifesg/react-design-system/form";
+import styled from "styled-components";
 
 export const MandatoryFieldBox = styled.div`
     background: rgba(248, 248, 248, 1);

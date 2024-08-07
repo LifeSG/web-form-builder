@@ -2,8 +2,8 @@ import { useFormContext } from "react-hook-form";
 import { EElementType, useBuilder } from "src/context-providers";
 import { TFormFieldValues } from "src/schemas";
 import {
-    AccordionWrapper,
     AccordionItem,
+    AccordionWrapper,
     Wrapper,
 } from "./basic-details.styles";
 import {
