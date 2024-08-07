@@ -1,8 +1,6 @@
 import { ChildEntry } from "src/components/common";
-import { EElementType } from "src/context-providers";
-import { ELEMENT_VALIDATION_TYPES } from "src/data";
-import { ValidationErrorMessage, ValidationType } from "../../common/";
 import { FieldWrapper } from "../..";
+import { ValidationErrorMessage, ValidationType } from "../../common/";
 import { EmailValidationRule } from "./email-validation-rule";
 
 interface IProps {
