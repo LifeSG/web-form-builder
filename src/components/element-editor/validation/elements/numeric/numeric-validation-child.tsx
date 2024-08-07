@@ -1,10 +1,13 @@
+import { useFormContext } from "react-hook-form";
 import { ChildEntry } from "src/components/common";
+import { EValidationType } from "src/context-providers";
+import { TOverallTextBasedSchema } from "src/schemas";
 import {
     ValidationErrorMessage,
     ValidationRule,
     ValidationType,
-} from "../common/";
-import { FieldWrapper } from "..";
+} from "../../common";
+import { FieldWrapper } from "../..";
 
 interface IProps {
     onDelete: () => void;
@@ -13,12 +16,18 @@ interface IProps {
     disabled?: boolean;
 }
 
-export const ValidationChild = ({
+export const NumericValidationChild = ({
     onDelete,
     index,
     options,
     disabled,
 }: IProps) => {
+    // ===========================================================================
+    // CONST, STATE, REF
+    // ===========================================================================
+    const { watch } = useFormContext<TOverallTextBasedSchema>();
+    const validationType = watch(`validation.${index}.validationType`);
+
     // =================================================================
     // RENDER FUNCTIONS
     // =================================================================
@@ -30,7 +39,9 @@ export const ValidationChild = ({
                     options={options}
                     disabled={disabled}
                 />
-                <ValidationRule index={index} />
+                {validationType !== EValidationType.WHOLE_NUMBERS && (
+                    <ValidationRule index={index} />
+                )}
                 <ValidationErrorMessage index={index} />
             </FieldWrapper>
         </ChildEntry>

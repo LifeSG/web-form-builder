@@ -1,11 +1,7 @@
 import { Text } from "@lifesg/react-design-system/text";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
-import {
-    EElementType,
-    TTextBasedElement,
-    useBuilder,
-} from "src/context-providers";
+import { EElementType, useBuilder } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import {
     SchemaHelper,
@@ -14,15 +10,18 @@ import {
 } from "src/schemas";
 import * as Yup from "yup";
 import { ValidationChild } from "./common/validation-child";
-import { EmailValidationChild } from "./email/email-validation-child";
+import {
+    EmailValidationChild,
+    LongTextValidationChild,
+    NumericValidationChild,
+} from "./elements";
 import { getValidationOptionsByType } from "./helper";
-import { NumericValidationChild } from "./numeric/numeric-validation-child";
 
 export const Validation = () => {
     // =========================================================================
     // CONST, STATES, REFS
     // =========================================================================
-    const { focusedElement, selectedElementType } = useBuilder();
+    const { selectedElementType } = useBuilder();
     const { watch, control } = useFormContext<TOverallTextBasedSchema>(); //Validation is only present in text-based-fields.
     const { fields, append, remove } = useFieldArray({
         control,
@@ -32,14 +31,8 @@ export const Validation = () => {
     const schema = SchemaHelper.buildSchema(
         selectedElementType
     ) as TOverallTextBasedYupSchema;
-    const validationValues = watch(
-        "validation",
-        (focusedElement.element as TTextBasedElement).validation
-    );
-    const elementType = watch(
-        "type",
-        focusedElement.element.type
-    ) as EElementType;
+    const validationValues = watch("validation");
+    const elementType = watch("type");
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
@@ -142,7 +135,7 @@ export const Validation = () => {
                     );
                 case EElementType.TEXTAREA:
                     return (
-                        <ValidationChild
+                        <LongTextValidationChild
                             key={field.id}
                             index={index}
                             options={options}

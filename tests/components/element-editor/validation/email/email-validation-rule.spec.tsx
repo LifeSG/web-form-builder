@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
-import { EmailValidationRule } from "src/components/element-editor/validation/email/email-validation-rule";
+import { EmailValidationRule } from "src/components/element-editor/validation/elements/email";
 import { EValidationType, IValidation } from "src/context-providers";
 import { TestHelper } from "src/util/test-helper";
 

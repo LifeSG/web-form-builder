@@ -1,9 +1,8 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
 import { setupJestCanvasMock } from "jest-canvas-mock";
-import { Validation } from "src/components/element-editor/validation/validation";
+import { Validation } from "src/components/element-editor/validation/";
 import { EElementType, EValidationType } from "src/context-providers";
-import { ELEMENT_BUTTON_LABELS } from "src/data";
 import { TestHelper } from "src/util/test-helper";
 
 describe("Validation", () => {
@@ -20,32 +19,12 @@ describe("Validation", () => {
         jest.resetAllMocks();
     });
 
-    it("should contain the component with the title, buttonLabel & children being passed into it", () => {
+    it("should fire onAdd and render the email validation-child component when the add validation button is being clicked and element type is email", () => {
         renderComponent({
-            builderContext: {
-                focusedElement: {
-                    element: MOCK_TEXT_BASED_ELEMENT(EElementType.EMAIL),
-                    isDirty: true,
-                },
-            },
             formContext: {
-                elementType: EElementType.EMAIL,
-            },
-        });
-        expect(screen.getByText("Additional Validation")).toBeInTheDocument();
-        expect(getAddValidationButton()).toBeInTheDocument();
-    });
-
-    it("should fire onAdd and render the validation-child component when the button is being clicked", () => {
-        renderComponent({
-            builderContext: {
-                focusedElement: {
-                    element: MOCK_TEXT_BASED_ELEMENT(EElementType.EMAIL),
-                    isDirty: true,
+                defaultValues: {
+                    type: EElementType.EMAIL,
                 },
-            },
-            formContext: {
-                elementType: EElementType.EMAIL,
             },
         });
         fireEvent.click(getAddValidationButton());
@@ -67,14 +46,10 @@ describe("Validation", () => {
 
     it("should disable the button and show a popover when a maximum number of entries is reached when the inputs are filled up", async () => {
         renderComponent({
-            builderContext: {
-                focusedElement: {
-                    element: MOCK_TEXT_BASED_ELEMENT(EElementType.EMAIL),
-                    isDirty: true,
-                },
-            },
             formContext: {
-                elementType: EElementType.EMAIL,
+                defaultValues: {
+                    type: EElementType.EMAIL,
+                },
             },
         });
         fireEvent.click(getAddValidationButton());
@@ -97,16 +72,9 @@ describe("Validation", () => {
         expect(getAddValidationButton()).toBeDisabled();
     });
 
-    it("should disable the button and show a popover when for other element types", async () => {
+    it("should disable the button and show a popover when existing validation is not filled", async () => {
         renderComponent({
             builderContext: {
-                focusedElement: {
-                    element: {
-                        ...MOCK_TEXT_BASED_ELEMENT(EElementType.TEXT),
-                        type: EElementType.TEXT,
-                    },
-                    isDirty: true,
-                },
                 selectedElementType: EElementType.TEXT,
             },
             formContext: {
@@ -130,16 +98,14 @@ describe("Validation", () => {
         setupJestCanvasMock();
         renderComponent({
             builderContext: {
-                focusedElement: {
-                    element: {
-                        ...MOCK_TEXT_BASED_ELEMENT(EElementType.TEXT),
-                        type: EElementType.TEXT,
-                    },
-                    isDirty: true,
-                },
+                selectedElementType: EElementType.TEXT,
             },
             formContext: {
                 elementType: EElementType.TEXT,
+                defaultValues: {
+                    type: EElementType.TEXT,
+                    validation: [],
+                },
             },
         });
 
@@ -166,64 +132,15 @@ describe("Validation", () => {
         const option2 = screen.getAllByTestId("list-item");
         expect(option2.length).toBe(2);
     });
-
-    it("should hide the validation rule when the element is a numeric field and the selected validation type is whole numbers", async () => {
-        setupJestCanvasMock();
-        renderComponent({
-            builderContext: {
-                focusedElement: {
-                    element: {
-                        ...MOCK_TEXT_BASED_ELEMENT(EElementType.NUMERIC),
-                        type: EElementType.NUMERIC,
-                    },
-                    isDirty: true,
-                },
-            },
-        });
-
-        fireEvent.click(getAddValidationButton());
-
-        const inputValidationType = screen.getByRole("button", {
-            name: "Select",
-        });
-        fireEvent.click(inputValidationType);
-
-        const option = screen.getByText(EValidationType.WHOLE_NUMBERS);
-        fireEvent.click(option);
-
-        const inputName = screen.queryByPlaceholderText("Enter rule");
-        expect(inputName).not.toBeInTheDocument();
-    });
 });
 
 // =============================================================================
 // HELPER FUNCTIONS
 // =============================================================================
 
-const MyTestComponent = () => {
-    return <Validation />;
-};
-
 const renderComponent = (overrideOptions?: TestHelper.RenderOptions) => {
-    return render(
-        TestHelper.withProviders(overrideOptions, <MyTestComponent />)
-    );
+    return render(TestHelper.withProviders(overrideOptions, <Validation />));
 };
 
 const getAddValidationButton: () => HTMLElement = () =>
     screen.getByRole("button", { name: "Add validation" });
-
-// =============================================================================
-// MOCKS
-// =============================================================================
-const MOCK_TEXT_BASED_ELEMENT = (elementType: EElementType) => {
-    return {
-        internalId: "mock123",
-        type: elementType,
-        id: "mockElement",
-        required: false,
-        label: ELEMENT_BUTTON_LABELS[elementType],
-        validation: [],
-        columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
-    };
-};

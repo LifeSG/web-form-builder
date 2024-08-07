@@ -1,13 +1,11 @@
-import { useFormContext } from "react-hook-form";
+import { Alert } from "@lifesg/react-design-system/alert";
 import { ChildEntry } from "src/components/common";
-import { EValidationType } from "src/context-providers";
-import { TOverallTextBasedSchema } from "src/schemas";
 import {
     ValidationErrorMessage,
     ValidationRule,
     ValidationType,
-} from "../common/";
-import { FieldWrapper } from "../validation.styles";
+} from "../../common";
+import { FieldWrapper } from "../..";
 
 interface IProps {
     onDelete: () => void;
@@ -16,18 +14,12 @@ interface IProps {
     disabled?: boolean;
 }
 
-export const NumericValidationChild = ({
+export const LongTextValidationChild = ({
     onDelete,
     index,
     options,
     disabled,
 }: IProps) => {
-    // ===========================================================================
-    // CONST, STATE, REF
-    // ===========================================================================
-    const { watch } = useFormContext<TOverallTextBasedSchema>();
-    const validationType = watch(`validation.${index}.validationType`);
-
     // =================================================================
     // RENDER FUNCTIONS
     // =================================================================
@@ -39,10 +31,12 @@ export const NumericValidationChild = ({
                     options={options}
                     disabled={disabled}
                 />
-                {validationType !== EValidationType.WHOLE_NUMBERS && (
-                    <ValidationRule index={index} />
-                )}
+                <ValidationRule index={index} />
                 <ValidationErrorMessage index={index} />
+                <Alert type="info" showIcon>
+                    Adding of this validation will result in character counter
+                    displayed under the textarea.
+                </Alert>
             </FieldWrapper>
         </ChildEntry>
     );
