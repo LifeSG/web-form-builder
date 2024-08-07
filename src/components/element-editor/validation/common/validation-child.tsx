@@ -1,10 +1,10 @@
 import { ChildEntry } from "src/components/common";
 import {
+    FieldWrapper,
     ValidationErrorMessage,
     ValidationRule,
     ValidationType,
-} from "../common/";
-import { FieldWrapper } from "../validation.styles";
+} from ".";
 
 interface IProps {
     onDelete: () => void;

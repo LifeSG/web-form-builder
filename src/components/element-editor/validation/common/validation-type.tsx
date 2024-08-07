@@ -1,6 +1,6 @@
 import { Form } from "@lifesg/react-design-system/form";
 import { Controller, useFormContext } from "react-hook-form";
-import { TOverallTextBasedSchema } from "src/schemas";
+import { TSchemasWithValidation } from "src/schemas";
 
 interface IProps {
     options: string[];
@@ -15,7 +15,7 @@ export const ValidationType = ({ options, index, disabled }: IProps) => {
     const {
         formState: { errors },
         control,
-    } = useFormContext<TOverallTextBasedSchema>();
+    } = useFormContext<TSchemasWithValidation>();
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
@@ -32,9 +32,7 @@ export const ValidationType = ({ options, index, disabled }: IProps) => {
                         selectedOption={fieldWithoutRef.value}
                         options={options}
                         disabled={disabled}
-                        onSelectOption={(option) => {
-                            field.onChange(option);
-                        }}
+                        onSelectOption={field.onChange}
                         errorMessage={
                             errors?.validation?.[index]?.validationType?.message
                         }
