@@ -3,8 +3,8 @@ import {
     ValidationErrorMessage,
     ValidationRule,
     ValidationType,
-} from "../common/";
-import { FieldWrapper } from "..";
+} from "../../common";
+import { FieldWrapper } from "../..";
 
 interface IProps {
     onDelete: () => void;
@@ -13,7 +13,7 @@ interface IProps {
     disabled?: boolean;
 }
 
-export const ValidationChild = ({
+export const ContactValidationChild = ({
     onDelete,
     index,
     options,

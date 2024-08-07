@@ -9,12 +9,13 @@ import {
     TOverallTextBasedYupSchema,
 } from "src/schemas";
 import * as Yup from "yup";
-import { ValidationChild } from "./common/validation-child";
 import {
     EmailValidationChild,
     LongTextValidationChild,
     NumericValidationChild,
+    TextValidationChild,
 } from "./elements";
+import { ContactValidationChild } from "./elements/contact/contact-validation-child";
 import { getValidationOptionsByType } from "./helper";
 
 export const Validation = () => {
@@ -37,7 +38,7 @@ export const Validation = () => {
     // HELPER FUNCTIONS
     // =========================================================================
 
-    const hasReachedMaxEntries = (elementType: EElementType) => {
+    const hasReachedMaxEntries = () => {
         switch (elementType) {
             case EElementType.EMAIL:
             case EElementType.TEXT:
@@ -75,7 +76,7 @@ export const Validation = () => {
                     To add new validation, fill up existing validation first.
                 </Text.Body>
             );
-        } else if (hasReachedMaxEntries(elementType)) {
+        } else if (hasReachedMaxEntries()) {
             return (
                 <Text.Body>
                     Limit reached. To add new validation, remove existing ones
@@ -130,6 +131,8 @@ export const Validation = () => {
                         <EmailValidationChild
                             key={field.id}
                             index={index}
+                            options={options}
+                            disabled={options.length === 1}
                             onDelete={() => handleDelete(index)}
                         />
                     );
@@ -149,16 +152,27 @@ export const Validation = () => {
                             key={field.id}
                             index={index}
                             options={options}
+                            disabled={options.length === 1}
                             onDelete={() => handleDelete(index)}
                         />
                     );
                 case EElementType.TEXT:
-                case EElementType.CONTACT:
                     return (
-                        <ValidationChild
+                        <TextValidationChild
                             key={field.id}
                             index={index}
                             options={options}
+                            disabled={options.length === 1}
+                            onDelete={() => handleDelete(index)}
+                        />
+                    );
+                case EElementType.CONTACT:
+                    return (
+                        <ContactValidationChild
+                            key={field.id}
+                            index={index}
+                            options={options}
+                            disabled={options.length === 1}
                             onDelete={() => handleDelete(index)}
                         />
                     );
@@ -174,7 +188,7 @@ export const Validation = () => {
             title="Additional Validation"
             buttonLabel="validation"
             disabledButton={
-                hasReachedMaxEntries(elementType) || hasInvalidAndEmptyFields()
+                hasReachedMaxEntries() || hasInvalidAndEmptyFields()
             }
             popoverMessage={getPopoverMessage()}
         >
