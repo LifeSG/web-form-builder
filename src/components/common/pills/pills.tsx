@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { TogglePair } from "src/components/common/toggle-pair/toggle-pair";
-import { MandatoryFieldBox } from "src/components/element-editor/basic-details/basic-details.styles";
 import {
     ITextarea,
     ITextareaFieldAttributes,
@@ -10,6 +9,7 @@ import {
 import { BottomPositionIcon } from "../icons/bottom-position-icon";
 import { TopPositionIcon } from "../icons/top-position-icon";
 import { PillItems } from "./pill-items";
+import { MandatoryFieldBox } from "src/components/element-editor/basic-details/common";
 
 export const Pills = () => {
     // =========================================================================

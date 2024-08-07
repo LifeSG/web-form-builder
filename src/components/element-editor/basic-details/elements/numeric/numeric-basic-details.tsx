@@ -1,4 +1,3 @@
-import { Pills } from "src/components/common/pills";
 import {
     DescriptionField,
     IdField,
@@ -7,21 +6,18 @@ import {
     PlaceholderField,
     TextBasedPreselectedValueField,
     TypeField,
-} from "../common";
-import { ResizableInput } from "./resizable-input";
+} from "../../common";
 
-export const LongTextBasicDetails = () => {
+export const NumericBasicDetails = () => {
     return (
-        <>
+        <div data-testid="numeric-basic-details">
             <TypeField />
             <LabelField />
             <MandatoryField />
             <IdField />
             <DescriptionField />
-            <ResizableInput />
-            <Pills />
             <PlaceholderField />
             <TextBasedPreselectedValueField />
-        </>
+        </div>
     );
 };

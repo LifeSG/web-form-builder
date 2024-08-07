@@ -5,13 +5,13 @@ import {
     MandatoryField,
     PlaceholderField,
     TypeField,
-} from "../common";
+} from "../../common";
 import { DropdownItems } from "./dropdown-items";
 import { DropdownPreselectedValue } from "./dropdown-preselected-value-field";
 
 export const DropdownBasicDetails = () => {
     return (
-        <>
+        <div data-testid="dropdown-basic-details">
             <TypeField />
             <LabelField />
             <MandatoryField />
@@ -20,6 +20,6 @@ export const DropdownBasicDetails = () => {
             <DescriptionField />
             <PlaceholderField />
             <DropdownPreselectedValue />
-        </>
+        </div>
     );
 };

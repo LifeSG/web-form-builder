@@ -5,7 +5,7 @@ import {
     useFormContext,
 } from "react-hook-form";
 import { TFormFieldValues } from "src/schemas";
-import { StyledTextarea } from "../basic-details.styles";
+import { StyledTextarea } from "./common.styles";
 
 export const DescriptionField = () => {
     // =========================================================================

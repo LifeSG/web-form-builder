@@ -36,9 +36,9 @@ export const TypeField = () => {
          * when the input type of the preselectedValue is different. Currently,
          * the preselectedValue is different only when the input type is dropdown.
          */
-        if (field.value === EElementType.DROPDOWN) {
-            setValue("preselectedValue", "");
-        }
+        // if (field.value === EElementType.DROPDOWN) {
+        //     setValue("preselectedValue", "");
+        // }
         field.onChange(value);
     };
 

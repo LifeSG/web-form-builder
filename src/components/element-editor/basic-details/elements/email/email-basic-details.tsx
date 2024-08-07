@@ -6,11 +6,11 @@ import {
     PlaceholderField,
     TextBasedPreselectedValueField,
     TypeField,
-} from "../common";
+} from "../../common";
 
 export const EmailBasicDetails = () => {
     return (
-        <>
+        <div data-testid="email-basic-details">
             <TypeField />
             <LabelField />
             <MandatoryField />
@@ -18,6 +18,6 @@ export const EmailBasicDetails = () => {
             <DescriptionField />
             <PlaceholderField />
             <TextBasedPreselectedValueField />
-        </>
+        </div>
     );
 };

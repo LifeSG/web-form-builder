@@ -2,7 +2,7 @@ import { Form } from "@lifesg/react-design-system/form";
 import { Controller, useFormContext } from "react-hook-form";
 import { TogglePair } from "src/components/common/toggle-pair/toggle-pair";
 import { TFormFieldValues } from "src/schemas";
-import { MandatoryFieldBox, ToggleWrapper } from "../basic-details.styles";
+import { MandatoryFieldBox } from "./common.styles";
 
 export const MandatoryField = () => {
     // =========================================================================
@@ -21,21 +21,19 @@ export const MandatoryField = () => {
 
     return (
         <MandatoryFieldBox>
-            <ToggleWrapper>
-                <Controller
-                    name="required"
-                    control={control}
-                    render={({ field }) => (
-                        <TogglePair
-                            label={{
-                                mainLabel: "Mandatory field",
-                            }}
-                            value={field.value}
-                            onChange={field.onChange}
-                        />
-                    )}
-                />
-            </ToggleWrapper>
+            <Controller
+                name="required"
+                control={control}
+                render={({ field }) => (
+                    <TogglePair
+                        label={{
+                            mainLabel: "Mandatory field",
+                        }}
+                        value={field.value}
+                        onChange={field.onChange}
+                    />
+                )}
+            />
             {watch("required", true) && (
                 <Controller
                     name="requiredErrorMsg"

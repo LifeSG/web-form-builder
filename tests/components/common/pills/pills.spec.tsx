@@ -19,7 +19,7 @@ describe("Pills", () => {
         jest.resetAllMocks();
     });
 
-    it("should render the pill items and list position field if pills field is toggled from false to true", async () => {
+    it("should render pills as false by default and pill items should not be present", async () => {
         const MOCK_FOCUSED_TEXT_AREA_ELEMENT: TElement = {
             internalId: "mock256",
             type: EElementType.TEXTAREA,
@@ -42,14 +42,35 @@ describe("Pills", () => {
             },
         });
 
+        const togglePillsNoButton = screen.getByLabelText("No");
+        expect(togglePillsNoButton).toBeChecked();
+
         expect(screen.queryByText("Pill items")).toBeNull();
         expect(screen.queryByText("List position")).toBeNull();
+    });
 
-        const togglePillsYesButton = screen.getByLabelText("Yes");
+    it("should conditionally render the pill items and list position fields if pills is toggled to true", async () => {
+        const MOCK_FOCUSED_TEXT_AREA_ELEMENT: TElement = {
+            internalId: "mock256",
+            type: EElementType.TEXTAREA,
+            id: "mockElement",
+            required: false,
+            description: "",
+            preselectedValue: "",
+            pills: true,
+            pillItems: [{ content: "" }, { content: "" }],
+            label: ELEMENT_BUTTON_LABELS[EElementType.TEXTAREA],
+            columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
+        };
 
-        expect(togglePillsYesButton).toBeInTheDocument();
-
-        fireEvent.click(togglePillsYesButton);
+        renderComponent({
+            builderContext: {
+                focusedElement: {
+                    element: MOCK_FOCUSED_TEXT_AREA_ELEMENT,
+                },
+                selectedElementType: EElementType.TEXTAREA,
+            },
+        });
 
         const pillItemsField = await screen.findByText("Pill items");
 

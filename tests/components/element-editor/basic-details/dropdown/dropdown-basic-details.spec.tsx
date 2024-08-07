@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
-import { DropdownBasicDetails } from "src/components/element-editor/basic-details/dropdown";
+import { DropdownBasicDetails } from "src/components/element-editor/basic-details/elements";
 import { EElementType, TElement } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data";
 import { TestHelper } from "src/util/test-helper";

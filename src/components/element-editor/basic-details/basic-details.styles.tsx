@@ -1,32 +1,17 @@
 import { Accordion } from "@lifesg/react-design-system/accordion";
 import { Color } from "@lifesg/react-design-system/color";
-import { Form } from "@lifesg/react-design-system/form";
 import styled from "styled-components";
 
 interface IFieldEditorAccordionItemProps {
     $hideTopBorder: boolean;
 }
 
-export const MandatoryFieldBox = styled.div`
-    background: rgba(248, 248, 248, 1);
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 2rem;
-`;
-
 export const Wrapper = styled.div`
     padding: 0 1rem 0 1rem;
-    &:last-child {
-        margin-bottom: 1rem;
-    }
-
-    > :first-child {
-        margin-top: 2rem;
-    }
+    margin: 2rem 0 1rem 0;
 `;
 
-export const FieldEditorAccordionItem = styled(
+export const AccordionItem = styled(
     Accordion.Item
 )<IFieldEditorAccordionItemProps>`
     border-top: ${({ $hideTopBorder }) =>
@@ -51,17 +36,6 @@ export const FieldEditorAccordionItem = styled(
     [data-testid="accordion-item-expand-collapse-button"] {
         margin: ${({ $hideTopBorder }) =>
             $hideTopBorder ? "0 0.1rem 0 1rem" : "0 0.1rem 0 0"};
-    }
-`;
-
-export const StyledTextarea = styled(Form.Textarea)`
-    min-height: 40px;
-    overflow: hidden;
-`;
-
-export const ToggleWrapper = styled.div`
-    &:not(:last-child) {
-        margin-bottom: 2rem;
     }
 `;
 

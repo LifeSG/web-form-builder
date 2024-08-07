@@ -3,15 +3,17 @@ import { EElementType, useBuilder } from "src/context-providers";
 import { TFormFieldValues } from "src/schemas";
 import {
     AccordionWrapper,
-    FieldEditorAccordionItem,
+    AccordionItem,
     Wrapper,
 } from "./basic-details.styles";
-import { ContactBasicDetails } from "./contact";
-import { DropdownBasicDetails } from "./dropdown";
-import { EmailBasicDetails } from "./email";
-import { NumericBasicDetails } from "./numeric";
-import { TextBasicDetails } from "./text";
-import { LongTextBasicDetails } from "./long-text";
+import {
+    ContactBasicDetails,
+    DropdownBasicDetails,
+    EmailBasicDetails,
+    LongTextBasicDetails,
+    NumericBasicDetails,
+    TextBasicDetails,
+} from "./elements";
 
 export const BasicDetails = () => {
     // =========================================================================
@@ -45,14 +47,14 @@ export const BasicDetails = () => {
 
     return (
         <AccordionWrapper>
-            <FieldEditorAccordionItem
+            <AccordionItem
                 type="default"
                 expanded
                 title="Basic"
                 $hideTopBorder={focusedElement.isDirty}
             >
                 <Wrapper>{renderBasicDetails()}</Wrapper>
-            </FieldEditorAccordionItem>
+            </AccordionItem>
         </AccordionWrapper>
     );
 };

@@ -1,7 +1,7 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
 import { BasicDetails } from "src/components/element-editor/basic-details";
-import { EElementType } from "src/context-providers";
+import { EElementType, TElement } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data";
 import { TestHelper } from "src/util/test-helper";
 
@@ -19,74 +19,106 @@ describe("BasicDetails", () => {
         jest.resetAllMocks();
     });
 
-    describe("rendering label & required error message fields", () => {
-        it("should render label if element has label property", async () => {
+    describe("conditional rendering of element-specific basic details component", () => {
+        it("should render the EMAIL basic details component when the element type is EMAIL", async () => {
             renderComponent({
                 builderContext: {
-                    focusedElement: MOCK_FOCUSED_ELEMENT,
-                    selectedElementType: EElementType.EMAIL,
-                },
-            });
-            const labelField = await getLabelField();
-            expect(labelField).toBeInTheDocument();
-        });
-
-        it("should render required error message if element has required error message property", async () => {
-            renderComponent({
-                builderContext: {
-                    focusedElement: MOCK_FOCUSED_ELEMENT,
-                    selectedElementType: EElementType.EMAIL,
-                },
-            });
-            fireEvent.click(await screen.findByLabelText("Yes"));
-
-            const requiredErrorMessageField =
-                await screen.findByLabelText("Error message");
-            expect(requiredErrorMessageField).toBeInTheDocument();
-        });
-
-        it("should render the description if element has the description property", async () => {
-            renderComponent({
-                builderContext: {
-                    focusedElement: MOCK_FOCUSED_ELEMENT,
+                    focusedElement: {
+                        element: MOCK_FOCUSED_ELEMENT(EElementType.EMAIL),
+                        isDirty: false,
+                    },
                     selectedElementType: EElementType.EMAIL,
                 },
             });
 
-            const descriptionField = await screen.findByText(
-                "Description text (optional)"
+            const emailBasicDetails = await screen.findByTestId(
+                "email-basic-details"
             );
-            expect(descriptionField).toBeInTheDocument();
+            expect(emailBasicDetails).toBeInTheDocument();
         });
 
-        it("should render the preselected field & resizable area input field if element has the preselected value & resizable area input field property", async () => {
+        it("should render the TEXT basic details component when the element type is TEXT", async () => {
             renderComponent({
                 builderContext: {
-                    focusedElement: MOCK_FOCUSED_TEXT_AREA_ELEMENT,
+                    focusedElement: {
+                        element: MOCK_FOCUSED_ELEMENT(EElementType.TEXT),
+                        isDirty: false,
+                    },
+                    selectedElementType: EElementType.TEXT,
+                },
+            });
+
+            const textBasicDetails =
+                await screen.findByTestId("text-basic-details");
+            expect(textBasicDetails).toBeInTheDocument();
+        });
+
+        it("should render the LONG TEXT basic details component when the element type is LONG TEXT", async () => {
+            renderComponent({
+                builderContext: {
+                    focusedElement: {
+                        element: MOCK_FOCUSED_ELEMENT(EElementType.TEXTAREA),
+                        isDirty: false,
+                    },
                     selectedElementType: EElementType.TEXTAREA,
                 },
             });
 
-            const resizableAreaInput = await screen.findByText(
-                "Resizable area input"
+            const longTextBasicDetails = await screen.findByTestId(
+                "long-text-basic-details"
             );
-            const preSelectedField = await screen.findByText(
-                "Pre-selected value (optional)"
-            );
-            expect(resizableAreaInput).toBeInTheDocument();
-            expect(preSelectedField).toBeInTheDocument();
+            expect(longTextBasicDetails).toBeInTheDocument();
         });
 
-        it("should render the pills fields if element has pills field", async () => {
+        it("should render the NUMERIC basic details component when the element type is NUMERIC", async () => {
             renderComponent({
                 builderContext: {
-                    focusedElement: MOCK_FOCUSED_TEXT_AREA_ELEMENT,
-                    selectedElementType: EElementType.TEXTAREA,
+                    focusedElement: {
+                        element: MOCK_FOCUSED_ELEMENT(EElementType.NUMERIC),
+                        isDirty: false,
+                    },
+                    selectedElementType: EElementType.NUMERIC,
                 },
             });
 
-            const pillsField = await screen.findByText("Pills");
-            expect(pillsField).toBeInTheDocument();
+            const numericBasicDetails = await screen.findByTestId(
+                "numeric-basic-details"
+            );
+            expect(numericBasicDetails).toBeInTheDocument();
+        });
+
+        it("should render the CONTACT basic details component when the element type is CONTACT", async () => {
+            renderComponent({
+                builderContext: {
+                    focusedElement: {
+                        element: MOCK_FOCUSED_ELEMENT(EElementType.CONTACT),
+                        isDirty: false,
+                    },
+                    selectedElementType: EElementType.CONTACT,
+                },
+            });
+
+            const contactBasicDetails = await screen.findByTestId(
+                "contact-basic-details"
+            );
+            expect(contactBasicDetails).toBeInTheDocument();
+        });
+
+        it("should render the DROPDOWN basic details component when the element type is DROPDOWN", async () => {
+            renderComponent({
+                builderContext: {
+                    focusedElement: {
+                        element: MOCK_FOCUSED_ELEMENT(EElementType.DROPDOWN),
+                        isDirty: false,
+                    },
+                    selectedElementType: EElementType.DROPDOWN,
+                },
+            });
+
+            const dropdownBasicDetails = await screen.findByTestId(
+                "dropdown-basic-details"
+            );
+            expect(dropdownBasicDetails).toBeInTheDocument();
         });
     });
 });
@@ -95,49 +127,23 @@ describe("BasicDetails", () => {
 // HELPER FUNCTIONS
 // =============================================================================
 
-const MyTestComponent = () => {
-    return <BasicDetails />;
-};
-
 const renderComponent = (overrideOptions?: TestHelper.RenderOptions) => {
-    return render(
-        TestHelper.withProviders(overrideOptions, <MyTestComponent />)
-    );
-};
-
-const getLabelField = async () => {
-    return screen.findByLabelText("Element Name");
+    return render(TestHelper.withProviders(overrideOptions, <BasicDetails />));
 };
 
 // =============================================================================
 // MOCKS
 // =============================================================================
 
-const MOCK_FOCUSED_ELEMENT = {
-    element: {
+const MOCK_FOCUSED_ELEMENT = (elementType: EElementType) => {
+    const element: TElement = {
         internalId: "mock123",
-        type: EElementType.EMAIL,
+        type: elementType,
         id: "mockElement",
         required: false,
         description: "hellooo",
-        label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
+        label: ELEMENT_BUTTON_LABELS[elementType],
         columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
-    },
-};
-
-const MOCK_FOCUSED_TEXT_AREA_ELEMENT = {
-    element: {
-        internalId: "mock256",
-        type: EElementType.TEXTAREA,
-        id: "mockElement",
-        required: false,
-        description: "hellooo",
-        preSelectedValue: "",
-        resizableInput: true,
-        pills: true,
-        pillItems: [{ content: "" }, { content: "" }],
-        pillPosition: "top",
-        label: ELEMENT_BUTTON_LABELS[EElementType.TEXTAREA],
-        columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
-    },
+    };
+    return element;
 };
