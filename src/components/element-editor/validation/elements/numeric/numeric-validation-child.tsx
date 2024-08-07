@@ -33,7 +33,7 @@ export const NumericValidationChild = ({
     // =================================================================
     return (
         <ChildEntry onDelete={onDelete}>
-            <FieldWrapper>
+            <FieldWrapper data-testid="numeric-validation-child">
                 <ValidationType
                     index={index}
                     options={options}

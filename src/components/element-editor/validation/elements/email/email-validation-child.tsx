@@ -15,7 +15,7 @@ export const EmailValidationChild = ({ onDelete, index, options }: IProps) => {
     // =================================================================
     return (
         <ChildEntry onDelete={onDelete}>
-            <FieldWrapper>
+            <FieldWrapper data-testid="email-validation-child">
                 <ValidationType
                     index={index}
                     options={options}

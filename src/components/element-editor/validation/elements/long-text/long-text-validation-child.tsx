@@ -25,7 +25,7 @@ export const LongTextValidationChild = ({
     // =================================================================
     return (
         <ChildEntry onDelete={onDelete}>
-            <FieldWrapper>
+            <FieldWrapper data-testid="long-text-validation-child">
                 <ValidationType
                     index={index}
                     options={options}

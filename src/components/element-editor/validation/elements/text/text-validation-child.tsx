@@ -24,7 +24,7 @@ export const TextValidationChild = ({
     // =================================================================
     return (
         <ChildEntry onDelete={onDelete}>
-            <FieldWrapper>
+            <FieldWrapper data-testid="text-validation-child">
                 <ValidationType
                     index={index}
                     options={options}

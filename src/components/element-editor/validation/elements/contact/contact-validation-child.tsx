@@ -24,7 +24,7 @@ export const ContactValidationChild = ({
     // =================================================================
     return (
         <ChildEntry onDelete={onDelete}>
-            <FieldWrapper>
+            <FieldWrapper data-testid="contact-validation-child">
                 <ValidationType
                     index={index}
                     options={options}

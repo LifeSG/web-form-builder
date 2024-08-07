@@ -19,46 +19,19 @@ describe("Validation", () => {
         jest.resetAllMocks();
     });
 
-    it("should fire onAdd and render the email validation-child component when the add validation button is being clicked and element type is email", () => {
+    it("should disable the Add Validation button and show a popover when a maximum number of entries is reached and the inputs are filled up", async () => {
         renderComponent({
             formContext: {
                 defaultValues: {
-                    type: EElementType.EMAIL,
+                    type: EElementType.TEXTAREA,
                 },
             },
         });
         fireEvent.click(getAddValidationButton());
-        expect(
-            screen.getByRole("button", {
-                name: EValidationType.EMAIL_DOMAIN,
-            })
-        ).toBeInTheDocument();
-        expect(
-            screen.getByPlaceholderText(
-                "Enter email domain, separating with a comma"
-            )
-        ).toBeInTheDocument();
-        expect(
-            screen.getByPlaceholderText("Set error message")
-        ).toBeInTheDocument();
-        expect(getAddValidationButton()).toBeDisabled();
-    });
-
-    it("should disable the button and show a popover when a maximum number of entries is reached when the inputs are filled up", async () => {
-        renderComponent({
-            formContext: {
-                defaultValues: {
-                    type: EElementType.EMAIL,
-                },
-            },
-        });
-        fireEvent.click(getAddValidationButton());
-        const inputName = screen.getByPlaceholderText(
-            "Enter email domain, separating with a comma"
-        );
+        const inputName = screen.getByPlaceholderText("Enter rule");
         const inputValue = screen.getByPlaceholderText("Set error message");
 
-        fireEvent.change(inputName, { target: { value: "@gmail.com" } });
+        fireEvent.change(inputName, { target: { value: "Test rule" } });
         fireEvent.change(inputValue, { target: { value: "Test Value" } });
         fireEvent.mouseOver(getAddValidationButton());
 
@@ -132,11 +105,45 @@ describe("Validation", () => {
         const option2 = screen.getAllByTestId("list-item");
         expect(option2.length).toBe(2);
     });
+
+    describe.each`
+        elementType              | testId
+        ${EElementType.EMAIL}    | ${"email-validation-child"}
+        ${EElementType.TEXT}     | ${"text-validation-child"}
+        ${EElementType.TEXTAREA} | ${"long-text-validation-child"}
+        ${EElementType.NUMERIC}  | ${"numeric-validation-child"}
+        ${EElementType.CONTACT}  | ${"contact-validation-child"}
+    `(
+        "should render the correct validation child component",
+        ({ elementType, testId }) => {
+            it(`for ${elementType}`, async () => {
+                renderValidationComponent(elementType);
+                fireEvent.click(getAddValidationButton());
+
+                expect(screen.getByTestId(testId)).toBeInTheDocument();
+            });
+        }
+    );
 });
 
 // =============================================================================
 // HELPER FUNCTIONS
 // =============================================================================
+
+const renderValidationComponent = (elementType: EElementType) => {
+    renderComponent({
+        builderContext: {
+            selectedElementType: elementType,
+        },
+        formContext: {
+            elementType: elementType,
+            defaultValues: {
+                type: elementType,
+                validation: [],
+            },
+        },
+    });
+};
 
 const renderComponent = (overrideOptions?: TestHelper.RenderOptions) => {
     return render(TestHelper.withProviders(overrideOptions, <Validation />));
