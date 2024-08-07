@@ -18,109 +18,33 @@ describe("BasicDetails", () => {
         jest.restoreAllMocks();
         jest.resetAllMocks();
     });
-
-    describe("conditional rendering of element-specific basic details component", () => {
-        it("should render the EMAIL basic details component when the element type is EMAIL", async () => {
-            renderComponent({
-                builderContext: {
-                    focusedElement: {
-                        element: MOCK_FOCUSED_ELEMENT(EElementType.EMAIL),
-                        isDirty: false,
+    describe.each`
+        elementType              | testId
+        ${EElementType.EMAIL}    | ${"email-basic-details"}
+        ${EElementType.TEXT}     | ${"text-basic-details"}
+        ${EElementType.TEXTAREA} | ${"long-text-basic-details"}
+        ${EElementType.NUMERIC}  | ${"numeric-basic-details"}
+        ${EElementType.CONTACT}  | ${"contact-basic-details"}
+        ${EElementType.DROPDOWN} | ${"dropdown-basic-details"}
+    `(
+        "conditional rendering of element-specific basic details component",
+        ({ elementType, testId }) => {
+            it(`should render the ${elementType} basic details component`, async () => {
+                renderComponent({
+                    builderContext: {
+                        focusedElement: {
+                            element: MOCK_FOCUSED_ELEMENT(elementType),
+                            isDirty: false,
+                        },
+                        selectedElementType: elementType,
                     },
-                    selectedElementType: EElementType.EMAIL,
-                },
+                });
+
+                const basicDetails = await screen.findByTestId(testId);
+                expect(basicDetails).toBeInTheDocument();
             });
-
-            const emailBasicDetails = await screen.findByTestId(
-                "email-basic-details"
-            );
-            expect(emailBasicDetails).toBeInTheDocument();
-        });
-
-        it("should render the TEXT basic details component when the element type is TEXT", async () => {
-            renderComponent({
-                builderContext: {
-                    focusedElement: {
-                        element: MOCK_FOCUSED_ELEMENT(EElementType.TEXT),
-                        isDirty: false,
-                    },
-                    selectedElementType: EElementType.TEXT,
-                },
-            });
-
-            const textBasicDetails =
-                await screen.findByTestId("text-basic-details");
-            expect(textBasicDetails).toBeInTheDocument();
-        });
-
-        it("should render the LONG TEXT basic details component when the element type is LONG TEXT", async () => {
-            renderComponent({
-                builderContext: {
-                    focusedElement: {
-                        element: MOCK_FOCUSED_ELEMENT(EElementType.TEXTAREA),
-                        isDirty: false,
-                    },
-                    selectedElementType: EElementType.TEXTAREA,
-                },
-            });
-
-            const longTextBasicDetails = await screen.findByTestId(
-                "long-text-basic-details"
-            );
-            expect(longTextBasicDetails).toBeInTheDocument();
-        });
-
-        it("should render the NUMERIC basic details component when the element type is NUMERIC", async () => {
-            renderComponent({
-                builderContext: {
-                    focusedElement: {
-                        element: MOCK_FOCUSED_ELEMENT(EElementType.NUMERIC),
-                        isDirty: false,
-                    },
-                    selectedElementType: EElementType.NUMERIC,
-                },
-            });
-
-            const numericBasicDetails = await screen.findByTestId(
-                "numeric-basic-details"
-            );
-            expect(numericBasicDetails).toBeInTheDocument();
-        });
-
-        it("should render the CONTACT basic details component when the element type is CONTACT", async () => {
-            renderComponent({
-                builderContext: {
-                    focusedElement: {
-                        element: MOCK_FOCUSED_ELEMENT(EElementType.CONTACT),
-                        isDirty: false,
-                    },
-                    selectedElementType: EElementType.CONTACT,
-                },
-            });
-
-            const contactBasicDetails = await screen.findByTestId(
-                "contact-basic-details"
-            );
-            expect(contactBasicDetails).toBeInTheDocument();
-        });
-
-        it("should render the DROPDOWN basic details component when the element type is DROPDOWN", async () => {
-            renderComponent({
-                builderContext: {
-                    focusedElement: {
-                        element: MOCK_FOCUSED_ELEMENT(EElementType.DROPDOWN),
-                        isDirty: false,
-                    },
-                    selectedElementType: EElementType.DROPDOWN,
-                },
-            });
-
-            const dropdownBasicDetails = await screen.findByTestId(
-                "dropdown-basic-details"
-            );
-            expect(dropdownBasicDetails).toBeInTheDocument();
-        });
-    });
+        }
+    );
 
     describe("resetting of form fields when element type changes", () => {
         it("should replace element name, mandatory field's error message, and ID with values that correspond to the new element type", async () => {
