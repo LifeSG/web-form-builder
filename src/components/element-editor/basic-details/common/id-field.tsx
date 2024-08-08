@@ -24,6 +24,7 @@ export const IdField = () => {
             render={({ field }) => (
                 <Form.Input
                     {...field}
+                    data-testid="id-field"
                     label={{
                         children: "ID",
                         subtitle: (
@@ -38,7 +39,6 @@ export const IdField = () => {
                     errorMessage={errors.id?.message}
                 />
             )}
-            shouldUnregister={true}
         />
     );
 };

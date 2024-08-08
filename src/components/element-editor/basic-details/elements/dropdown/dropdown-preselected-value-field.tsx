@@ -23,7 +23,7 @@ export const DropdownPreselectedValue = () => {
     const preselectedValueOptions: IDropdownItemAttributes[] = [
         {
             label: "Unselect default value",
-            value: "",
+            value: null,
         },
     ];
 
@@ -42,8 +42,8 @@ export const DropdownPreselectedValue = () => {
     // =========================================================================
 
     useEffect(() => {
-        if (preselectedValue === "") {
-            setValue("preselectedValue", null, {
+        if (preselectedValue === null) {
+            setValue("preselectedValue", "", {
                 shouldDirty: true,
             });
         }
@@ -55,7 +55,7 @@ export const DropdownPreselectedValue = () => {
             preselectedValue &&
             !dropdownItems.some((item) => item.value === preselectedValue)
         ) {
-            setValue("preselectedValue", null);
+            setValue("preselectedValue", "");
         }
     }, [selectedOption]);
 
@@ -88,21 +88,14 @@ export const DropdownPreselectedValue = () => {
                                     </Text.H6>
                                 ),
                             }}
-                            selectedOption={
-                                preselectedValue === "" ? null : selectedOption
-                            }
+                            selectedOption={selectedOption}
                             onSelectOption={(option) => {
-                                if (option.value === "") {
-                                    setValue("preselectedValue", "");
-                                    return;
-                                }
                                 field.onChange(option.value);
                             }}
                             errorMessage={errors.preselectedValue?.message}
                         />
                     );
                 }}
-                shouldUnregister={true}
             />
         )
     );

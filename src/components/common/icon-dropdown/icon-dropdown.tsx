@@ -29,6 +29,7 @@ export const IconDropdown = ({
 
     return (
         <Form.Select
+            data-testid="type-field"
             label={"Element type"}
             options={renderOptions()}
             renderCustomSelectedOption={(option: EElementType) => {

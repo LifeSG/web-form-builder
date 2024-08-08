@@ -5,3 +5,4 @@ export * from "./mandatory-field";
 export * from "./placeholder-field";
 export * from "./text-based-preselected-value-field";
 export * from "./type-field";
+export * from "./common.styles";

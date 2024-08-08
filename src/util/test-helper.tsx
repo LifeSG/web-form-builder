@@ -73,7 +73,12 @@ export namespace TestHelper {
                         }}
                     >
                         {includeFormProvider ? (
-                            <InnerFormProvider formContext={formContext}>
+                            <InnerFormProvider
+                                formContext={formContext}
+                                selectedElementType={
+                                    builderContext?.selectedElementType
+                                }
+                            >
                                 {component}
                             </InnerFormProvider>
                         ) : (
@@ -87,16 +92,18 @@ export namespace TestHelper {
 
     const InnerFormProvider = ({
         formContext,
+        selectedElementType,
         children,
     }: {
         formContext?: FormContextProps;
+        selectedElementType?: EElementType;
         children: React.ReactNode;
     }) => {
         const methods = useForm({
             mode: "onTouched",
             resolver: yupResolver(
                 SchemaHelper.buildSchema(
-                    formContext?.elementType || EElementType.EMAIL
+                    selectedElementType || EElementType.EMAIL
                 )
             ),
             defaultValues: formContext?.defaultValues,

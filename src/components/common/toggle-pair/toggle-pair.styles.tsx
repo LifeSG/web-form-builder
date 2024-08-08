@@ -7,7 +7,13 @@ export const Row = styled.div`
     justify-content: start;
 `;
 
-export const ToggleWrapper = styled(Toggle)`
+export const ToggleWrapper = styled.div`
+    &:not(:last-child) {
+        margin-bottom: 2rem;
+    }
+`;
+
+export const ToggleOptionWrapper = styled(Toggle)`
     label {
         gap: 0.5rem;
         display: flex;
