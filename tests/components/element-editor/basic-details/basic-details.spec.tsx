@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import "jest-canvas-mock";
 import { BasicDetails } from "src/components/element-editor/basic-details";
 import { EElementType, TElement } from "src/context-providers";
@@ -99,15 +99,19 @@ describe("BasicDetails", () => {
             fireEvent.click(textOption);
 
             // Check that new element type's values are set
-            const elementName = screen.getByTestId("label-field");
-            const errorMessageField = screen.getByTestId(
-                "required-error-message-field"
-            );
-            const elementId = screen.getByTestId("id-field");
+            waitFor(() => {
+                const elementName = screen.getByTestId("label-field");
+                const errorMessageField = screen.getByTestId(
+                    "required-error-message-field"
+                );
+                const elementId = screen.getByTestId("id-field");
 
-            expect(elementName).toHaveValue("Short text");
-            expect(errorMessageField).toHaveValue("This is a required field.");
-            expect(elementId).toHaveValue("short-text-field");
+                expect(elementName).toHaveValue("Short text");
+                expect(errorMessageField).toHaveValue(
+                    "This is a required field."
+                );
+                expect(elementId).toHaveValue("short-text-field");
+            });
         });
 
         it("should clear all other field values that do not have default values", async () => {
@@ -153,15 +157,17 @@ describe("BasicDetails", () => {
             fireEvent.click(textOption);
 
             // Check that the fields are cleared
-            descriptionField = screen.getByTestId("description-field");
-            placeholderField = screen.getByTestId("placeholder-field");
-            preselectedValueField = screen.getByTestId(
-                "preselected-value-field"
-            );
+            waitFor(() => {
+                descriptionField = screen.getByTestId("description-field");
+                placeholderField = screen.getByTestId("placeholder-field");
+                preselectedValueField = screen.getByTestId(
+                    "preselected-value-field"
+                );
 
-            expect(descriptionField).toHaveValue("");
-            expect(placeholderField).toHaveValue("");
-            expect(preselectedValueField).toHaveValue("");
+                expect(descriptionField).toHaveValue("");
+                expect(placeholderField).toHaveValue("");
+                expect(preselectedValueField).toHaveValue("");
+            });
         });
     });
 });
