@@ -4,8 +4,8 @@ import { Controller, useFormContext } from "react-hook-form";
 import { ChildEntry } from "src/components/common";
 import { EElementType, useBuilder } from "src/context-providers";
 import { TOverallTextBasedSchema } from "src/schemas";
+import { FieldWrapper } from "./common/";
 import { ValidationRule } from "./validation-rule";
-import { FieldWrapper } from "./validation.styles";
 
 interface IProps {
     onDelete: () => void;
