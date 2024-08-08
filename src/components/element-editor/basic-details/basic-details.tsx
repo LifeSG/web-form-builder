@@ -22,7 +22,11 @@ export const BasicDetails = () => {
     // CONST, STATE, REFS
     // =========================================================================
     const { focusedElement, orderedIdentifiers, elements } = useBuilder();
-    const { watch, reset } = useFormContext<TFormFieldValues>();
+    const {
+        watch,
+        reset,
+        formState: { isDirty },
+    } = useFormContext<TFormFieldValues>();
     const type = watch("type", focusedElement?.element?.type);
 
     // =========================================================================
@@ -32,6 +36,8 @@ export const BasicDetails = () => {
     /** Upon changing the element type, this useEffect populates the form with
      * default values corresponding to the new type and clears all other fields */
     useEffect(() => {
+        if (!isDirty) return;
+
         const existingIdentifiers = orderedIdentifiers
             .filter(
                 (elementId) =>
