@@ -1,6 +1,7 @@
 import { Form } from "@lifesg/react-design-system/form";
 import { Controller, useFormContext } from "react-hook-form";
 import { TogglePair } from "src/components/common/toggle-pair/toggle-pair";
+import { useBuilder } from "src/context-providers";
 import { TFormFieldValues } from "src/schemas";
 import { MandatoryFieldBox } from "./common.styles";
 
@@ -9,10 +10,12 @@ export const MandatoryField = () => {
     // CONST, STATE, REF
     // =========================================================================
 
+    const { focusedElement } = useBuilder();
     const {
         control,
         formState: { errors },
         watch,
+        resetField,
     } = useFormContext<TFormFieldValues>();
 
     // =========================================================================
@@ -30,7 +33,18 @@ export const MandatoryField = () => {
                             mainLabel: "Mandatory field",
                         }}
                         value={field.value}
-                        onChange={field.onChange}
+                        onChange={(value) => {
+                            if (value) {
+                                setTimeout(() => {
+                                    resetField("requiredErrorMsg", {
+                                        defaultValue:
+                                            focusedElement.element
+                                                .requiredErrorMsg,
+                                    });
+                                });
+                            }
+                            field.onChange(value);
+                        }}
                     />
                 )}
             />

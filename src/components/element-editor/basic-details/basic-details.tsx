@@ -1,6 +1,8 @@
+import { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
-import { EElementType, useBuilder } from "src/context-providers";
+import { EElementType, TElement, useBuilder } from "src/context-providers";
 import { TFormFieldValues } from "src/schemas";
+import { ElementObjectGenerator } from "src/util";
 import {
     AccordionItem,
     AccordionWrapper,
@@ -19,9 +21,38 @@ export const BasicDetails = () => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
-    const { focusedElement } = useBuilder();
-    const { watch } = useFormContext<TFormFieldValues>();
+    const { focusedElement, orderedIdentifiers, elements } = useBuilder();
+    const { watch, reset } = useFormContext<TFormFieldValues>();
     const type = watch("type", focusedElement?.element?.type);
+
+    // =========================================================================
+    // EFFECTS
+    // =========================================================================
+
+    /** Upon changing the element type, this useEffect populates the form with
+     * default values corresponding to the new type and clears all other fields */
+    useEffect(() => {
+        const existingIdentifiers = orderedIdentifiers
+            .filter(
+                (elementId) =>
+                    elementId.internalId !== focusedElement.element.internalId
+            )
+            .map((elementId) => elementId.internalId);
+
+        const existingIds = Object.values(elements)
+            .filter((element) => element.id !== focusedElement.element.id)
+            .map((element) => element.id);
+
+        const newElement: TElement = ElementObjectGenerator.generate(
+            type,
+            existingIdentifiers,
+            existingIds
+        );
+
+        reset(newElement, {
+            keepDefaultValues: true, // Dirty form upon changing type
+        });
+    }, [type]);
 
     // =========================================================================
     // RENDER FUNCTIONS
