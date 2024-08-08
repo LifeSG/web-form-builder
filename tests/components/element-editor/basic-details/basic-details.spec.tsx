@@ -18,7 +18,8 @@ describe("BasicDetails", () => {
         jest.restoreAllMocks();
         jest.resetAllMocks();
     });
-    describe.each`
+
+    it.each`
         elementType              | testId
         ${EElementType.EMAIL}    | ${"email-basic-details"}
         ${EElementType.TEXT}     | ${"text-basic-details"}
@@ -27,26 +28,54 @@ describe("BasicDetails", () => {
         ${EElementType.CONTACT}  | ${"contact-basic-details"}
         ${EElementType.DROPDOWN} | ${"dropdown-basic-details"}
     `(
-        "conditional rendering of element-specific basic details component",
-        ({ elementType, testId }) => {
-            it(`should render the ${elementType} basic details component`, async () => {
-                renderComponent({
-                    builderContext: {
-                        focusedElement: {
-                            element: MOCK_FOCUSED_ELEMENT(elementType),
-                            isDirty: false,
-                        },
-                        selectedElementType: elementType,
+        "should render the $elementType basic details component",
+        async ({ elementType, testId }) => {
+            renderComponent({
+                builderContext: {
+                    focusedElement: {
+                        element: MOCK_FOCUSED_ELEMENT(elementType),
+                        isDirty: false,
                     },
-                });
-
-                const basicDetails = await screen.findByTestId(testId);
-                expect(basicDetails).toBeInTheDocument();
+                    selectedElementType: elementType,
+                },
             });
+
+            const basicDetails = await screen.findByTestId(testId);
+            expect(basicDetails).toBeInTheDocument();
         }
     );
 
     describe("resetting of form fields when element type changes", () => {
+        it("should populate element name, mandatory field's error message, and ID with default values in the initial state", async () => {
+            renderComponent({
+                builderContext: {
+                    focusedElement: {
+                        element: MOCK_FOCUSED_ELEMENT(EElementType.EMAIL),
+                        isDirty: false,
+                    },
+                    selectedElementType: EElementType.EMAIL,
+                },
+                formContext: {
+                    defaultValues: MOCK_FOCUSED_ELEMENT(EElementType.EMAIL),
+                },
+            });
+
+            const textBasicDetails = await screen.findByTestId(
+                "email-basic-details"
+            );
+            expect(textBasicDetails).toBeInTheDocument();
+
+            const elementName = screen.getByTestId("label-field");
+            const errorMessageField = screen.getByTestId(
+                "required-error-message-field"
+            );
+            const elementId = screen.getByTestId("id-field");
+
+            expect(elementName).toHaveValue("Email address");
+            expect(errorMessageField).toHaveValue("This is a required field.");
+            expect(elementId).toHaveValue("email-field");
+        });
+
         it("should replace element name, mandatory field's error message, and ID with values that correspond to the new element type", async () => {
             renderComponent({
                 builderContext: {
@@ -61,25 +90,7 @@ describe("BasicDetails", () => {
                 },
             });
 
-            // Check initial state
-
-            const textBasicDetails = await screen.findByTestId(
-                "email-basic-details"
-            );
-            expect(textBasicDetails).toBeInTheDocument();
-
-            let elementName = screen.getByTestId("label-field");
-            let errorMessageField = screen.getByTestId(
-                "required-error-message-field"
-            );
-            let elementId = screen.getByTestId("id-field");
-
-            expect(elementName).toHaveValue("Email address");
-            expect(errorMessageField).toHaveValue("This is a required field.");
-            expect(elementId).toHaveValue("email-field");
-
             // Change element type to TEXT
-
             fireEvent.click(screen.getByTestId("type-field"));
 
             const textOption = await screen.findByText("Short text");
@@ -88,11 +99,11 @@ describe("BasicDetails", () => {
             fireEvent.click(textOption);
 
             // Check that new element type's values are set
-            elementName = screen.getByTestId("label-field");
-            errorMessageField = screen.getByTestId(
+            const elementName = screen.getByTestId("label-field");
+            const errorMessageField = screen.getByTestId(
                 "required-error-message-field"
             );
-            elementId = screen.getByTestId("id-field");
+            const elementId = screen.getByTestId("id-field");
 
             expect(elementName).toHaveValue("Short text");
             expect(errorMessageField).toHaveValue("This is a required field.");
