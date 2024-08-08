@@ -98,20 +98,15 @@ describe("BasicDetails", () => {
 
             fireEvent.click(textOption);
 
-            // Check that new element type's values are set
-            waitFor(() => {
-                const elementName = screen.getByTestId("label-field");
-                const errorMessageField = screen.getByTestId(
-                    "required-error-message-field"
-                );
-                const elementId = screen.getByTestId("id-field");
+            const elementName = screen.getByTestId("label-field");
+            const errorMessageField = screen.getByTestId(
+                "required-error-message-field"
+            );
+            const elementId = screen.getByTestId("id-field");
 
-                expect(elementName).toHaveValue("Short text");
-                expect(errorMessageField).toHaveValue(
-                    "This is a required field."
-                );
-                expect(elementId).toHaveValue("short-text-field");
-            });
+            expect(elementName).toHaveValue("Short text");
+            expect(errorMessageField).toHaveValue("This is a required field.");
+            expect(elementId).toHaveValue("short-text-field");
         });
 
         it("should clear all other field values that do not have default values", async () => {
@@ -128,9 +123,9 @@ describe("BasicDetails", () => {
                 },
             });
 
-            let descriptionField = screen.getByTestId("description-field");
-            let placeholderField = screen.getByTestId("placeholder-field");
-            let preselectedValueField = screen.getByTestId(
+            const descriptionField = screen.getByTestId("description-field");
+            const placeholderField = screen.getByTestId("placeholder-field");
+            const preselectedValueField = screen.getByTestId(
                 "preselected-value-field"
             );
 
@@ -156,18 +151,18 @@ describe("BasicDetails", () => {
 
             fireEvent.click(textOption);
 
-            // Check that the fields are cleared
-            waitFor(() => {
-                descriptionField = screen.getByTestId("description-field");
-                placeholderField = screen.getByTestId("placeholder-field");
-                preselectedValueField = screen.getByTestId(
-                    "preselected-value-field"
-                );
+            // Wait for the form to reset
+            const updatedDescriptionField =
+                await screen.findByTestId("description-field");
+            const updatedPlaceholderField =
+                await screen.findByTestId("placeholder-field");
+            const updatedPreselectedValueField = await screen.findByTestId(
+                "preselected-value-field"
+            );
 
-                expect(descriptionField).toHaveValue("");
-                expect(placeholderField).toHaveValue("");
-                expect(preselectedValueField).toHaveValue("");
-            });
+            expect(updatedDescriptionField).toHaveValue("");
+            expect(updatedPlaceholderField).toHaveValue("");
+            expect(updatedPreselectedValueField).toHaveValue("");
         });
     });
 });
