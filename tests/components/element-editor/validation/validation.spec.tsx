@@ -106,7 +106,7 @@ describe("Validation", () => {
         expect(option2.length).toBe(2);
     });
 
-    describe.each`
+    it.each`
         elementType              | testId
         ${EElementType.EMAIL}    | ${"email-validation-child"}
         ${EElementType.TEXT}     | ${"text-validation-child"}
@@ -114,14 +114,12 @@ describe("Validation", () => {
         ${EElementType.NUMERIC}  | ${"numeric-validation-child"}
         ${EElementType.CONTACT}  | ${"contact-validation-child"}
     `(
-        "should render the correct validation child component",
-        ({ elementType, testId }) => {
-            it(`for ${elementType}`, async () => {
-                renderValidationComponent(elementType);
-                fireEvent.click(getAddValidationButton());
+        "should render the correct validation child component for $elementType",
+        async ({ elementType, testId }) => {
+            renderValidationComponent(elementType);
+            fireEvent.click(getAddValidationButton());
 
-                expect(screen.getByTestId(testId)).toBeInTheDocument();
-            });
+            expect(screen.getByTestId(testId)).toBeInTheDocument();
         }
     );
 });
