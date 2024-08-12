@@ -16,7 +16,7 @@ export namespace TextSchemaGenerator {
         validation: IValidation[]
     ) => {
         if (validation.length === 0) return;
-        console.log(validation);
+
         const validationObj = validation.reduce<ISchemaValidation[]>(
             (acc, value) => {
                 switch (value.validationType) {
