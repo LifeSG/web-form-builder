@@ -32,6 +32,7 @@ export const BasicDetails = () => {
         watch,
         setValue,
         resetField,
+        clearErrors,
     } = useFormContext<TFormFieldValues>();
     const element = focusedElement.element;
     const type = watch("type", focusedElement.element?.type) as EElementType;
@@ -69,6 +70,7 @@ export const BasicDetails = () => {
                                     shouldDirty: true,
                                 });
                                 setValue("validation", []);
+                                clearErrors("validation");
                             }}
                             errorMessage={errors.type?.message}
                         />
