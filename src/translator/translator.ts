@@ -20,7 +20,6 @@ import { parseSchemaBasedOnType, updateParsedElements } from "./helper";
 import { ISchemaProps } from "./types";
 
 export namespace Translator {
-    // test for ui type
     export const generateSchema = (
         elements: TElementMap,
         orderedIdentifiers: IElementIdentifier[]
