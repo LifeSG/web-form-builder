@@ -36,8 +36,8 @@ describe("Bulk Edit Modal", () => {
         jest.resetAllMocks();
     });
 
-    it("should show the bulk edit modal when it is being passed in to modal hook", () => {
-        renderComponent({
+    it("should show the bulk edit modal when it is being passed in to modal hook", async () => {
+        await renderComponent({
             displayContext: {
                 modals: [bulkEditModal],
             },
@@ -47,7 +47,7 @@ describe("Bulk Edit Modal", () => {
     });
 
     it("should hide the modal when the 'Cancel' button is pressed", async () => {
-        renderComponent({
+        await renderComponent({
             displayContext: {
                 modals: [bulkEditModal],
             },
@@ -58,12 +58,15 @@ describe("Bulk Edit Modal", () => {
     });
 
     it("should run the onClickActionButton function when the 'Save' button is clicked", async () => {
-        renderComponent({
+        await renderComponent({
             displayContext: {
                 modals: [bulkEditModal],
             },
         });
+
         const saveButton = getSaveButton();
+        expect(saveButton).toBeEnabled();
+
         fireEvent.click(saveButton);
 
         await waitFor(() => {
@@ -72,7 +75,7 @@ describe("Bulk Edit Modal", () => {
     });
 
     it("should show an error message when the 'Save' button is clicked and the form is invalid", async () => {
-        renderComponent({
+        await renderComponent({
             displayContext: {
                 modals: [bulkEditModal],
             },
@@ -98,7 +101,7 @@ describe("Bulk Edit Modal", () => {
     });
 
     it("should save successfully when the 'Save' button is clicked and the form is valid", async () => {
-        renderComponent({
+        await renderComponent({
             displayContext: {
                 modals: [bulkEditModal],
             },
@@ -130,9 +133,9 @@ const MyTestComponent = () => {
 };
 
 const renderComponent = (overrideOptions?: TestHelper.RenderOptions) => {
-    return render(
-        TestHelper.withProviders(overrideOptions, <MyTestComponent />)
-    );
+    return waitFor(() => {
+        render(TestHelper.withProviders(overrideOptions, <MyTestComponent />));
+    });
 };
 
 const getCancelButton = () =>
