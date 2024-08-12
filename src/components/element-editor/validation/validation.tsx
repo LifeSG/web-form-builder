@@ -5,8 +5,8 @@ import { EElementType, useBuilder } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import {
     SchemaHelper,
-    TOverallTextBasedSchema,
     TOverallTextBasedYupSchema,
+    TSchemasWithValidation,
 } from "src/schemas";
 import * as Yup from "yup";
 import {
@@ -23,7 +23,7 @@ export const Validation = () => {
     // CONST, STATES, REFS
     // =========================================================================
     const { selectedElementType } = useBuilder();
-    const { watch, control } = useFormContext<TOverallTextBasedSchema>(); //Validation is only present in text-based-fields.
+    const { watch, control } = useFormContext<TSchemasWithValidation>();
     const { fields, append, remove } = useFieldArray({
         control,
         name: "validation",
