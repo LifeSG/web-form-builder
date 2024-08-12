@@ -109,8 +109,6 @@ export namespace TextBasedField {
             case EElementType.TEXTAREA:
                 return parseTextBasedFieldValidation(validation);
             case EElementType.CONTACT:
-            case EElementType.CHECKBOX:
-            case EElementType.RADIO:
                 return;
         }
     };
