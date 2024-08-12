@@ -3,14 +3,19 @@ import { Text } from "@lifesg/react-design-system/text";
 import { Controller, useFormContext } from "react-hook-form";
 import { TOverallTextBasedSchema } from "src/schemas";
 
-export const TextBasedPreselectedValue = () => {
+export const TextBasedPreselectedValueField = () => {
     // ===========================================================================
     // CONST, STATE, REFS
     // ===========================================================================
+
     const {
         control,
         formState: { errors },
     } = useFormContext<TOverallTextBasedSchema>();
+
+    // =========================================================================
+    // RENDER FUNCTIONS
+    // =========================================================================
 
     return (
         <Controller
@@ -19,6 +24,7 @@ export const TextBasedPreselectedValue = () => {
             render={({ field }) => (
                 <Form.Input
                     {...field}
+                    data-testid="preselected-value-field"
                     label={{
                         children: "Pre-selected value (optional)",
                         subtitle: (
@@ -30,12 +36,9 @@ export const TextBasedPreselectedValue = () => {
                     }}
                     placeholder="Enter pre-selected value"
                     value={field.value || ""}
-                    onChange={(e) => {
-                        field.onChange(e.target.value);
-                    }}
+                    errorMessage={errors.preselectedValue?.message}
                 />
             )}
-            shouldUnregister={true}
         />
     );
 };

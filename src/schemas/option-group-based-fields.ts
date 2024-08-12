@@ -57,7 +57,7 @@ export const OPTION_GROUP_BASED_SCHEMA = yup.object().shape({
                 throw new yup.ValidationError(errors);
             }
         ),
-    preselectedValue: yup.string().nullable(),
+    preselectedValue: yup.string().optional(),
     prefill: yup.array().of(
         yup.object().shape({
             prefillMode: yup.string().required("Source required."),

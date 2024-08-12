@@ -1,4 +1,8 @@
-import { IFocusedElement, TElementMap } from "src/context-providers";
+import {
+    EElementType,
+    IFocusedElement,
+    TElementMap,
+} from "src/context-providers";
 import * as yup from "yup";
 
 const ID_REGEX = /^[a-z]+(?:[A-Z0-9][a-z0-9]*)*(?:[-_][a-z0-9]+)*$/gm;
@@ -11,7 +15,10 @@ export namespace BaseSchemaHelper {
         focusedElement: IFocusedElement
     ) =>
         yup.object().shape({
-            type: yup.string().required("Element type required."),
+            type: yup
+                .string()
+                .oneOf(Object.values(EElementType))
+                .required("Element type required."),
             label: yup.string().required("Label required."),
             required: yup.boolean().required().default(true),
             requiredErrorMsg: yup.string().when("required", {

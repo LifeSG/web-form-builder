@@ -119,7 +119,7 @@ export namespace ElementObjectGenerator {
                             value: "",
                         },
                     ],
-                    preselectedValue: null,
+                    preselectedValue: "",
                 };
                 return attributes;
             }
