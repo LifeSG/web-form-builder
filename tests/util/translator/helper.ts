@@ -5,6 +5,7 @@ import {
     EElementType,
     IColumns,
     IConditionalRendering,
+    IDropdownItemAttributes,
     IPrefillAttributes,
     IValidation,
     TElementMap,
@@ -38,6 +39,7 @@ interface MockElementSchemaProps {
     placeholder?: string;
     validation?: IYupValidationRule[];
     showIf?: TRenderRules[];
+    dropdownItems?: IDropdownItemAttributes[];
 }
 
 interface MockPrefillSchema {
@@ -102,6 +104,7 @@ export const generateMockElementSchema = ({
     placeholder,
     validation,
     showIf,
+    dropdownItems,
 }: MockElementSchemaProps): MockChildrenSchema => {
     return {
         [id]: {
@@ -112,6 +115,7 @@ export const generateMockElementSchema = ({
                 tablet: 8,
                 mobile: 4,
             },
+            ...(dropdownItems && { options: dropdownItems }),
             ...(placeholder && { placeholder }),
             ...(validation && { validation }),
             ...(showIf && { showIf }),

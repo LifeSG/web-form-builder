@@ -53,7 +53,15 @@ const generateValidationSchema = (elementType: EElementType) => {
                 yup.object().shape({
                     validationType: yup
                         .string()
-                        .required("Validation required."),
+                        // Convert empty strings to undefined to trigger the required validation
+                        .transform((value, originalValue) => {
+                            return originalValue === "" ? undefined : value;
+                        })
+                        .required("Validation required.")
+                        .oneOf(
+                            Object.values(EValidationType),
+                            "Invalid validation type."
+                        ),
                     validationRule: yup.string().when("validationType", {
                         is: EValidationType.EMAIL_DOMAIN,
                         then: (rule) =>
@@ -77,7 +85,14 @@ const generateValidationSchema = (elementType: EElementType) => {
                 yup.object().shape({
                     validationType: yup
                         .string()
-                        .required("Validation required."),
+                        .transform((value, originalValue) => {
+                            return originalValue === "" ? undefined : value;
+                        })
+                        .required("Validation required.")
+                        .oneOf(
+                            Object.values(EValidationType),
+                            "Invalid validation type."
+                        ),
                     validationRule: yup
                         .string()
                         .when("validationType", {
@@ -109,7 +124,14 @@ const generateValidationSchema = (elementType: EElementType) => {
                 yup.object().shape({
                     validationType: yup
                         .string()
-                        .required("Validation required."),
+                        .transform((value, originalValue) => {
+                            return originalValue === "" ? undefined : value;
+                        })
+                        .required("Validation required.")
+                        .oneOf(
+                            Object.values(EValidationType),
+                            "Invalid validation type."
+                        ),
                     validationRule: yup.string().when("validationType", {
                         is: EValidationType.WHOLE_NUMBERS,
                         then: (rule) => rule.optional(),
@@ -223,7 +245,16 @@ export const TEXT_AREA_SCHEMA = () => {
         pillPosition: yup.string().required().default("top"),
         validation: yup.array().of(
             yup.object().shape({
-                validationType: yup.string().required("Validation required."),
+                validationType: yup
+                    .string()
+                    .transform((value, originalValue) => {
+                        return originalValue === "" ? undefined : value;
+                    })
+                    .required("Validation required.")
+                    .oneOf(
+                        Object.values(EValidationType),
+                        "Invalid validation type."
+                    ),
                 validationRule: yup.string().when("validationType", {
                     is: EValidationType.MAX_LENGTH,
                     then: (rule) =>
