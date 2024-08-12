@@ -1,8 +1,8 @@
 import { IEmailField, IValidation } from "src/context-providers";
-import { createBaseSchema } from "../../common/create-base-schema";
+import { generateBaseSchema } from "../../common/generate-base-schema";
 
 export namespace EmailSchemaGenerator {
-    const createAdditionalValidationSchema = (validation: IValidation[]) => {
+    const generateAdditionalValidationSchema = (validation: IValidation[]) => {
         if (validation.length === 0) return;
 
         const domainRegexString = (domains: IValidation) => {
@@ -23,8 +23,8 @@ export namespace EmailSchemaGenerator {
     };
 
     export const elementToSchema = (element: IEmailField) => {
-        const baseSchema = createBaseSchema(element);
-        const additionalValidationSchema = createAdditionalValidationSchema(
+        const baseSchema = generateBaseSchema(element);
+        const additionalValidationSchema = generateAdditionalValidationSchema(
             element.validation
         );
 

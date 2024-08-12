@@ -7,7 +7,7 @@ import {
     IElementIdentifier,
     TElementMap,
 } from "src/context-providers";
-import { createDefaultValuesSchema, createPrefillSchema } from "./generate";
+import { generateDefaultValuesSchema, generatePrefillSchema } from "./generate";
 import {
     ContactSchemaGenerator,
     DropdownSchemaGenerator,
@@ -24,8 +24,8 @@ export namespace Translator {
         elements: TElementMap,
         orderedIdentifiers: IElementIdentifier[]
     ) => {
-        const prefill = createPrefillSchema(elements);
-        const defaultValues = createDefaultValuesSchema(elements);
+        const prefill = generatePrefillSchema(elements);
+        const defaultValues = generateDefaultValuesSchema(elements);
 
         const orderedElements = orderedIdentifiers.reduce((acc, value) => {
             acc[value.internalId] = elements[value.internalId];

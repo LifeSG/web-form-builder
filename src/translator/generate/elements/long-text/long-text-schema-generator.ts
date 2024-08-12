@@ -1,20 +1,20 @@
 import { ITextarea, IValidation } from "src/context-providers";
-import { createBaseSchema, createMaxValidation } from "../../common";
+import { generateBaseSchema, generateMaxValidation } from "../../common";
 
 export namespace LongTextSchemaGenerator {
-    const createLongTextAdditionalValidationSchema = (
+    const generateLongTextAdditionalValidationSchema = (
         validation: IValidation[]
     ) => {
         if (validation.length === 0) {
             return;
         }
-        return createMaxValidation(validation[0]);
+        return generateMaxValidation(validation[0]);
     };
 
     export const elementToSchema = (element: ITextarea) => {
-        const baseSchema = createBaseSchema(element);
+        const baseSchema = generateBaseSchema(element);
         const additionalValidationSchema =
-            createLongTextAdditionalValidationSchema(element.validation);
+            generateLongTextAdditionalValidationSchema(element.validation);
 
         const longTextSchema = {
             [element.id]: {

@@ -5,14 +5,14 @@ import {
 } from "src/context-providers";
 import { ISchemaValidation } from "../..";
 import {
-    createBaseSchema,
-    createMaxValidation,
-    createMinValidation,
-    createWholeNumberValidation,
+    generateBaseSchema,
+    generateMaxValidation,
+    generateMinValidation,
+    generateWholeNumberValidation,
 } from "../../common";
 
 export namespace NumericSchemaGenerator {
-    const createNumericAdditionalValidationSchema = (
+    const generateNumericAdditionalValidationSchema = (
         validation: IValidation[]
     ) => {
         if (validation.length === 0) return;
@@ -20,13 +20,13 @@ export namespace NumericSchemaGenerator {
             (acc, value) => {
                 switch (value.validationType) {
                     case EValidationType.MAX_VALUE:
-                        acc.push(createMaxValidation(value));
+                        acc.push(generateMaxValidation(value));
                         break;
                     case EValidationType.MIN_VALUE:
-                        acc.push(createMinValidation(value));
+                        acc.push(generateMinValidation(value));
                         break;
                     case EValidationType.WHOLE_NUMBERS:
-                        acc.push(createWholeNumberValidation(value));
+                        acc.push(generateWholeNumberValidation(value));
                         break;
                     default:
                         break;
@@ -39,9 +39,9 @@ export namespace NumericSchemaGenerator {
     };
 
     export const elementToSchema = (element: INumericField) => {
-        const baseSchema = createBaseSchema(element);
+        const baseSchema = generateBaseSchema(element);
         const additionalValidationSchema =
-            createNumericAdditionalValidationSchema(element.validation);
+            generateNumericAdditionalValidationSchema(element.validation);
 
         const numericSchema = {
             [element.id]: {

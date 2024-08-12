@@ -6,7 +6,7 @@ import {
 } from "src/context-providers/builder";
 import { SCHEMA_CONDITION_TYPES } from "src/data";
 
-export const createConditionalRenderingSchema = (
+export const generateConditionalRenderingSchema = (
     conditions: IConditionalRendering[]
 ): TRenderRules[] => {
     if (!conditions || conditions.length === 0) {
@@ -36,7 +36,7 @@ export const createConditionalRenderingSchema = (
     return Object.keys(conditionObj).length === 0 ? [] : [conditionObj];
 };
 
-export const createPrefillSchema = (elements: TElementMap) => {
+export const generatePrefillSchema = (elements: TElementMap) => {
     const prefill = Object.values(elements).reduce((acc, element) => {
         if (element.prefill && element.prefill.length > 0) {
             acc[element.id] = element.prefill;
@@ -47,7 +47,7 @@ export const createPrefillSchema = (elements: TElementMap) => {
     return prefill;
 };
 
-export const createDefaultValuesSchema = (elements: TElementMap) => {
+export const generateDefaultValuesSchema = (elements: TElementMap) => {
     const defaultValues = Object.values(elements).reduce((acc, element) => {
         if ("preselectedValue" in element && element.preselectedValue) {
             acc[element.id] = element.preselectedValue;

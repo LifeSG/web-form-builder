@@ -1,2 +1,2 @@
-export * from "./create-base-schema";
-export * from "./validation-handlers";
+export * from "./generate-base-schema";
+export * from "./validation-generators";

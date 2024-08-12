@@ -1,9 +1,9 @@
 import { IDropdown } from "src/context-providers";
-import { createBaseSchema } from "../../common";
+import { generateBaseSchema } from "../../common";
 
 export namespace DropdownSchemaGenerator {
     export const elementToSchema = (element: IDropdown) => {
-        const baseSchema = createBaseSchema(element);
+        const baseSchema = generateBaseSchema(element);
         const filteredDropdownItems = element.dropdownItems.filter(
             (item) => item.label && item.value
         );

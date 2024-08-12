@@ -1,21 +1,21 @@
-import { ValidationHandler } from "..";
+import { ValidationGenerator } from "..";
 
-export const createMaxValidation: ValidationHandler = (value) => ({
+export const generateMaxValidation: ValidationGenerator = (value) => ({
     max: parseInt(value.validationRule),
     errorMessage: value.validationErrorMessage,
 });
 
-export const createMinValidation: ValidationHandler = (value) => ({
+export const generateMinValidation: ValidationGenerator = (value) => ({
     min: parseInt(value.validationRule),
     errorMessage: value.validationErrorMessage,
 });
 
-export const createWholeNumberValidation: ValidationHandler = (value) => ({
+export const generateWholeNumberValidation: ValidationGenerator = (value) => ({
     integer: true,
     errorMessage: value.validationErrorMessage,
 });
 
-export const createCustomRegexValidation: ValidationHandler = (value) => ({
+export const generateCustomRegexValidation: ValidationGenerator = (value) => ({
     matches: value.validationRule,
     errorMessage: value.validationErrorMessage,
 });

@@ -4,10 +4,10 @@ import {
     IValidation,
 } from "src/context-providers";
 import {
-    createBaseSchema,
-    createCustomRegexValidation,
-    createMaxValidation,
-    createMinValidation,
+    generateBaseSchema,
+    generateCustomRegexValidation,
+    generateMaxValidation,
+    generateMinValidation,
 } from "../../common";
 import { ISchemaValidation } from "../../types";
 
@@ -21,13 +21,13 @@ export namespace TextSchemaGenerator {
             (acc, value) => {
                 switch (value.validationType) {
                     case EValidationType.MAX_LENGTH:
-                        acc.push(createMaxValidation(value));
+                        acc.push(generateMaxValidation(value));
                         break;
                     case EValidationType.MIN_LENGTH:
-                        acc.push(createMinValidation(value));
+                        acc.push(generateMinValidation(value));
                         break;
                     case EValidationType.CUSTOM_REGEX:
-                        acc.push(createCustomRegexValidation(value));
+                        acc.push(generateCustomRegexValidation(value));
                         break;
                     default:
                         break;
@@ -39,7 +39,7 @@ export namespace TextSchemaGenerator {
         return validationObj;
     };
     export const elementToSchema = (element: ITextField) => {
-        const baseSchema = createBaseSchema(element);
+        const baseSchema = generateBaseSchema(element);
         const additionalValidationSchema = createTextAdditionalValidationSchema(
             element.validation
         );
