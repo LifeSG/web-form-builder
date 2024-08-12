@@ -16,7 +16,6 @@ export const TypeField = () => {
     const {
         control,
         formState: { errors },
-        setValue,
     } = useFormContext<TFormFieldValues>();
 
     // =========================================================================
@@ -27,8 +26,10 @@ export const TypeField = () => {
         value: EElementType,
         field: ControllerRenderProps<TFormFieldValues, "type">
     ) => {
+        if (value === field.value) {
+            return;
+        }
         selectElementType(value);
-        setValue("validation", []);
         field.onChange(value);
     };
 
@@ -50,7 +51,6 @@ export const TypeField = () => {
                     errorMessage={errors.type?.message}
                 />
             )}
-            shouldUnregister={true}
         />
     );
 };

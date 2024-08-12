@@ -5,7 +5,7 @@ import {
     useFormContext,
 } from "react-hook-form";
 import { TFormFieldValues } from "src/schemas";
-import { StyledTextarea } from "../basic-details.styles";
+import { StyledTextarea } from "./common.styles";
 
 export const DescriptionField = () => {
     // =========================================================================
@@ -41,6 +41,7 @@ export const DescriptionField = () => {
             render={({ field }) => (
                 <StyledTextarea
                     {...field}
+                    data-testid="description-field"
                     label={{
                         children: "Description text (optional)",
                         subtitle: (
@@ -56,7 +57,6 @@ export const DescriptionField = () => {
                     maxLength={180}
                 />
             )}
-            shouldUnregister={true}
         />
     );
 };
