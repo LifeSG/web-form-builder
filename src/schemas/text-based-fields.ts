@@ -46,22 +46,26 @@ yup.addMethod(yup.string, "isNumber", function (message) {
     });
 });
 
+const validationTypeSchema = () =>
+    yup
+        .string()
+        // Convert empty strings to undefined to trigger the required validation
+        .transform((value, originalValue) => {
+            return originalValue === "" ? undefined : value;
+        })
+        .required("Validation required.")
+        .oneOf(Object.values(EValidationType));
+
+// =============================================================================
+// SCHEMA GENERATORS
+// =============================================================================
+
 const generateValidationSchema = (elementType: EElementType) => {
     switch (elementType) {
         case EElementType.EMAIL: {
             return yup.array().of(
                 yup.object().shape({
-                    validationType: yup
-                        .string()
-                        // Convert empty strings to undefined to trigger the required validation
-                        .transform((value, originalValue) => {
-                            return originalValue === "" ? undefined : value;
-                        })
-                        .required("Validation required.")
-                        .oneOf(
-                            Object.values(EValidationType),
-                            "Invalid validation type."
-                        ),
+                    validationType: validationTypeSchema(),
                     validationRule: yup.string().when("validationType", {
                         is: EValidationType.EMAIL_DOMAIN,
                         then: (rule) =>
@@ -83,16 +87,7 @@ const generateValidationSchema = (elementType: EElementType) => {
         case EElementType.TEXT: {
             return yup.array().of(
                 yup.object().shape({
-                    validationType: yup
-                        .string()
-                        .transform((value, originalValue) => {
-                            return originalValue === "" ? undefined : value;
-                        })
-                        .required("Validation required.")
-                        .oneOf(
-                            Object.values(EValidationType),
-                            "Invalid validation type."
-                        ),
+                    validationType: validationTypeSchema(),
                     validationRule: yup
                         .string()
                         .when("validationType", {
@@ -122,16 +117,7 @@ const generateValidationSchema = (elementType: EElementType) => {
         case EElementType.NUMERIC: {
             return yup.array().of(
                 yup.object().shape({
-                    validationType: yup
-                        .string()
-                        .transform((value, originalValue) => {
-                            return originalValue === "" ? undefined : value;
-                        })
-                        .required("Validation required.")
-                        .oneOf(
-                            Object.values(EValidationType),
-                            "Invalid validation type."
-                        ),
+                    validationType: validationTypeSchema(),
                     validationRule: yup.string().when("validationType", {
                         is: EValidationType.WHOLE_NUMBERS,
                         then: (rule) => rule.optional(),
@@ -245,16 +231,7 @@ export const TEXT_AREA_SCHEMA = () => {
         pillPosition: yup.string().required().default("top"),
         validation: yup.array().of(
             yup.object().shape({
-                validationType: yup
-                    .string()
-                    .transform((value, originalValue) => {
-                        return originalValue === "" ? undefined : value;
-                    })
-                    .required("Validation required.")
-                    .oneOf(
-                        Object.values(EValidationType),
-                        "Invalid validation type."
-                    ),
+                validationType: validationTypeSchema(),
                 validationRule: yup.string().when("validationType", {
                     is: EValidationType.MAX_LENGTH,
                     then: (rule) =>
