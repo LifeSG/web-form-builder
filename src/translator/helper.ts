@@ -1,31 +1,19 @@
 import { TFrontendEngineFieldSchema } from "@lifesg/web-frontend-engine";
 import { TRenderRules } from "@lifesg/web-frontend-engine/context-providers";
 import {
-    EConditionType,
     EElementType,
     IConditionalRendering,
     IPrefillAttributes,
     TElement,
     TElementMap,
 } from "src/context-providers/builder";
-import { ELEMENT_CONDITION_TYPES, SCHEMA_CONDITION_TYPES } from "src/data";
+import { ELEMENT_CONDITION_TYPES } from "src/data";
 import {
     PREFILL_ACTIONID_REGEX,
     PREFILL_PATH_REGEX,
 } from "src/schemas/base-helper";
 import { TextBasedField } from "./text-based-field";
 import { IPrefillConfig } from "./types";
-
-export const createPrefillObject = (elements: TElementMap) => {
-    const prefill = Object.values(elements).reduce((acc, element) => {
-        if (element.prefill && element.prefill.length > 0) {
-            acc[element.id] = element.prefill;
-        }
-        return acc;
-    }, {});
-
-    return prefill;
-};
 
 export const parsePrefillObject = (
     prefill: IPrefillConfig,
@@ -41,47 +29,6 @@ export const parsePrefillObject = (
                 value?.prefillMode === "Previous source")
         );
     });
-};
-
-export const createConditionalRenderingObject = (
-    conditions: IConditionalRendering[]
-): TRenderRules[] => {
-    if (!conditions || conditions.length === 0) {
-        return;
-    }
-
-    const conditionObj = conditions.reduce((acc, condition) => {
-        const value =
-            condition.comparator === EConditionType.LESS_THAN ||
-            condition.comparator === EConditionType.MORE_THAN
-                ? parseInt(condition.value)
-                : condition.value;
-
-        if (!acc[condition.fieldKey]) {
-            acc[condition.fieldKey] = [
-                {
-                    filled: true,
-                },
-            ];
-        }
-        acc[condition.fieldKey].push({
-            [SCHEMA_CONDITION_TYPES[condition.comparator]]: value,
-        });
-        return acc;
-    }, {});
-
-    return Object.keys(conditionObj).length === 0 ? [] : [conditionObj];
-};
-
-export const createDefaultValuesObject = (elements: TElementMap) => {
-    const defaultValues = Object.values(elements).reduce((acc, element) => {
-        if ("preselectedValue" in element && element.preselectedValue) {
-            acc[element.id] = element.preselectedValue;
-        }
-        return acc;
-    }, {});
-
-    return defaultValues;
 };
 
 export const parseConditionalRenderingObject = (conditions: TRenderRules[]) => {
