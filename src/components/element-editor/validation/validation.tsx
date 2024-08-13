@@ -152,7 +152,6 @@ export const Validation = () => {
                             key={field.id}
                             index={index}
                             options={options}
-                            disabled={options.length === 1}
                             onDelete={() => handleDelete(index)}
                         />
                     );
@@ -162,7 +161,6 @@ export const Validation = () => {
                             key={field.id}
                             index={index}
                             options={options}
-                            disabled={options.length === 1}
                             onDelete={() => handleDelete(index)}
                         />
                     );
@@ -172,7 +170,6 @@ export const Validation = () => {
                             key={field.id}
                             index={index}
                             options={options}
-                            disabled={options.length === 1}
                             onDelete={() => handleDelete(index)}
                         />
                     );

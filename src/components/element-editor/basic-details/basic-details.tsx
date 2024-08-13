@@ -1,5 +1,6 @@
 import { Form } from "@lifesg/react-design-system/form";
 import { Text } from "@lifesg/react-design-system/text";
+import { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { IconDropdown } from "src/components/common/icon-dropdown";
 import { Pills } from "src/components/common/pills";
@@ -28,11 +29,10 @@ export const BasicDetails = () => {
     const { focusedElement, selectElementType } = useBuilder();
     const {
         control,
-        formState: { errors },
+        formState: { errors, isDirty },
         watch,
         setValue,
         resetField,
-        clearErrors,
     } = useFormContext<TFormFieldValues>();
     const element = focusedElement.element;
     const type = watch("type", focusedElement.element?.type) as EElementType;
@@ -43,6 +43,17 @@ export const BasicDetails = () => {
     const hasProperty = (key: string) => {
         return key in element;
     };
+
+    // =========================================================================
+    // EFFECT
+    // =========================================================================
+
+    useEffect(() => {
+        if (!isDirty) return;
+
+        setValue("validation", []);
+        resetField("validation");
+    }, [type]);
 
     // =========================================================================
     // RENDER FUNCTIONS
@@ -69,8 +80,6 @@ export const BasicDetails = () => {
                                     shouldTouch: true,
                                     shouldDirty: true,
                                 });
-                                setValue("validation", []);
-                                clearErrors("validation");
                             }}
                             errorMessage={errors.type?.message}
                         />
