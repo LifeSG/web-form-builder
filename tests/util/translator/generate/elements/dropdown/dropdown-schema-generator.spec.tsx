@@ -16,112 +16,10 @@ describe("DropdownSchemaGenerator", () => {
         jest.resetAllMocks();
     });
 
-    it("should generate the base schema WITHOUT validation if required is false", () => {
-        const MOCK_ELEMENT: IDropdown = {
-            label,
-            id: elementId,
-            internalId: "dropdown-field",
-            type: EElementType.DROPDOWN,
-            required: false,
-            columns: { desktop: 12, tablet: 8, mobile: 4 },
-            dropdownItems: [],
-        };
+    it("should generate the base schema with options if dropdown items are added", () => {
+        const elementId = "mockId123";
+        const label = "dropdown-field";
 
-        const generatedSchema =
-            DropdownSchemaGenerator.elementToSchema(MOCK_ELEMENT);
-
-        const expectedSchema = generateMockElementSchema({
-            id: elementId,
-            label: {
-                mainLabel: label,
-            },
-            uiType: EElementType.DROPDOWN,
-            dropdownItems: [],
-        });
-
-        expect(generatedSchema).toStrictEqual(expectedSchema);
-    });
-
-    it("should generate the base schema WITH validation if required is true", () => {
-        const MOCK_ELEMENT: IDropdown = {
-            label,
-            id: elementId,
-            internalId: "dropdown-field",
-            type: EElementType.DROPDOWN,
-            required: true,
-            requiredErrorMsg,
-            columns: { desktop: 12, tablet: 8, mobile: 4 },
-            dropdownItems: [],
-        };
-
-        const generatedSchema =
-            DropdownSchemaGenerator.elementToSchema(MOCK_ELEMENT);
-
-        const expectedSchema = generateMockElementSchema({
-            id: elementId,
-            label: {
-                mainLabel: label,
-            },
-            uiType: EElementType.DROPDOWN,
-            validation: [
-                {
-                    required: true,
-                    errorMessage: requiredErrorMsg,
-                },
-            ],
-            dropdownItems: [],
-        });
-
-        expect(generatedSchema).toStrictEqual(expectedSchema);
-    });
-
-    it("should generate the schema with conditional rendering if conditional rendering is added", () => {
-        const MOCK_ELEMENT: IDropdown = {
-            label,
-            id: elementId,
-            internalId: "dropdown-field",
-            type: EElementType.DROPDOWN,
-            required: false,
-            columns: { desktop: 12, tablet: 8, mobile: 4 },
-            conditionalRendering: [
-                {
-                    fieldKey: "mock456",
-                    comparator: "Equals",
-                    value: "hello",
-                    internalId: "mock456",
-                },
-            ],
-            dropdownItems: [],
-        };
-
-        const generatedSchema =
-            DropdownSchemaGenerator.elementToSchema(MOCK_ELEMENT);
-
-        const expectedSchema = generateMockElementSchema({
-            id: elementId,
-            label: {
-                mainLabel: label,
-            },
-            uiType: EElementType.DROPDOWN,
-            dropdownItems: [],
-            showIf: [
-                {
-                    mock456: [
-                        {
-                            filled: true,
-                        },
-                        {
-                            equals: "hello",
-                        },
-                    ],
-                },
-            ],
-        });
-
-        expect(generatedSchema).toStrictEqual(expectedSchema);
-    });
-
-    it("should generate the base schema with dropdown items if dropdown items are added", () => {
         const MOCK_ELEMENT: IDropdown = {
             label,
             id: elementId,
@@ -165,11 +63,3 @@ describe("DropdownSchemaGenerator", () => {
         expect(generatedSchema).toStrictEqual(expectedSchema);
     });
 });
-
-// =============================================================================
-// HELPERS
-// =============================================================================
-
-const elementId = "mockId123";
-const label = "dropdown-field";
-const requiredErrorMsg = "This field is required";

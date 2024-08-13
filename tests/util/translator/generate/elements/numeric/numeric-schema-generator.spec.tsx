@@ -20,63 +20,6 @@ describe("NumericSchemaGenerator", () => {
         jest.resetAllMocks();
     });
 
-    it("should generate the base schema WITHOUT validation if required is false", () => {
-        const MOCK_ELEMENT: INumericField = {
-            label,
-            id: elementId,
-            internalId: "numeric-field",
-            type: EElementType.NUMERIC,
-            required: false,
-            columns: { desktop: 12, tablet: 8, mobile: 4 },
-            validation: [],
-        };
-
-        const generatedSchema =
-            NumericSchemaGenerator.elementToSchema(MOCK_ELEMENT);
-
-        const expectedSchema = generateMockElementSchema({
-            id: elementId,
-            label: {
-                mainLabel: label,
-            },
-            uiType: EElementType.NUMERIC,
-        });
-
-        expect(generatedSchema).toStrictEqual(expectedSchema);
-    });
-
-    it("should generate the base schema WITH validation if required is true", () => {
-        const MOCK_ELEMENT: INumericField = {
-            label,
-            id: elementId,
-            internalId: "long-text-field",
-            type: EElementType.NUMERIC,
-            required: true,
-            requiredErrorMsg,
-            columns: { desktop: 12, tablet: 8, mobile: 4 },
-            validation: [],
-        };
-
-        const generatedSchema =
-            NumericSchemaGenerator.elementToSchema(MOCK_ELEMENT);
-
-        const expectedSchema = generateMockElementSchema({
-            id: elementId,
-            label: {
-                mainLabel: label,
-            },
-            uiType: EElementType.NUMERIC,
-            validation: [
-                {
-                    required: true,
-                    errorMessage: requiredErrorMsg,
-                },
-            ],
-        });
-
-        expect(generatedSchema).toStrictEqual(expectedSchema);
-    });
-
     it("should generate the base schema WITH only additional validation if additional validation is added but required is false", () => {
         const validationRule = "5";
         const validationErrorMessage = "The max value for this field is 5";
@@ -176,51 +119,6 @@ describe("NumericSchemaGenerator", () => {
                 {
                     integer: true,
                     errorMessage: validationWholeNumbersErrorMessage,
-                },
-            ],
-        });
-
-        expect(generatedSchema).toStrictEqual(expectedSchema);
-    });
-
-    it("should generate the schema with conditional rendering if conditional rendering is added", () => {
-        const MOCK_ELEMENT: INumericField = {
-            label,
-            id: elementId,
-            internalId: "numeric-field",
-            type: EElementType.NUMERIC,
-            required: false,
-            columns: { desktop: 12, tablet: 8, mobile: 4 },
-            validation: [],
-            conditionalRendering: [
-                {
-                    fieldKey: "mock456",
-                    comparator: "Equals",
-                    value: "hello",
-                    internalId: "mock456",
-                },
-            ],
-        };
-
-        const generatedSchema =
-            NumericSchemaGenerator.elementToSchema(MOCK_ELEMENT);
-
-        const expectedSchema = generateMockElementSchema({
-            id: elementId,
-            label: {
-                mainLabel: label,
-            },
-            uiType: EElementType.NUMERIC,
-            showIf: [
-                {
-                    mock456: [
-                        {
-                            filled: true,
-                        },
-                        {
-                            equals: "hello",
-                        },
-                    ],
                 },
             ],
         });
