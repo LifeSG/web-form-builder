@@ -1,2 +1,2 @@
 export * from "./generate-base-schema";
-export * from "./validation-generators";
+export * from "./validation-schema-generators";
