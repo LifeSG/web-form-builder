@@ -12,7 +12,7 @@ import {
 import { ISchemaValidation } from "../../types";
 
 export namespace TextSchemaGenerator {
-    const createTextAdditionalValidationSchema = (
+    const generateTextAdditionalValidationSchema = (
         validation: IValidation[]
     ) => {
         if (validation.length === 0) return;
@@ -40,9 +40,8 @@ export namespace TextSchemaGenerator {
     };
     export const elementToSchema = (element: ITextField) => {
         const baseSchema = generateBaseSchema(element);
-        const additionalValidationSchema = createTextAdditionalValidationSchema(
-            element.validation
-        );
+        const additionalValidationSchema =
+            generateTextAdditionalValidationSchema(element.validation);
 
         const textSchema = {
             [element.id]: {
