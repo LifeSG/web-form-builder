@@ -98,9 +98,9 @@ const generateValidationSchema = (elementType: EElementType) => {
                                     .validRegex("Regex not valid."),
                         })
                         .when("validationType", {
-                            is:
-                                EValidationType.MIN_LENGTH ||
-                                EValidationType.MAX_LENGTH,
+                            is: (val: EValidationType) =>
+                                val === EValidationType.MIN_LENGTH ||
+                                val === EValidationType.MAX_LENGTH,
                             then: (rule) =>
                                 rule
                                     .required("Numeric value required.")
@@ -123,9 +123,9 @@ const generateValidationSchema = (elementType: EElementType) => {
                         then: (rule) => rule.optional(),
                         otherwise: (rule) =>
                             rule.when("validationType", {
-                                is:
-                                    EValidationType.MIN_VALUE ||
-                                    EValidationType.MAX_VALUE,
+                                is: (val: EValidationType) =>
+                                    val === EValidationType.MIN_VALUE ||
+                                    val === EValidationType.MAX_VALUE,
                                 then: (rule) =>
                                     rule
                                         .required("Numeric value required.")
