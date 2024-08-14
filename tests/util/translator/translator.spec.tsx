@@ -66,6 +66,12 @@ describe("Translator", () => {
                     orderedIdentifiers
                 );
 
+                const uiType =
+                    generatedSchema.schema.sections.section.children.grid[
+                        "children"
+                    ][id]["uiType"];
+
+                expect(uiType).toEqual(elementType);
                 expect(generatedSchema).toStrictEqual(MOCK_ELEMENT_SCHEMA);
             }
         );
