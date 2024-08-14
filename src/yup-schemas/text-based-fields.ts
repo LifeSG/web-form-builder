@@ -1,7 +1,5 @@
 import { EElementType, EValidationType } from "src/context-providers";
 import * as yup from "yup";
-import { CONDITIONAL_RENDERING_SCHEMA } from "./common/conditional-rendering-yup-schema";
-import { PREFILL_YUP_SCHEMA } from "./common/prefill-yup-schema";
 
 const VALIDATION_DOMAIN_REGEX =
     /^@[^\s]+(\.[^\s]+)*(?:\s*,\s*@[^,\s]+(\.[^,\s]+)*)*$/;
@@ -144,8 +142,6 @@ export const TEXT_BASED_SCHEMA = (elementType: EElementType) => {
         placeholder: yup.string().optional(),
         preselectedValue: yup.string().optional(),
         validation: generateValidationSchema(elementType),
-        prefill: PREFILL_YUP_SCHEMA,
-        conditionalRendering: CONDITIONAL_RENDERING_SCHEMA,
     });
 };
 
@@ -195,7 +191,6 @@ export const TEXT_AREA_SCHEMA = () => {
                     return true;
                 }
             ),
-
         pillPosition: yup.string().required().default("top"),
         validation: yup.array().of(
             yup.object().shape({
@@ -212,8 +207,6 @@ export const TEXT_AREA_SCHEMA = () => {
                     .required("Error message required."),
             })
         ),
-        prefill: PREFILL_YUP_SCHEMA,
-        conditionalRendering: CONDITIONAL_RENDERING_SCHEMA,
     });
 };
 

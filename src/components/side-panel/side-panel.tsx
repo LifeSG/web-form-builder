@@ -9,7 +9,7 @@ import {
     TElement,
     useDisplay,
 } from "src/context-providers";
-import { SchemaHelper } from "src/schemas";
+import { SchemaHelper } from "src/yup-schemas";
 import { EBuilderMode, useBuilder } from "../../context-providers";
 import { ElementEditor } from "../element-editor";
 import { AddElementsPanel } from "./add-elements-panel";

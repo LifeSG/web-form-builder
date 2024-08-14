@@ -4,6 +4,7 @@ import {
     TElementMap,
 } from "src/context-providers";
 import * as yup from "yup";
+import { CONDITIONAL_RENDERING_SCHEMA, PREFILL_YUP_SCHEMA } from "./common";
 
 const ID_REGEX = /^[a-z]+(?:[A-Z0-9][a-z0-9]*)*(?:[-_][a-z0-9]+)*$/gm;
 
@@ -35,6 +36,8 @@ export namespace BaseSchemaHelper {
                         .filter((id) => id !== focusedElement?.element.id),
                     "ID must not be duplicated."
                 ),
+            prefill: PREFILL_YUP_SCHEMA,
+            conditionalRendering: CONDITIONAL_RENDERING_SCHEMA,
         });
     export type TBaseSchema = yup.InferType<ReturnType<typeof getBaseSchema>>;
 }
