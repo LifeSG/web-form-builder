@@ -8,9 +8,9 @@ import {
 } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import {
-    SchemaBuilder,
     TOverallTextBasedSchema,
     TOverallTextBasedYupSchema,
+    YupSchemaBuilder,
 } from "src/yup-schemas";
 import * as Yup from "yup";
 import { getValidationOptionsByType } from "./helper";
@@ -27,7 +27,7 @@ export const Validation = () => {
         name: "validation",
         shouldUnregister: true,
     });
-    const schema = SchemaBuilder.buildSchema(
+    const schema = YupSchemaBuilder.buildYupSchema(
         selectedElementType
     ) as TOverallTextBasedYupSchema;
     const validationValues = watch(

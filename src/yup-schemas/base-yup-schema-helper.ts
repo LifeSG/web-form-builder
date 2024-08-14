@@ -9,8 +9,8 @@ const ID_REGEX = /^[a-z]+(?:[A-Z0-9][a-z0-9]*)*(?:[-_][a-z0-9]+)*$/gm;
 export const PREFILL_ACTIONID_REGEX = /^[a-zA-Z0-9_-]+$/;
 export const PREFILL_PATH_REGEX = /^[a-zA-Z0-9._-]+$/;
 
-export namespace BaseSchemaHelper {
-    export const getBaseSchema = (
+export namespace BaseYupSchemaHelper {
+    export const getBaseYupSchema = (
         elements: TElementMap,
         focusedElement: IFocusedElement
     ) =>
@@ -68,5 +68,7 @@ export namespace BaseSchemaHelper {
                 })
             ),
         });
-    export type TBaseSchema = yup.InferType<ReturnType<typeof getBaseSchema>>;
+    export type TBaseSchema = yup.InferType<
+        ReturnType<typeof getBaseYupSchema>
+    >;
 }

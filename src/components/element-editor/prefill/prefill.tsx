@@ -2,7 +2,7 @@ import { Text } from "@lifesg/react-design-system/text";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
 import { useBuilder } from "src/context-providers";
-import { SchemaBuilder, TFormFieldValues } from "src/yup-schemas";
+import { TFormFieldValues, YupSchemaBuilder } from "src/yup-schemas";
 import * as Yup from "yup";
 import { PrefillChild } from "./prefill-child";
 export const Prefill = () => {
@@ -17,7 +17,7 @@ export const Prefill = () => {
         shouldUnregister: true,
     });
     const prefillValues = watch("prefill");
-    const schema = SchemaBuilder.buildSchema(selectedElementType);
+    const schema = YupSchemaBuilder.buildYupSchema(selectedElementType);
 
     // =========================================================================
     // HELPER FUNCTIONS

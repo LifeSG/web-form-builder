@@ -3,7 +3,7 @@ import {
     IBaseTextBasedFieldAttributes,
 } from "src/context-providers";
 import * as yup from "yup";
-import { BaseSchemaHelper } from "./base-schema-helper";
+import { BaseYupSchemaHelper } from "./base-yup-schema-helper";
 import { TOptionGroupBasedSchema } from "./option-group-based-fields";
 import { TTextAreaSchema, TTextBasedSchema } from "./text-based-fields";
 
@@ -21,10 +21,10 @@ export type TFormFieldValues =
     | TOverallTextBasedSchema
     | TOverallOptionGroupBasedSchema;
 
-export type TOverallTextBasedSchema = BaseSchemaHelper.TBaseSchema &
+export type TOverallTextBasedSchema = BaseYupSchemaHelper.TBaseSchema &
     (TTextBasedSchema | TTextAreaSchema);
 
-export type TOverallOptionGroupBasedSchema = BaseSchemaHelper.TBaseSchema &
+export type TOverallOptionGroupBasedSchema = BaseYupSchemaHelper.TBaseSchema &
     TOptionGroupBasedSchema;
 
 export type TOverallOptionGroupBasedYupSchema =
