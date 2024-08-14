@@ -53,7 +53,7 @@ export namespace NumericSchemaParser {
                     !Object.prototype.hasOwnProperty.call(rule, "required")
             ) || [];
 
-        const parsedElement = {
+        const parsedElement: TElement = {
             ...baseElement,
             validation:
                 (additionalValidation.length > 0 &&
@@ -61,6 +61,6 @@ export namespace NumericSchemaParser {
                 [],
         };
 
-        return parsedElement as TElement;
+        return parsedElement;
     };
 }

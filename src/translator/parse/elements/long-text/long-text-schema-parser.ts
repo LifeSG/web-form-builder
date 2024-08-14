@@ -43,7 +43,7 @@ export namespace LongTextSchemaParser {
                     !Object.prototype.hasOwnProperty.call(rule, "required")
             ) || [];
 
-        const parsedElement = {
+        const parsedElement: TElement = {
             ...baseElement,
             validation:
                 (additionalValidation.length > 0 &&
@@ -51,6 +51,6 @@ export namespace LongTextSchemaParser {
                 [],
         };
 
-        return parsedElement as TElement;
+        return parsedElement;
     };
 }

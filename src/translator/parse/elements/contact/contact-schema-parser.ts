@@ -13,10 +13,10 @@ export namespace ContactSchemaParser {
 
         //TODO: Implement additional validation after contact field is implemented
 
-        const parsedElement = {
+        const parsedElement: TElement = {
             ...baseElement,
         };
 
-        return parsedElement as TElement;
+        return parsedElement;
     };
 }
