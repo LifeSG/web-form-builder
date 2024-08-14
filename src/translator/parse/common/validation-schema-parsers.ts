@@ -1,6 +1,6 @@
 import { IYupValidationRule } from "@lifesg/web-frontend-engine";
 import { EValidationType } from "src/context-providers";
-import { ValidationSchemaParser } from "..";
+import { ValidationSchemaParser } from "../types";
 
 export const parseMinValueValidation: ValidationSchemaParser = (
     validationSchema: IYupValidationRule
