@@ -51,8 +51,9 @@ export const BasicDetails = () => {
     useEffect(() => {
         if (!isDirty) return;
 
-        setValue("validation", []);
-        resetField("validation");
+        resetField("validation", {
+            defaultValue: [],
+        });
     }, [type]);
 
     // =========================================================================
