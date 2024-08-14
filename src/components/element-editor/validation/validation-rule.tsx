@@ -1,7 +1,7 @@
 import { Form } from "@lifesg/react-design-system/form";
 import { ControllerRenderProps, FieldErrors } from "react-hook-form";
 import { EValidationType } from "src/context-providers";
-import { TBaseTextBasedFieldValues } from "src/schemas";
+import { TBaseTextBasedFieldValues } from "src/yup-schemas";
 
 interface IProps {
     fieldWithoutRef: Omit<

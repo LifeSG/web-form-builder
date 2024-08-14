@@ -4,7 +4,7 @@ import isEmpty from "lodash/isEmpty";
 import { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { IDropdownItemAttributes } from "src/context-providers/builder/";
-import { TOverallOptionGroupBasedSchema } from "src/schemas";
+import { TOverallOptionGroupBasedSchema } from "src/yup-schemas";
 
 export const DropdownPreselectedValue = () => {
     // ===========================================================================
