@@ -11,7 +11,7 @@ import {
     IBuilderState,
     IDisplayState,
 } from "src/context-providers";
-import { SchemaHelper } from "src/schemas";
+import { SchemaHelper } from "src/yup-schemas";
 import { ThemeProvider } from "styled-components";
 
 const mockBuilderState: IBuilderState = {

@@ -11,7 +11,7 @@ import {
     SchemaHelper,
     TOverallTextBasedSchema,
     TOverallTextBasedYupSchema,
-} from "src/schemas";
+} from "src/yup-schemas";
 import * as Yup from "yup";
 import { getValidationOptionsByType } from "./helper";
 import { ValidationChild } from "./validation-child";

@@ -107,6 +107,8 @@ export interface IBaseFieldAttributes extends IBaseAttributes {
     columns: IColumns;
     placeholder?: string;
     description?: string;
+    conditionalRendering?: IConditionalRendering[];
+    prefill?: IPrefillAttributes[];
 }
 
 export interface ITextareaFieldAttributes
@@ -120,16 +122,12 @@ export interface ITextareaFieldAttributes
 
 export interface IBaseTextBasedFieldAttributes extends IBaseFieldAttributes {
     validation?: IValidation[];
-    conditionalRendering?: IConditionalRendering[];
-    prefill?: IPrefillAttributes[];
     preselectedValue?: string;
 }
 
 export interface IBaseOptionGroupBasedFieldAttributes
     extends IBaseFieldAttributes {
     placeholder?: string;
-    conditionalRendering?: IConditionalRendering[];
-    prefill?: IPrefillAttributes[];
     dropdownItems?: IDropdownItemAttributes[];
     preselectedValue?: string;
 }

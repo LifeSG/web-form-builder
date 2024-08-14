@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
 import { EConditionType, useBuilder } from "src/context-providers";
-import { SchemaHelper, TFormFieldValues } from "src/schemas";
+import { SchemaHelper, TFormFieldValues } from "src/yup-schemas";
 import * as Yup from "yup";
 import { ConditionalRenderingChild } from "./conditional-rendering-child";
 

@@ -3,7 +3,7 @@ import { Form } from "@lifesg/react-design-system/form";
 import { Text } from "@lifesg/react-design-system/text";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import { IBulkEditModalProps } from "src/context-providers";
-import { BULK_EDIT_SCHEMA, TBulkEditData } from "src/schemas/bulk-edit";
+import { BULK_EDIT_SCHEMA, TBulkEditData } from "src/yup-schemas/bulk-edit";
 import { useModal } from "../../../context-providers/display/modal-hook";
 import { Wrapper } from "./bulk-edit-modal.styles";
 import { GenericModal } from "./generic-modal";

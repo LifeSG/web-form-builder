@@ -28,8 +28,8 @@ import { useModal } from "src/context-providers/display/modal-hook";
 import {
     getNonEmptyLines,
     getValidDropdownItem,
-} from "src/schemas/bulk-edit-helper";
-import { TOptionGroupBasedSchema } from "src/schemas/option-group-based-fields";
+} from "src/yup-schemas/bulk-edit-helper";
+import { TOptionGroupBasedSchema } from "src/yup-schemas/option-group-based-fields";
 import { DropdownItemsChild } from "./dropdown-items-child";
 import {
     DropdownItemsButton,

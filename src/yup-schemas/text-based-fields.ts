@@ -1,6 +1,7 @@
 import { EElementType, EValidationType } from "src/context-providers";
 import * as yup from "yup";
-import { PREFILL_ACTIONID_REGEX, PREFILL_PATH_REGEX } from "./base-helper";
+import { CONDITIONAL_RENDERING_SCHEMA } from "./common/conditional-rendering-yup-schema";
+import { PREFILL_YUP_SCHEMA } from "./common/prefill-yup-schema";
 
 const VALIDATION_DOMAIN_REGEX =
     /^@[^\s]+(\.[^\s]+)*(?:\s*,\s*@[^,\s]+(\.[^,\s]+)*)*$/;
@@ -143,34 +144,8 @@ export const TEXT_BASED_SCHEMA = (elementType: EElementType) => {
         placeholder: yup.string().optional(),
         preselectedValue: yup.string().optional(),
         validation: generateValidationSchema(elementType),
-        prefill: yup.array().of(
-            yup.object().shape({
-                prefillMode: yup.string().required("Source required."),
-                actionId: yup.string().when("prefillMode", {
-                    is: "Previous source",
-                    then: (rule) =>
-                        rule
-                            .required("Action ID required.")
-                            .matches(
-                                PREFILL_ACTIONID_REGEX,
-                                "Invalid action ID."
-                            ),
-                    otherwise: (rule) => rule.optional(),
-                }),
-                path: yup
-                    .string()
-                    .required("Path required.")
-                    .matches(PREFILL_PATH_REGEX, "Invalid path."),
-            })
-        ),
-        conditionalRendering: yup.array().of(
-            yup.object().shape({
-                fieldKey: yup.string().required("Reference required."),
-                comparator: yup.string().required("Comparator required."),
-                value: yup.string().required("Reference value required."),
-                internalId: yup.string(),
-            })
-        ),
+        prefill: PREFILL_YUP_SCHEMA,
+        conditionalRendering: CONDITIONAL_RENDERING_SCHEMA,
     });
 };
 
@@ -237,33 +212,8 @@ export const TEXT_AREA_SCHEMA = () => {
                     .required("Error message required."),
             })
         ),
-        prefill: yup.array().of(
-            yup.object().shape({
-                prefillMode: yup.string().required("Source required."),
-                actionId: yup.string().when("prefillMode", {
-                    is: "Previous source",
-                    then: (rule) =>
-                        rule
-                            .required("Action ID required.")
-                            .matches(
-                                PREFILL_ACTIONID_REGEX,
-                                "Invalid action ID."
-                            ),
-                    otherwise: (rule) => rule.optional(),
-                }),
-                path: yup
-                    .string()
-                    .required("Path required.")
-                    .matches(PREFILL_PATH_REGEX, "Invalid path."),
-            })
-        ),
-        conditionalRendering: yup.array().of(
-            yup.object().shape({
-                fieldKey: yup.string().required("Reference required."),
-                comparator: yup.string().required("Comparator required."),
-                value: yup.string().required("Reference value required."),
-            })
-        ),
+        prefill: PREFILL_YUP_SCHEMA,
+        conditionalRendering: CONDITIONAL_RENDERING_SCHEMA,
     });
 };
 
