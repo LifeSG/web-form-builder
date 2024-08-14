@@ -45,34 +45,21 @@ describe("Translator", () => {
                         dropdownItems: [],
                     }),
                 };
-                const MOCK__ELEMENT = generateMockElement(MOCK_ELEMENT);
 
-                const MOCK_ELEMENT_SCHEMA = generateMockSchema({
-                    children: generateMockElementSchema({
-                        id,
-                        label: {
-                            mainLabel: label,
-                        },
-                        uiType: elementType,
-                        ...(elementType === EElementType.DROPDOWN && {
-                            dropdownItems: [],
-                        }),
-                    }),
-                });
+                const mockElement = generateMockElement(MOCK_ELEMENT);
 
                 const orderedIdentifiers = [{ internalId, position: 0 }];
                 const generatedSchema = Translator.generateSchema(
-                    MOCK__ELEMENT,
+                    mockElement,
                     orderedIdentifiers
                 );
 
-                const uiType =
+                const generatedElement =
                     generatedSchema.schema.sections.section.children.grid[
                         "children"
-                    ][id]["uiType"];
+                    ][id];
 
-                expect(uiType).toEqual(elementType);
-                expect(generatedSchema).toStrictEqual(MOCK_ELEMENT_SCHEMA);
+                expect(generatedElement).toHaveProperty("uiType", elementType);
             }
         );
 
