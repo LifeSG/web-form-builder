@@ -27,6 +27,7 @@ export namespace BaseSchemaHelper {
                 otherwise: (rule) => rule.optional(),
             }),
             description: yup.string().optional(),
+            placeholder: yup.string().optional(),
             id: yup
                 .string()
                 .required("ID required.")
@@ -37,6 +38,7 @@ export namespace BaseSchemaHelper {
                         .filter((id) => id !== focusedElement?.element.id),
                     "ID must not be duplicated."
                 ),
+            preselectedValue: yup.string().optional(),
             prefill: yup.array().of(
                 yup.object().shape({
                     prefillMode: yup.string().required("Source required."),

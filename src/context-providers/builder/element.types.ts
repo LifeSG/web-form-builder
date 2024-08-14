@@ -107,6 +107,7 @@ export interface IBaseFieldAttributes extends IBaseAttributes {
     columns: IColumns;
     placeholder?: string;
     description?: string;
+    preselectedValue?: string;
     conditionalRendering?: IConditionalRendering[];
     prefill?: IPrefillAttributes[];
 }
@@ -114,7 +115,6 @@ export interface IBaseFieldAttributes extends IBaseAttributes {
 export interface ITextareaFieldAttributes
     extends IBaseTextBasedFieldAttributes {
     resizableInput?: boolean;
-    preselectedValue?: string;
     pills?: boolean;
     pillItems?: IPillItemAttributes[];
     pillPosition?: "top" | "bottom" | null;
@@ -122,14 +122,11 @@ export interface ITextareaFieldAttributes
 
 export interface IBaseTextBasedFieldAttributes extends IBaseFieldAttributes {
     validation?: IValidation[];
-    preselectedValue?: string;
 }
 
 export interface IBaseOptionGroupBasedFieldAttributes
     extends IBaseFieldAttributes {
-    placeholder?: string;
     dropdownItems?: IDropdownItemAttributes[];
-    preselectedValue?: string;
 }
 
 // =============================================================================
