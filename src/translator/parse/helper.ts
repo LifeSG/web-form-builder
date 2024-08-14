@@ -43,6 +43,7 @@ export const parsePrefillSchema = (
     id: string
 ): IPrefillAttributes[] => {
     const prefillAttributes = prefill[id] as IPrefillAttributes[];
+
     return prefillAttributes?.filter((value) => {
         return (
             PREFILL_PATH_REGEX.exec(value?.path) !== null &&

@@ -108,6 +108,7 @@ export namespace Translator {
         const elementSchemas: Record<string, TFrontendEngineFieldSchema> =
             formSchema?.schema?.sections?.section?.children?.grid?.["children"];
 
+        // const defaultValues = formSchema?.schema?.defaultValues; TODO: Implement default values
         const parsedElements: TElement[] = [];
 
         if (Object.values(elementSchemas).length !== 0) {

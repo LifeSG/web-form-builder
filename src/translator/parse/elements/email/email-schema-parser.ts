@@ -27,7 +27,6 @@ export namespace EmailSchemaParser {
                 },
             ];
         }
-        return;
     };
 
     export const schemaToElement = (
@@ -36,7 +35,6 @@ export namespace EmailSchemaParser {
         prefill: IPrefillConfig
     ) => {
         const baseElement = parseBaseSchema(schema, id, prefill);
-
         const { validation } = schema;
 
         const additionalValidation: IYupValidationRule[] =
