@@ -11,7 +11,7 @@ import {
     IBuilderState,
     IDisplayState,
 } from "src/context-providers";
-import { SchemaHelper } from "src/yup-schemas";
+import { SchemaBuilder } from "src/yup-schemas";
 import { ThemeProvider } from "styled-components";
 
 const mockBuilderState: IBuilderState = {
@@ -102,7 +102,7 @@ export namespace TestHelper {
         const methods = useForm({
             mode: "onTouched",
             resolver: yupResolver(
-                SchemaHelper.buildSchema(
+                SchemaBuilder.buildSchema(
                     selectedElementType || EElementType.EMAIL
                 )
             ),

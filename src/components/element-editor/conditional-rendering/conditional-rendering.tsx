@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
 import { EConditionType, useBuilder } from "src/context-providers";
-import { SchemaHelper, TFormFieldValues } from "src/yup-schemas";
+import { SchemaBuilder, TFormFieldValues } from "src/yup-schemas";
 import * as Yup from "yup";
 import { ConditionalRenderingChild } from "./conditional-rendering-child";
 
@@ -25,7 +25,7 @@ export const ConditionalRendering = () => {
     });
     const { focusedElement, elements, selectedElementType } = useBuilder();
     const element = focusedElement?.element;
-    const schema = SchemaHelper.buildSchema(selectedElementType);
+    const schema = SchemaBuilder.buildSchema(selectedElementType);
     const conditionalRenderingValues = watch("conditionalRendering");
     // =====================================================================
     // HELPER FUNCTIONS

@@ -9,11 +9,10 @@ import {
     TElementMap,
 } from "src/context-providers/builder";
 import { ELEMENT_CONDITION_TYPES, SCHEMA_CONDITION_TYPES } from "src/data";
-
 import {
     PREFILL_ACTIONID_REGEX,
     PREFILL_PATH_REGEX,
-} from "src/yup-schemas/common";
+} from "src/yup-schemas/base-schema-helper";
 import { TextBasedField } from "./text-based-field";
 import { IPrefillConfig } from "./types";
 

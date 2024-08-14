@@ -3,7 +3,7 @@ import {
     IBaseTextBasedFieldAttributes,
 } from "src/context-providers";
 import * as yup from "yup";
-import { BaseSchemaHelper } from "./base-helper";
+import { BaseSchemaHelper } from "./base-schema-helper";
 import { TOptionGroupBasedSchema } from "./option-group-based-fields";
 import { TTextAreaSchema, TTextBasedSchema } from "./text-based-fields";
 
