@@ -25,7 +25,6 @@ import {
     NumericSchemaGenerator,
     TextSchemaGenerator,
 } from "./generate/elements";
-import { updateParsedElements } from "./parse";
 import {
     ContactSchemaParser,
     DropdownSchemaParser,
@@ -34,6 +33,7 @@ import {
     NumericSchemaParser,
     TextSchemaParser,
 } from "./parse/elements";
+import { updateParsedElements } from "./parse/helper";
 import { ISchemaProps } from "./types";
 
 export namespace Translator {

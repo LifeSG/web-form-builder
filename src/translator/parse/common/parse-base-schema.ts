@@ -3,7 +3,7 @@ import { IComplexLabel } from "@lifesg/web-frontend-engine/components/fields";
 import { EElementType, TElement } from "src/context-providers";
 import { IPrefillConfig } from "src/translator";
 import { SimpleIdGenerator } from "src/util/simple-id-generator";
-import { parseConditionalRenderingSchema, parsePrefillSchema } from "..";
+import { parseConditionalRenderingSchema, parsePrefillSchema } from "../helper";
 import { TElementSchema } from "../types";
 
 export const parseBaseSchema = (
