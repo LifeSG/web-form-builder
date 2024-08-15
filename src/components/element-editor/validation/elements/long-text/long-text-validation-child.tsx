@@ -1,10 +1,11 @@
+import { Alert } from "@lifesg/react-design-system/alert";
 import { ChildEntry } from "src/components/common";
+import { FieldWrapper } from "../..";
 import {
-    FieldWrapper,
     ValidationErrorMessage,
     ValidationRule,
     ValidationType,
-} from ".";
+} from "../../common";
 
 interface IProps {
     onDelete: () => void;
@@ -13,7 +14,7 @@ interface IProps {
     disabled?: boolean;
 }
 
-export const ValidationChild = ({
+export const LongTextValidationChild = ({
     onDelete,
     index,
     options,
@@ -24,7 +25,7 @@ export const ValidationChild = ({
     // =================================================================
     return (
         <ChildEntry onDelete={onDelete}>
-            <FieldWrapper>
+            <FieldWrapper data-testid="long-text-validation-child">
                 <ValidationType
                     index={index}
                     options={options}
@@ -32,6 +33,10 @@ export const ValidationChild = ({
                 />
                 <ValidationRule index={index} />
                 <ValidationErrorMessage index={index} />
+                <Alert type="info" showIcon>
+                    Adding of this validation will result in character counter
+                    displayed under the textarea.
+                </Alert>
             </FieldWrapper>
         </ChildEntry>
     );

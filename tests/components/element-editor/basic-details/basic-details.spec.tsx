@@ -219,6 +219,7 @@ describe("BasicDetails", () => {
                 builderContext: {
                     focusedElement: MOCK_FOCUSED_DROPDOWN_ELEMENT,
                     elements: MOCK_ELEMENTS,
+                    selectedElementType: EElementType.DROPDOWN,
                 },
                 formContext: {
                     elementType: EElementType.DROPDOWN,
