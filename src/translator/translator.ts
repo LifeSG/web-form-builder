@@ -16,7 +16,6 @@ import {
     TElement,
     TElementMap,
 } from "src/context-providers";
-import { generateDefaultValuesSchema, generatePrefillSchema } from "./generate";
 import {
     ContactSchemaGenerator,
     DropdownSchemaGenerator,
@@ -25,6 +24,10 @@ import {
     NumericSchemaGenerator,
     TextSchemaGenerator,
 } from "./generate/elements";
+import {
+    generateDefaultValuesSchema,
+    generatePrefillSchema,
+} from "./generate/helper";
 import {
     ContactSchemaParser,
     DropdownSchemaParser,
