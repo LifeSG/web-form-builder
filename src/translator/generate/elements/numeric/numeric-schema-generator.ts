@@ -3,13 +3,13 @@ import {
     INumericField,
     IValidation,
 } from "src/context-providers";
-import { ISchemaValidation } from "../..";
 import {
     generateBaseSchema,
     generateMaxValidation,
     generateMinValidation,
     generateWholeNumberValidation,
 } from "../../common";
+import { ISchemaValidation } from "../../types";
 
 export namespace NumericSchemaGenerator {
     const generateNumericAdditionalValidationSchema = (
