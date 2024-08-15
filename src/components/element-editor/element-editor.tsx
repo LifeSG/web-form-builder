@@ -8,11 +8,7 @@ import {
 import { TFormFieldValues } from "src/schemas";
 import { BasicDetails } from "./basic-details";
 import { ConditionalRendering } from "./conditional-rendering";
-import {
-    AccordionWrapper,
-    SaveChangesAlert,
-    Wrapper,
-} from "./element-editor.styles";
+import { SaveChangesAlert, Wrapper } from "./element-editor.styles";
 import { Prefill } from "./prefill";
 import { Validation } from "./validation/";
 
@@ -61,9 +57,7 @@ export const ElementEditor = () => {
                     To reflect changes on preview, save changes first.
                 </SaveChangesAlert>
             )}
-            <AccordionWrapper>
-                <BasicDetails />
-            </AccordionWrapper>
+            <BasicDetails />
             {isTextBasedElement(selectedElementType) && <Validation />}
             <ConditionalRendering />
             <Prefill />
