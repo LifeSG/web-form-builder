@@ -111,7 +111,7 @@ export namespace Translator {
         const elementSchemas: Record<string, TFrontendEngineFieldSchema> =
             formSchema?.schema?.sections?.section?.children?.grid?.["children"];
 
-        // const defaultValues = formSchema?.schema?.defaultValues; TODO: Implement default values
+        const defaultValues = formSchema?.schema?.defaultValues;
         const parsedElements: TElement[] = [];
 
         if (Object.values(elementSchemas).length !== 0) {
@@ -119,12 +119,15 @@ export namespace Translator {
                 const { uiType } = elementSchema;
                 let parsedElement: TElement;
 
+                const defaultValue: string | undefined = defaultValues[key];
+
                 switch (uiType) {
                     case EElementType.EMAIL: {
                         parsedElement = EmailSchemaParser.schemaToElement(
                             elementSchema as IEmailFieldSchema,
                             key,
-                            formSchema.prefill
+                            formSchema.prefill,
+                            defaultValue
                         );
                         break;
                     }
@@ -132,7 +135,8 @@ export namespace Translator {
                         parsedElement = TextSchemaParser.schemaToElement(
                             elementSchema as ITextFieldSchema,
                             key,
-                            formSchema.prefill
+                            formSchema.prefill,
+                            defaultValue
                         );
                         break;
                     }
@@ -140,7 +144,8 @@ export namespace Translator {
                         parsedElement = LongTextSchemaParser.schemaToElement(
                             elementSchema as ITextareaSchema,
                             key,
-                            formSchema.prefill
+                            formSchema.prefill,
+                            defaultValue
                         );
                         break;
                     }
@@ -148,7 +153,8 @@ export namespace Translator {
                         parsedElement = NumericSchemaParser.schemaToElement(
                             elementSchema as INumericFieldSchema,
                             key,
-                            formSchema.prefill
+                            formSchema.prefill,
+                            defaultValue
                         );
                         break;
                     }
@@ -156,7 +162,8 @@ export namespace Translator {
                         parsedElement = ContactSchemaParser.schemaToElement(
                             elementSchema as IContactFieldSchema,
                             key,
-                            formSchema.prefill
+                            formSchema.prefill,
+                            defaultValue
                         );
                         break;
                     }
@@ -164,7 +171,8 @@ export namespace Translator {
                         parsedElement = DropdownSchemaParser.schemaToElement(
                             elementSchema as ISelectSchema,
                             key,
-                            formSchema.prefill
+                            formSchema.prefill,
+                            defaultValue
                         );
                     }
                 }

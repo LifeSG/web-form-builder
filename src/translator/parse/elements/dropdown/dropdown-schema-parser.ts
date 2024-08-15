@@ -7,10 +7,11 @@ export namespace DropdownSchemaParser {
     export const schemaToElement = (
         schema: ISelectSchema,
         id: string,
-        prefill: IPrefillConfig
+        prefill: IPrefillConfig,
+        defaultValue: string | undefined
     ) => {
         const { options } = schema;
-        const baseElement = parseBaseSchema(schema, id, prefill);
+        const baseElement = parseBaseSchema(schema, id, prefill, defaultValue);
 
         const parsedElement: TElement = {
             ...baseElement,

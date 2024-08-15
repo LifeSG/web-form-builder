@@ -41,9 +41,10 @@ export namespace TextSchemaParser {
     export const schemaToElement = (
         schema: ITextFieldSchema,
         id: string,
-        prefill: IPrefillConfig
+        prefill: IPrefillConfig,
+        defaultValue: string | undefined
     ) => {
-        const baseElement = parseBaseSchema(schema, id, prefill);
+        const baseElement = parseBaseSchema(schema, id, prefill, defaultValue);
 
         const { validation } = schema;
 

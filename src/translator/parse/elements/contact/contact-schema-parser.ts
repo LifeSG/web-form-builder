@@ -7,9 +7,10 @@ export namespace ContactSchemaParser {
     export const schemaToElement = (
         schema: IContactFieldSchema,
         id: string,
-        prefill: IPrefillConfig
+        prefill: IPrefillConfig,
+        defaultValue: string | undefined
     ) => {
-        const baseElement = parseBaseSchema(schema, id, prefill);
+        const baseElement = parseBaseSchema(schema, id, prefill, defaultValue);
 
         //TODO: Implement additional validation after contact field is implemented
 
