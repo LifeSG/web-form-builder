@@ -1,6 +1,5 @@
 import {
     EElementType,
-    EValidationType,
     IEmailField,
     TElement,
     TElementMap,
@@ -225,9 +224,6 @@ describe("Translator", () => {
         it.each(Object.values(EElementType))(
             "should parse schema for %s field",
             (elementType) => {
-                const label = "mockLabel";
-                const id = "mockId";
-
                 const MOCK_ELEMENT_SCHEMA = generateMockSchema({
                     children: generateMockElementSchema({
                         id,
@@ -253,6 +249,33 @@ describe("Translator", () => {
                     parsedSchema.newElements[parsedElementId]
                 ).toHaveProperty("type", elementType);
             }
+        );
+    });
+
+    it("should parse schema with defaultValues correctly", () => {
+        const defaultValue = "testDefaultValue";
+        const MOCK_ELEMENT_SCHEMA = generateMockSchema({
+            defaultValues: {
+                [id]: defaultValue,
+            },
+            children: generateMockElementSchema({
+                id,
+                label: {
+                    mainLabel: label,
+                },
+                uiType: EElementType.TEXT,
+            }),
+        });
+
+        const parsedSchema = Translator.parseSchema(
+            MOCK_ELEMENT_SCHEMA as ISchemaProps
+        );
+
+        const parsedElementId = Object.keys(parsedSchema.newElements)[0];
+
+        expect(parsedSchema.newElements[parsedElementId]).toHaveProperty(
+            "preselectedValue",
+            defaultValue
         );
     });
 });
