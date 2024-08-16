@@ -7,7 +7,7 @@ import {
 } from "src/context-providers";
 import { IPrefillConfig } from "src/translator";
 import { parseBaseSchema } from "../..";
-import { parseMaxLengthValidation } from "../../common/validation-schema-parsers";
+import { parseMaxLengthValidation } from "../../common";
 
 export namespace LongTextSchemaParser {
     const parseLongTextValidation = (

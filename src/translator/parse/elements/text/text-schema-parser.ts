@@ -11,7 +11,7 @@ import {
     parseMatchesValidation,
     parseMaxLengthValidation,
     parseMinLengthValidation,
-} from "../../common/validation-schema-parsers";
+} from "../../common";
 
 export namespace TextSchemaParser {
     const parseTextValidation = (
