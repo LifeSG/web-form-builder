@@ -7,50 +7,63 @@ import {
     IElementIdentifier,
     TElementMap,
 } from "src/context-providers";
+import { generateDefaultValuesSchema, generatePrefillSchema } from "./generate";
 import {
-    createDefaultValuesObject,
-    createPrefillObject,
-    parseSchemaBasedOnType,
-    updateParsedElements,
-} from "./helper";
-import { OptionGroupBasedField } from "./option-group-based-field";
-import { TextBasedField } from "./text-based-field";
+    ContactSchemaGenerator,
+    DropdownSchemaGenerator,
+    EmailSchemaGenerator,
+    LongTextSchemaGenerator,
+    NumericSchemaGenerator,
+    TextSchemaGenerator,
+} from "./generate/elements";
+import { parseSchemaBasedOnType, updateParsedElements } from "./helper";
 import { ISchemaProps } from "./types";
 
 export namespace Translator {
-    export function generateSchema(
+    export const generateSchema = (
         elements: TElementMap,
         orderedIdentifiers: IElementIdentifier[]
-    ) {
-        const prefill = createPrefillObject(elements);
-        const defaultValues = createDefaultValuesObject(elements);
+    ) => {
+        const prefill = generatePrefillSchema(elements);
+        const defaultValues = generateDefaultValuesSchema(elements);
 
-        const newElements = orderedIdentifiers.reduce((acc, value) => {
+        const orderedElements = orderedIdentifiers.reduce((acc, value) => {
             acc[value.internalId] = elements[value.internalId];
             return acc;
         }, {} as TElementMap);
 
-        const fields = Object.values(newElements).reduce((acc, element) => {
+        const fields = Object.values(orderedElements).reduce((acc, element) => {
             let translatedChild: Record<string, unknown>;
             switch (element.type) {
                 case EElementType.EMAIL:
-                case EElementType.TEXT:
-                case EElementType.TEXTAREA:
-                case EElementType.CONTACT:
-                case EElementType.NUMERIC:
-                    translatedChild = TextBasedField.elementToSchema(element);
+                    translatedChild =
+                        EmailSchemaGenerator.elementToSchema(element);
                     break;
-                case EElementType.CHECKBOX:
-                case EElementType.RADIO:
+                case EElementType.TEXT:
+                    translatedChild =
+                        TextSchemaGenerator.elementToSchema(element);
+                    break;
+                case EElementType.TEXTAREA:
+                    translatedChild =
+                        LongTextSchemaGenerator.elementToSchema(element);
+                    break;
+                case EElementType.CONTACT:
+                    translatedChild =
+                        ContactSchemaGenerator.elementToSchema(element);
+                    break;
+                case EElementType.NUMERIC:
+                    translatedChild =
+                        NumericSchemaGenerator.elementToSchema(element);
+                    break;
                 case EElementType.DROPDOWN:
                     translatedChild =
-                        OptionGroupBasedField.elementToSchema(element);
+                        DropdownSchemaGenerator.elementToSchema(element);
                     break;
             }
             return { ...acc, ...translatedChild };
         }, {});
 
-        const elementSchema: IFrontendEngineData = {
+        const elementsSchema: IFrontendEngineData = {
             defaultValues,
             sections: {
                 section: {
@@ -71,8 +84,8 @@ export namespace Translator {
                 },
             },
         };
-        return { schema: elementSchema, prefill };
-    }
+        return { schema: elementsSchema, prefill };
+    };
 
     export const parseSchema = (formSchema: ISchemaProps) => {
         const schemaToParse = formSchema?.schema?.sections?.section?.children

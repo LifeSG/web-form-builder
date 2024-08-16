@@ -6,11 +6,9 @@
  * Alphabetical order for easier checking
  */
 export enum EElementType {
-    CHECKBOX = "checkbox",
     CONTACT = "contact-field",
     EMAIL = "email-field",
     NUMERIC = "numeric-field",
-    RADIO = "radio",
     DROPDOWN = "select",
     TEXT = "text-field",
     TEXTAREA = "textarea",
@@ -25,8 +23,6 @@ export const TextBasedElementTypes: Set<EElementType> = new Set([
 ]);
 
 export const OptionGroupBasedElementTypes: Set<EElementType> = new Set([
-    EElementType.CHECKBOX,
-    EElementType.RADIO,
     EElementType.DROPDOWN,
 ]);
 
@@ -61,7 +57,7 @@ export interface IBaseAttributes {
 }
 
 export interface IValidation {
-    validationType?: string;
+    validationType?: EValidationType;
     validationRule?: string;
     validationErrorMessage?: string;
 }

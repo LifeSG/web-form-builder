@@ -12,11 +12,9 @@ describe("ElementSelectorCard", () => {
 
     test.each`
         type                     | expectedLabel
-        ${EElementType.CHECKBOX} | ${ELEMENT_BUTTON_LABELS[EElementType.CHECKBOX]}
         ${EElementType.CONTACT}  | ${ELEMENT_BUTTON_LABELS[EElementType.CONTACT]}
         ${EElementType.EMAIL}    | ${ELEMENT_BUTTON_LABELS[EElementType.EMAIL]}
         ${EElementType.NUMERIC}  | ${ELEMENT_BUTTON_LABELS[EElementType.NUMERIC]}
-        ${EElementType.RADIO}    | ${ELEMENT_BUTTON_LABELS[EElementType.RADIO]}
         ${EElementType.TEXT}     | ${ELEMENT_BUTTON_LABELS[EElementType.TEXT]}
         ${EElementType.TEXTAREA} | ${ELEMENT_BUTTON_LABELS[EElementType.TEXTAREA]}
     `(
