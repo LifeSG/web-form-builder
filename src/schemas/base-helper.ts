@@ -11,7 +11,7 @@ export const PREFILL_PATH_REGEX = /^[a-zA-Z0-9._-]+$/;
 
 export namespace BaseSchemaHelper {
     export const getBaseSchema = (
-        elements: TElementMap,
+        elements: TElementMap = {},
         focusedElement: IFocusedElement
     ) =>
         yup.object().shape({
@@ -33,8 +33,8 @@ export namespace BaseSchemaHelper {
                 .matches(ID_REGEX, { message: "ID must be camelCase." })
                 .notOneOf(
                     Object.values(elements)
-                        .map((e) => e.id)
-                        .filter((id) => id !== focusedElement?.element.id),
+                        .map((e) => e?.id)
+                        .filter((id) => id !== focusedElement?.element?.id),
                     "ID must not be duplicated."
                 ),
         });
