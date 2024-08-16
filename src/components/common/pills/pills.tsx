@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { TogglePair } from "src/components/common/toggle-pair/toggle-pair";
-import { MandatoryFieldBox } from "src/components/element-editor/basic-details/basic-details.styles";
+import { MandatoryFieldBox } from "src/components/element-editor/basic-details/common";
 import {
     ITextarea,
     ITextareaFieldAttributes,
