@@ -11,10 +11,7 @@ import {
 import { ELEMENT_CONDITION_TYPES, SCHEMA_CONDITION_TYPES } from "src/data";
 import { TextBasedField } from "./text-based-field";
 import { IPrefillConfig } from "./types";
-import {
-    PREFILL_ACTIONID_REGEX,
-    PREFILL_PATH_REGEX,
-} from "src/yup-schemas/base-yup-schema-helper";
+import { PREFILL_ACTIONID_REGEX, PREFILL_PATH_REGEX } from "src/yup-schemas";
 
 export const createPrefillObject = (elements: TElementMap) => {
     const prefill = Object.values(elements).reduce((acc, element) => {

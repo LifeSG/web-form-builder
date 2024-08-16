@@ -29,7 +29,7 @@ import {
     getNonEmptyLines,
     getValidDropdownItem,
 } from "src/yup-schemas/bulk-edit-helper";
-import { TOptionGroupBasedSchema } from "src/yup-schemas/option-group-based-fields";
+import { TOptionGroupBasedSchema } from "src/yup-schemas";
 import { DropdownItemsChild } from "./dropdown-items-child";
 import {
     DropdownItemsButton,
