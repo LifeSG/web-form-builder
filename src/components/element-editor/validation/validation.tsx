@@ -92,8 +92,6 @@ export const Validation = () => {
             case EElementType.TEXTAREA:
                 return ELEMENT_VALIDATION_TYPES["Text field"][elementType]
                     .validationTypes[0];
-            default:
-                return "";
         }
     };
 
