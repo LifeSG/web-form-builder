@@ -1,7 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { BaseTheme } from "@lifesg/react-design-system";
 import { noop } from "lodash";
-import React from "react";
+import React, { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import {
     BuilderContext,
@@ -108,11 +108,17 @@ export namespace TestHelper {
             ),
             defaultValues: formContext?.defaultValues,
         });
-        if (formContext?.currentValues) {
-            Object.keys(formContext.currentValues).forEach((key) => {
-                methods.setValue(key, formContext.currentValues[key]);
-            });
-        }
+
+        useEffect(() => {
+            if (formContext?.currentValues) {
+                Object.keys(formContext.currentValues).forEach((key) => {
+                    methods.setValue(key, formContext.currentValues[key], {
+                        shouldDirty: true,
+                    });
+                });
+            }
+        }, [formContext?.currentValues, methods]);
+
         const onSubmit = jest.fn;
         return (
             <FormProvider {...methods}>

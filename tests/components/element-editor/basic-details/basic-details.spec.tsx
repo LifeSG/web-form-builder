@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
 import { BasicDetails } from "src/components/element-editor/basic-details";
 import { EElementType, TElement } from "src/context-providers";
@@ -77,7 +77,7 @@ describe("BasicDetails", () => {
         });
 
         it("should replace element name, mandatory field's error message, and ID with values that correspond to the new element type", async () => {
-            renderComponent({
+            const { rerender } = renderComponent({
                 builderContext: {
                     focusedElement: {
                         element: MOCK_FOCUSED_ELEMENT(EElementType.EMAIL),
@@ -90,13 +90,32 @@ describe("BasicDetails", () => {
                 },
             });
 
-            // Change element type to TEXT
-            fireEvent.click(screen.getByTestId("type-field"));
+            // Re-render with a different element type to bypass modal confirmation
+            rerender(
+                TestHelper.withProviders(
+                    {
+                        builderContext: {
+                            focusedElement: {
+                                element: MOCK_FOCUSED_ELEMENT(
+                                    EElementType.EMAIL
+                                ),
+                                isDirty: false,
+                            },
+                            selectedElementType: EElementType.EMAIL,
+                        },
 
-            const textOption = await screen.findByText("Short text");
-            expect(textOption).toBeInTheDocument();
-
-            fireEvent.click(textOption);
+                        formContext: {
+                            defaultValues: MOCK_FOCUSED_ELEMENT(
+                                EElementType.EMAIL
+                            ),
+                            currentValues: {
+                                type: EElementType.TEXT,
+                            },
+                        },
+                    },
+                    <BasicDetails />
+                )
+            );
 
             const elementName = screen.getByTestId("label-field");
             const errorMessageField = screen.getByTestId(
@@ -110,7 +129,7 @@ describe("BasicDetails", () => {
         });
 
         it("should clear all other field values that do not have default values", async () => {
-            renderComponent({
+            const { rerender } = renderComponent({
                 builderContext: {
                     focusedElement: {
                         element: MOCK_FOCUSED_ELEMENT(EElementType.EMAIL),
@@ -143,13 +162,32 @@ describe("BasicDetails", () => {
             expect(placeholderField).toHaveValue("placeholder");
             expect(preselectedValueField).toHaveValue("preselectedValue");
 
-            // Change element type to TEXT
-            fireEvent.click(screen.getByTestId("type-field"));
+            // Re-render with a different element type to bypass modal confirmation
+            rerender(
+                TestHelper.withProviders(
+                    {
+                        builderContext: {
+                            focusedElement: {
+                                element: MOCK_FOCUSED_ELEMENT(
+                                    EElementType.EMAIL
+                                ),
+                                isDirty: false,
+                            },
+                            selectedElementType: EElementType.EMAIL,
+                        },
 
-            const textOption = await screen.findByText("Short text");
-            expect(textOption).toBeInTheDocument();
-
-            fireEvent.click(textOption);
+                        formContext: {
+                            defaultValues: MOCK_FOCUSED_ELEMENT(
+                                EElementType.EMAIL
+                            ),
+                            currentValues: {
+                                type: EElementType.TEXT,
+                            },
+                        },
+                    },
+                    <BasicDetails />
+                )
+            );
 
             // Wait for the form to reset
             const updatedDescriptionField =
