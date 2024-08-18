@@ -45,7 +45,7 @@ export namespace TextSchemaParser {
     ) => {
         const baseElement = parseBaseSchema(schema, id, prefill);
 
-        const { validation } = schema;
+        const { validation, placeholder } = schema;
 
         const additionalValidation: IYupValidationRule[] =
             validation?.filter(
@@ -55,6 +55,7 @@ export namespace TextSchemaParser {
 
         const parsedElement: TElement = {
             ...baseElement,
+            placeholder: placeholder || "",
             validation:
                 (additionalValidation.length > 0 &&
                     parseTextValidation(additionalValidation)) ||

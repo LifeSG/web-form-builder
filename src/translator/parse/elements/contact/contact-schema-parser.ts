@@ -10,11 +10,13 @@ export namespace ContactSchemaParser {
         prefill: IPrefillConfig
     ) => {
         const baseElement = parseBaseSchema(schema, id, prefill);
+        const { placeholder } = schema;
 
         //TODO: Implement additional validation after contact field is implemented
 
         const parsedElement: TElement = {
             ...baseElement,
+            placeholder: placeholder || "",
         };
 
         return parsedElement;

@@ -35,7 +35,7 @@ export namespace LongTextSchemaParser {
     ) => {
         const baseElement = parseBaseSchema(schema, id, prefill);
 
-        const { validation } = schema;
+        const { validation, placeholder } = schema;
 
         const additionalValidation: IYupValidationRule[] =
             validation?.filter(
@@ -45,6 +45,7 @@ export namespace LongTextSchemaParser {
 
         const parsedElement: TElement = {
             ...baseElement,
+            placeholder: placeholder || "",
             validation:
                 (additionalValidation.length > 0 &&
                     parseLongTextValidation(additionalValidation)) ||
