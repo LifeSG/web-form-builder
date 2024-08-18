@@ -11,11 +11,13 @@ export namespace ContactSchemaParser {
         defaultValue: string | undefined
     ) => {
         const baseElement = parseBaseSchema(schema, id, prefill, defaultValue);
+        const { placeholder } = schema;
 
         //TODO: Implement additional validation after contact field is implemented
 
         const parsedElement: TElement = {
             ...baseElement,
+            placeholder: placeholder || "",
         };
 
         return parsedElement;

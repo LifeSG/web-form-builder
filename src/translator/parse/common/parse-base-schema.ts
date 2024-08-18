@@ -23,7 +23,7 @@ export const parseBaseSchema = (
 
     const baseElement: TElement = {
         columns: { desktop: 12, tablet: 8, mobile: 4 },
-        label: (label as IComplexLabel).mainLabel,
+        label: (label as IComplexLabel).mainLabel || "",
         description: (label as IComplexLabel).subLabel || "",
         type: uiType as EElementType,
         required: !!requiredValidation?.required,

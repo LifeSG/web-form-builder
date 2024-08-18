@@ -46,7 +46,7 @@ export namespace NumericSchemaParser {
     ) => {
         const baseElement = parseBaseSchema(schema, id, prefill, defaultValue);
 
-        const { validation } = schema;
+        const { validation, placeholder } = schema;
 
         const additionalValidation: IYupValidationRule[] =
             validation?.filter(
@@ -56,6 +56,7 @@ export namespace NumericSchemaParser {
 
         const parsedElement: TElement = {
             ...baseElement,
+            placeholder: placeholder || "",
             validation:
                 (additionalValidation.length > 0 &&
                     parseNumericValidation(additionalValidation)) ||
