@@ -30,6 +30,7 @@ export namespace YupSchemaBuilder {
                         .concat(baseSchema)
                         .concat(TEXT_YUP_SCHEMA);
                 case EElementType.NUMERIC:
+                case EElementType.CONTACT:
                     return yup
                         .object()
                         .concat(baseSchema)

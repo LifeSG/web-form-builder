@@ -32,3 +32,5 @@ export type TOverallTextBasedYupSchema =
 export type TYupSchema = yup.ObjectSchema<
     TOverallOptionGroupBasedSchema | TOverallTextBasedSchema
 >;
+
+export type TSchemasWithValidation = TOverallTextBasedSchema;
