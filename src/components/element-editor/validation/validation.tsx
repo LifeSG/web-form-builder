@@ -1,27 +1,29 @@
 import { Text } from "@lifesg/react-design-system/text";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
-import {
-    EElementType,
-    TTextBasedElement,
-    useBuilder,
-} from "src/context-providers";
+import { EElementType, useBuilder } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import {
     SchemaHelper,
-    TOverallTextBasedSchema,
     TOverallTextBasedYupSchema,
+    TSchemasWithValidation,
 } from "src/schemas";
 import * as Yup from "yup";
+import {
+    EmailValidationChild,
+    LongTextValidationChild,
+    NumericValidationChild,
+    TextValidationChild,
+} from "./elements";
+import { ContactValidationChild } from "./elements/contact/contact-validation-child";
 import { getValidationOptionsByType } from "./helper";
-import { ValidationChild } from "./validation-child";
 
 export const Validation = () => {
     // =========================================================================
     // CONST, STATES, REFS
     // =========================================================================
-    const { focusedElement, selectedElementType } = useBuilder();
-    const { watch, control } = useFormContext<TOverallTextBasedSchema>(); //Validation is only present in text-based-fields.
+    const { selectedElementType } = useBuilder();
+    const { watch, control } = useFormContext<TSchemasWithValidation>();
     const { fields, append, remove } = useFieldArray({
         control,
         name: "validation",
@@ -30,19 +32,13 @@ export const Validation = () => {
     const schema = SchemaHelper.buildSchema(
         selectedElementType
     ) as TOverallTextBasedYupSchema;
-    const validationValues = watch(
-        "validation",
-        (focusedElement.element as TTextBasedElement).validation
-    );
-    const elementType = watch(
-        "type",
-        focusedElement.element.type
-    ) as EElementType;
+    const validationValues = watch("validation");
+    const elementType = watch("type");
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
 
-    const hasReachedMaxEntries = (elementType: EElementType) => {
+    const hasReachedMaxEntries = () => {
         switch (elementType) {
             case EElementType.EMAIL:
             case EElementType.TEXT:
@@ -80,7 +76,7 @@ export const Validation = () => {
                     To add new validation, fill up existing validation first.
                 </Text.Body>
             );
-        } else if (hasReachedMaxEntries(elementType)) {
+        } else if (hasReachedMaxEntries()) {
             return (
                 <Text.Body>
                     Limit reached. To add new validation, remove existing ones
@@ -94,9 +90,8 @@ export const Validation = () => {
         switch (elementType) {
             case EElementType.EMAIL:
             case EElementType.TEXTAREA:
-                return ELEMENT_VALIDATION_TYPES["Text field"][
-                    focusedElement?.element?.type
-                ].validationTypes[0];
+                return ELEMENT_VALIDATION_TYPES["Text field"][elementType]
+                    .validationTypes[0];
             default:
                 return "";
         }
@@ -124,17 +119,64 @@ export const Validation = () => {
     // =========================================================================
 
     const renderChildren = () => {
-        return fields.map((field, index) => (
-            <ValidationChild
-                key={field.id}
-                onDelete={() => handleDelete(index)}
-                options={getValidationOptionsByType(
-                    validationValues,
-                    elementType
-                )}
-                index={index}
-            />
-        ));
+        const options = getValidationOptionsByType(
+            validationValues,
+            elementType
+        );
+
+        return fields.map((field, index) => {
+            switch (elementType) {
+                case EElementType.EMAIL:
+                    return (
+                        <EmailValidationChild
+                            key={field.id}
+                            index={index}
+                            options={options}
+                            disabled={options.length === 1}
+                            onDelete={() => handleDelete(index)}
+                        />
+                    );
+                case EElementType.TEXTAREA:
+                    return (
+                        <LongTextValidationChild
+                            key={field.id}
+                            index={index}
+                            options={options}
+                            disabled={options.length === 1}
+                            onDelete={() => handleDelete(index)}
+                        />
+                    );
+                case EElementType.NUMERIC:
+                    return (
+                        <NumericValidationChild
+                            key={field.id}
+                            index={index}
+                            options={options}
+                            onDelete={() => handleDelete(index)}
+                        />
+                    );
+                case EElementType.TEXT:
+                    return (
+                        <TextValidationChild
+                            key={field.id}
+                            index={index}
+                            options={options}
+                            onDelete={() => handleDelete(index)}
+                        />
+                    );
+                case EElementType.CONTACT:
+                    return (
+                        <ContactValidationChild
+                            key={field.id}
+                            index={index}
+                            options={options}
+                            onDelete={() => handleDelete(index)}
+                        />
+                    );
+                default:
+                    return null;
+            }
+        });
     };
 
     return (
@@ -143,7 +185,7 @@ export const Validation = () => {
             title="Additional Validation"
             buttonLabel="validation"
             disabledButton={
-                hasReachedMaxEntries(elementType) || hasInvalidAndEmptyFields()
+                hasReachedMaxEntries() || hasInvalidAndEmptyFields()
             }
             popoverMessage={getPopoverMessage()}
         >
