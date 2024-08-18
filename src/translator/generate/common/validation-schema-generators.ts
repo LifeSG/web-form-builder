@@ -1,4 +1,4 @@
-import { ValidationSchemaGenerator } from "..";
+import { ValidationSchemaGenerator } from "../types";
 
 export const generateMaxValidation: ValidationSchemaGenerator = (value) => ({
     max: parseInt(value.validationRule),

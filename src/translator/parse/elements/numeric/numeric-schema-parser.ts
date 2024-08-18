@@ -11,7 +11,7 @@ import {
     parseIntegerValidation,
     parseMaxValueValidation,
     parseMinValueValidation,
-} from "../../common/validation-schema-parsers";
+} from "../../common";
 
 export namespace NumericSchemaParser {
     const parseNumericValidation = (

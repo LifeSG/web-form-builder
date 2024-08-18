@@ -1,7 +1,7 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import "jest-canvas-mock";
 import { BasicDetails } from "src/components/element-editor/basic-details";
-import { EElementType } from "src/context-providers";
+import { EElementType, TElement } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data";
 import { TestHelper } from "src/util/test-helper";
 
@@ -19,232 +19,150 @@ describe("BasicDetails", () => {
         jest.resetAllMocks();
     });
 
-    describe("rendering label & required error message fields", () => {
-        it("should render label if element has label property", async () => {
+    it.each`
+        elementType              | testId
+        ${EElementType.EMAIL}    | ${"email-basic-details"}
+        ${EElementType.TEXT}     | ${"text-basic-details"}
+        ${EElementType.TEXTAREA} | ${"long-text-basic-details"}
+        ${EElementType.NUMERIC}  | ${"numeric-basic-details"}
+        ${EElementType.CONTACT}  | ${"contact-basic-details"}
+        ${EElementType.DROPDOWN} | ${"dropdown-basic-details"}
+    `(
+        "should render the $elementType basic details component",
+        async ({ elementType, testId }) => {
             renderComponent({
                 builderContext: {
-                    focusedElement: MOCK_FOCUSED_ELEMENT,
-                    elements: MOCK_ELEMENTS,
-                },
-            });
-            const labelField = await getLabelField();
-            expect(labelField).toBeInTheDocument();
-        });
-
-        it("should render required error message if element has required error message property", async () => {
-            renderComponent({
-                builderContext: {
-                    focusedElement: MOCK_FOCUSED_ELEMENT,
-                    elements: MOCK_ELEMENTS,
-                },
-            });
-            fireEvent.click(await screen.findByLabelText("Yes"));
-
-            const requiredErrorMessageField =
-                await screen.findByLabelText("Error message");
-            expect(requiredErrorMessageField).toBeInTheDocument();
-        });
-
-        it("should render the description if element has the description property", async () => {
-            renderComponent({
-                builderContext: {
-                    focusedElement: MOCK_FOCUSED_ELEMENT,
-                    elements: MOCK_ELEMENTS,
+                    focusedElement: {
+                        element: MOCK_FOCUSED_ELEMENT(elementType),
+                        isDirty: false,
+                    },
+                    selectedElementType: elementType,
                 },
             });
 
-            const descriptionField = await screen.findByText(
-                "Description text (optional)"
-            );
-            expect(descriptionField).toBeInTheDocument();
-        });
+            const basicDetails = await screen.findByTestId(testId);
+            expect(basicDetails).toBeInTheDocument();
+        }
+    );
 
-        it("should render the preselected field & resizable area input field if element has the preselected value & resizable area input field property", async () => {
+    describe("resetting of form fields when element type changes", () => {
+        it("should populate element name, mandatory field's error message, and ID with default values in the initial state", async () => {
             renderComponent({
                 builderContext: {
-                    focusedElement: MOCK_FOCUSED_TEXT_AREA_ELEMENT,
-                    elements: MOCK_TEXT_AREA_ELEMENTS,
+                    focusedElement: {
+                        element: MOCK_FOCUSED_ELEMENT(EElementType.EMAIL),
+                        isDirty: false,
+                    },
+                    selectedElementType: EElementType.EMAIL,
                 },
                 formContext: {
-                    defaultValues: {
-                        type: EElementType.TEXTAREA,
+                    defaultValues: MOCK_FOCUSED_ELEMENT(EElementType.EMAIL),
+                },
+            });
+
+            const textBasicDetails = await screen.findByTestId(
+                "email-basic-details"
+            );
+            expect(textBasicDetails).toBeInTheDocument();
+
+            const elementName = screen.getByTestId("label-field");
+            const errorMessageField = screen.getByTestId(
+                "required-error-message-field"
+            );
+            const elementId = screen.getByTestId("id-field");
+
+            expect(elementName).toHaveValue("Email address");
+            expect(errorMessageField).toHaveValue("This is a required field.");
+            expect(elementId).toHaveValue("email-field");
+        });
+
+        it("should replace element name, mandatory field's error message, and ID with values that correspond to the new element type", async () => {
+            renderComponent({
+                builderContext: {
+                    focusedElement: {
+                        element: MOCK_FOCUSED_ELEMENT(EElementType.EMAIL),
+                        isDirty: false,
                     },
-                },
-            });
-
-            const resizableAreaInput = await screen.findByText(
-                "Resizable area input"
-            );
-            const preSelectedField = await screen.findByText(
-                "Pre-selected value (optional)"
-            );
-            expect(resizableAreaInput).toBeInTheDocument();
-            expect(preSelectedField).toBeInTheDocument();
-        });
-
-        it("should render the pills fields if element has pills field", async () => {
-            renderComponent({
-                builderContext: {
-                    focusedElement: MOCK_FOCUSED_TEXT_AREA_ELEMENT,
-                    elements: MOCK_TEXT_AREA_ELEMENTS,
-                },
-            });
-
-            const pillsField = await screen.findByText("Pills");
-            expect(pillsField).toBeInTheDocument();
-        });
-
-        it("should render the pill items and list position fields if pills field is true", async () => {
-            renderComponent({
-                builderContext: {
-                    focusedElement: MOCK_FOCUSED_TEXT_AREA_ELEMENT,
-                    elements: MOCK_TEXT_AREA_ELEMENTS,
-                },
-            });
-
-            const pillItemsField = await screen.findByText("Pill items");
-            const listPositionField = await screen.findByText("List position");
-            expect(pillItemsField).toBeInTheDocument();
-            expect(listPositionField).toBeInTheDocument();
-        });
-    });
-
-    describe("rendering the error messages for the fields", () => {
-        it("should render an error message for the ID field if it is empty", async () => {
-            renderComponent({
-                builderContext: {
-                    focusedElement: MOCK_FOCUSED_ELEMENT,
-                    elements: MOCK_ELEMENTS,
-                },
-            });
-            const idInput = await getIdField();
-            fireEvent.focus(idInput);
-            fireEvent.change(idInput, { target: { value: null } });
-            fireEvent.blur(idInput);
-            const idErrorMessage = await screen.findByText("ID required.");
-            expect(idErrorMessage).toHaveTextContent("ID required.");
-        });
-
-        it("should render an error message for the ID field if it is invalid", async () => {
-            renderComponent({
-                builderContext: {
-                    focusedElement: MOCK_FOCUSED_ELEMENT,
-                    elements: MOCK_ELEMENTS,
-                },
-            });
-            const idInput = await getIdField();
-            fireEvent.focus(idInput);
-            fireEvent.change(idInput, { target: { value: "camel_Case" } });
-            fireEvent.blur(idInput);
-            const idErrorMessage = await screen.findByText(
-                "ID must be camelCase."
-            );
-            expect(idErrorMessage).toHaveTextContent("ID must be camelCase.");
-        });
-
-        it("should render an error message for the label field if it is empty", async () => {
-            renderComponent({
-                builderContext: {
-                    focusedElement: MOCK_FOCUSED_ELEMENT,
-                    elements: MOCK_ELEMENTS,
-                },
-            });
-            const labelInput = await getLabelField();
-            fireEvent.focus(labelInput);
-            fireEvent.change(labelInput, { target: { value: "" } });
-            fireEvent.blur(labelInput);
-            const labelErrorMessage =
-                await screen.findByText("Label required.");
-            expect(labelErrorMessage).toHaveTextContent("Label required.");
-        });
-    });
-
-    describe("rendering the preselected value", () => {
-        it("should render the preselected value if the element type is dropdown and there is at least 1 valid dropdown item", async () => {
-            renderComponent({
-                builderContext: {
-                    focusedElement: MOCK_FOCUSED_DROPDOWN_ELEMENT,
-                    elements: MOCK_ELEMENTS,
+                    selectedElementType: EElementType.EMAIL,
                 },
                 formContext: {
-                    elementType: EElementType.DROPDOWN,
-                    defaultValues: {
-                        type: EElementType.DROPDOWN,
-                        dropdownItems: [
-                            { label: "Option 1", value: "Option 1" },
-                            { label: "", value: "" },
-                        ],
-                    },
+                    defaultValues: MOCK_FOCUSED_ELEMENT(EElementType.EMAIL),
                 },
             });
 
-            const dropdownItem = screen.getByText("Dropdown items");
-            expect(dropdownItem).toBeInTheDocument();
+            // Change element type to TEXT
+            fireEvent.click(screen.getByTestId("type-field"));
 
-            const dropdownItemLabels = await screen.findAllByTestId(
-                "dropdown-item-label"
+            const textOption = await screen.findByText("Short text");
+            expect(textOption).toBeInTheDocument();
+
+            fireEvent.click(textOption);
+
+            const elementName = screen.getByTestId("label-field");
+            const errorMessageField = screen.getByTestId(
+                "required-error-message-field"
             );
-            const dropdownItemValues = await screen.findAllByTestId(
-                "dropdown-item-value"
-            );
+            const elementId = screen.getByTestId("id-field");
 
-            expect(dropdownItemLabels[0]).toBeInTheDocument();
-            expect(dropdownItemValues[0]).toBeInTheDocument();
-
-            expect(
-                screen.queryByText("Pre-selected value (optional)")
-            ).not.toBeInTheDocument();
-
-            fireEvent.change(dropdownItemLabels[0], {
-                target: { value: "New Label" },
-            });
-            fireEvent.change(dropdownItemValues[0], {
-                target: { value: "New Value" },
-            });
-
-            expect(dropdownItemLabels[0]).toHaveValue("New Label");
-            expect(dropdownItemValues[0]).toHaveValue("New Value");
-
-            const preselectedValue = await screen.findByText(
-                "Pre-selected value (optional)"
-            );
-
-            expect(preselectedValue).toBeInTheDocument();
+            expect(elementName).toHaveValue("Short text");
+            expect(errorMessageField).toHaveValue("This is a required field.");
+            expect(elementId).toHaveValue("short-text-field");
         });
-    });
 
-    describe("submitting the form for dropdown element", () => {
-        it("should not be able to submit the form if there are not at least 2 valid dropdown items", async () => {
+        it("should clear all other field values that do not have default values", async () => {
             renderComponent({
                 builderContext: {
-                    focusedElement: MOCK_FOCUSED_DROPDOWN_ELEMENT,
-                    elements: MOCK_ELEMENTS,
+                    focusedElement: {
+                        element: MOCK_FOCUSED_ELEMENT(EElementType.EMAIL),
+                        isDirty: false,
+                    },
+                    selectedElementType: EElementType.EMAIL,
                 },
                 formContext: {
-                    elementType: EElementType.DROPDOWN,
-                    defaultValues: {
-                        type: EElementType.DROPDOWN,
-                        dropdownItems: [
-                            { label: "", value: "" },
-                            { label: "", value: "" },
-                        ],
-                    },
+                    defaultValues: MOCK_FOCUSED_ELEMENT(EElementType.EMAIL),
                 },
             });
 
-            const submitButton = screen.getByText("Submit");
-            fireEvent.click(submitButton);
-
-            const labelError = await screen.findAllByText(
-                "Option label required."
-            );
-            const valueError = await screen.findAllByText(
-                "Option value required."
+            const descriptionField = screen.getByTestId("description-field");
+            const placeholderField = screen.getByTestId("placeholder-field");
+            const preselectedValueField = screen.getByTestId(
+                "preselected-value-field"
             );
 
-            // Initially there are 2 empty dropdown items
-            expect(labelError).toHaveLength(2);
-            expect(valueError).toHaveLength(2);
+            fireEvent.change(descriptionField, {
+                target: { value: "description" },
+            });
+            fireEvent.change(placeholderField, {
+                target: { value: "placeholder" },
+            });
+            fireEvent.change(preselectedValueField, {
+                target: { value: "preselectedValue" },
+            });
+
+            expect(descriptionField).toHaveValue("description");
+            expect(placeholderField).toHaveValue("placeholder");
+            expect(preselectedValueField).toHaveValue("preselectedValue");
+
+            // Change element type to TEXT
+            fireEvent.click(screen.getByTestId("type-field"));
+
+            const textOption = await screen.findByText("Short text");
+            expect(textOption).toBeInTheDocument();
+
+            fireEvent.click(textOption);
+
+            // Wait for the form to reset
+            const updatedDescriptionField =
+                await screen.findByTestId("description-field");
+            const updatedPlaceholderField =
+                await screen.findByTestId("placeholder-field");
+            const updatedPreselectedValueField = await screen.findByTestId(
+                "preselected-value-field"
+            );
+
+            expect(updatedDescriptionField).toHaveValue("");
+            expect(updatedPlaceholderField).toHaveValue("");
+            expect(updatedPreselectedValueField).toHaveValue("");
         });
     });
 });
@@ -253,105 +171,24 @@ describe("BasicDetails", () => {
 // HELPER FUNCTIONS
 // =============================================================================
 
-const MyTestComponent = () => {
-    return (
-        <>
-            <BasicDetails />
-            <button type="submit">Submit</button>
-        </>
-    );
-};
-
 const renderComponent = (overrideOptions?: TestHelper.RenderOptions) => {
-    return render(
-        TestHelper.withProviders(overrideOptions, <MyTestComponent />)
-    );
-};
-
-const getIdField = async () => {
-    return screen.findByPlaceholderText("Create an ID");
-};
-
-const getLabelField = async () => {
-    return screen.findByLabelText("Element Name");
+    return render(TestHelper.withProviders(overrideOptions, <BasicDetails />));
 };
 
 // =============================================================================
 // MOCKS
 // =============================================================================
 
-const MOCK_FOCUSED_ELEMENT = {
-    element: {
+const MOCK_FOCUSED_ELEMENT = (elementType: EElementType) => {
+    const element: TElement = {
         internalId: "mock123",
-        type: EElementType.EMAIL,
-        id: "mockElement",
-        required: false,
+        type: elementType,
+        id: "email-field",
+        required: true,
+        requiredErrorMsg: "This is a required field.",
         description: "hellooo",
-        label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
+        label: ELEMENT_BUTTON_LABELS[elementType],
         columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
-    },
-};
-
-const MOCK_FOCUSED_DROPDOWN_ELEMENT = {
-    element: {
-        internalId: "mock123",
-        type: EElementType.DROPDOWN,
-        id: "mockElement",
-        required: false,
-        label: ELEMENT_BUTTON_LABELS[EElementType.DROPDOWN],
-        columns: {
-            desktop: 12,
-            tablet: 8,
-            mobile: 4,
-        } as const,
-        dropdownItems: [
-            { label: "", value: "" },
-            { label: "", value: "" },
-        ],
-    },
-};
-
-const MOCK_ELEMENTS = {
-    mock123: {
-        internalId: "mock123",
-        type: EElementType.EMAIL,
-        id: "mockElement",
-        required: false,
-        description: "hellooo",
-        label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
-        columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
-    },
-};
-
-const MOCK_FOCUSED_TEXT_AREA_ELEMENT = {
-    element: {
-        internalId: "mock256",
-        type: EElementType.TEXTAREA,
-        id: "mockElement",
-        required: false,
-        description: "hellooo",
-        preSelectedValue: "",
-        resizableInput: true,
-        pills: true,
-        pillItems: [{ content: "" }, { content: "" }],
-        pillPosition: "top",
-        label: ELEMENT_BUTTON_LABELS[EElementType.TEXTAREA],
-        columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
-    },
-};
-const MOCK_TEXT_AREA_ELEMENTS = {
-    mock256: {
-        internalId: "mock256",
-        type: EElementType.TEXTAREA,
-        id: "mockElement",
-        required: false,
-        description: "hellooo",
-        preSelectedValue: "",
-        resizableInput: true,
-        pills: true,
-        pillItems: [{ content: "" }, { content: "" }],
-        pillPosition: "top",
-        label: ELEMENT_BUTTON_LABELS[EElementType.TEXTAREA],
-        columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
-    },
+    };
+    return element;
 };
