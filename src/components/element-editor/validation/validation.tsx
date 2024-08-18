@@ -4,8 +4,8 @@ import { MultiEntry } from "src/components/common";
 import { EElementType, useBuilder } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import {
-    TOverallTextBasedSchema,
     TOverallTextBasedYupSchema,
+    TSchemasWithValidation,
     YupSchemaBuilder,
 } from "src/yup-schemas";
 import * as Yup from "yup";
