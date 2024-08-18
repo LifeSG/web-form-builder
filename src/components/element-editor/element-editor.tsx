@@ -10,7 +10,7 @@ import { BasicDetails } from "./basic-details";
 import { ConditionalRendering } from "./conditional-rendering";
 import { SaveChangesAlert, Wrapper } from "./element-editor.styles";
 import { Prefill } from "./prefill";
-import { Validation } from "./validation/validation";
+import { Validation } from "./validation/";
 
 export const ElementEditor = () => {
     // =========================================================================

@@ -36,5 +36,10 @@ describe("FormBuilder component", () => {
 // =============================================================================
 
 const renderComponent = (overrideOptions?: TestHelper.RenderOptions) => {
-    return render(TestHelper.withProviders(overrideOptions, <FormBuilder />));
+    return render(
+        TestHelper.withProviders(
+            { includeFormProvider: false, ...overrideOptions },
+            <FormBuilder />
+        )
+    );
 };

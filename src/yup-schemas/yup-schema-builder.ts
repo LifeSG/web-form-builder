@@ -20,6 +20,7 @@ export namespace YupSchemaBuilder {
                 case EElementType.EMAIL:
                 case EElementType.TEXT:
                 case EElementType.NUMERIC:
+                case EElementType.CONTACT:
                     return yup
                         .object()
                         .concat(baseSchema)
