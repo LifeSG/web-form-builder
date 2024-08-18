@@ -17,8 +17,8 @@ import { PlusIcon } from "@lifesg/react-icons/plus";
 import { useEffect } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import {
-    ITextarea,
-    ITextareaFieldAttributes,
+    ITextareaAttributes,
+    TTextarea,
     useBuilder,
 } from "src/context-providers";
 import { PillItemsChild } from "./pill-items-child";
@@ -29,14 +29,14 @@ export const PillItems = () => {
     // CONST, STATE, REF
     // =========================================================================
     const { focusedElement } = useBuilder();
-    const { control, resetField } = useFormContext<ITextareaFieldAttributes>();
+    const { control, resetField } = useFormContext<ITextareaAttributes>();
     const { fields, append, remove, move } = useFieldArray({
         control,
         name: "pillItems",
         shouldUnregister: true,
     });
 
-    const element: ITextarea = focusedElement?.element;
+    const element = focusedElement?.element as TTextarea;
 
     const sensors = useSensors(
         useSensor(PointerSensor),

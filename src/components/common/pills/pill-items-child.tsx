@@ -5,7 +5,7 @@ import { Text } from "@lifesg/react-design-system/text";
 import { DragHandleIcon, PlusCircleIcon } from "@lifesg/react-icons";
 import { CSSProperties } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import { ITextareaFieldAttributes } from "src/context-providers";
+import { ITextareaAttributes } from "src/context-providers";
 import { DeleteButton } from "../delete-button";
 import {
     DroppableWrapper,
@@ -30,7 +30,7 @@ export const PillItemsChild = ({
     const {
         control,
         formState: { errors },
-    } = useFormContext<ITextareaFieldAttributes>();
+    } = useFormContext<ITextareaAttributes>();
 
     const {
         attributes,

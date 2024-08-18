@@ -1,31 +1,27 @@
-import {
-    IBaseOptionGroupBasedFieldAttributes,
-    IBaseTextBasedFieldAttributes,
-} from "src/context-providers";
 import * as yup from "yup";
-import { BaseYupSchemaHelper } from "./base-yup-schema-helper";
-import { TOptionGroupBasedSchema } from "./option-group-based-fields";
-import { TTextAreaSchema, TTextBasedSchema } from "./text-based-fields";
-
-export type TBaseTextBasedFieldValues = Omit<
-    IBaseTextBasedFieldAttributes,
-    "internalId"
->;
-
-export type TBaseOptionGroupBasedFieldValues = Omit<
-    IBaseOptionGroupBasedFieldAttributes,
-    "internalId"
->;
+import {
+    DROPDOWN_YUP_SCHEMA,
+    EMAIL_YUP_SCHEMA,
+    LONG_TEXT_YUP_SCHEMA,
+    NUMERIC_YUP_SCHEMA,
+    TEXT_YUP_SCHEMA,
+} from "./elements";
+import { TBaseSchema } from "./helper";
 
 export type TFormFieldValues =
     | TOverallTextBasedSchema
     | TOverallOptionGroupBasedSchema;
 
-export type TOverallTextBasedSchema = BaseYupSchemaHelper.TBaseSchema &
-    (TTextBasedSchema | TTextAreaSchema);
+export type TEmailSchema = yup.InferType<typeof EMAIL_YUP_SCHEMA>;
+export type TTextSchema = yup.InferType<typeof TEXT_YUP_SCHEMA>;
+export type TLongTextSchema = yup.InferType<typeof LONG_TEXT_YUP_SCHEMA>;
+export type TNumericSchema = yup.InferType<typeof NUMERIC_YUP_SCHEMA>;
+export type TDropdownSchema = yup.InferType<typeof DROPDOWN_YUP_SCHEMA>;
 
-export type TOverallOptionGroupBasedSchema = BaseYupSchemaHelper.TBaseSchema &
-    TOptionGroupBasedSchema;
+export type TOverallTextBasedSchema = TBaseSchema &
+    (TEmailSchema | TTextSchema | TLongTextSchema | TNumericSchema);
+
+export type TOverallOptionGroupBasedSchema = TBaseSchema & TDropdownSchema;
 
 export type TOverallOptionGroupBasedYupSchema =
     yup.ObjectSchema<TOverallOptionGroupBasedSchema>;

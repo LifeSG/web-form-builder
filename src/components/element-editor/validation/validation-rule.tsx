@@ -1,19 +1,18 @@
 import { Form } from "@lifesg/react-design-system/form";
 import { ControllerRenderProps, FieldErrors } from "react-hook-form";
-import { EValidationType } from "src/context-providers";
-import { TBaseTextBasedFieldValues } from "src/yup-schemas";
+import { EValidationType, TTextBasedElement } from "src/context-providers";
 
 interface IProps {
     fieldWithoutRef: Omit<
         ControllerRenderProps<
-            TBaseTextBasedFieldValues,
+            TTextBasedElement,
             `validation.${number}.validationRule`
         >,
         "ref"
     >;
     index: number;
     validationType: string;
-    errors?: FieldErrors<TBaseTextBasedFieldValues>;
+    errors?: FieldErrors<TTextBasedElement>;
 }
 
 export const ValidationRule: React.FC<IProps> = ({

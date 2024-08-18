@@ -1,9 +1,12 @@
 import {
     EElementType,
-    IBaseAttributes,
-    IBaseOptionGroupBasedFieldAttributes,
-    IBaseTextBasedFieldAttributes,
-    ITextareaFieldAttributes,
+    IBaseFieldAttributes,
+    IContactFieldAttributes,
+    IDropdownAttributes,
+    IEmailFieldAttributes,
+    INumericFieldAttributes,
+    ITextareaAttributes,
+    ITextFieldAttributes,
     TElement,
 } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS, ELEMENT_ID_PREFIX } from "src/data";
@@ -50,7 +53,7 @@ export namespace ElementObjectGenerator {
         existingIds: string[],
         existingElementIds: string[]
     ) => {
-        const baseAttributes: IBaseAttributes = {
+        const baseAttributes: IBaseFieldAttributes = {
             internalId: generateNewInternalId(existingIds),
             type,
             id: generateNewElementId(
@@ -58,57 +61,63 @@ export namespace ElementObjectGenerator {
                 existingElementIds,
                 false
             ),
+            required: true,
+            requiredErrorMsg: "This is a required field.",
+            preselectedValue: "",
+            description: "",
+            label: ELEMENT_BUTTON_LABELS[type],
+            columns: { desktop: 12, tablet: 8, mobile: 4 },
+            conditionalRendering: [],
+            prefill: [],
         };
 
         switch (type) {
-            case EElementType.EMAIL:
-            case EElementType.NUMERIC:
-            case EElementType.CONTACT:
-            case EElementType.TEXT: {
-                const attributes: IBaseTextBasedFieldAttributes = {
+            case EElementType.EMAIL: {
+                const attributes: IEmailFieldAttributes = {
                     ...baseAttributes,
                     placeholder: "",
-                    required: true,
-                    requiredErrorMsg: "This is a required field.",
-                    preselectedValue: "",
-                    description: "",
-                    label: ELEMENT_BUTTON_LABELS[type],
-                    columns: { desktop: 12, tablet: 8, mobile: 4 },
                     validation: [],
-                    conditionalRendering: [],
-                    prefill: [],
+                };
+                return attributes;
+            }
+            case EElementType.NUMERIC: {
+                const attributes: INumericFieldAttributes = {
+                    ...baseAttributes,
+                    placeholder: "",
+                    validation: [],
+                };
+                return attributes;
+            }
+            case EElementType.CONTACT: {
+                const attributes: IContactFieldAttributes = {
+                    ...baseAttributes,
+                    placeholder: "",
+                    validation: [],
+                };
+                return attributes;
+            }
+            case EElementType.TEXT: {
+                const attributes: ITextFieldAttributes = {
+                    ...baseAttributes,
+                    placeholder: "",
+                    validation: [],
                 };
                 return attributes;
             }
             case EElementType.TEXTAREA: {
-                const attributes: ITextareaFieldAttributes = {
+                const attributes: ITextareaAttributes = {
                     ...baseAttributes,
                     placeholder: "",
-                    required: true,
-                    requiredErrorMsg: "This is a required field.",
-                    label: ELEMENT_BUTTON_LABELS[type],
-                    description: "",
-                    preselectedValue: "",
                     resizableInput: false,
                     pills: false,
-                    columns: { desktop: 12, tablet: 8, mobile: 4 },
                     validation: [],
-                    conditionalRendering: [],
-                    prefill: [],
                 };
                 return attributes;
             }
             case EElementType.DROPDOWN: {
-                const attributes: IBaseOptionGroupBasedFieldAttributes = {
+                const attributes: IDropdownAttributes = {
                     ...baseAttributes,
                     placeholder: "",
-                    required: true,
-                    requiredErrorMsg: "This is a required field.",
-                    label: ELEMENT_BUTTON_LABELS[type],
-                    description: "",
-                    columns: { desktop: 12, tablet: 8, mobile: 4 },
-                    conditionalRendering: [],
-                    prefill: [],
                     dropdownItems: [
                         {
                             label: "",
@@ -119,7 +128,6 @@ export namespace ElementObjectGenerator {
                             value: "",
                         },
                     ],
-                    preselectedValue: "",
                 };
                 return attributes;
             }
