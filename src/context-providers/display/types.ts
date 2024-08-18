@@ -20,7 +20,10 @@ export interface IDisplayState {
     modals: TModalProps[];
 }
 
-export type TModalProps = IDiscardChangesModalProps | IBulkEditModalProps;
+export type TModalProps =
+    | IDiscardChangesModalProps
+    | IBulkEditModalProps
+    | IResetFieldsModalProps;
 
 // =============================================================================
 // MODAL STATE
@@ -28,6 +31,7 @@ export type TModalProps = IDiscardChangesModalProps | IBulkEditModalProps;
 export enum EModalType {
     DiscardChanges = "discard-changes",
     BulkEdit = "bulk-edit",
+    ResetFields = "reset-fields",
 }
 
 export interface IDiscardChangesModalProps {
@@ -40,6 +44,12 @@ export interface IBulkEditModalProps {
     type: EModalType.BulkEdit;
     dropdownItemsString: string;
     onClickActionButton: (content: string) => void;
+}
+
+export interface IResetFieldsModalProps {
+    type: EModalType.ResetFields;
+    onClickActionButton: () => void;
+    onClose: () => void;
 }
 
 // =============================================================================

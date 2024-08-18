@@ -1,8 +1,7 @@
 import { EModalType, TModalProps } from "src/context-providers";
 import { useModal } from "src/context-providers/display/modal-hook";
-import { DiscardChangesModal } from "./discard-changes-modal";
+import { BulkEditModal, DiscardChangesModal, ResetFieldsModal } from ".";
 import { ScrollableModal } from "./modals.styles";
-import { BulkEditModal } from "./bulk-edit-modal";
 
 export const Modals = () => {
     // =========================================================================
@@ -21,6 +20,8 @@ export const Modals = () => {
                     return <DiscardChangesModal modal={modal} />;
                 case EModalType.BulkEdit:
                     return <BulkEditModal modal={modal} />;
+                case EModalType.ResetFields:
+                    return <ResetFieldsModal modal={modal} />;
                 default:
                     console.error("type given is not a modal type!");
                     break;
