@@ -1,5 +1,6 @@
 import { EElementType, IPrefillAttributes } from "src/context-providers";
-import { parseBaseSchema, TElementSchema } from "src/translator/parse";
+import { parseBaseSchema } from "src/translator/parse";
+import { TElementSchema } from "src/translator/parse/types";
 import { generateMockElementSchema } from "../../helper";
 
 describe("ParseBaseSchema", () => {
@@ -26,7 +27,12 @@ describe("ParseBaseSchema", () => {
             uiType: EElementType.TEXT,
         })[elementId] as TElementSchema;
 
-        const parsedSchema = parseBaseSchema(MOCK_SCHEMA, elementId, {});
+        const parsedSchema = parseBaseSchema(
+            MOCK_SCHEMA,
+            elementId,
+            {},
+            undefined
+        );
 
         // Check that the base attributes are present after parsing
         expect(parsedSchema).toHaveProperty("columns.desktop", 12);
@@ -59,7 +65,12 @@ describe("ParseBaseSchema", () => {
             ],
         })[elementId] as TElementSchema;
 
-        const parsedSchema = parseBaseSchema(MOCK_SCHEMA, elementId, {});
+        const parsedSchema = parseBaseSchema(
+            MOCK_SCHEMA,
+            elementId,
+            {},
+            undefined
+        );
 
         expect(parsedSchema).toHaveProperty("required", true);
         expect(parsedSchema).toHaveProperty(
@@ -87,7 +98,12 @@ describe("ParseBaseSchema", () => {
             ],
         })[elementId] as TElementSchema;
 
-        const parsedSchema = parseBaseSchema(MOCK_SCHEMA, elementId, {});
+        const parsedSchema = parseBaseSchema(
+            MOCK_SCHEMA,
+            elementId,
+            {},
+            undefined
+        );
 
         expect(parsedSchema).toHaveProperty("conditionalRendering", [
             {
@@ -115,9 +131,14 @@ describe("ParseBaseSchema", () => {
             uiType: EElementType.TEXT,
         })[elementId] as TElementSchema;
 
-        const parsedSchema = parseBaseSchema(MOCK_SCHEMA, elementId, {
-            [elementId]: prefill,
-        });
+        const parsedSchema = parseBaseSchema(
+            MOCK_SCHEMA,
+            elementId,
+            {
+                [elementId]: prefill,
+            },
+            undefined
+        );
 
         expect(parsedSchema).toHaveProperty("prefill", prefill);
     });

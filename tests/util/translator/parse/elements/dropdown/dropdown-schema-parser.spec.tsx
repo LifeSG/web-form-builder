@@ -46,7 +46,8 @@ describe("DropdowSchemaParser", () => {
         const parsedSchema = DropdownSchemaParser.schemaToElement(
             MOCK_SCHEMA,
             elementId,
-            {}
+            {},
+            undefined
         );
 
         expect(parsedSchema).toHaveProperty("dropdownItems", dropdownItems);
