@@ -111,12 +111,25 @@ export namespace Translator {
         const elementSchemas: Record<string, TFrontendEngineFieldSchema> =
             formSchema?.schema?.sections?.section?.children?.grid?.["children"];
 
+        if (!elementSchemas) {
+            throw new Error("Element schemas are missing");
+        }
+
+        if (Object.keys(elementSchemas).length === 0) {
+            return null;
+        }
+
         const defaultValues = formSchema?.schema?.defaultValues;
         const parsedElements: TElement[] = [];
 
         if (Object.values(elementSchemas).length !== 0) {
             Object.entries(elementSchemas).forEach(([key, elementSchema]) => {
                 const { uiType } = elementSchema;
+
+                if (!uiType) {
+                    throw new Error("UI type is missing");
+                }
+
                 let parsedElement: TElement;
 
                 const defaultValue: string | undefined = defaultValues[key];
@@ -174,6 +187,10 @@ export namespace Translator {
                             formSchema.prefill,
                             defaultValue
                         );
+                        break;
+                    }
+                    default: {
+                        throw new Error("Invalid element type");
                     }
                 }
                 parsedElements.push(parsedElement);

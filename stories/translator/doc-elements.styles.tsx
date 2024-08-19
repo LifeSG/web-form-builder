@@ -1,3 +1,5 @@
+import { Alert } from "@lifesg/react-design-system/alert";
+import { Button } from "@lifesg/react-design-system/button";
 import { Color } from "@lifesg/react-design-system/color";
 import { Textarea } from "@lifesg/react-design-system/input-textarea";
 import styled from "styled-components";
@@ -70,4 +72,23 @@ export const SchemaPreview = styled(Textarea)`
     padding: 1rem;
     border: 1px solid ${Color.Neutral[5]};
     border-radius: 4px;
+`;
+
+export const SaveButton = styled(Button.Default)`
+    width: 10rem;
+    margin-left: auto;
+`;
+
+export const ActionWrapper = styled.div`
+    display: flex;
+    width: 80vw;
+    gap: 2rem;
+`;
+
+export const AlertWrapper = styled(Alert)`
+    flex-grow: 1;
+`;
+
+export const AlertMessage = styled(Alert)`
+    width: 80vw;
 `;

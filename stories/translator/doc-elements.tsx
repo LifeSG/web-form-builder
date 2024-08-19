@@ -4,12 +4,16 @@ import { PencilIcon } from "@lifesg/react-icons/pencil";
 import { TabletIcon } from "@lifesg/react-icons/tablet";
 import { FrontendEngine } from "@lifesg/web-frontend-engine";
 import { useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
 import { FormBuilder, IFormBuilderMethods } from "src/form-builder";
 import { ISchemaProps } from "src/translator/types";
 import {
+    ActionWrapper,
+    AlertWrapper,
     ContentWrapper,
     IconButton,
     IconWrapper,
+    SaveButton,
     SchemaPreview,
     ViewWrapper,
 } from "./doc-elements.styles";
@@ -21,6 +25,7 @@ interface IProps {
 interface ISchemaViewProps {
     data?: ISchemaProps;
     onChange?: (schema: ISchemaProps) => void;
+    formBuilderRef: React.MutableRefObject<IFormBuilderMethods>;
 }
 
 const FormPreview = ({ data }: IProps) => {
@@ -32,28 +37,89 @@ const FormPreview = ({ data }: IProps) => {
     );
 };
 
-const SchemaView = ({ data, onChange }: ISchemaViewProps) => {
-    const [schema, setSchema] = useState("");
+const SchemaView = ({ data, onChange, formBuilderRef }: ISchemaViewProps) => {
+    // ===========================================================================
+    // CONST, STATE, REFS
+    // ===========================================================================
+    const [hasError, setHasError] = useState<boolean>(false);
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { isDirty },
+    } = useForm({
+        defaultValues: { schema: "" },
+    });
 
-    const handleBlur = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setSchema(event.target.value);
-        if (onChange) {
-            const newSchema = JSON.parse(event.target.value);
-            onChange(newSchema);
-        }
-    };
+    // =========================================================================
+    // EFFECTS
+    // =========================================================================
 
     useEffect(() => {
-        if (data && onChange) {
-            const dataToString = JSON.stringify(data, null, 2);
-            setSchema(dataToString);
+        if (data) {
+            const schemaString = JSON.stringify(data, null, 2);
+            reset({ schema: schemaString });
         }
-    }, [data]);
+    }, [data, reset]);
+
+    // =========================================================================
+    // HELPER FUNCTIONS
+    // =========================================================================
+
+    const onSubmit = (formData: { schema: string }) => {
+        let newSchema: ISchemaProps;
+        try {
+            newSchema = JSON.parse(formData.schema);
+            formBuilderRef.current.parseSchema(newSchema);
+
+            setHasError(false);
+        } catch (error) {
+            console.log(error);
+            setHasError(true);
+            return;
+        }
+        onChange(newSchema);
+    };
+
+    // =========================================================================
+    // RENDER FUNCTIONS
+    // =========================================================================
+
+    const renderActionPanel = () => (
+        <ActionWrapper>
+            {isDirty && (
+                <>
+                    {hasError ? (
+                        <AlertWrapper type="error" showIcon>
+                            Unable to save changes because there’s syntax error.
+                            Amend the error or{" "}
+                            <a
+                                onClick={() => {
+                                    reset();
+                                    setHasError(false);
+                                }}
+                            >
+                                refresh to sync with the form builder.
+                            </a>
+                        </AlertWrapper>
+                    ) : (
+                        <AlertWrapper type="warning" showIcon>
+                            To reflect changes on preview, save changes first.
+                        </AlertWrapper>
+                    )}
+                </>
+            )}
+            <SaveButton onClick={handleSubmit(onSubmit)}>
+                {isDirty ? "Save Changes" : "Saved"}
+            </SaveButton>
+        </ActionWrapper>
+    );
 
     return (
         <ViewWrapper>
             <Text.H2>Generate Schema</Text.H2>
-            <SchemaPreview value={schema} onBlur={handleBlur} />
+            {renderActionPanel()}
+            <SchemaPreview {...register("schema")} />
         </ViewWrapper>
     );
 };
@@ -80,6 +146,8 @@ export const DocElement = () => {
         if (pageMode === "form-builder-mode") {
             const generatedSchema = formBuilderRef.current.generateSchema();
             setSchema(generatedSchema);
+        } else if (pageMode === "schema-mode") {
+            formBuilderRef.current.parseSchema(schema);
         }
         setPageMode("preview-mode");
     };
@@ -129,7 +197,11 @@ export const DocElement = () => {
             )}
             {pageMode === "schema-mode" && (
                 <ContentWrapper>
-                    <SchemaView data={schema} onChange={setSchema} />
+                    <SchemaView
+                        data={schema}
+                        onChange={setSchema}
+                        formBuilderRef={formBuilderRef}
+                    />
                 </ContentWrapper>
             )}
         </>
