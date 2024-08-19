@@ -1,6 +1,5 @@
 import {
     EElementType,
-    EValidationType,
     IEmailField,
     TElement,
     TElementMap,

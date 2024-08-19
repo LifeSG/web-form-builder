@@ -5,10 +5,7 @@ import {
     IValidation,
 } from "src/context-providers";
 import { LongTextSchemaParser } from "src/translator/parse/elements";
-import {
-    generateMockElement,
-    generateMockElementSchema,
-} from "tests/util/translator/helper";
+import { generateMockElementSchema } from "tests/util/translator/helper";
 
 describe("LongTextSchemaParser", () => {
     beforeEach(() => {
