@@ -20,14 +20,12 @@ import {
     ContactSchemaGenerator,
     DropdownSchemaGenerator,
     EmailSchemaGenerator,
+    generateDefaultValuesSchema,
+    generatePrefillSchema,
     LongTextSchemaGenerator,
     NumericSchemaGenerator,
     TextSchemaGenerator,
-} from "./generate/elements";
-import {
-    generateDefaultValuesSchema,
-    generatePrefillSchema,
-} from "./generate/helper";
+} from "./generate";
 import {
     ContactSchemaParser,
     DropdownSchemaParser,
@@ -35,8 +33,8 @@ import {
     LongTextSchemaParser,
     NumericSchemaParser,
     TextSchemaParser,
-} from "./parse/elements";
-import { updateParsedElements } from "./parse/helper";
+    updateParsedElements,
+} from "./parse";
 import { ISchemaProps } from "./types";
 
 export namespace Translator {

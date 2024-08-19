@@ -5,7 +5,10 @@ import {
     IValidation,
 } from "src/context-providers";
 import { LongTextSchemaParser } from "src/translator/parse/elements";
-import { generateMockElementSchema } from "tests/util/translator/helper";
+import {
+    generateMockElement,
+    generateMockElementSchema,
+} from "tests/util/translator/helper";
 
 describe("LongTextSchemaParser", () => {
     beforeEach(() => {
@@ -21,7 +24,7 @@ describe("LongTextSchemaParser", () => {
         jest.resetAllMocks();
     });
 
-    it("should parse every validation type correctly if all present", () => {
+    it("should parse max validation type correctly if present", () => {
         const elementId = "mock123";
         const mainLabel = "This is a label";
         const subLabel = "This is a sub label";

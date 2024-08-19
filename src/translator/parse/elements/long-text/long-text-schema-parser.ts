@@ -6,8 +6,11 @@ import {
     TElement,
 } from "src/context-providers";
 import { IPrefillConfig } from "src/translator";
-import { parseBaseSchema } from "../..";
-import { parseMaxLengthValidation } from "../../common";
+import {
+    getAdditionalValidation,
+    parseBaseSchema,
+    parseMaxLengthValidation,
+} from "../../common";
 
 export namespace LongTextSchemaParser {
     const parseLongTextValidation = (
@@ -18,8 +21,6 @@ export namespace LongTextSchemaParser {
                 switch (key) {
                     case EValidationTypeFEE.MAX:
                         acc.push(parseMaxLengthValidation(value));
-                        break;
-                    default:
                         break;
                 }
             });
@@ -37,11 +38,7 @@ export namespace LongTextSchemaParser {
 
         const { validation, placeholder } = schema;
 
-        const additionalValidation: IYupValidationRule[] =
-            validation?.filter(
-                (rule) =>
-                    !Object.prototype.hasOwnProperty.call(rule, "required")
-            ) || [];
+        const additionalValidation = getAdditionalValidation(validation);
 
         const parsedElement: TElement = {
             ...baseElement,

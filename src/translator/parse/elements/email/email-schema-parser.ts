@@ -2,7 +2,7 @@ import { IYupValidationRule } from "@lifesg/web-frontend-engine";
 import { IEmailFieldSchema } from "@lifesg/web-frontend-engine/components/fields";
 import { EValidationType, TElement } from "src/context-providers";
 import { IPrefillConfig } from "src/translator";
-import { parseBaseSchema } from "../..";
+import { getAdditionalValidation, parseBaseSchema } from "../../common";
 
 export namespace EmailSchemaParser {
     const parseEmailValidation = (validation: IYupValidationRule[]) => {
@@ -37,11 +37,7 @@ export namespace EmailSchemaParser {
         const baseElement = parseBaseSchema(schema, id, prefill);
         const { validation, placeholder } = schema;
 
-        const additionalValidation: IYupValidationRule[] =
-            validation?.filter(
-                (rule) =>
-                    !Object.prototype.hasOwnProperty.call(rule, "required")
-            ) || [];
+        const additionalValidation = getAdditionalValidation(validation);
 
         const parsedElement: TElement = {
             ...baseElement,

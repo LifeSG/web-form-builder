@@ -6,8 +6,9 @@ import {
     TElement,
 } from "src/context-providers";
 import { IPrefillConfig } from "src/translator";
-import { parseBaseSchema } from "../..";
 import {
+    getAdditionalValidation,
+    parseBaseSchema,
     parseIntegerValidation,
     parseMaxValueValidation,
     parseMinValueValidation,
@@ -29,8 +30,6 @@ export namespace NumericSchemaParser {
                     case EValidationTypeFEE.INTEGER:
                         acc.push(parseIntegerValidation(value));
                         break;
-                    default:
-                        break;
                 }
             });
             return acc;
@@ -47,11 +46,7 @@ export namespace NumericSchemaParser {
 
         const { validation, placeholder } = schema;
 
-        const additionalValidation: IYupValidationRule[] =
-            validation?.filter(
-                (rule) =>
-                    !Object.prototype.hasOwnProperty.call(rule, "required")
-            ) || [];
+        const additionalValidation = getAdditionalValidation(validation);
 
         const parsedElement: TElement = {
             ...baseElement,
