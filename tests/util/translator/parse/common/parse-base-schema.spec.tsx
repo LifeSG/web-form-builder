@@ -1,7 +1,7 @@
 import { EElementType, IPrefillAttributes } from "src/context-providers";
-import { parseBaseSchema } from "src/translator/parse";
+import { parseBaseSchema } from "src/translator/parse/common";
 import { TElementSchema } from "src/translator/parse/types";
-import { generateMockElementSchema } from "../../helper";
+import { generateMockElement, generateMockElementSchema } from "../../helper";
 
 describe("ParseBaseSchema", () => {
     beforeEach(() => {
@@ -34,19 +34,19 @@ describe("ParseBaseSchema", () => {
             undefined
         );
 
-        // Check that the base attributes are present after parsing
-        expect(parsedSchema).toHaveProperty("columns.desktop", 12);
-        expect(parsedSchema).toHaveProperty("columns.tablet", 8);
-        expect(parsedSchema).toHaveProperty("columns.mobile", 4);
-        expect(parsedSchema).toHaveProperty("id", elementId);
-        expect(parsedSchema).toHaveProperty("label", mainLabel);
-        expect(parsedSchema).toHaveProperty("description", subLabel);
-        expect(parsedSchema).toHaveProperty("type", EElementType.TEXT);
-        expect(parsedSchema).toHaveProperty("required", false);
-        expect(parsedSchema).toHaveProperty("requiredErrorMsg", "");
-        expect(parsedSchema).toHaveProperty("internalId");
-        expect(parsedSchema).toHaveProperty("conditionalRendering", []);
-        expect(parsedSchema).toHaveProperty("prefill", []);
+        const expectedParsedSchema = generateMockElement({
+            id: elementId,
+            label: mainLabel,
+            description: subLabel,
+            type: EElementType.TEXT,
+            required: false,
+            requiredErrorMsg: "",
+            internalId: parsedSchema.internalId,
+            conditionalRendering: [],
+            prefill: [],
+        })[parsedSchema.internalId];
+
+        expect(parsedSchema).toEqual(expectedParsedSchema);
     });
 
     it("should parse the required validation correctly if it is present", () => {

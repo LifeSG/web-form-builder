@@ -2,7 +2,7 @@ import { ISelectSchema } from "@lifesg/web-frontend-engine/components/fields";
 import { isEmpty } from "lodash";
 import { TElement } from "src/context-providers";
 import { IPrefillConfig } from "src/translator";
-import { parseBaseSchema } from "../..";
+import { parseBaseSchema } from "../../common";
 
 export namespace DropdownSchemaParser {
     export const schemaToElement = (

@@ -21,7 +21,7 @@ describe("LongTextSchemaParser", () => {
         jest.resetAllMocks();
     });
 
-    it("should parse every validation type correctly if all present", () => {
+    it("should parse max validation type correctly if present", () => {
         const elementId = "mock123";
         const mainLabel = "This is a label";
         const subLabel = "This is a sub label";

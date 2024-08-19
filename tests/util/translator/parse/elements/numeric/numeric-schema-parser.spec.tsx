@@ -21,14 +21,8 @@ describe("NumericSchemaParser", () => {
         jest.resetAllMocks();
     });
 
-    it("should parse every validation type correctly if all present", () => {
-        const elementId = "mock123";
-        const mainLabel = "This is a label";
-        const subLabel = "This is a sub label";
-
+    it("should parse the min validation type correctly if present", () => {
         const minErrorMessage = "Min error message";
-        const maxErrorMessage = "Max error message";
-        const integerErrorMessage = "Matches error message";
 
         const MOCK_SCHEMA = generateMockElementSchema({
             id: elementId,
@@ -41,14 +35,6 @@ describe("NumericSchemaParser", () => {
                 {
                     min: 5,
                     errorMessage: minErrorMessage,
-                },
-                {
-                    max: 10,
-                    errorMessage: maxErrorMessage,
-                },
-                {
-                    integer: true,
-                    errorMessage: integerErrorMessage,
                 },
             ],
         })[elementId] as INumericFieldSchema;
@@ -65,11 +51,77 @@ describe("NumericSchemaParser", () => {
                 validationRule: "5",
                 validationErrorMessage: minErrorMessage,
             },
+        ];
+
+        expect(parsedSchema).toHaveProperty(
+            "validation",
+            expectedParsedValidation
+        );
+    });
+
+    it("should parse the max validation type correctly if present", () => {
+        const maxErrorMessage = "Max error message";
+
+        const MOCK_SCHEMA = generateMockElementSchema({
+            id: elementId,
+            label: {
+                mainLabel,
+                subLabel,
+            },
+            uiType: EElementType.NUMERIC,
+            validation: [
+                {
+                    max: 10,
+                    errorMessage: maxErrorMessage,
+                },
+            ],
+        })[elementId] as INumericFieldSchema;
+
+        const parsedSchema = NumericSchemaParser.schemaToElement(
+            MOCK_SCHEMA,
+            elementId,
+            {}
+        );
+
+        const expectedParsedValidation: IValidation[] = [
             {
                 validationType: EValidationType.MAX_VALUE,
                 validationRule: "10",
                 validationErrorMessage: maxErrorMessage,
             },
+        ];
+
+        expect(parsedSchema).toHaveProperty(
+            "validation",
+            expectedParsedValidation
+        );
+    });
+
+    it("should parse the integers validation type correctly if present", () => {
+        const integerErrorMessage = "Integer error message";
+
+        const MOCK_SCHEMA = generateMockElementSchema({
+            id: elementId,
+            label: {
+                mainLabel,
+                subLabel,
+            },
+            uiType: EElementType.NUMERIC,
+            validation: [
+                {
+                    integer: true,
+                    errorMessage: integerErrorMessage,
+                },
+            ],
+        })[elementId] as INumericFieldSchema;
+
+        const parsedSchema = NumericSchemaParser.schemaToElement(
+            MOCK_SCHEMA,
+            elementId,
+            {}
+        );
+
+        const expectedParsedValidation: IValidation[] = [
             {
                 validationType: EValidationType.WHOLE_NUMBERS,
                 validationErrorMessage: integerErrorMessage,
@@ -82,3 +134,10 @@ describe("NumericSchemaParser", () => {
         );
     });
 });
+
+// =============================================================================
+// HELPERS
+// =============================================================================
+const elementId = "mock123";
+const mainLabel = "This is a label";
+const subLabel = "This is a sub label";
