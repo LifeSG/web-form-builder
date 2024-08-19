@@ -29,7 +29,8 @@ import { TDropdownSchema } from "src/yup-schemas";
 import {
     getNonEmptyLines,
     getValidDropdownItem,
-} from "src/yup-schemas/bulk-edit";
+    TOverallOptionGroupBasedSchema,
+} from "src/yup-schemas";
 import { DropdownItemsChild } from "./dropdown-items-child";
 import {
     DropdownItemsButton,
@@ -41,7 +42,8 @@ export const DropdownItems = () => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
-    const { control, getValues, trigger } = useFormContext<TDropdownSchema>();
+    const { control, getValues, trigger } =
+        useFormContext<TOverallOptionGroupBasedSchema>();
     const { fields, append, remove, move, replace } = useFieldArray({
         control,
         name: "dropdownItems",
