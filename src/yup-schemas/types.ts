@@ -4,8 +4,8 @@ import {
 } from "src/context-providers";
 import * as yup from "yup";
 import { BaseYupSchemaHelper } from "./base-yup-schema-helper";
-import { TOptionGroupBasedSchema } from "./option-group-based-fields";
-import { TTextAreaSchema, TTextBasedSchema } from "./text-based-fields";
+import { OPTION_GROUP_BASED_SCHEMA } from "./option-group-based-fields";
+import { TEXT_AREA_SCHEMA, TEXT_BASED_SCHEMA } from "./text-based-fields";
 
 export type TBaseTextBasedFieldValues = Omit<
     IBaseTextBasedFieldAttributes,
@@ -21,10 +21,26 @@ export type TFormFieldValues =
     | TOverallTextBasedSchema
     | TOverallOptionGroupBasedSchema;
 
-export type TOverallTextBasedSchema = BaseYupSchemaHelper.TBaseSchema &
+export type TBaseSchema = yup.InferType<
+    ReturnType<typeof BaseYupSchemaHelper.getBaseYupSchema>
+>;
+
+export type TTextBasedSchema = yup.InferType<
+    ReturnType<typeof TEXT_BASED_SCHEMA>
+>;
+
+export type TTextAreaSchema = yup.InferType<
+    ReturnType<typeof TEXT_AREA_SCHEMA>
+>;
+
+export type TOverallTextBasedSchema = TBaseSchema &
     (TTextBasedSchema | TTextAreaSchema);
 
-export type TOverallOptionGroupBasedSchema = BaseYupSchemaHelper.TBaseSchema &
+export type TOptionGroupBasedSchema = yup.InferType<
+    typeof OPTION_GROUP_BASED_SCHEMA
+>;
+
+export type TOverallOptionGroupBasedSchema = TBaseSchema &
     TOptionGroupBasedSchema;
 
 export type TOverallOptionGroupBasedYupSchema =

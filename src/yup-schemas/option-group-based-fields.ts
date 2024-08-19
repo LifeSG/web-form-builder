@@ -56,7 +56,3 @@ export const OPTION_GROUP_BASED_SCHEMA = yup.object().shape({
         ),
     preselectedValue: yup.string().optional(),
 });
-
-export type TOptionGroupBasedSchema = yup.InferType<
-    typeof OPTION_GROUP_BASED_SCHEMA
->;

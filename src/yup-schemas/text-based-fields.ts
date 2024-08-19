@@ -205,11 +205,3 @@ export const TEXT_AREA_SCHEMA = () => {
         ),
     });
 };
-
-export type TTextBasedSchema = yup.InferType<
-    ReturnType<typeof TEXT_BASED_SCHEMA>
->;
-
-export type TTextAreaSchema = yup.InferType<
-    ReturnType<typeof TEXT_AREA_SCHEMA>
->;
