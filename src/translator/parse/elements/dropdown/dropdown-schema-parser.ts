@@ -13,6 +13,10 @@ export namespace DropdownSchemaParser {
         const baseElement = parseBaseSchema(schema, id, prefill, defaultValue);
         const { options, placeholder } = schema;
 
+        if (!options) {
+            throw new Error("Dropdown schema must have options");
+        }
+
         const parsedElement: TElement = {
             ...baseElement,
             placeholder: placeholder || "",
