@@ -3,7 +3,7 @@ import { EElementType, IDropdownItemAttributes } from "src/context-providers";
 import { DropdownSchemaParser } from "src/translator/parse/elements";
 import { generateMockElementSchema } from "tests/util/translator/helper";
 
-describe("DropdowSchemaParser", () => {
+describe("DropdownSchemaParser", () => {
     beforeEach(() => {
         global.ResizeObserver = jest.fn().mockImplementation(() => ({
             observe: jest.fn(),
