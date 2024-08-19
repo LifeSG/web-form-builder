@@ -77,6 +77,8 @@ export const updateParsedElements = (parsedElements: TElement[]) => {
                         ...condition,
                         internalId: existingElement.internalId,
                     };
+                } else {
+                    parsedElement.conditionalRendering.splice(index, 1);
                 }
             });
         }

@@ -250,6 +250,38 @@ describe("Translator", () => {
                 ).toHaveProperty("type", elementType);
             }
         );
+
+        it("should remove the conditional rendering rule if the element with the corresponding field key does not exist", () => {
+            const MOCK_ELEMENT_SCHEMA = generateMockSchema({
+                children: generateMockElementSchema({
+                    id,
+                    label: {
+                        mainLabel: label,
+                    },
+                    uiType: EElementType.TEXT,
+                    showIf: [
+                        {
+                            ["nonExistentFieldKey"]: [
+                                {
+                                    equals: "test",
+                                },
+                            ],
+                        },
+                    ],
+                }),
+            });
+
+            const parsedSchema = Translator.parseSchema(
+                MOCK_ELEMENT_SCHEMA as ISchemaProps
+            );
+
+            const parsedElementId = Object.keys(parsedSchema.newElements)[0];
+
+            expect(parsedSchema.newElements[parsedElementId]).toHaveProperty(
+                "conditionalRendering",
+                []
+            );
+        });
     });
 
     it("should parse schema with defaultValues correctly", () => {

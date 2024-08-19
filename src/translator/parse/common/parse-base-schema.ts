@@ -14,8 +14,7 @@ export const parseBaseSchema = (
 ) => {
     const { showIf, uiType, validation, label } = schema;
 
-    let requiredValidation: IYupValidationRule = {};
-    requiredValidation = validation?.find((rule) =>
+    const requiredValidation: IYupValidationRule = validation?.find((rule) =>
         Object.prototype.hasOwnProperty.call(rule, "required")
     ) as IYupValidationRule;
 

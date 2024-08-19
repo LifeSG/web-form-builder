@@ -3,7 +3,7 @@ import { EValidationType } from "src/context-providers";
 import { ValidationSchemaParser } from "../types";
 
 export const parseMinValueValidation: ValidationSchemaParser = (
-    validationSchema: IYupValidationRule
+    validationSchema
 ) => {
     return {
         validationType: EValidationType.MIN_VALUE,
