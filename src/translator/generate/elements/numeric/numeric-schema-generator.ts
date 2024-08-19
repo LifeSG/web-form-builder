@@ -46,6 +46,9 @@ export namespace NumericSchemaGenerator {
         const numericSchema = {
             [element.id]: {
                 ...baseSchema,
+                ...(element.placeholder && {
+                    placeholder: element.placeholder,
+                }),
                 // Add additional validation if it exists
                 ...(additionalValidationSchema && {
                     validation: [

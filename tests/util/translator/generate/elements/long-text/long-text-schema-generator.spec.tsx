@@ -20,6 +20,29 @@ describe("LongTextSchemaGenerator", () => {
         jest.resetAllMocks();
     });
 
+    it("should generate the base schema with placeholder if placeholder is added", () => {
+        const placeholder = "This is a placeholder";
+
+        const MOCK_ELEMENT: ITextarea = {
+            label,
+            id: elementId,
+            internalId: "long-text-field",
+            type: EElementType.TEXTAREA,
+            required: false,
+            columns: { desktop: 12, tablet: 8, mobile: 4 },
+            validation: [],
+            placeholder,
+        };
+
+        const generatedSchema =
+            LongTextSchemaGenerator.elementToSchema(MOCK_ELEMENT);
+
+        expect(generatedSchema[elementId]).toHaveProperty(
+            "placeholder",
+            placeholder
+        );
+    });
+
     it("should generate the base schema WITHOUT validation if required is false", () => {
         const MOCK_ELEMENT: ITextarea = {
             label,

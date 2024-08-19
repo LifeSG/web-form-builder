@@ -20,6 +20,29 @@ describe("NumericSchemaGenerator", () => {
         jest.resetAllMocks();
     });
 
+    it("should generate the base schema with placeholder if placeholder is added", () => {
+        const placeholder = "This is a placeholder";
+
+        const MOCK_ELEMENT: INumericField = {
+            label,
+            id: elementId,
+            internalId: "numeric-field",
+            type: EElementType.NUMERIC,
+            required: false,
+            columns: { desktop: 12, tablet: 8, mobile: 4 },
+            validation: [],
+            placeholder,
+        };
+
+        const generatedSchema =
+            NumericSchemaGenerator.elementToSchema(MOCK_ELEMENT);
+
+        expect(generatedSchema[elementId]).toHaveProperty(
+            "placeholder",
+            placeholder
+        );
+    });
+
     it("should generate the base schema WITH only additional validation if additional validation is added but required is false", () => {
         const validationRule = "5";
         const validationErrorMessage = "The max value for this field is 5";

@@ -20,6 +20,29 @@ describe("EmailSchemaGenerator", () => {
         jest.resetAllMocks();
     });
 
+    it("should generate the base schema with placeholder if placeholder is added", () => {
+        const placeholder = "This is a placeholder";
+
+        const MOCK_ELEMENT: IEmailField = {
+            label,
+            id: elementId,
+            internalId: "email-field",
+            type: EElementType.EMAIL,
+            required: false,
+            columns: { desktop: 12, tablet: 8, mobile: 4 },
+            validation: [],
+            placeholder,
+        };
+
+        const generatedSchema =
+            EmailSchemaGenerator.elementToSchema(MOCK_ELEMENT);
+
+        expect(generatedSchema[elementId]).toHaveProperty(
+            "placeholder",
+            placeholder
+        );
+    });
+
     it("should generate the base schema WITH only additional validation if additional validation is added but required is false", () => {
         const validationRule = "@gmail.com";
         const validationErrorMessage =
