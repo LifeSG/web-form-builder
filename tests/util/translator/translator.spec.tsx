@@ -28,10 +28,6 @@ describe("Translator", () => {
         it.each(Object.values(EElementType))(
             "should generate schema for %s field",
             (elementType) => {
-                const label = "mockLabel";
-                const id = "mockId";
-                const internalId = "mockInternalId";
-
                 const mockElementAttributes: TElement = {
                     label,
                     id,
@@ -86,7 +82,7 @@ describe("Translator", () => {
 
             const mockSchema = generateMockSchema({
                 prefill: {
-                    mock123: [
+                    [id]: [
                         {
                             prefillMode: "Myinfo",
                             path: "testpath",
@@ -102,7 +98,7 @@ describe("Translator", () => {
                     validation: [
                         {
                             required: true,
-                            errorMessage: "Email address is required",
+                            errorMessage: requiredErrorMsg,
                         },
                     ],
                 }),
@@ -139,7 +135,7 @@ describe("Translator", () => {
 
             const mockSchema = generateMockSchema({
                 prefill: {
-                    mock123: [
+                    [id]: [
                         {
                             prefillMode: "Previous source",
                             actionId: "testaction",
@@ -291,7 +287,7 @@ describe("Translator", () => {
 
     it("should parse schema with defaultValues correctly", () => {
         const defaultValue = "testDefaultValue";
-        const MOCK_ELEMENT_SCHEMA = generateMockSchema({
+        const mockSchema = generateMockSchema({
             defaultValues: {
                 [id]: defaultValue,
             },
@@ -304,9 +300,7 @@ describe("Translator", () => {
             }),
         });
 
-        const parsedSchema = Translator.parseSchema(
-            MOCK_ELEMENT_SCHEMA as ISchemaProps
-        );
+        const parsedSchema = Translator.parseSchema(mockSchema as ISchemaProps);
 
         const parsedElementId = Object.keys(parsedSchema.newElements)[0];
 
@@ -321,7 +315,7 @@ describe("Translator", () => {
 // HELPERS
 // =============================================================================
 
-const label = "Email address";
-const id = "mock123";
-const requiredErrorMsg = "Email address is required";
-const internalId = "mock123";
+const label = "mockLabel";
+const id = "mockId";
+const requiredErrorMsg = "Field is required";
+const internalId = "mockInternalId";
