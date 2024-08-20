@@ -1,7 +1,7 @@
 import { useFormContext } from "react-hook-form";
 import { ChildEntry } from "src/components/common";
 import { EValidationType } from "src/context-providers";
-import { TOverallTextBasedSchema } from "src/yup-schemas";
+import { TOverallTextBasedValues } from "src/yup-schemas";
 import { FieldWrapper } from "../..";
 import {
     ValidationErrorMessage,
@@ -25,7 +25,7 @@ export const NumericValidationChild = ({
     // ===========================================================================
     // CONST, STATE, REF
     // ===========================================================================
-    const { watch } = useFormContext<TOverallTextBasedSchema>();
+    const { watch } = useFormContext<TOverallTextBasedValues>();
     const validationType = watch(`validation.${index}.validationType`);
 
     // =================================================================

@@ -1,6 +1,6 @@
 import { Form } from "@lifesg/react-design-system/form";
 import { Controller, useFormContext } from "react-hook-form";
-import { TOverallTextBasedSchema } from "src/yup-schemas";
+import { TOverallTextBasedValues } from "src/yup-schemas";
 
 interface IProps {
     index: number;
@@ -13,7 +13,7 @@ export const EmailValidationRule = ({ index }: IProps) => {
     const {
         formState: { errors },
         control,
-    } = useFormContext<TOverallTextBasedSchema>();
+    } = useFormContext<TOverallTextBasedValues>();
 
     // =========================================================================
     // RENDER FUNCTIONS
