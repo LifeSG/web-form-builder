@@ -1,9 +1,5 @@
 import { ISelectSchema } from "@lifesg/web-frontend-engine/components/fields";
-import {
-    EElementType,
-    IDropdown,
-    IDropdownItemAttributes,
-} from "src/context-providers";
+import { EElementType, IDropdownItemAttributes } from "src/context-providers";
 import { DropdownSchemaParser } from "src/translator/parse/elements";
 import { generateMockElementSchema } from "tests/util/translator/helper";
 
@@ -84,6 +80,52 @@ describe("DropdownSchemaParser", () => {
         );
 
         expect(parsedSchema).toHaveProperty("dropdownItems", dropdownItems);
+    });
+
+    it("should throw an error if dropdown schema does not have options defined", () => {
+        const mockSchema = generateMockElementSchema({
+            id: elementId,
+            label: {
+                mainLabel,
+                subLabel,
+            },
+            uiType: EElementType.DROPDOWN,
+        })[elementId] as ISelectSchema;
+
+        expect(() =>
+            DropdownSchemaParser.schemaToElement(
+                mockSchema,
+                elementId,
+                {},
+                undefined
+            )
+        ).toThrow("Dropdown schema must have at least 2 options");
+    });
+
+    it("should throw an error if dropdown schema has options defined but there is less than 2 options", () => {
+        const mockSchema = generateMockElementSchema({
+            id: elementId,
+            label: {
+                mainLabel,
+                subLabel,
+            },
+            uiType: EElementType.DROPDOWN,
+            dropdownItems: [
+                {
+                    value: "1",
+                    label: "Option 1",
+                },
+            ],
+        })[elementId] as ISelectSchema;
+
+        expect(() =>
+            DropdownSchemaParser.schemaToElement(
+                mockSchema,
+                elementId,
+                {},
+                undefined
+            )
+        ).toThrow("Dropdown schema must have at least 2 options");
     });
 });
 
