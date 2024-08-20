@@ -23,7 +23,7 @@ describe("NumericSchemaGenerator", () => {
     it("should generate the base schema with placeholder if placeholder is added", () => {
         const placeholder = "This is a placeholder";
 
-        const MOCK_ELEMENT: INumericField = {
+        const mockElement: INumericField = {
             label,
             id: elementId,
             internalId: "numeric-field",
@@ -35,7 +35,7 @@ describe("NumericSchemaGenerator", () => {
         };
 
         const generatedSchema =
-            NumericSchemaGenerator.elementToSchema(MOCK_ELEMENT);
+            NumericSchemaGenerator.elementToSchema(mockElement);
 
         expect(generatedSchema[elementId]).toHaveProperty(
             "placeholder",
@@ -47,7 +47,7 @@ describe("NumericSchemaGenerator", () => {
         const validationRule = "5";
         const validationErrorMessage = "The max value for this field is 5";
 
-        const MOCK_ELEMENT: INumericField = {
+        const mockElement: INumericField = {
             label,
             id: elementId,
             internalId: "numeric-field",
@@ -64,7 +64,7 @@ describe("NumericSchemaGenerator", () => {
         };
 
         const generatedSchema =
-            NumericSchemaGenerator.elementToSchema(MOCK_ELEMENT);
+            NumericSchemaGenerator.elementToSchema(mockElement);
 
         const expectedSchema = generateMockElementSchema({
             id: elementId,
@@ -91,7 +91,7 @@ describe("NumericSchemaGenerator", () => {
         const validationWholeNumbersErrorMessage =
             "This field only accepts whole numbers";
 
-        const MOCK_ELEMENT: INumericField = {
+        const mockElement: INumericField = {
             label,
             id: elementId,
             internalId: "numeric-field",
@@ -118,7 +118,7 @@ describe("NumericSchemaGenerator", () => {
         };
 
         const generatedSchema =
-            NumericSchemaGenerator.elementToSchema(MOCK_ELEMENT);
+            NumericSchemaGenerator.elementToSchema(mockElement);
 
         const expectedSchema = generateMockElementSchema({
             id: elementId,

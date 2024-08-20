@@ -23,7 +23,7 @@ describe("LongTextSchemaGenerator", () => {
     it("should generate the base schema with placeholder if placeholder is added", () => {
         const placeholder = "This is a placeholder";
 
-        const MOCK_ELEMENT: ITextarea = {
+        const mockElement: ITextarea = {
             label,
             id: elementId,
             internalId: "long-text-field",
@@ -35,7 +35,7 @@ describe("LongTextSchemaGenerator", () => {
         };
 
         const generatedSchema =
-            LongTextSchemaGenerator.elementToSchema(MOCK_ELEMENT);
+            LongTextSchemaGenerator.elementToSchema(mockElement);
 
         expect(generatedSchema[elementId]).toHaveProperty(
             "placeholder",
@@ -44,7 +44,7 @@ describe("LongTextSchemaGenerator", () => {
     });
 
     it("should generate the base schema WITHOUT validation if required is false", () => {
-        const MOCK_ELEMENT: ITextarea = {
+        const mockElement: ITextarea = {
             label,
             id: elementId,
             internalId: "long-text-field",
@@ -55,7 +55,7 @@ describe("LongTextSchemaGenerator", () => {
         };
 
         const generatedSchema =
-            LongTextSchemaGenerator.elementToSchema(MOCK_ELEMENT);
+            LongTextSchemaGenerator.elementToSchema(mockElement);
 
         const expectedSchema = generateMockElementSchema({
             id: elementId,
@@ -69,7 +69,7 @@ describe("LongTextSchemaGenerator", () => {
     });
 
     it("should generate the base schema WITH validation if required is true", () => {
-        const MOCK_ELEMENT: ITextarea = {
+        const mockElement: ITextarea = {
             label,
             id: elementId,
             internalId: "long-text-field",
@@ -81,7 +81,7 @@ describe("LongTextSchemaGenerator", () => {
         };
 
         const generatedSchema =
-            LongTextSchemaGenerator.elementToSchema(MOCK_ELEMENT);
+            LongTextSchemaGenerator.elementToSchema(mockElement);
 
         const expectedSchema = generateMockElementSchema({
             id: elementId,
@@ -105,7 +105,7 @@ describe("LongTextSchemaGenerator", () => {
         const validationErrorMessage =
             "This field must be at most 5 characters long";
 
-        const MOCK_ELEMENT: ITextarea = {
+        const mockElement: ITextarea = {
             label,
             id: elementId,
             internalId: "long-text-field",
@@ -122,7 +122,7 @@ describe("LongTextSchemaGenerator", () => {
         };
 
         const generatedSchema =
-            LongTextSchemaGenerator.elementToSchema(MOCK_ELEMENT);
+            LongTextSchemaGenerator.elementToSchema(mockElement);
 
         const expectedSchema = generateMockElementSchema({
             id: elementId,
@@ -146,7 +146,7 @@ describe("LongTextSchemaGenerator", () => {
         const validationMaxErrorMessage =
             "This field must be at most 10 characters long";
 
-        const MOCK_ELEMENT: ITextarea = {
+        const mockElement: ITextarea = {
             label,
             id: elementId,
             internalId: "text-field",
@@ -164,7 +164,7 @@ describe("LongTextSchemaGenerator", () => {
         };
 
         const generatedSchema =
-            LongTextSchemaGenerator.elementToSchema(MOCK_ELEMENT);
+            LongTextSchemaGenerator.elementToSchema(mockElement);
 
         const expectedSchema = generateMockElementSchema({
             id: elementId,
@@ -189,7 +189,7 @@ describe("LongTextSchemaGenerator", () => {
     });
 
     it("should generate the schema with conditional rendering if conditional rendering is added", () => {
-        const MOCK_ELEMENT: ITextarea = {
+        const mockElement: ITextarea = {
             label,
             id: elementId,
             internalId: "long-text-field",
@@ -208,7 +208,7 @@ describe("LongTextSchemaGenerator", () => {
         };
 
         const generatedSchema =
-            LongTextSchemaGenerator.elementToSchema(MOCK_ELEMENT);
+            LongTextSchemaGenerator.elementToSchema(mockElement);
 
         const expectedSchema = generateMockElementSchema({
             id: elementId,

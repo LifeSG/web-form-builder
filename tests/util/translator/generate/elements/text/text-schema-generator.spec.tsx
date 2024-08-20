@@ -23,7 +23,7 @@ describe("TextSchemaGenerator", () => {
     it("should generate the base schema with placeholder if placeholder is added", () => {
         const placeholder = "This is a placeholder";
 
-        const MOCK_ELEMENT: ITextField = {
+        const mockElement: ITextField = {
             label,
             id: elementId,
             internalId: "text-field",
@@ -35,7 +35,7 @@ describe("TextSchemaGenerator", () => {
         };
 
         const generatedSchema =
-            TextSchemaGenerator.elementToSchema(MOCK_ELEMENT);
+            TextSchemaGenerator.elementToSchema(mockElement);
 
         expect(generatedSchema[elementId]).toHaveProperty(
             "placeholder",
@@ -48,7 +48,7 @@ describe("TextSchemaGenerator", () => {
         const validationErrorMessage =
             "This field must be at least 5 characters long";
 
-        const MOCK_ELEMENT: ITextField = {
+        const mockElement: ITextField = {
             label,
             id: elementId,
             internalId: "text-field",
@@ -65,7 +65,7 @@ describe("TextSchemaGenerator", () => {
         };
 
         const generatedSchema =
-            TextSchemaGenerator.elementToSchema(MOCK_ELEMENT);
+            TextSchemaGenerator.elementToSchema(mockElement);
 
         const expectedSchema = generateMockElementSchema({
             id: elementId,
@@ -97,7 +97,7 @@ describe("TextSchemaGenerator", () => {
         const validationRegexErrorMessage =
             "This field must start with 'hello'";
 
-        const MOCK_ELEMENT: ITextField = {
+        const mockElement: ITextField = {
             label,
             id: elementId,
             internalId: "text-field",
@@ -125,7 +125,7 @@ describe("TextSchemaGenerator", () => {
         };
 
         const generatedSchema =
-            TextSchemaGenerator.elementToSchema(MOCK_ELEMENT);
+            TextSchemaGenerator.elementToSchema(mockElement);
 
         const expectedSchema = generateMockElementSchema({
             id: elementId,

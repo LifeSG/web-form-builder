@@ -23,7 +23,7 @@ describe("EmailSchemaGenerator", () => {
     it("should generate the base schema with placeholder if placeholder is added", () => {
         const placeholder = "This is a placeholder";
 
-        const MOCK_ELEMENT: IEmailField = {
+        const mockElement: IEmailField = {
             label,
             id: elementId,
             internalId: "email-field",
@@ -35,7 +35,7 @@ describe("EmailSchemaGenerator", () => {
         };
 
         const generatedSchema =
-            EmailSchemaGenerator.elementToSchema(MOCK_ELEMENT);
+            EmailSchemaGenerator.elementToSchema(mockElement);
 
         expect(generatedSchema[elementId]).toHaveProperty(
             "placeholder",
@@ -48,7 +48,7 @@ describe("EmailSchemaGenerator", () => {
         const validationErrorMessage =
             "This field only accepts gmail addresses";
 
-        const MOCK_ELEMENT: IEmailField = {
+        const mockElement: IEmailField = {
             label,
             id: elementId,
             internalId: "email-field",
@@ -65,7 +65,7 @@ describe("EmailSchemaGenerator", () => {
         };
 
         const generatedSchema =
-            EmailSchemaGenerator.elementToSchema(MOCK_ELEMENT);
+            EmailSchemaGenerator.elementToSchema(mockElement);
 
         const expectedSchema = generateMockElementSchema({
             id: elementId,
@@ -89,7 +89,7 @@ describe("EmailSchemaGenerator", () => {
         const validationErrorMessage =
             "This field only accepts gmail addresses";
 
-        const MOCK_ELEMENT: IEmailField = {
+        const mockElement: IEmailField = {
             label,
             id: elementId,
             internalId: "numeric-field",
@@ -107,7 +107,7 @@ describe("EmailSchemaGenerator", () => {
         };
 
         const generatedSchema =
-            EmailSchemaGenerator.elementToSchema(MOCK_ELEMENT);
+            EmailSchemaGenerator.elementToSchema(mockElement);
 
         const expectedSchema = generateMockElementSchema({
             id: elementId,

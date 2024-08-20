@@ -17,7 +17,7 @@ describe("GenerateBaseSchema", () => {
     });
 
     it("should generate the full base schema if everything is provided", () => {
-        const MOCK_ELEMENT: ITextField = {
+        const mockElement: ITextField = {
             columns: { desktop: 12, tablet: 8, mobile: 4 },
             label,
             description: "This is a description",
@@ -39,7 +39,7 @@ describe("GenerateBaseSchema", () => {
         };
 
         const generatedSchema =
-            TextSchemaGenerator.elementToSchema(MOCK_ELEMENT);
+            TextSchemaGenerator.elementToSchema(mockElement);
 
         const expectedSchema = generateMockElementSchema({
             id: elementId,
@@ -73,7 +73,7 @@ describe("GenerateBaseSchema", () => {
     });
 
     it("should generate the base schema without placeholder if placeholder is not provided", () => {
-        const MOCK_ELEMENT: ITextField = {
+        const mockElement: ITextField = {
             columns: { desktop: 12, tablet: 8, mobile: 4 },
             label,
             description,
@@ -94,7 +94,7 @@ describe("GenerateBaseSchema", () => {
         };
 
         const generatedSchema =
-            TextSchemaGenerator.elementToSchema(MOCK_ELEMENT);
+            TextSchemaGenerator.elementToSchema(mockElement);
 
         const expectedSchema = generateMockElementSchema({
             id: elementId,
@@ -127,7 +127,7 @@ describe("GenerateBaseSchema", () => {
     });
 
     it("should generate the base schema without showIf if conditional rendering is not provided", () => {
-        const MOCK_ELEMENT: ITextField = {
+        const mockElement: ITextField = {
             columns: { desktop: 12, tablet: 8, mobile: 4 },
             label,
             description,
@@ -141,7 +141,7 @@ describe("GenerateBaseSchema", () => {
         };
 
         const generatedSchema =
-            TextSchemaGenerator.elementToSchema(MOCK_ELEMENT);
+            TextSchemaGenerator.elementToSchema(mockElement);
 
         const expectedSchema = generateMockElementSchema({
             id: elementId,
@@ -163,7 +163,7 @@ describe("GenerateBaseSchema", () => {
     });
 
     it("should generate the base schema without subLabel if description is not provided", () => {
-        const MOCK_ELEMENT: ITextField = {
+        const mockElement: ITextField = {
             columns: { desktop: 12, tablet: 8, mobile: 4 },
             label,
             id: elementId,
@@ -184,7 +184,7 @@ describe("GenerateBaseSchema", () => {
         };
 
         const generatedSchema =
-            TextSchemaGenerator.elementToSchema(MOCK_ELEMENT);
+            TextSchemaGenerator.elementToSchema(mockElement);
 
         const expectedSchema = generateMockElementSchema({
             id: elementId,
@@ -217,7 +217,7 @@ describe("GenerateBaseSchema", () => {
     });
 
     it("should generate the base schema without validation if required and requiredErrorMsg is not provided", () => {
-        const MOCK_ELEMENT: ITextField = {
+        const mockElement: ITextField = {
             columns: { desktop: 12, tablet: 8, mobile: 4 },
             label,
             description,
@@ -238,7 +238,7 @@ describe("GenerateBaseSchema", () => {
         };
 
         const generatedSchema =
-            TextSchemaGenerator.elementToSchema(MOCK_ELEMENT);
+            TextSchemaGenerator.elementToSchema(mockElement);
 
         const expectedSchema = generateMockElementSchema({
             id: elementId,

@@ -19,7 +19,7 @@ describe("DropdownSchemaGenerator", () => {
     it("should generate the base schema with placeholder if placeholder is added", () => {
         const placeholder = "This is a placeholder";
 
-        const MOCK_ELEMENT: IDropdown = {
+        const mockElement: IDropdown = {
             label,
             id: elementId,
             internalId: "dropdown-field",
@@ -40,7 +40,7 @@ describe("DropdownSchemaGenerator", () => {
         };
 
         const generatedSchema =
-            DropdownSchemaGenerator.elementToSchema(MOCK_ELEMENT);
+            DropdownSchemaGenerator.elementToSchema(mockElement);
 
         expect(generatedSchema[elementId]).toHaveProperty(
             "placeholder",
@@ -49,7 +49,7 @@ describe("DropdownSchemaGenerator", () => {
     });
 
     it("should generate the base schema with options if dropdown items are added", () => {
-        const MOCK_ELEMENT: IDropdown = {
+        const mockElement: IDropdown = {
             label,
             id: elementId,
             internalId: "dropdown-field",
@@ -69,7 +69,7 @@ describe("DropdownSchemaGenerator", () => {
         };
 
         const generatedSchema =
-            DropdownSchemaGenerator.elementToSchema(MOCK_ELEMENT);
+            DropdownSchemaGenerator.elementToSchema(mockElement);
 
         const expectedSchema = generateMockElementSchema({
             id: elementId,
