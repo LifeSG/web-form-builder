@@ -3,20 +3,38 @@ import {
     TFrontendEngineFieldSchema,
 } from "@lifesg/web-frontend-engine";
 import {
+    IContactFieldSchema,
+    IEmailFieldSchema,
+    INumericFieldSchema,
+    ISelectSchema,
+    ITextareaSchema,
+    ITextFieldSchema,
+} from "@lifesg/web-frontend-engine/components/fields";
+import {
     EElementType,
     IElementIdentifier,
+    TElement,
     TElementMap,
 } from "src/context-providers";
-import { generateDefaultValuesSchema, generatePrefillSchema } from "./generate";
 import {
     ContactSchemaGenerator,
     DropdownSchemaGenerator,
     EmailSchemaGenerator,
+    generateDefaultValuesSchema,
+    generatePrefillSchema,
     LongTextSchemaGenerator,
     NumericSchemaGenerator,
     TextSchemaGenerator,
-} from "./generate/elements";
-import { parseSchemaBasedOnType, updateParsedElements } from "./helper";
+} from "./generate";
+import {
+    ContactSchemaParser,
+    DropdownSchemaParser,
+    EmailSchemaParser,
+    LongTextSchemaParser,
+    NumericSchemaParser,
+    TextSchemaParser,
+    updateParsedElements,
+} from "./parse";
 import { ISchemaProps } from "./types";
 
 export namespace Translator {
@@ -88,16 +106,70 @@ export namespace Translator {
     };
 
     export const parseSchema = (formSchema: ISchemaProps) => {
-        const schemaToParse = formSchema?.schema?.sections?.section?.children
-            ?.grid?.["children"] as Record<string, TFrontendEngineFieldSchema>;
-        if (Object.values(schemaToParse).length !== 0) {
-            const parsedElements = parseSchemaBasedOnType(
-                schemaToParse,
-                formSchema.prefill
-            );
+        const elementSchemas: Record<string, TFrontendEngineFieldSchema> =
+            formSchema?.schema?.sections?.section?.children?.grid?.["children"];
+
+        // const defaultValues = formSchema?.schema?.defaultValues; TODO: Implement default values
+        const parsedElements: TElement[] = [];
+
+        if (Object.values(elementSchemas).length !== 0) {
+            Object.entries(elementSchemas).forEach(([key, elementSchema]) => {
+                const { uiType } = elementSchema;
+                let parsedElement: TElement;
+
+                switch (uiType) {
+                    case EElementType.EMAIL: {
+                        parsedElement = EmailSchemaParser.schemaToElement(
+                            elementSchema as IEmailFieldSchema,
+                            key,
+                            formSchema.prefill
+                        );
+                        break;
+                    }
+                    case EElementType.TEXT: {
+                        parsedElement = TextSchemaParser.schemaToElement(
+                            elementSchema as ITextFieldSchema,
+                            key,
+                            formSchema.prefill
+                        );
+                        break;
+                    }
+                    case EElementType.TEXTAREA: {
+                        parsedElement = LongTextSchemaParser.schemaToElement(
+                            elementSchema as ITextareaSchema,
+                            key,
+                            formSchema.prefill
+                        );
+                        break;
+                    }
+                    case EElementType.NUMERIC: {
+                        parsedElement = NumericSchemaParser.schemaToElement(
+                            elementSchema as INumericFieldSchema,
+                            key,
+                            formSchema.prefill
+                        );
+                        break;
+                    }
+                    case EElementType.CONTACT: {
+                        parsedElement = ContactSchemaParser.schemaToElement(
+                            elementSchema as IContactFieldSchema,
+                            key,
+                            formSchema.prefill
+                        );
+                        break;
+                    }
+                    case EElementType.DROPDOWN: {
+                        parsedElement = DropdownSchemaParser.schemaToElement(
+                            elementSchema as ISelectSchema,
+                            key,
+                            formSchema.prefill
+                        );
+                    }
+                }
+                parsedElements.push(parsedElement);
+            });
             return updateParsedElements(parsedElements);
-        } else {
-            return null;
         }
+        return null;
     };
 }

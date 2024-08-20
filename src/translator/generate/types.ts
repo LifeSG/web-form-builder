@@ -5,4 +5,6 @@ export interface ISchemaValidation {
     errorMessage?: string;
 }
 
-export type ValidationGenerator = (value: IValidation) => ISchemaValidation;
+export type ValidationSchemaGenerator = (
+    value: IValidation
+) => ISchemaValidation;

@@ -1,5 +1,5 @@
 import { TElement } from "src/context-providers";
-import { generateConditionalRenderingSchema } from "..";
+import { generateConditionalRenderingSchema } from "../helper";
 
 export const generateBaseSchema = (element: TElement) => {
     const conditionalRenderingSchema = generateConditionalRenderingSchema(
