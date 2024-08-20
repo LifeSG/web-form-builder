@@ -232,7 +232,16 @@ describe("Translator", () => {
                         },
                         uiType: elementType,
                         ...(elementType === EElementType.DROPDOWN && {
-                            dropdownItems: [],
+                            dropdownItems: [
+                                {
+                                    label: "test",
+                                    value: "test",
+                                },
+                                {
+                                    label: "test",
+                                    value: "test",
+                                },
+                            ],
                         }),
                     }),
                 });

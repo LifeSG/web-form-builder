@@ -21,11 +21,34 @@ describe("TextSchemaParser", () => {
         jest.resetAllMocks();
     });
 
+    it("should parse the placeholder correctly if present", () => {
+        const placeholder = "This is a placeholder";
+
+        const mockSchema = generateMockElementSchema({
+            id: elementId,
+            label: {
+                mainLabel,
+                subLabel,
+            },
+            uiType: EElementType.TEXT,
+            placeholder,
+        })[elementId] as ITextFieldSchema;
+
+        const parsedSchema = TextSchemaParser.schemaToElement(
+            mockSchema,
+            elementId,
+            {},
+            undefined
+        );
+
+        expect(parsedSchema).toHaveProperty("placeholder", placeholder);
+    });
+
     it("should parse the matches validation type correctly if present", () => {
         const matches = "/^(hello)/";
         const matchesErrorMessage = "Matches error message";
 
-        const MOCK_SCHEMA = generateMockElementSchema({
+        const mockSchema = generateMockElementSchema({
             id: elementId,
             label: {
                 mainLabel,
@@ -41,9 +64,10 @@ describe("TextSchemaParser", () => {
         })[elementId] as ITextFieldSchema;
 
         const parsedSchema = TextSchemaParser.schemaToElement(
-            MOCK_SCHEMA,
+            mockSchema,
             elementId,
-            {}
+            {},
+            undefined
         );
 
         const expectedParsedValidation: IValidation[] = [
@@ -63,7 +87,7 @@ describe("TextSchemaParser", () => {
     it("should parse the min validation type correctly if present", () => {
         const minErrorMessage = "Min error message";
 
-        const MOCK_SCHEMA = generateMockElementSchema({
+        const mockSchema = generateMockElementSchema({
             id: elementId,
             label: {
                 mainLabel,
@@ -79,9 +103,10 @@ describe("TextSchemaParser", () => {
         })[elementId] as ITextFieldSchema;
 
         const parsedSchema = TextSchemaParser.schemaToElement(
-            MOCK_SCHEMA,
+            mockSchema,
             elementId,
-            {}
+            {},
+            undefined
         );
 
         const expectedParsedValidation: IValidation[] = [
@@ -101,7 +126,7 @@ describe("TextSchemaParser", () => {
     it("should parse the max validation type correctly if present", () => {
         const maxErrorMessage = "Max error message";
 
-        const MOCK_SCHEMA = generateMockElementSchema({
+        const mockSchema = generateMockElementSchema({
             id: elementId,
             label: {
                 mainLabel,
@@ -117,9 +142,10 @@ describe("TextSchemaParser", () => {
         })[elementId] as ITextFieldSchema;
 
         const parsedSchema = TextSchemaParser.schemaToElement(
-            MOCK_SCHEMA,
+            mockSchema,
             elementId,
-            {}
+            {},
+            undefined
         );
 
         const expectedParsedValidation: IValidation[] = [

@@ -44,6 +44,7 @@ describe("ParseBaseSchema", () => {
             internalId: parsedSchema.internalId,
             conditionalRendering: [],
             prefill: [],
+            preselectedValue: "",
         })[parsedSchema.internalId];
 
         expect(parsedSchema).toEqual(expectedParsedSchema);

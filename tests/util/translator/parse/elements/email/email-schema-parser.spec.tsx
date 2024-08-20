@@ -21,15 +21,34 @@ describe("EmailSchemaParser", () => {
         jest.resetAllMocks();
     });
 
-    it("should parse the email validation correctly if it is present", () => {
-        const elementId = "mock123";
-        const mainLabel = "This is a label";
-        const subLabel = "This is a sub label";
+    it("should parse the placeholder correctly if present", () => {
+        const placeholder = "This is a placeholder";
 
+        const mockSchema = generateMockElementSchema({
+            id: elementId,
+            label: {
+                mainLabel,
+                subLabel,
+            },
+            uiType: EElementType.EMAIL,
+            placeholder,
+        })[elementId] as IEmailFieldSchema;
+
+        const parsedSchema = EmailSchemaParser.schemaToElement(
+            mockSchema,
+            elementId,
+            {},
+            undefined
+        );
+
+        expect(parsedSchema).toHaveProperty("placeholder", placeholder);
+    });
+
+    it("should parse the email validation correctly if it is present", () => {
         const regex = "/^[a-zA-Z0-9._%+-]+@(gmail\\.com|hotmail\\.com)$/";
         const errorMessage = "This is an error message";
 
-        const MOCK_SCHEMA = generateMockElementSchema({
+        const mockSchema = generateMockElementSchema({
             id: elementId,
             label: {
                 mainLabel,
@@ -45,9 +64,10 @@ describe("EmailSchemaParser", () => {
         })[elementId] as IEmailFieldSchema;
 
         const parsedSchema = EmailSchemaParser.schemaToElement(
-            MOCK_SCHEMA,
+            mockSchema,
             elementId,
-            {}
+            {},
+            undefined
         );
 
         const expectedParsedValidation: IValidation[] = [
@@ -64,3 +84,10 @@ describe("EmailSchemaParser", () => {
         );
     });
 });
+
+// =============================================================================
+// HELPERS
+// =============================================================================
+const elementId = "mock123";
+const mainLabel = "This is a label";
+const subLabel = "This is a sub label";

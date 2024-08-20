@@ -24,6 +24,7 @@ interface MockElementProps {
     validation?: IValidation[];
     conditionalRendering?: IConditionalRendering[];
     prefill?: IPrefillAttributes[];
+    preselectedValue?: string;
 }
 
 interface MockSchemaProps {
