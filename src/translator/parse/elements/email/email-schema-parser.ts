@@ -1,13 +1,26 @@
 import { IYupValidationRule } from "@lifesg/web-frontend-engine";
 import { IEmailFieldSchema } from "@lifesg/web-frontend-engine/components/fields";
-import { EValidationType, TElement } from "src/context-providers";
+import {
+    EValidationType,
+    EValidationTypeFEE,
+    TElement,
+} from "src/context-providers";
 import { IPrefillConfig } from "src/translator";
 import { getAdditionalValidation, parseBaseSchema } from "../../common";
 
 export namespace EmailSchemaParser {
     const parseEmailValidation = (validation: IYupValidationRule[]) => {
+        const matchesValidation = validation.find((obj) =>
+            Object.prototype.hasOwnProperty.call(
+                obj,
+                EValidationTypeFEE.MATCHES
+            )
+        );
+        if (!matchesValidation) {
+            return;
+        }
         const regexPattern = /@\((.*?)\)\$/;
-        const match = validation[0].matches.toString().match(regexPattern);
+        const match = matchesValidation.matches.toString().match(regexPattern);
         const extractedDomains = match[1]
             .split("|")
             .map((child) => child.replace(/\\./g, "."))
@@ -23,7 +36,7 @@ export namespace EmailSchemaParser {
                 {
                     validationType: EValidationType.EMAIL_DOMAIN,
                     validationRule: extractedDomains,
-                    validationErrorMessage: validation[0].errorMessage,
+                    validationErrorMessage: matchesValidation.errorMessage,
                 },
             ];
         }
