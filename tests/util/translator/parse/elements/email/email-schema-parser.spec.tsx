@@ -29,7 +29,7 @@ describe("EmailSchemaParser", () => {
         const regex = "/^[a-zA-Z0-9._%+-]+@(gmail\\.com|hotmail\\.com)$/";
         const errorMessage = "This is an error message";
 
-        const MOCK_SCHEMA = generateMockElementSchema({
+        const mockSchema = generateMockElementSchema({
             id: elementId,
             label: {
                 mainLabel,
@@ -45,7 +45,7 @@ describe("EmailSchemaParser", () => {
         })[elementId] as IEmailFieldSchema;
 
         const parsedSchema = EmailSchemaParser.schemaToElement(
-            MOCK_SCHEMA,
+            mockSchema,
             elementId,
             {}
         );

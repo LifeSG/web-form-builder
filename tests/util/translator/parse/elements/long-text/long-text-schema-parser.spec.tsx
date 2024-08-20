@@ -28,7 +28,7 @@ describe("LongTextSchemaParser", () => {
 
         const maxErrorMessage = "Max error message";
 
-        const MOCK_SCHEMA = generateMockElementSchema({
+        const mockSchema = generateMockElementSchema({
             id: elementId,
             label: {
                 mainLabel,
@@ -44,7 +44,7 @@ describe("LongTextSchemaParser", () => {
         })[elementId] as ITextareaSchema;
 
         const parsedSchema = LongTextSchemaParser.schemaToElement(
-            MOCK_SCHEMA,
+            mockSchema,
             elementId,
             {}
         );

@@ -18,7 +18,7 @@ describe("ParseBaseSchema", () => {
     });
 
     it("should parse the base schema and return the base attributes of an element", () => {
-        const MOCK_SCHEMA = generateMockElementSchema({
+        const mockSchema = generateMockElementSchema({
             id: elementId,
             label: {
                 mainLabel,
@@ -27,7 +27,7 @@ describe("ParseBaseSchema", () => {
             uiType: EElementType.TEXT,
         })[elementId] as TElementSchema;
 
-        const parsedSchema = parseBaseSchema(MOCK_SCHEMA, elementId, {});
+        const parsedSchema = parseBaseSchema(mockSchema, elementId, {});
 
         const expectedParsedSchema = generateMockElement({
             id: elementId,
@@ -45,7 +45,7 @@ describe("ParseBaseSchema", () => {
     });
 
     it("should parse the required validation correctly if it is present", () => {
-        const MOCK_SCHEMA = generateMockElementSchema({
+        const mockSchema = generateMockElementSchema({
             id: elementId,
             label: {
                 mainLabel,
@@ -60,7 +60,7 @@ describe("ParseBaseSchema", () => {
             ],
         })[elementId] as TElementSchema;
 
-        const parsedSchema = parseBaseSchema(MOCK_SCHEMA, elementId, {});
+        const parsedSchema = parseBaseSchema(mockSchema, elementId, {});
 
         expect(parsedSchema).toHaveProperty("required", true);
         expect(parsedSchema).toHaveProperty(
@@ -70,7 +70,7 @@ describe("ParseBaseSchema", () => {
     });
 
     it("should parse the conditional rendering schema correctly if it is present", () => {
-        const MOCK_SCHEMA = generateMockElementSchema({
+        const mockSchema = generateMockElementSchema({
             id: elementId,
             label: {
                 mainLabel,
@@ -88,7 +88,7 @@ describe("ParseBaseSchema", () => {
             ],
         })[elementId] as TElementSchema;
 
-        const parsedSchema = parseBaseSchema(MOCK_SCHEMA, elementId, {});
+        const parsedSchema = parseBaseSchema(mockSchema, elementId, {});
 
         expect(parsedSchema).toHaveProperty("conditionalRendering", [
             {
@@ -107,7 +107,7 @@ describe("ParseBaseSchema", () => {
                 path: "testpath",
             },
         ];
-        const MOCK_SCHEMA = generateMockElementSchema({
+        const mockSchema = generateMockElementSchema({
             id: elementId,
             label: {
                 mainLabel,
@@ -116,7 +116,7 @@ describe("ParseBaseSchema", () => {
             uiType: EElementType.TEXT,
         })[elementId] as TElementSchema;
 
-        const parsedSchema = parseBaseSchema(MOCK_SCHEMA, elementId, {
+        const parsedSchema = parseBaseSchema(mockSchema, elementId, {
             [elementId]: prefill,
         });
 

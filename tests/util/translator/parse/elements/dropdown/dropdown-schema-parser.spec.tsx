@@ -33,7 +33,7 @@ describe("DropdownSchemaParser", () => {
             },
         ];
 
-        const MOCK_SCHEMA = generateMockElementSchema({
+        const mockSchema = generateMockElementSchema({
             id: elementId,
             label: {
                 mainLabel,
@@ -44,7 +44,7 @@ describe("DropdownSchemaParser", () => {
         })[elementId] as ISelectSchema;
 
         const parsedSchema = DropdownSchemaParser.schemaToElement(
-            MOCK_SCHEMA,
+            mockSchema,
             elementId,
             {}
         );

@@ -24,7 +24,7 @@ describe("NumericSchemaParser", () => {
     it("should parse the min validation type correctly if present", () => {
         const minErrorMessage = "Min error message";
 
-        const MOCK_SCHEMA = generateMockElementSchema({
+        const mockSchema = generateMockElementSchema({
             id: elementId,
             label: {
                 mainLabel,
@@ -40,7 +40,7 @@ describe("NumericSchemaParser", () => {
         })[elementId] as INumericFieldSchema;
 
         const parsedSchema = NumericSchemaParser.schemaToElement(
-            MOCK_SCHEMA,
+            mockSchema,
             elementId,
             {}
         );
@@ -62,7 +62,7 @@ describe("NumericSchemaParser", () => {
     it("should parse the max validation type correctly if present", () => {
         const maxErrorMessage = "Max error message";
 
-        const MOCK_SCHEMA = generateMockElementSchema({
+        const mockSchema = generateMockElementSchema({
             id: elementId,
             label: {
                 mainLabel,
@@ -78,7 +78,7 @@ describe("NumericSchemaParser", () => {
         })[elementId] as INumericFieldSchema;
 
         const parsedSchema = NumericSchemaParser.schemaToElement(
-            MOCK_SCHEMA,
+            mockSchema,
             elementId,
             {}
         );
@@ -100,7 +100,7 @@ describe("NumericSchemaParser", () => {
     it("should parse the integers validation type correctly if present", () => {
         const integerErrorMessage = "Integer error message";
 
-        const MOCK_SCHEMA = generateMockElementSchema({
+        const mockSchema = generateMockElementSchema({
             id: elementId,
             label: {
                 mainLabel,
@@ -116,7 +116,7 @@ describe("NumericSchemaParser", () => {
         })[elementId] as INumericFieldSchema;
 
         const parsedSchema = NumericSchemaParser.schemaToElement(
-            MOCK_SCHEMA,
+            mockSchema,
             elementId,
             {}
         );
