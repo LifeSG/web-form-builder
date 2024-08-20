@@ -25,11 +25,10 @@ import {
     IDropdownItemAttributes,
 } from "src/context-providers";
 import { useModal } from "src/context-providers/display/modal-hook";
-import { TDropdownSchema } from "src/yup-schemas";
 import {
     getNonEmptyLines,
     getValidDropdownItem,
-    TOverallOptionGroupBasedSchema,
+    TOverallOptionGroupBasedValues,
 } from "src/yup-schemas";
 import { DropdownItemsChild } from "./dropdown-items-child";
 import {
@@ -43,7 +42,7 @@ export const DropdownItems = () => {
     // CONST, STATE, REFS
     // =========================================================================
     const { control, getValues, trigger } =
-        useFormContext<TOverallOptionGroupBasedSchema>();
+        useFormContext<TOverallOptionGroupBasedValues>();
     const { fields, append, remove, move, replace } = useFieldArray({
         control,
         name: "dropdownItems",

@@ -6,31 +6,31 @@ import {
     NUMERIC_YUP_SCHEMA,
     TEXT_YUP_SCHEMA,
 } from "./elements";
-import { TBaseSchema } from "./helper";
+import { TBaseValues } from "./helper";
 
 export type TFormFieldValues =
-    | TOverallTextBasedSchema
-    | TOverallOptionGroupBasedSchema;
+    | TOverallTextBasedValues
+    | TOverallOptionGroupBasedValues;
 
-export type TEmailSchema = yup.InferType<typeof EMAIL_YUP_SCHEMA>;
-export type TTextSchema = yup.InferType<typeof TEXT_YUP_SCHEMA>;
-export type TLongTextSchema = yup.InferType<typeof LONG_TEXT_YUP_SCHEMA>;
-export type TNumericSchema = yup.InferType<typeof NUMERIC_YUP_SCHEMA>;
-export type TDropdownSchema = yup.InferType<typeof DROPDOWN_YUP_SCHEMA>;
+export type TEmailValues = yup.InferType<typeof EMAIL_YUP_SCHEMA>;
+export type TTextValues = yup.InferType<typeof TEXT_YUP_SCHEMA>;
+export type TLongTextValues = yup.InferType<typeof LONG_TEXT_YUP_SCHEMA>;
+export type TNumericValues = yup.InferType<typeof NUMERIC_YUP_SCHEMA>;
+export type TDropdownValues = yup.InferType<typeof DROPDOWN_YUP_SCHEMA>;
 
-export type TOverallTextBasedSchema = TBaseSchema &
-    (TEmailSchema | TTextSchema | TLongTextSchema | TNumericSchema);
+export type TOverallTextBasedValues = TBaseValues &
+    (TEmailValues | TTextValues | TLongTextValues | TNumericValues);
 
-export type TOverallOptionGroupBasedSchema = TBaseSchema & TDropdownSchema;
+export type TOverallOptionGroupBasedValues = TBaseValues & TDropdownValues;
 
 export type TOverallOptionGroupBasedYupSchema =
-    yup.ObjectSchema<TOverallOptionGroupBasedSchema>;
+    yup.ObjectSchema<TOverallOptionGroupBasedValues>;
 
 export type TOverallTextBasedYupSchema =
-    yup.ObjectSchema<TOverallTextBasedSchema>;
+    yup.ObjectSchema<TOverallTextBasedValues>;
 
 export type TYupSchema = yup.ObjectSchema<
-    TOverallOptionGroupBasedSchema | TOverallTextBasedSchema
+    TOverallOptionGroupBasedValues | TOverallTextBasedValues
 >;
 
-export type TSchemasWithValidation = TOverallTextBasedSchema;
+export type TSchemasWithValidation = TOverallTextBasedValues;

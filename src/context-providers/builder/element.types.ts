@@ -152,20 +152,14 @@ export interface IDropdownAttributes extends IBaseFieldAttributes {
 // =============================================================================
 // ELEMENT TYPES (Same order as EElementType)
 // =============================================================================
-export type TContactField = IContactFieldAttributes;
-export type TEmailField = IEmailFieldAttributes;
-export type TNumericField = INumericFieldAttributes;
-export type TTextField = ITextFieldAttributes;
-export type TTextarea = ITextareaAttributes;
-export type TDropdown = IDropdownAttributes;
 
 export type TTextBasedElement =
-    | TEmailField
-    | TTextField
-    | TTextarea
-    | TNumericField
-    | TContactField;
+    | IEmailFieldAttributes
+    | ITextFieldAttributes
+    | ITextareaAttributes
+    | INumericFieldAttributes
+    | IContactFieldAttributes;
 
-export type TOptionGroupBasedElement = TDropdown;
+export type TOptionGroupBasedElement = IDropdownAttributes;
 
 export type TElement = TTextBasedElement | TOptionGroupBasedElement;

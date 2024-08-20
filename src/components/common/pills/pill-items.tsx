@@ -16,11 +16,7 @@ import { Form } from "@lifesg/react-design-system/form";
 import { PlusIcon } from "@lifesg/react-icons/plus";
 import { useEffect } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
-import {
-    ITextareaAttributes,
-    TTextarea,
-    useBuilder,
-} from "src/context-providers";
+import { ITextareaAttributes, useBuilder } from "src/context-providers";
 import { PillItemsChild } from "./pill-items-child";
 import { AddMultiEntryButton, PillItemsWrapper } from "./pill-items.styles";
 
@@ -36,7 +32,7 @@ export const PillItems = () => {
         shouldUnregister: true,
     });
 
-    const element = focusedElement?.element as TTextarea;
+    const element = focusedElement?.element as ITextareaAttributes;
 
     const sensors = useSensors(
         useSensor(PointerSensor),

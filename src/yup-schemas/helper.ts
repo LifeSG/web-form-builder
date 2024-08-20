@@ -105,6 +105,6 @@ export const generateBaseYupSchema = (
             })
         ),
     });
-export type TBaseSchema = yup.InferType<
+export type TBaseValues = yup.InferType<
     ReturnType<typeof generateBaseYupSchema>
 >;
