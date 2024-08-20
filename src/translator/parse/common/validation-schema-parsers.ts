@@ -1,4 +1,3 @@
-import { IYupValidationRule } from "@lifesg/web-frontend-engine";
 import { EValidationType } from "src/context-providers";
 import { ValidationSchemaParser } from "../types";
 
@@ -13,7 +12,7 @@ export const parseMinValueValidation: ValidationSchemaParser = (
 };
 
 export const parseMaxValueValidation: ValidationSchemaParser = (
-    validationSchema: IYupValidationRule
+    validationSchema
 ) => {
     return {
         validationType: EValidationType.MAX_VALUE,
@@ -23,7 +22,7 @@ export const parseMaxValueValidation: ValidationSchemaParser = (
 };
 
 export const parseMinLengthValidation: ValidationSchemaParser = (
-    validationSchema: IYupValidationRule
+    validationSchema
 ) => {
     return {
         validationType: EValidationType.MIN_LENGTH,
@@ -33,7 +32,7 @@ export const parseMinLengthValidation: ValidationSchemaParser = (
 };
 
 export const parseMaxLengthValidation: ValidationSchemaParser = (
-    validationSchema: IYupValidationRule
+    validationSchema
 ) => {
     return {
         validationType: EValidationType.MAX_LENGTH,
@@ -43,7 +42,7 @@ export const parseMaxLengthValidation: ValidationSchemaParser = (
 };
 
 export const parseMatchesValidation: ValidationSchemaParser = (
-    validationSchema: IYupValidationRule
+    validationSchema
 ) => {
     return {
         validationType: EValidationType.CUSTOM_REGEX,
@@ -53,7 +52,7 @@ export const parseMatchesValidation: ValidationSchemaParser = (
 };
 
 export const parseIntegerValidation: ValidationSchemaParser = (
-    validationSchema: IYupValidationRule
+    validationSchema
 ) => {
     return {
         validationType: EValidationType.WHOLE_NUMBERS,

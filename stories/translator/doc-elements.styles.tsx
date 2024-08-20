@@ -88,7 +88,3 @@ export const ActionWrapper = styled.div`
 export const AlertWrapper = styled(Alert)`
     flex-grow: 1;
 `;
-
-export const AlertMessage = styled(Alert)`
-    width: 80vw;
-`;

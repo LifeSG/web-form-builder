@@ -18,7 +18,7 @@ describe("ParseBaseSchema", () => {
     });
 
     it("should parse the base schema and return the base attributes of an element", () => {
-        const MOCK_SCHEMA = generateMockElementSchema({
+        const mockSchema = generateMockElementSchema({
             id: elementId,
             label: {
                 mainLabel,
@@ -28,7 +28,7 @@ describe("ParseBaseSchema", () => {
         })[elementId] as TElementSchema;
 
         const parsedSchema = parseBaseSchema(
-            MOCK_SCHEMA,
+            mockSchema,
             elementId,
             {},
             undefined
@@ -44,13 +44,14 @@ describe("ParseBaseSchema", () => {
             internalId: parsedSchema.internalId,
             conditionalRendering: [],
             prefill: [],
+            preselectedValue: "",
         })[parsedSchema.internalId];
 
         expect(parsedSchema).toEqual(expectedParsedSchema);
     });
 
     it("should parse the required validation correctly if it is present", () => {
-        const MOCK_SCHEMA = generateMockElementSchema({
+        const mockSchema = generateMockElementSchema({
             id: elementId,
             label: {
                 mainLabel,
@@ -66,7 +67,7 @@ describe("ParseBaseSchema", () => {
         })[elementId] as TElementSchema;
 
         const parsedSchema = parseBaseSchema(
-            MOCK_SCHEMA,
+            mockSchema,
             elementId,
             {},
             undefined
@@ -80,7 +81,7 @@ describe("ParseBaseSchema", () => {
     });
 
     it("should parse the conditional rendering schema correctly if it is present", () => {
-        const MOCK_SCHEMA = generateMockElementSchema({
+        const mockSchema = generateMockElementSchema({
             id: elementId,
             label: {
                 mainLabel,
@@ -99,7 +100,7 @@ describe("ParseBaseSchema", () => {
         })[elementId] as TElementSchema;
 
         const parsedSchema = parseBaseSchema(
-            MOCK_SCHEMA,
+            mockSchema,
             elementId,
             {},
             undefined
@@ -122,7 +123,7 @@ describe("ParseBaseSchema", () => {
                 path: "testpath",
             },
         ];
-        const MOCK_SCHEMA = generateMockElementSchema({
+        const mockSchema = generateMockElementSchema({
             id: elementId,
             label: {
                 mainLabel,
@@ -132,7 +133,7 @@ describe("ParseBaseSchema", () => {
         })[elementId] as TElementSchema;
 
         const parsedSchema = parseBaseSchema(
-            MOCK_SCHEMA,
+            mockSchema,
             elementId,
             {
                 [elementId]: prefill,

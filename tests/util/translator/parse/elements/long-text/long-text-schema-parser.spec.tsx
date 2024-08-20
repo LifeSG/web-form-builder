@@ -21,14 +21,33 @@ describe("LongTextSchemaParser", () => {
         jest.resetAllMocks();
     });
 
-    it("should parse max validation type correctly if present", () => {
-        const elementId = "mock123";
-        const mainLabel = "This is a label";
-        const subLabel = "This is a sub label";
+    it("should parse the placeholder correctly if present", () => {
+        const placeholder = "This is a placeholder";
 
+        const mockSchema = generateMockElementSchema({
+            id: elementId,
+            label: {
+                mainLabel,
+                subLabel,
+            },
+            uiType: EElementType.TEXTAREA,
+            placeholder,
+        })[elementId] as ITextareaSchema;
+
+        const parsedSchema = LongTextSchemaParser.schemaToElement(
+            mockSchema,
+            elementId,
+            {},
+            undefined
+        );
+
+        expect(parsedSchema).toHaveProperty("placeholder", placeholder);
+    });
+
+    it("should parse max validation type correctly if present", () => {
         const maxErrorMessage = "Max error message";
 
-        const MOCK_SCHEMA = generateMockElementSchema({
+        const mockSchema = generateMockElementSchema({
             id: elementId,
             label: {
                 mainLabel,
@@ -44,9 +63,10 @@ describe("LongTextSchemaParser", () => {
         })[elementId] as ITextareaSchema;
 
         const parsedSchema = LongTextSchemaParser.schemaToElement(
-            MOCK_SCHEMA,
+            mockSchema,
             elementId,
-            {}
+            {},
+            undefined
         );
 
         const expectedParsedValidation: IValidation[] = [
@@ -63,3 +83,10 @@ describe("LongTextSchemaParser", () => {
         );
     });
 });
+
+// =============================================================================
+// HELPERS
+// =============================================================================
+const elementId = "mock123";
+const mainLabel = "This is a label";
+const subLabel = "This is a sub label";
