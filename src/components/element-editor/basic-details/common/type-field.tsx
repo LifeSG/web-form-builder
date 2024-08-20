@@ -5,7 +5,7 @@ import {
 } from "react-hook-form";
 import { IconDropdown } from "src/components/common/icon-dropdown";
 import { EElementType, useBuilder } from "src/context-providers";
-import { TFormFieldValues } from "src/schemas";
+import { TFormFieldValues } from "src/yup-schemas";
 
 export const TypeField = () => {
     // =========================================================================

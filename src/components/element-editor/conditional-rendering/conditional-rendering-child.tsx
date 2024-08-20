@@ -3,7 +3,7 @@ import { Text } from "@lifesg/react-design-system/text";
 import { Controller, useFormContext } from "react-hook-form";
 import { ChildEntry } from "src/components/common";
 import { EConditionType } from "src/context-providers";
-import { TFormFieldValues } from "src/schemas";
+import { TFormFieldValues } from "src/yup-schemas";
 import {
     FieldWrapper,
     OptionIDText,

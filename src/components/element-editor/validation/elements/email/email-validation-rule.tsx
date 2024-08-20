@@ -1,6 +1,6 @@
 import { Form } from "@lifesg/react-design-system/form";
 import { Controller, useFormContext } from "react-hook-form";
-import { TOverallTextBasedSchema } from "src/schemas";
+import { TOverallTextBasedSchema } from "src/yup-schemas";
 
 interface IProps {
     index: number;

@@ -1,6 +1,5 @@
 import { EElementType, EValidationType } from "src/context-providers";
 import * as yup from "yup";
-import { PREFILL_ACTIONID_REGEX, PREFILL_PATH_REGEX } from "./base-helper";
 
 const VALIDATION_DOMAIN_REGEX =
     /^@[^\s]+(\.[^\s]+)*(?:\s*,\s*@[^,\s]+(\.[^,\s]+)*)*$/;
@@ -140,44 +139,12 @@ const generateValidationSchema = (elementType: EElementType) => {
 // =============================================================================
 export const TEXT_BASED_SCHEMA = (elementType: EElementType) => {
     return yup.object().shape({
-        placeholder: yup.string().optional(),
-        preselectedValue: yup.string().optional(),
         validation: generateValidationSchema(elementType),
-        prefill: yup.array().of(
-            yup.object().shape({
-                prefillMode: yup.string().required("Source required."),
-                actionId: yup.string().when("prefillMode", {
-                    is: "Previous source",
-                    then: (rule) =>
-                        rule
-                            .required("Action ID required.")
-                            .matches(
-                                PREFILL_ACTIONID_REGEX,
-                                "Invalid action ID."
-                            ),
-                    otherwise: (rule) => rule.optional(),
-                }),
-                path: yup
-                    .string()
-                    .required("Path required.")
-                    .matches(PREFILL_PATH_REGEX, "Invalid path."),
-            })
-        ),
-        conditionalRendering: yup.array().of(
-            yup.object().shape({
-                fieldKey: yup.string().required("Reference required."),
-                comparator: yup.string().required("Comparator required."),
-                value: yup.string().required("Reference value required."),
-                internalId: yup.string(),
-            })
-        ),
     });
 };
 
 export const TEXT_AREA_SCHEMA = () => {
     return yup.object().shape({
-        placeholder: yup.string().optional(),
-        preselectedValue: yup.string().optional(),
         resizableInput: yup.boolean().required().default(false),
         pills: yup.boolean().required().default(false),
         pillItems: yup
@@ -220,7 +187,6 @@ export const TEXT_AREA_SCHEMA = () => {
                     return true;
                 }
             ),
-
         pillPosition: yup.string().required().default("top"),
         validation: yup.array().of(
             yup.object().shape({
@@ -237,40 +203,5 @@ export const TEXT_AREA_SCHEMA = () => {
                     .required("Error message required."),
             })
         ),
-        prefill: yup.array().of(
-            yup.object().shape({
-                prefillMode: yup.string().required("Source required."),
-                actionId: yup.string().when("prefillMode", {
-                    is: "Previous source",
-                    then: (rule) =>
-                        rule
-                            .required("Action ID required.")
-                            .matches(
-                                PREFILL_ACTIONID_REGEX,
-                                "Invalid action ID."
-                            ),
-                    otherwise: (rule) => rule.optional(),
-                }),
-                path: yup
-                    .string()
-                    .required("Path required.")
-                    .matches(PREFILL_PATH_REGEX, "Invalid path."),
-            })
-        ),
-        conditionalRendering: yup.array().of(
-            yup.object().shape({
-                fieldKey: yup.string().required("Reference required."),
-                comparator: yup.string().required("Comparator required."),
-                value: yup.string().required("Reference value required."),
-            })
-        ),
     });
 };
-
-export type TTextBasedSchema = yup.InferType<
-    ReturnType<typeof TEXT_BASED_SCHEMA>
->;
-
-export type TTextAreaSchema = yup.InferType<
-    ReturnType<typeof TEXT_AREA_SCHEMA>
->;

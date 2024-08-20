@@ -6,7 +6,7 @@ import { DragHandleIcon, PlusCircleIcon } from "@lifesg/react-icons";
 import { CSSProperties } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { DeleteButton } from "src/components/common/delete-button/";
-import { TOverallOptionGroupBasedSchema } from "src/schemas";
+import { TOverallOptionGroupBasedSchema } from "src/yup-schemas";
 import {
     DropdownItemsChildWrapper,
     DropdownItemsDragHandleButton,

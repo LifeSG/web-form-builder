@@ -28,8 +28,8 @@ import { useModal } from "src/context-providers/display/modal-hook";
 import {
     getNonEmptyLines,
     getValidDropdownItem,
-} from "src/schemas/bulk-edit-helper";
-import { TOptionGroupBasedSchema } from "src/schemas/option-group-based-fields";
+    TOverallOptionGroupBasedSchema,
+} from "src/yup-schemas";
 import { DropdownItemsChild } from "./dropdown-items-child";
 import {
     DropdownItemsButton,
@@ -42,7 +42,7 @@ export const DropdownItems = () => {
     // CONST, STATE, REFS
     // =========================================================================
     const { control, getValues, trigger } =
-        useFormContext<TOptionGroupBasedSchema>();
+        useFormContext<TOverallOptionGroupBasedSchema>();
     const { fields, append, remove, move, replace } = useFieldArray({
         control,
         name: "dropdownItems",

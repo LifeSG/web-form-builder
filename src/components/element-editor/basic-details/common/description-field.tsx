@@ -4,7 +4,7 @@ import {
     ControllerRenderProps,
     useFormContext,
 } from "react-hook-form";
-import { TFormFieldValues } from "src/schemas";
+import { TFormFieldValues } from "src/yup-schemas";
 import { StyledTextarea } from "./common.styles";
 
 export const DescriptionField = () => {
