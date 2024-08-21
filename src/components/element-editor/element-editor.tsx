@@ -5,7 +5,7 @@ import {
     TextBasedElementTypes,
     useBuilder,
 } from "src/context-providers";
-import { TFormFieldValues } from "src/schemas";
+import { TFormFieldValues } from "src/yup-schemas";
 import { BasicDetails } from "./basic-details";
 import { ConditionalRendering } from "./conditional-rendering";
 import { SaveChangesAlert, Wrapper } from "./element-editor.styles";

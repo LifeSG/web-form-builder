@@ -1,6 +1,6 @@
 import { Form } from "@lifesg/react-design-system/form";
 import { Controller, useFormContext } from "react-hook-form";
-import { TSchemasWithValidation } from "src/schemas";
+import { TSchemasWithValidation } from "src/yup-schemas";
 
 interface IProps {
     index: number;
