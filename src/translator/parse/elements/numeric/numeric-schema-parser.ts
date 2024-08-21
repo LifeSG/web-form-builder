@@ -41,7 +41,7 @@ export namespace NumericSchemaParser {
         schema: INumericFieldSchema,
         id: string,
         prefill: IPrefillConfig,
-        defaultValue: string | undefined
+        defaultValue?: string
     ) => {
         const baseElement = parseBaseSchema(schema, id, prefill, defaultValue);
 

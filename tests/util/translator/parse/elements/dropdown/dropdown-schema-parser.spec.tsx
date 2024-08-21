@@ -43,8 +43,7 @@ describe("DropdownSchemaParser", () => {
         const parsedSchema = DropdownSchemaParser.schemaToElement(
             mockSchema,
             ELEMENT_ID,
-            {},
-            undefined
+            {}
         );
 
         expect(parsedSchema).toHaveProperty("placeholder", placeholder);
@@ -75,8 +74,7 @@ describe("DropdownSchemaParser", () => {
         const parsedSchema = DropdownSchemaParser.schemaToElement(
             mockSchema,
             ELEMENT_ID,
-            {},
-            undefined
+            {}
         );
 
         expect(parsedSchema).toHaveProperty("dropdownItems", dropdownItems);
@@ -93,12 +91,7 @@ describe("DropdownSchemaParser", () => {
         })[ELEMENT_ID] as ISelectSchema;
 
         expect(() =>
-            DropdownSchemaParser.schemaToElement(
-                mockSchema,
-                ELEMENT_ID,
-                {},
-                undefined
-            )
+            DropdownSchemaParser.schemaToElement(mockSchema, ELEMENT_ID, {})
         ).toThrow("Dropdown schema must have at least 2 options");
     });
 
@@ -119,12 +112,7 @@ describe("DropdownSchemaParser", () => {
         })[ELEMENT_ID] as ISelectSchema;
 
         expect(() =>
-            DropdownSchemaParser.schemaToElement(
-                mockSchema,
-                ELEMENT_ID,
-                {},
-                undefined
-            )
+            DropdownSchemaParser.schemaToElement(mockSchema, ELEMENT_ID, {})
         ).toThrow("Dropdown schema must have at least 2 options");
     });
 });

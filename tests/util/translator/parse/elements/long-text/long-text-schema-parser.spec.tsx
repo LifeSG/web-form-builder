@@ -37,8 +37,7 @@ describe("LongTextSchemaParser", () => {
         const parsedSchema = LongTextSchemaParser.schemaToElement(
             mockSchema,
             ELEMENT_ID,
-            {},
-            undefined
+            {}
         );
 
         expect(parsedSchema).toHaveProperty("placeholder", placeholder);
@@ -65,8 +64,7 @@ describe("LongTextSchemaParser", () => {
         const parsedSchema = LongTextSchemaParser.schemaToElement(
             mockSchema,
             ELEMENT_ID,
-            {},
-            undefined
+            {}
         );
 
         const expectedParsedValidation: IValidation[] = [

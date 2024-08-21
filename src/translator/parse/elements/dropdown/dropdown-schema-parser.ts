@@ -1,5 +1,5 @@
 import { ISelectSchema } from "@lifesg/web-frontend-engine/components/fields";
-import { isEmpty } from "lodash";
+import isEmpty from "lodash/isEmpty";
 import { TElement } from "src/context-providers";
 import { IPrefillConfig } from "src/translator";
 import { parseBaseSchema } from "../../common";
@@ -9,7 +9,7 @@ export namespace DropdownSchemaParser {
         schema: ISelectSchema,
         id: string,
         prefill: IPrefillConfig,
-        defaultValue: string | undefined
+        defaultValue?: string
     ) => {
         const baseElement = parseBaseSchema(schema, id, prefill, defaultValue);
         const { options, placeholder } = schema;

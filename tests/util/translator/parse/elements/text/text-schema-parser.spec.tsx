@@ -37,8 +37,7 @@ describe("TextSchemaParser", () => {
         const parsedSchema = TextSchemaParser.schemaToElement(
             mockSchema,
             ELEMENT_ID,
-            {},
-            undefined
+            {}
         );
 
         expect(parsedSchema).toHaveProperty("placeholder", placeholder);
@@ -66,8 +65,7 @@ describe("TextSchemaParser", () => {
         const parsedSchema = TextSchemaParser.schemaToElement(
             mockSchema,
             ELEMENT_ID,
-            {},
-            undefined
+            {}
         );
 
         const expectedParsedValidation: IValidation[] = [
@@ -105,8 +103,7 @@ describe("TextSchemaParser", () => {
         const parsedSchema = TextSchemaParser.schemaToElement(
             mockSchema,
             ELEMENT_ID,
-            {},
-            undefined
+            {}
         );
 
         const expectedParsedValidation: IValidation[] = [
@@ -144,8 +141,7 @@ describe("TextSchemaParser", () => {
         const parsedSchema = TextSchemaParser.schemaToElement(
             mockSchema,
             ELEMENT_ID,
-            {},
-            undefined
+            {}
         );
 
         const expectedParsedValidation: IValidation[] = [

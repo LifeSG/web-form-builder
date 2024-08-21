@@ -37,8 +37,7 @@ describe("EmailSchemaParser", () => {
         const parsedSchema = EmailSchemaParser.schemaToElement(
             mockSchema,
             ELEMENT_ID,
-            {},
-            undefined
+            {}
         );
 
         expect(parsedSchema).toHaveProperty("placeholder", placeholder);
@@ -66,8 +65,7 @@ describe("EmailSchemaParser", () => {
         const parsedSchema = EmailSchemaParser.schemaToElement(
             mockSchema,
             ELEMENT_ID,
-            {},
-            undefined
+            {}
         );
 
         const expectedParsedValidation: IValidation[] = [

@@ -8,7 +8,7 @@ export namespace ContactSchemaParser {
         schema: IContactFieldSchema,
         id: string,
         prefill: IPrefillConfig,
-        defaultValue: string | undefined
+        defaultValue?: string
     ) => {
         const baseElement = parseBaseSchema(schema, id, prefill, defaultValue);
         const { placeholder } = schema;

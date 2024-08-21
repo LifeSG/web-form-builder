@@ -37,8 +37,7 @@ describe("NumericSchemaParser", () => {
         const parsedSchema = NumericSchemaParser.schemaToElement(
             mockSchema,
             ELEMENT_ID,
-            {},
-            undefined
+            {}
         );
 
         expect(parsedSchema).toHaveProperty("placeholder", placeholder);
@@ -65,8 +64,7 @@ describe("NumericSchemaParser", () => {
         const parsedSchema = NumericSchemaParser.schemaToElement(
             mockSchema,
             ELEMENT_ID,
-            {},
-            undefined
+            {}
         );
 
         const expectedParsedValidation: IValidation[] = [
@@ -104,8 +102,7 @@ describe("NumericSchemaParser", () => {
         const parsedSchema = NumericSchemaParser.schemaToElement(
             mockSchema,
             ELEMENT_ID,
-            {},
-            undefined
+            {}
         );
 
         const expectedParsedValidation: IValidation[] = [
@@ -143,8 +140,7 @@ describe("NumericSchemaParser", () => {
         const parsedSchema = NumericSchemaParser.schemaToElement(
             mockSchema,
             ELEMENT_ID,
-            {},
-            undefined
+            {}
         );
 
         const expectedParsedValidation: IValidation[] = [

@@ -10,7 +10,7 @@ export const parseBaseSchema = (
     schema: TElementSchema,
     id: string,
     prefill: IPrefillConfig,
-    defaultValue: string | undefined
+    defaultValue?: string
 ) => {
     const { showIf, uiType, validation, label } = schema;
 

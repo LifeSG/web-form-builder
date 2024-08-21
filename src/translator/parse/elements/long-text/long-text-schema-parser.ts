@@ -33,7 +33,7 @@ export namespace LongTextSchemaParser {
         schema: ITextareaSchema,
         id: string,
         prefill: IPrefillConfig,
-        defaultValue: string | undefined
+        defaultValue?: string
     ) => {
         const baseElement = parseBaseSchema(schema, id, prefill, defaultValue);
 
