@@ -25,20 +25,19 @@ describe("LongTextSchemaParser", () => {
         const placeholder = "This is a placeholder";
 
         const mockSchema = generateMockElementSchema({
-            id: elementId,
+            id: ELEMENT_ID,
             label: {
-                mainLabel,
-                subLabel,
+                mainLabel: MAIN_LABEL,
+                subLabel: SUB_LABEL,
             },
             uiType: EElementType.TEXTAREA,
             placeholder,
-        })[elementId] as ITextareaSchema;
+        })[ELEMENT_ID] as ITextareaSchema;
 
         const parsedSchema = LongTextSchemaParser.schemaToElement(
             mockSchema,
-            elementId,
-            {},
-            undefined
+            ELEMENT_ID,
+            {}
         );
 
         expect(parsedSchema).toHaveProperty("placeholder", placeholder);
@@ -48,10 +47,10 @@ describe("LongTextSchemaParser", () => {
         const maxErrorMessage = "Max error message";
 
         const mockSchema = generateMockElementSchema({
-            id: elementId,
+            id: ELEMENT_ID,
             label: {
-                mainLabel,
-                subLabel,
+                mainLabel: MAIN_LABEL,
+                subLabel: SUB_LABEL,
             },
             uiType: EElementType.TEXTAREA,
             validation: [
@@ -60,13 +59,12 @@ describe("LongTextSchemaParser", () => {
                     errorMessage: maxErrorMessage,
                 },
             ],
-        })[elementId] as ITextareaSchema;
+        })[ELEMENT_ID] as ITextareaSchema;
 
         const parsedSchema = LongTextSchemaParser.schemaToElement(
             mockSchema,
-            elementId,
-            {},
-            undefined
+            ELEMENT_ID,
+            {}
         );
 
         const expectedParsedValidation: IValidation[] = [
@@ -87,6 +85,6 @@ describe("LongTextSchemaParser", () => {
 // =============================================================================
 // HELPERS
 // =============================================================================
-const elementId = "mock123";
-const mainLabel = "This is a label";
-const subLabel = "This is a sub label";
+const ELEMENT_ID = "mock123";
+const MAIN_LABEL = "This is a label";
+const SUB_LABEL = "This is a sub label";

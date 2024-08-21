@@ -46,7 +46,7 @@ export namespace EmailSchemaParser {
         schema: IEmailFieldSchema,
         id: string,
         prefill: IPrefillConfig,
-        defaultValue: string | undefined
+        defaultValue?: string
     ) => {
         const baseElement = parseBaseSchema(schema, id, prefill, defaultValue);
         const { validation, placeholder } = schema;

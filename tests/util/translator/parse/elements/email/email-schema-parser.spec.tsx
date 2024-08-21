@@ -25,20 +25,19 @@ describe("EmailSchemaParser", () => {
         const placeholder = "This is a placeholder";
 
         const mockSchema = generateMockElementSchema({
-            id: elementId,
+            id: ELEMENT_ID,
             label: {
-                mainLabel,
-                subLabel,
+                mainLabel: MAIN_LABEL,
+                subLabel: SUB_LABEL,
             },
             uiType: EElementType.EMAIL,
             placeholder,
-        })[elementId] as IEmailFieldSchema;
+        })[ELEMENT_ID] as IEmailFieldSchema;
 
         const parsedSchema = EmailSchemaParser.schemaToElement(
             mockSchema,
-            elementId,
-            {},
-            undefined
+            ELEMENT_ID,
+            {}
         );
 
         expect(parsedSchema).toHaveProperty("placeholder", placeholder);
@@ -49,10 +48,10 @@ describe("EmailSchemaParser", () => {
         const errorMessage = "This is an error message";
 
         const mockSchema = generateMockElementSchema({
-            id: elementId,
+            id: ELEMENT_ID,
             label: {
-                mainLabel,
-                subLabel,
+                mainLabel: MAIN_LABEL,
+                subLabel: SUB_LABEL,
             },
             uiType: EElementType.EMAIL,
             validation: [
@@ -61,13 +60,12 @@ describe("EmailSchemaParser", () => {
                     errorMessage,
                 },
             ],
-        })[elementId] as IEmailFieldSchema;
+        })[ELEMENT_ID] as IEmailFieldSchema;
 
         const parsedSchema = EmailSchemaParser.schemaToElement(
             mockSchema,
-            elementId,
-            {},
-            undefined
+            ELEMENT_ID,
+            {}
         );
 
         const expectedParsedValidation: IValidation[] = [
@@ -88,6 +86,6 @@ describe("EmailSchemaParser", () => {
 // =============================================================================
 // HELPERS
 // =============================================================================
-const elementId = "mock123";
-const mainLabel = "This is a label";
-const subLabel = "This is a sub label";
+const ELEMENT_ID = "mock123";
+const MAIN_LABEL = "This is a label";
+const SUB_LABEL = "This is a sub label";

@@ -4,7 +4,6 @@ import { PencilIcon } from "@lifesg/react-icons/pencil";
 import { TabletIcon } from "@lifesg/react-icons/tablet";
 import { FrontendEngine } from "@lifesg/web-frontend-engine";
 import { useEffect, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
 import { FormBuilder, IFormBuilderMethods } from "src/form-builder";
 import { ISchemaProps } from "src/translator/types";
 import {
@@ -41,15 +40,9 @@ const SchemaView = ({ data, onChange, formBuilderRef }: ISchemaViewProps) => {
     // ===========================================================================
     // CONST, STATE, REFS
     // ===========================================================================
+    const [schema, setSchema] = useState<string>("");
     const [hasError, setHasError] = useState<boolean>(false);
-    const {
-        register,
-        handleSubmit,
-        reset,
-        formState: { isDirty },
-    } = useForm({
-        defaultValues: { schema: "" },
-    });
+    const [isDirty, setIsDirty] = useState<boolean>(false);
 
     // =========================================================================
     // EFFECTS
@@ -58,27 +51,44 @@ const SchemaView = ({ data, onChange, formBuilderRef }: ISchemaViewProps) => {
     useEffect(() => {
         if (data) {
             const schemaString = JSON.stringify(data, null, 2);
-            reset({ schema: schemaString });
+            setSchema(schemaString);
         }
-    }, [data, reset]);
+    }, [data]);
 
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
 
-    const onSubmit = (formData: { schema: string }) => {
+    const handleSchemaChange = (
+        event: React.ChangeEvent<HTMLTextAreaElement>
+    ) => {
+        setSchema(event.target.value);
+        setIsDirty(true);
+    };
+
+    const onSubmit = () => {
         let newSchema: ISchemaProps;
         try {
-            newSchema = JSON.parse(formData.schema);
+            newSchema = JSON.parse(schema);
             formBuilderRef.current.parseSchema(newSchema);
 
             setHasError(false);
+            setIsDirty(false);
         } catch (error) {
             console.log(error);
             setHasError(true);
             return;
         }
         onChange(newSchema);
+    };
+
+    const handleReset = () => {
+        if (data) {
+            const schemaString = JSON.stringify(data, null, 2);
+            setSchema(schemaString);
+            setHasError(false);
+            setIsDirty(false);
+        }
     };
 
     // =========================================================================
@@ -91,14 +101,9 @@ const SchemaView = ({ data, onChange, formBuilderRef }: ISchemaViewProps) => {
                 <>
                     {hasError ? (
                         <AlertWrapper type="error" showIcon>
-                            Unable to save changes because there’s syntax error.
-                            Amend the error or{" "}
-                            <a
-                                onClick={() => {
-                                    reset();
-                                    setHasError(false);
-                                }}
-                            >
+                            Unable to save changes because there’s a syntax
+                            error. Amend the error or{" "}
+                            <a onClick={handleReset}>
                                 refresh to sync with the form builder.
                             </a>
                         </AlertWrapper>
@@ -109,7 +114,7 @@ const SchemaView = ({ data, onChange, formBuilderRef }: ISchemaViewProps) => {
                     )}
                 </>
             )}
-            <SaveButton onClick={handleSubmit(onSubmit)}>
+            <SaveButton onClick={onSubmit}>
                 {isDirty ? "Save Changes" : "Saved"}
             </SaveButton>
         </ActionWrapper>
@@ -119,7 +124,7 @@ const SchemaView = ({ data, onChange, formBuilderRef }: ISchemaViewProps) => {
         <ViewWrapper>
             <Text.H2>Generate Schema</Text.H2>
             {renderActionPanel()}
-            <SchemaPreview {...register("schema")} />
+            <SchemaPreview value={schema} onChange={handleSchemaChange} />
         </ViewWrapper>
     );
 };
