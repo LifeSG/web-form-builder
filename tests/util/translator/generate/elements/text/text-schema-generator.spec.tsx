@@ -24,8 +24,8 @@ describe("TextSchemaGenerator", () => {
         const placeholder = "This is a placeholder";
 
         const mockElement: ITextField = {
-            label,
-            id: elementId,
+            label: LABEL,
+            id: ELEMENT_ID,
             internalId: "text-field",
             type: EElementType.TEXT,
             required: false,
@@ -37,7 +37,7 @@ describe("TextSchemaGenerator", () => {
         const generatedSchema =
             TextSchemaGenerator.elementToSchema(mockElement);
 
-        expect(generatedSchema[elementId]).toHaveProperty(
+        expect(generatedSchema[ELEMENT_ID]).toHaveProperty(
             "placeholder",
             placeholder
         );
@@ -49,8 +49,8 @@ describe("TextSchemaGenerator", () => {
             "This field must be at least 5 characters long";
 
         const mockElement: ITextField = {
-            label,
-            id: elementId,
+            label: LABEL,
+            id: ELEMENT_ID,
             internalId: "text-field",
             type: EElementType.TEXT,
             required: false,
@@ -68,9 +68,9 @@ describe("TextSchemaGenerator", () => {
             TextSchemaGenerator.elementToSchema(mockElement);
 
         const expectedSchema = generateMockElementSchema({
-            id: elementId,
+            id: ELEMENT_ID,
             label: {
-                mainLabel: label,
+                mainLabel: LABEL,
             },
             uiType: EElementType.TEXT,
             validation: [
@@ -98,12 +98,12 @@ describe("TextSchemaGenerator", () => {
             "This field must start with 'hello'";
 
         const mockElement: ITextField = {
-            label,
-            id: elementId,
+            label: LABEL,
+            id: ELEMENT_ID,
             internalId: "text-field",
             type: EElementType.TEXT,
             required: true,
-            requiredErrorMsg,
+            requiredErrorMsg: REQUIRED_ERROR_MESSAGE,
             columns: { desktop: 12, tablet: 8, mobile: 4 },
             validation: [
                 {
@@ -128,15 +128,15 @@ describe("TextSchemaGenerator", () => {
             TextSchemaGenerator.elementToSchema(mockElement);
 
         const expectedSchema = generateMockElementSchema({
-            id: elementId,
+            id: ELEMENT_ID,
             label: {
-                mainLabel: label,
+                mainLabel: LABEL,
             },
             uiType: EElementType.TEXT,
             validation: [
                 {
                     required: true,
-                    errorMessage: requiredErrorMsg,
+                    errorMessage: REQUIRED_ERROR_MESSAGE,
                 },
                 {
                     min: parseInt(validationMinRule),
@@ -160,6 +160,6 @@ describe("TextSchemaGenerator", () => {
 // =============================================================================
 // HELPERS
 // =============================================================================
-const elementId = "mockId123";
-const label = "Text Field";
-const requiredErrorMsg = "This field is required";
+const ELEMENT_ID = "mockId123";
+const LABEL = "Text Field";
+const REQUIRED_ERROR_MESSAGE = "This field is required";

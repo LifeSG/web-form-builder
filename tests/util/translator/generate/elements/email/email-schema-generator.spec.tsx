@@ -24,8 +24,8 @@ describe("EmailSchemaGenerator", () => {
         const placeholder = "This is a placeholder";
 
         const mockElement: IEmailField = {
-            label,
-            id: elementId,
+            label: LABEL,
+            id: ELEMENT_ID,
             internalId: "email-field",
             type: EElementType.EMAIL,
             required: false,
@@ -37,7 +37,7 @@ describe("EmailSchemaGenerator", () => {
         const generatedSchema =
             EmailSchemaGenerator.elementToSchema(mockElement);
 
-        expect(generatedSchema[elementId]).toHaveProperty(
+        expect(generatedSchema[ELEMENT_ID]).toHaveProperty(
             "placeholder",
             placeholder
         );
@@ -49,8 +49,8 @@ describe("EmailSchemaGenerator", () => {
             "This field only accepts gmail addresses";
 
         const mockElement: IEmailField = {
-            label,
-            id: elementId,
+            label: LABEL,
+            id: ELEMENT_ID,
             internalId: "email-field",
             type: EElementType.EMAIL,
             required: false,
@@ -68,9 +68,9 @@ describe("EmailSchemaGenerator", () => {
             EmailSchemaGenerator.elementToSchema(mockElement);
 
         const expectedSchema = generateMockElementSchema({
-            id: elementId,
+            id: ELEMENT_ID,
             label: {
-                mainLabel: label,
+                mainLabel: LABEL,
             },
             uiType: EElementType.EMAIL,
             validation: [
@@ -90,12 +90,12 @@ describe("EmailSchemaGenerator", () => {
             "This field only accepts gmail addresses";
 
         const mockElement: IEmailField = {
-            label,
-            id: elementId,
+            label: LABEL,
+            id: ELEMENT_ID,
             internalId: "numeric-field",
             type: EElementType.EMAIL,
             required: true,
-            requiredErrorMsg,
+            requiredErrorMsg: REQUIRED_ERROR_MESSAGE,
             columns: { desktop: 12, tablet: 8, mobile: 4 },
             validation: [
                 {
@@ -110,15 +110,15 @@ describe("EmailSchemaGenerator", () => {
             EmailSchemaGenerator.elementToSchema(mockElement);
 
         const expectedSchema = generateMockElementSchema({
-            id: elementId,
+            id: ELEMENT_ID,
             label: {
-                mainLabel: label,
+                mainLabel: LABEL,
             },
             uiType: EElementType.EMAIL,
             validation: [
                 {
                     required: true,
-                    errorMessage: requiredErrorMsg,
+                    errorMessage: REQUIRED_ERROR_MESSAGE,
                 },
                 {
                     matches: "/^[a-zA-Z0-9._%+-]+@(gmail\\.com)$/",
@@ -135,6 +135,6 @@ describe("EmailSchemaGenerator", () => {
 // HELPERS
 // =============================================================================
 
-const elementId = "mockId123";
-const label = "email-field";
-const requiredErrorMsg = "This field is required";
+const ELEMENT_ID = "mockId123";
+const LABEL = "email-field";
+const REQUIRED_ERROR_MESSAGE = "This field is required";
