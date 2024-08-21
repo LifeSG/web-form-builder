@@ -19,25 +19,25 @@ describe("ParseBaseSchema", () => {
 
     it("should parse the base schema and return the base attributes of an element", () => {
         const mockSchema = generateMockElementSchema({
-            id: elementId,
+            id: ELEMENT_ID,
             label: {
-                mainLabel,
-                subLabel,
+                mainLabel: MAIN_LABEL,
+                subLabel: SUB_LABEL,
             },
             uiType: EElementType.TEXT,
-        })[elementId] as TElementSchema;
+        })[ELEMENT_ID] as TElementSchema;
 
         const parsedSchema = parseBaseSchema(
             mockSchema,
-            elementId,
+            ELEMENT_ID,
             {},
             undefined
         );
 
         const expectedParsedSchema = generateMockElement({
-            id: elementId,
-            label: mainLabel,
-            description: subLabel,
+            id: ELEMENT_ID,
+            label: MAIN_LABEL,
+            description: SUB_LABEL,
             type: EElementType.TEXT,
             required: false,
             requiredErrorMsg: "",
@@ -52,10 +52,10 @@ describe("ParseBaseSchema", () => {
 
     it("should parse the required validation correctly if it is present", () => {
         const mockSchema = generateMockElementSchema({
-            id: elementId,
+            id: ELEMENT_ID,
             label: {
-                mainLabel,
-                subLabel,
+                mainLabel: MAIN_LABEL,
+                subLabel: SUB_LABEL,
             },
             uiType: EElementType.TEXT,
             validation: [
@@ -64,11 +64,11 @@ describe("ParseBaseSchema", () => {
                     errorMessage: "This is a required field",
                 },
             ],
-        })[elementId] as TElementSchema;
+        })[ELEMENT_ID] as TElementSchema;
 
         const parsedSchema = parseBaseSchema(
             mockSchema,
-            elementId,
+            ELEMENT_ID,
             {},
             undefined
         );
@@ -82,33 +82,33 @@ describe("ParseBaseSchema", () => {
 
     it("should parse the conditional rendering schema correctly if it is present", () => {
         const mockSchema = generateMockElementSchema({
-            id: elementId,
+            id: ELEMENT_ID,
             label: {
-                mainLabel,
-                subLabel,
+                mainLabel: MAIN_LABEL,
+                subLabel: SUB_LABEL,
             },
             uiType: EElementType.TEXT,
             showIf: [
                 {
-                    [elementId]: [
+                    [ELEMENT_ID]: [
                         {
                             equals: "test",
                         },
                     ],
                 },
             ],
-        })[elementId] as TElementSchema;
+        })[ELEMENT_ID] as TElementSchema;
 
         const parsedSchema = parseBaseSchema(
             mockSchema,
-            elementId,
+            ELEMENT_ID,
             {},
             undefined
         );
 
         expect(parsedSchema).toHaveProperty("conditionalRendering", [
             {
-                fieldKey: elementId,
+                fieldKey: ELEMENT_ID,
                 comparator: "Equals",
                 value: "test",
                 internalId: "",
@@ -124,19 +124,19 @@ describe("ParseBaseSchema", () => {
             },
         ];
         const mockSchema = generateMockElementSchema({
-            id: elementId,
+            id: ELEMENT_ID,
             label: {
-                mainLabel,
-                subLabel,
+                mainLabel: MAIN_LABEL,
+                subLabel: SUB_LABEL,
             },
             uiType: EElementType.TEXT,
-        })[elementId] as TElementSchema;
+        })[ELEMENT_ID] as TElementSchema;
 
         const parsedSchema = parseBaseSchema(
             mockSchema,
-            elementId,
+            ELEMENT_ID,
             {
-                [elementId]: prefill,
+                [ELEMENT_ID]: prefill,
             },
             undefined
         );
@@ -148,6 +148,6 @@ describe("ParseBaseSchema", () => {
 // =============================================================================
 // HELPERS
 // =============================================================================
-const elementId = "mock123";
-const mainLabel = "This is a label";
-const subLabel = "This is a sub label";
+const ELEMENT_ID = "mock123";
+const MAIN_LABEL = "This is a label";
+const SUB_LABEL = "This is a sub label";
