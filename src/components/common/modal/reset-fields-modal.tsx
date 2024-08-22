@@ -14,8 +14,6 @@ export const ResetFieldsModal = ({ modal }: IProps) => {
     // =========================================================================
     const { onClickActionButton, onClose } = modal;
 
-    console.log("RESET FIELDS MODAL", modal);
-
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================

@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import {
-    Controller,
-    ControllerRenderProps,
-    useFormContext,
+  Controller,
+  ControllerRenderProps,
+  useFormContext,
 } from "react-hook-form";
 import { IconDropdown } from "src/components/common/icon-dropdown";
 import {
-    EElementType,
-    EModalType,
-    IResetFieldsModalProps,
-    useBuilder,
+  EElementType,
+  EModalType,
+  IResetFieldsModalProps,
+  useBuilder,
 } from "src/context-providers";
 import { useModal } from "src/context-providers/display/modal-hook";
 import { TFormFieldValues } from "src/yup-schemas";
