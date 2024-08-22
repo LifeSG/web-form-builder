@@ -22,8 +22,8 @@ describe("LongTextSchemaGenerator", () => {
 
     it("should generate the base schema WITHOUT validation if required is false", () => {
         const MOCK_ELEMENT: ITextarea = {
-            label,
-            id: elementId,
+            label: LABEL,
+            id: ELEMENT_ID,
             internalId: "long-text-field",
             type: EElementType.TEXTAREA,
             required: false,
@@ -35,9 +35,9 @@ describe("LongTextSchemaGenerator", () => {
             LongTextSchemaGenerator.elementToSchema(MOCK_ELEMENT);
 
         const expectedSchema = generateMockElementSchema({
-            id: elementId,
+            id: ELEMENT_ID,
             label: {
-                mainLabel: label,
+                mainLabel: LABEL,
             },
             uiType: EElementType.TEXTAREA,
         });
@@ -47,12 +47,12 @@ describe("LongTextSchemaGenerator", () => {
 
     it("should generate the base schema WITH validation if required is true", () => {
         const MOCK_ELEMENT: ITextarea = {
-            label,
-            id: elementId,
+            label: LABEL,
+            id: ELEMENT_ID,
             internalId: "long-text-field",
             type: EElementType.TEXTAREA,
             required: true,
-            requiredErrorMsg,
+            requiredErrorMsg: REQUIRED_ERROR_MESSAGE,
             columns: { desktop: 12, tablet: 8, mobile: 4 },
             validation: [],
         };
@@ -61,15 +61,15 @@ describe("LongTextSchemaGenerator", () => {
             LongTextSchemaGenerator.elementToSchema(MOCK_ELEMENT);
 
         const expectedSchema = generateMockElementSchema({
-            id: elementId,
+            id: ELEMENT_ID,
             label: {
-                mainLabel: label,
+                mainLabel: LABEL,
             },
             uiType: EElementType.TEXTAREA,
             validation: [
                 {
                     required: true,
-                    errorMessage: requiredErrorMsg,
+                    errorMessage: REQUIRED_ERROR_MESSAGE,
                 },
             ],
         });
@@ -83,8 +83,8 @@ describe("LongTextSchemaGenerator", () => {
             "This field must be at most 5 characters long";
 
         const MOCK_ELEMENT: ITextarea = {
-            label,
-            id: elementId,
+            label: LABEL,
+            id: ELEMENT_ID,
             internalId: "long-text-field",
             type: EElementType.TEXTAREA,
             required: false,
@@ -102,9 +102,9 @@ describe("LongTextSchemaGenerator", () => {
             LongTextSchemaGenerator.elementToSchema(MOCK_ELEMENT);
 
         const expectedSchema = generateMockElementSchema({
-            id: elementId,
+            id: ELEMENT_ID,
             label: {
-                mainLabel: label,
+                mainLabel: LABEL,
             },
             uiType: EElementType.TEXTAREA,
             validation: [
@@ -124,12 +124,12 @@ describe("LongTextSchemaGenerator", () => {
             "This field must be at most 10 characters long";
 
         const MOCK_ELEMENT: ITextarea = {
-            label,
-            id: elementId,
+            label: LABEL,
+            id: ELEMENT_ID,
             internalId: "text-field",
             type: EElementType.TEXTAREA,
             required: true,
-            requiredErrorMsg,
+            requiredErrorMsg: REQUIRED_ERROR_MESSAGE,
             columns: { desktop: 12, tablet: 8, mobile: 4 },
             validation: [
                 {
@@ -144,15 +144,15 @@ describe("LongTextSchemaGenerator", () => {
             LongTextSchemaGenerator.elementToSchema(MOCK_ELEMENT);
 
         const expectedSchema = generateMockElementSchema({
-            id: elementId,
+            id: ELEMENT_ID,
             label: {
-                mainLabel: label,
+                mainLabel: LABEL,
             },
             uiType: EElementType.TEXTAREA,
             validation: [
                 {
                     required: true,
-                    errorMessage: requiredErrorMsg,
+                    errorMessage: REQUIRED_ERROR_MESSAGE,
                 },
 
                 {
@@ -167,8 +167,8 @@ describe("LongTextSchemaGenerator", () => {
 
     it("should generate the schema with conditional rendering if conditional rendering is added", () => {
         const MOCK_ELEMENT: ITextarea = {
-            label,
-            id: elementId,
+            label: LABEL,
+            id: ELEMENT_ID,
             internalId: "long-text-field",
             type: EElementType.TEXTAREA,
             required: false,
@@ -188,9 +188,9 @@ describe("LongTextSchemaGenerator", () => {
             LongTextSchemaGenerator.elementToSchema(MOCK_ELEMENT);
 
         const expectedSchema = generateMockElementSchema({
-            id: elementId,
+            id: ELEMENT_ID,
             label: {
-                mainLabel: label,
+                mainLabel: LABEL,
             },
             uiType: EElementType.TEXTAREA,
             showIf: [
@@ -209,12 +209,89 @@ describe("LongTextSchemaGenerator", () => {
 
         expect(generatedSchema).toStrictEqual(expectedSchema);
     });
+
+    it("should generate the schema with resizable input if resizable input is true", () => {
+        const mockElement: ITextarea = {
+            label: LABEL,
+            id: ELEMENT_ID,
+            internalId: "long-text-field",
+            type: EElementType.TEXTAREA,
+            required: false,
+            columns: { desktop: 12, tablet: 8, mobile: 4 },
+            validation: [],
+            resizableInput: true,
+        };
+
+        const generatedSchema =
+            LongTextSchemaGenerator.elementToSchema(mockElement);
+
+        expect(generatedSchema[ELEMENT_ID]).toHaveProperty("resizable", true);
+    });
+
+    it("should generate the schema with chipTexts if pills is true and there are at least 2 pilItems", () => {
+        const mockElement: ITextarea = {
+            label: LABEL,
+            id: ELEMENT_ID,
+            internalId: "long-text-field",
+            type: EElementType.TEXTAREA,
+            required: false,
+            columns: { desktop: 12, tablet: 8, mobile: 4 },
+            validation: [],
+            pills: true,
+            pillItems: [
+                {
+                    content: "Pill 1",
+                },
+                {
+                    content: "Pill 2",
+                },
+            ],
+        };
+
+        const generatedSchema =
+            LongTextSchemaGenerator.elementToSchema(mockElement);
+
+        expect(generatedSchema[ELEMENT_ID]).toHaveProperty("chipTexts", [
+            "Pill 1",
+            "Pill 2",
+        ]);
+    });
+
+    it("should generate the schema with chipPosition if pills is true and pillPosition is bottom", () => {
+        const mockElement: ITextarea = {
+            label: LABEL,
+            id: ELEMENT_ID,
+            internalId: "long-text-field",
+            type: EElementType.TEXTAREA,
+            required: false,
+            columns: { desktop: 12, tablet: 8, mobile: 4 },
+            validation: [],
+            pills: true,
+            pillItems: [
+                {
+                    content: "Pill 1",
+                },
+                {
+                    content: "Pill 2",
+                },
+            ],
+            pillPosition: "bottom",
+        };
+
+        const generatedSchema =
+            LongTextSchemaGenerator.elementToSchema(mockElement);
+
+        expect(generatedSchema[ELEMENT_ID]).toHaveProperty(
+            "chipPosition",
+            "bottom"
+        );
+    });
 });
 
 // =============================================================================
 // HELPERS
 // =============================================================================
 
-const elementId = "mockId123";
-const label = "Long text";
-const requiredErrorMsg = "This field is required";
+const ELEMENT_ID = "mockId123";
+const LABEL = "Long text";
+const REQUIRED_ERROR_MESSAGE = "This field is required";

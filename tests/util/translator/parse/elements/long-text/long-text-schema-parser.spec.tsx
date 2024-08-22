@@ -80,6 +80,91 @@ describe("LongTextSchemaParser", () => {
             expectedParsedValidation
         );
     });
+
+    it("should parse resizable correctly to resizeableInput if present", () => {
+        const mockSchema = generateMockElementSchema({
+            id: ELEMENT_ID,
+            label: {
+                mainLabel: MAIN_LABEL,
+                subLabel: SUB_LABEL,
+            },
+            uiType: EElementType.TEXTAREA,
+            resizable: true,
+        })[ELEMENT_ID] as ITextareaSchema;
+
+        const parsedSchema = LongTextSchemaParser.schemaToElement(
+            mockSchema,
+            ELEMENT_ID,
+            {},
+            undefined
+        );
+
+        expect(parsedSchema).toHaveProperty("resizableInput", true);
+    });
+
+    it("should parse resizable to resizeableInput as false if not present", () => {
+        const mockSchema = generateMockElementSchema({
+            id: ELEMENT_ID,
+            label: {
+                mainLabel: MAIN_LABEL,
+                subLabel: SUB_LABEL,
+            },
+            uiType: EElementType.TEXTAREA,
+        })[ELEMENT_ID] as ITextareaSchema;
+
+        const parsedSchema = LongTextSchemaParser.schemaToElement(
+            mockSchema,
+            ELEMENT_ID,
+            {},
+            undefined
+        );
+
+        expect(parsedSchema).toHaveProperty("resizableInput", false);
+    });
+
+    it("should throw an error if chipTexts is defined but has less than 2 items", () => {
+        const mockSchema = generateMockElementSchema({
+            id: ELEMENT_ID,
+            label: {
+                mainLabel: MAIN_LABEL,
+                subLabel: SUB_LABEL,
+            },
+            uiType: EElementType.TEXTAREA,
+            chipTexts: ["Chip text"],
+        })[ELEMENT_ID] as ITextareaSchema;
+
+        expect(() =>
+            LongTextSchemaParser.schemaToElement(mockSchema, ELEMENT_ID, {}, "")
+        ).toThrowError(
+            "Long text area schema must have at least 2 chip texts if chipTexts is defined"
+        );
+    });
+
+    it("should parse chipTexts to pillItems and set pills to true if present", () => {
+        const chipTexts = ["Chip text 1", "Chip text 2"];
+
+        const mockSchema = generateMockElementSchema({
+            id: ELEMENT_ID,
+            label: {
+                mainLabel: MAIN_LABEL,
+                subLabel: SUB_LABEL,
+            },
+            uiType: EElementType.TEXTAREA,
+            chipTexts,
+        })[ELEMENT_ID] as ITextareaSchema;
+
+        const parsedSchema = LongTextSchemaParser.schemaToElement(
+            mockSchema,
+            ELEMENT_ID,
+            {},
+            undefined
+        );
+
+        const expectedPillItems = chipTexts.map((content) => ({ content }));
+
+        expect(parsedSchema).toHaveProperty("pills", true);
+        expect(parsedSchema).toHaveProperty("pillItems", expectedPillItems);
+    });
 });
 
 // =============================================================================

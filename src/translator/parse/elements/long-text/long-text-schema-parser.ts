@@ -37,7 +37,16 @@ export namespace LongTextSchemaParser {
     ) => {
         const baseElement = parseBaseSchema(schema, id, prefill, defaultValue);
 
-        const { validation, placeholder } = schema;
+        const { validation, placeholder, resizable, chipTexts, chipPosition } =
+            schema;
+
+        const pillItems = chipTexts?.map((content) => ({ content }));
+
+        if (pillItems && pillItems.length < 2) {
+            throw new Error(
+                "Long text area schema must have at least 2 chip texts if chipTexts is defined"
+            );
+        }
 
         const additionalValidation = getAdditionalValidation(validation);
 
@@ -48,6 +57,9 @@ export namespace LongTextSchemaParser {
                 (additionalValidation.length > 0 &&
                     parseLongTextValidation(additionalValidation)) ||
                 [],
+            resizableInput: resizable || false,
+            ...(pillItems ? { pills: true, pillItems } : { pills: false }),
+            ...(pillItems && { pillPosition: chipPosition || "top" }),
         };
 
         return parsedElement;
