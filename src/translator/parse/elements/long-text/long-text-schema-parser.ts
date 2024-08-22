@@ -57,7 +57,7 @@ export namespace LongTextSchemaParser {
                 (additionalValidation.length > 0 &&
                     parseLongTextValidation(additionalValidation)) ||
                 [],
-            resizableInput: resizable || false,
+            resizableInput: !!resizable,
             ...(pillItems ? { pills: true, pillItems } : { pills: false }),
             ...(pillItems && { pillPosition: chipPosition || "top" }),
         };

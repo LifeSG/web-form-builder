@@ -18,7 +18,6 @@ export namespace LongTextSchemaGenerator {
 
         const resizableAreaInput = element.resizableInput;
 
-        // If pills is true, there must be at least 2 pill items
         const pillItems = element.pillItems?.map((item) => item.content);
 
         const longTextSchema = {
