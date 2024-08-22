@@ -20,13 +20,36 @@ describe("NumericSchemaGenerator", () => {
         jest.resetAllMocks();
     });
 
+    it("should generate the base schema with placeholder if placeholder is added", () => {
+        const placeholder = "This is a placeholder";
+
+        const mockElement: INumericField = {
+            label: LABEL,
+            id: ELEMENT_ID,
+            internalId: "numeric-field",
+            type: EElementType.NUMERIC,
+            required: false,
+            columns: { desktop: 12, tablet: 8, mobile: 4 },
+            validation: [],
+            placeholder,
+        };
+
+        const generatedSchema =
+            NumericSchemaGenerator.elementToSchema(mockElement);
+
+        expect(generatedSchema[ELEMENT_ID]).toHaveProperty(
+            "placeholder",
+            placeholder
+        );
+    });
+
     it("should generate the base schema WITH only additional validation if additional validation is added but required is false", () => {
         const validationRule = "5";
         const validationErrorMessage = "The max value for this field is 5";
 
-        const MOCK_ELEMENT: INumericField = {
-            label,
-            id: elementId,
+        const mockElement: INumericField = {
+            label: LABEL,
+            id: ELEMENT_ID,
             internalId: "numeric-field",
             type: EElementType.NUMERIC,
             required: false,
@@ -41,12 +64,12 @@ describe("NumericSchemaGenerator", () => {
         };
 
         const generatedSchema =
-            NumericSchemaGenerator.elementToSchema(MOCK_ELEMENT);
+            NumericSchemaGenerator.elementToSchema(mockElement);
 
         const expectedSchema = generateMockElementSchema({
-            id: elementId,
+            id: ELEMENT_ID,
             label: {
-                mainLabel: label,
+                mainLabel: LABEL,
             },
             uiType: EElementType.NUMERIC,
             validation: [
@@ -68,13 +91,13 @@ describe("NumericSchemaGenerator", () => {
         const validationWholeNumbersErrorMessage =
             "This field only accepts whole numbers";
 
-        const MOCK_ELEMENT: INumericField = {
-            label,
-            id: elementId,
+        const mockElement: INumericField = {
+            label: LABEL,
+            id: ELEMENT_ID,
             internalId: "numeric-field",
             type: EElementType.NUMERIC,
             required: true,
-            requiredErrorMsg,
+            requiredErrorMsg: REQUIRED_ERROR_MESSAGE,
             columns: { desktop: 12, tablet: 8, mobile: 4 },
             validation: [
                 {
@@ -95,18 +118,18 @@ describe("NumericSchemaGenerator", () => {
         };
 
         const generatedSchema =
-            NumericSchemaGenerator.elementToSchema(MOCK_ELEMENT);
+            NumericSchemaGenerator.elementToSchema(mockElement);
 
         const expectedSchema = generateMockElementSchema({
-            id: elementId,
+            id: ELEMENT_ID,
             label: {
-                mainLabel: label,
+                mainLabel: LABEL,
             },
             uiType: EElementType.NUMERIC,
             validation: [
                 {
                     required: true,
-                    errorMessage: requiredErrorMsg,
+                    errorMessage: REQUIRED_ERROR_MESSAGE,
                 },
                 {
                     min: parseInt(validationMinRule),
@@ -131,6 +154,6 @@ describe("NumericSchemaGenerator", () => {
 // HELPERS
 // =============================================================================
 
-const elementId = "mockId123";
-const label = "Numbers";
-const requiredErrorMsg = "This field is required";
+const ELEMENT_ID = "mockId123";
+const LABEL = "Numbers";
+const REQUIRED_ERROR_MESSAGE = "This field is required";

@@ -19,9 +19,6 @@ export const generateBaseSchema = (element: TElement) => {
             tablet: element.columns.tablet,
             mobile: element.columns.mobile,
         },
-        ...(element.placeholder && {
-            placeholder: element.placeholder,
-        }),
         ...(element.required && {
             validation: [
                 {
