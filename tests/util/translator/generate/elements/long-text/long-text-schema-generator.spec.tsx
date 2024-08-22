@@ -44,7 +44,7 @@ describe("LongTextSchemaGenerator", () => {
     });
 
     it("should generate the base schema WITHOUT validation if required is false", () => {
-        const MOCK_ELEMENT: ITextarea = {
+        const mockElement: ITextarea = {
             label: LABEL,
             id: ELEMENT_ID,
             internalId: "long-text-field",
@@ -69,7 +69,7 @@ describe("LongTextSchemaGenerator", () => {
     });
 
     it("should generate the base schema WITH validation if required is true", () => {
-        const MOCK_ELEMENT: ITextarea = {
+        const mockElement: ITextarea = {
             label: LABEL,
             id: ELEMENT_ID,
             internalId: "long-text-field",
