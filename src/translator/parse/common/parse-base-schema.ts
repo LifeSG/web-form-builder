@@ -9,7 +9,8 @@ import { TElementSchema } from "../types";
 export const parseBaseSchema = (
     schema: TElementSchema,
     id: string,
-    prefill: IPrefillConfig
+    prefill: IPrefillConfig,
+    defaultValue?: string
 ) => {
     const { showIf, uiType, validation, label } = schema;
 
@@ -32,6 +33,7 @@ export const parseBaseSchema = (
             ? parseConditionalRenderingSchema(showIf)
             : [],
         prefill: parsePrefillSchema(prefill, id) || [],
+        preselectedValue: defaultValue || "",
     };
 
     return baseElement;

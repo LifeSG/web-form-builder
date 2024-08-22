@@ -21,15 +21,37 @@ describe("TextSchemaParser", () => {
         jest.resetAllMocks();
     });
 
+    it("should parse the placeholder correctly if present", () => {
+        const placeholder = "This is a placeholder";
+
+        const mockSchema = generateMockElementSchema({
+            id: ELEMENT_ID,
+            label: {
+                mainLabel: MAIN_LABEL,
+                subLabel: SUB_LABEL,
+            },
+            uiType: EElementType.TEXT,
+            placeholder,
+        })[ELEMENT_ID] as ITextFieldSchema;
+
+        const parsedSchema = TextSchemaParser.schemaToElement(
+            mockSchema,
+            ELEMENT_ID,
+            {}
+        );
+
+        expect(parsedSchema).toHaveProperty("placeholder", placeholder);
+    });
+
     it("should parse the matches validation type correctly if present", () => {
         const matches = "/^(hello)/";
         const matchesErrorMessage = "Matches error message";
 
         const mockSchema = generateMockElementSchema({
-            id: elementId,
+            id: ELEMENT_ID,
             label: {
-                mainLabel,
-                subLabel,
+                mainLabel: MAIN_LABEL,
+                subLabel: SUB_LABEL,
             },
             uiType: EElementType.TEXT,
             validation: [
@@ -38,11 +60,11 @@ describe("TextSchemaParser", () => {
                     errorMessage: matchesErrorMessage,
                 },
             ],
-        })[elementId] as ITextFieldSchema;
+        })[ELEMENT_ID] as ITextFieldSchema;
 
         const parsedSchema = TextSchemaParser.schemaToElement(
             mockSchema,
-            elementId,
+            ELEMENT_ID,
             {}
         );
 
@@ -64,10 +86,10 @@ describe("TextSchemaParser", () => {
         const minErrorMessage = "Min error message";
 
         const mockSchema = generateMockElementSchema({
-            id: elementId,
+            id: ELEMENT_ID,
             label: {
-                mainLabel,
-                subLabel,
+                mainLabel: MAIN_LABEL,
+                subLabel: SUB_LABEL,
             },
             uiType: EElementType.TEXT,
             validation: [
@@ -76,11 +98,11 @@ describe("TextSchemaParser", () => {
                     errorMessage: minErrorMessage,
                 },
             ],
-        })[elementId] as ITextFieldSchema;
+        })[ELEMENT_ID] as ITextFieldSchema;
 
         const parsedSchema = TextSchemaParser.schemaToElement(
             mockSchema,
-            elementId,
+            ELEMENT_ID,
             {}
         );
 
@@ -102,10 +124,10 @@ describe("TextSchemaParser", () => {
         const maxErrorMessage = "Max error message";
 
         const mockSchema = generateMockElementSchema({
-            id: elementId,
+            id: ELEMENT_ID,
             label: {
-                mainLabel,
-                subLabel,
+                mainLabel: MAIN_LABEL,
+                subLabel: SUB_LABEL,
             },
             uiType: EElementType.TEXT,
             validation: [
@@ -114,11 +136,11 @@ describe("TextSchemaParser", () => {
                     errorMessage: maxErrorMessage,
                 },
             ],
-        })[elementId] as ITextFieldSchema;
+        })[ELEMENT_ID] as ITextFieldSchema;
 
         const parsedSchema = TextSchemaParser.schemaToElement(
             mockSchema,
-            elementId,
+            ELEMENT_ID,
             {}
         );
 
@@ -140,6 +162,6 @@ describe("TextSchemaParser", () => {
 // =============================================================================
 // HELPERS
 // =============================================================================
-const elementId = "mock123";
-const mainLabel = "This is a label";
-const subLabel = "This is a sub label";
+const ELEMENT_ID = "mock123";
+const MAIN_LABEL = "This is a label";
+const SUB_LABEL = "This is a sub label";

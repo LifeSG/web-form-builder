@@ -19,26 +19,27 @@ describe("ParseBaseSchema", () => {
 
     it("should parse the base schema and return the base attributes of an element", () => {
         const mockSchema = generateMockElementSchema({
-            id: elementId,
+            id: ELEMENT_ID,
             label: {
-                mainLabel,
-                subLabel,
+                mainLabel: MAIN_LABEL,
+                subLabel: SUB_LABEL,
             },
             uiType: EElementType.TEXT,
-        })[elementId] as TElementSchema;
+        })[ELEMENT_ID] as TElementSchema;
 
-        const parsedSchema = parseBaseSchema(mockSchema, elementId, {});
+        const parsedSchema = parseBaseSchema(mockSchema, ELEMENT_ID, {});
 
         const expectedParsedSchema = generateMockElement({
-            id: elementId,
-            label: mainLabel,
-            description: subLabel,
+            id: ELEMENT_ID,
+            label: MAIN_LABEL,
+            description: SUB_LABEL,
             type: EElementType.TEXT,
             required: false,
             requiredErrorMsg: "",
             internalId: parsedSchema.internalId,
             conditionalRendering: [],
             prefill: [],
+            preselectedValue: "",
         })[parsedSchema.internalId];
 
         expect(parsedSchema).toEqual(expectedParsedSchema);
@@ -46,10 +47,10 @@ describe("ParseBaseSchema", () => {
 
     it("should parse the required validation correctly if it is present", () => {
         const mockSchema = generateMockElementSchema({
-            id: elementId,
+            id: ELEMENT_ID,
             label: {
-                mainLabel,
-                subLabel,
+                mainLabel: MAIN_LABEL,
+                subLabel: SUB_LABEL,
             },
             uiType: EElementType.TEXT,
             validation: [
@@ -58,9 +59,9 @@ describe("ParseBaseSchema", () => {
                     errorMessage: "This is a required field",
                 },
             ],
-        })[elementId] as TElementSchema;
+        })[ELEMENT_ID] as TElementSchema;
 
-        const parsedSchema = parseBaseSchema(mockSchema, elementId, {});
+        const parsedSchema = parseBaseSchema(mockSchema, ELEMENT_ID, {});
 
         expect(parsedSchema).toHaveProperty("required", true);
         expect(parsedSchema).toHaveProperty(
@@ -71,28 +72,28 @@ describe("ParseBaseSchema", () => {
 
     it("should parse the conditional rendering schema correctly if it is present", () => {
         const mockSchema = generateMockElementSchema({
-            id: elementId,
+            id: ELEMENT_ID,
             label: {
-                mainLabel,
-                subLabel,
+                mainLabel: MAIN_LABEL,
+                subLabel: SUB_LABEL,
             },
             uiType: EElementType.TEXT,
             showIf: [
                 {
-                    [elementId]: [
+                    [ELEMENT_ID]: [
                         {
                             equals: "test",
                         },
                     ],
                 },
             ],
-        })[elementId] as TElementSchema;
+        })[ELEMENT_ID] as TElementSchema;
 
-        const parsedSchema = parseBaseSchema(mockSchema, elementId, {});
+        const parsedSchema = parseBaseSchema(mockSchema, ELEMENT_ID, {});
 
         expect(parsedSchema).toHaveProperty("conditionalRendering", [
             {
-                fieldKey: elementId,
+                fieldKey: ELEMENT_ID,
                 comparator: "Equals",
                 value: "test",
                 internalId: "",
@@ -108,16 +109,16 @@ describe("ParseBaseSchema", () => {
             },
         ];
         const mockSchema = generateMockElementSchema({
-            id: elementId,
+            id: ELEMENT_ID,
             label: {
-                mainLabel,
-                subLabel,
+                mainLabel: MAIN_LABEL,
+                subLabel: SUB_LABEL,
             },
             uiType: EElementType.TEXT,
-        })[elementId] as TElementSchema;
+        })[ELEMENT_ID] as TElementSchema;
 
-        const parsedSchema = parseBaseSchema(mockSchema, elementId, {
-            [elementId]: prefill,
+        const parsedSchema = parseBaseSchema(mockSchema, ELEMENT_ID, {
+            [ELEMENT_ID]: prefill,
         });
 
         expect(parsedSchema).toHaveProperty("prefill", prefill);
@@ -127,6 +128,6 @@ describe("ParseBaseSchema", () => {
 // =============================================================================
 // HELPERS
 // =============================================================================
-const elementId = "mock123";
-const mainLabel = "This is a label";
-const subLabel = "This is a sub label";
+const ELEMENT_ID = "mock123";
+const MAIN_LABEL = "This is a label";
+const SUB_LABEL = "This is a sub label";

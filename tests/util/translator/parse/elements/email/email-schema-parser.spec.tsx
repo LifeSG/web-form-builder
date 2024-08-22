@@ -21,19 +21,37 @@ describe("EmailSchemaParser", () => {
         jest.resetAllMocks();
     });
 
-    it("should parse the email validation correctly if it is present", () => {
-        const elementId = "mock123";
-        const mainLabel = "This is a label";
-        const subLabel = "This is a sub label";
+    it("should parse the placeholder correctly if present", () => {
+        const placeholder = "This is a placeholder";
 
+        const mockSchema = generateMockElementSchema({
+            id: ELEMENT_ID,
+            label: {
+                mainLabel: MAIN_LABEL,
+                subLabel: SUB_LABEL,
+            },
+            uiType: EElementType.EMAIL,
+            placeholder,
+        })[ELEMENT_ID] as IEmailFieldSchema;
+
+        const parsedSchema = EmailSchemaParser.schemaToElement(
+            mockSchema,
+            ELEMENT_ID,
+            {}
+        );
+
+        expect(parsedSchema).toHaveProperty("placeholder", placeholder);
+    });
+
+    it("should parse the email validation correctly if it is present", () => {
         const regex = "/^[a-zA-Z0-9._%+-]+@(gmail\\.com|hotmail\\.com)$/";
         const errorMessage = "This is an error message";
 
         const mockSchema = generateMockElementSchema({
-            id: elementId,
+            id: ELEMENT_ID,
             label: {
-                mainLabel,
-                subLabel,
+                mainLabel: MAIN_LABEL,
+                subLabel: SUB_LABEL,
             },
             uiType: EElementType.EMAIL,
             validation: [
@@ -42,11 +60,11 @@ describe("EmailSchemaParser", () => {
                     errorMessage,
                 },
             ],
-        })[elementId] as IEmailFieldSchema;
+        })[ELEMENT_ID] as IEmailFieldSchema;
 
         const parsedSchema = EmailSchemaParser.schemaToElement(
             mockSchema,
-            elementId,
+            ELEMENT_ID,
             {}
         );
 
@@ -64,3 +82,10 @@ describe("EmailSchemaParser", () => {
         );
     });
 });
+
+// =============================================================================
+// HELPERS
+// =============================================================================
+const ELEMENT_ID = "mock123";
+const MAIN_LABEL = "This is a label";
+const SUB_LABEL = "This is a sub label";

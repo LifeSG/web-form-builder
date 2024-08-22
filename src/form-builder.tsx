@@ -35,6 +35,7 @@ const Component = forwardRef<IFormBuilderMethods, IProps>(
             updateElementSchema,
             orderedIdentifiers,
             isSubmitting,
+            removeFocusedElement,
             focusedElement,
         } = useBuilder();
 
@@ -46,7 +47,13 @@ const Component = forwardRef<IFormBuilderMethods, IProps>(
                 parseSchema: (schema: ISchemaProps) => {
                     const { newOrderedIdentifiers, newElements } =
                         Translator.parseSchema(schema) || {};
-                    if (!newOrderedIdentifiers || !newElements) return;
+
+                    // If there are no elements in schema, clear the form and remove focused element
+                    if (!newOrderedIdentifiers || !newElements) {
+                        updateElementSchema({}, []);
+                        removeFocusedElement();
+                        return;
+                    }
 
                     const newFocusedElement = Object.values(newElements).find(
                         (element) => element.id === focusedElement?.element?.id

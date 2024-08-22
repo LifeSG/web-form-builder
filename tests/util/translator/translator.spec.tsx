@@ -28,14 +28,10 @@ describe("Translator", () => {
         it.each(Object.values(EElementType))(
             "should generate schema for %s field",
             (elementType) => {
-                const label = "mockLabel";
-                const id = "mockId";
-                const internalId = "mockInternalId";
-
                 const mockElementAttributes: TElement = {
-                    label,
-                    id,
-                    internalId,
+                    label: LABEL,
+                    id: ID,
+                    internalId: INTERNAL_ID,
                     type: elementType,
                     required: false,
                     columns: { desktop: 12, tablet: 8, mobile: 4 },
@@ -47,7 +43,9 @@ describe("Translator", () => {
 
                 const mockElement = generateMockElement(mockElementAttributes);
 
-                const orderedIdentifiers = [{ internalId, position: 0 }];
+                const orderedIdentifiers = [
+                    { internalId: INTERNAL_ID, position: 0 },
+                ];
                 const generatedSchema = Translator.generateSchema(
                     mockElement,
                     orderedIdentifiers
@@ -56,7 +54,7 @@ describe("Translator", () => {
                 const generatedElement =
                     generatedSchema.schema.sections.section.children.grid[
                         "children"
-                    ][id];
+                    ][ID];
 
                 expect(generatedElement).toHaveProperty("uiType", elementType);
             }
@@ -65,11 +63,11 @@ describe("Translator", () => {
         it("should generate schema for the email field with myinfo prefill", () => {
             const mockElementAttributes: IEmailField = {
                 type: EElementType.EMAIL,
-                label,
-                id,
-                internalId,
+                label: LABEL,
+                id: ID,
+                internalId: INTERNAL_ID,
                 required: true,
-                requiredErrorMsg,
+                requiredErrorMsg: REQUIRED_ERROR_MESSAGE,
                 columns: { desktop: 12, tablet: 8, mobile: 4 },
                 validation: [],
                 prefill: [
@@ -86,7 +84,7 @@ describe("Translator", () => {
 
             const mockSchema = generateMockSchema({
                 prefill: {
-                    mock123: [
+                    [ID]: [
                         {
                             prefillMode: "Myinfo",
                             path: "testpath",
@@ -94,20 +92,22 @@ describe("Translator", () => {
                     ],
                 },
                 children: generateMockElementSchema({
-                    id,
+                    id: ID,
                     label: {
-                        mainLabel: label,
+                        mainLabel: LABEL,
                     },
                     uiType: EElementType.EMAIL,
                     validation: [
                         {
                             required: true,
-                            errorMessage: "Email address is required",
+                            errorMessage: REQUIRED_ERROR_MESSAGE,
                         },
                     ],
                 }),
             });
-            const orderedIdentifiers = [{ internalId, position: 0 }];
+            const orderedIdentifiers = [
+                { internalId: INTERNAL_ID, position: 0 },
+            ];
             const generatedSchema = Translator.generateSchema(
                 mockElement,
                 orderedIdentifiers
@@ -117,11 +117,11 @@ describe("Translator", () => {
         it("should generate schema with previous source prefill", () => {
             const mockElementAttributes: IEmailField = {
                 type: EElementType.EMAIL,
-                label,
-                id,
-                internalId,
+                label: LABEL,
+                id: ID,
+                internalId: INTERNAL_ID,
                 required: true,
-                requiredErrorMsg,
+                requiredErrorMsg: REQUIRED_ERROR_MESSAGE,
                 columns: { desktop: 12, tablet: 8, mobile: 4 },
                 validation: [],
                 prefill: [
@@ -139,7 +139,7 @@ describe("Translator", () => {
 
             const mockSchema = generateMockSchema({
                 prefill: {
-                    mock123: [
+                    [ID]: [
                         {
                             prefillMode: "Previous source",
                             actionId: "testaction",
@@ -148,20 +148,22 @@ describe("Translator", () => {
                     ],
                 },
                 children: generateMockElementSchema({
-                    id,
+                    id: ID,
                     label: {
-                        mainLabel: label,
+                        mainLabel: LABEL,
                     },
                     uiType: EElementType.EMAIL,
                     validation: [
                         {
                             required: true,
-                            errorMessage: requiredErrorMsg,
+                            errorMessage: REQUIRED_ERROR_MESSAGE,
                         },
                     ],
                 }),
             });
-            const orderedIdentifiers = [{ internalId, position: 0 }];
+            const orderedIdentifiers = [
+                { internalId: INTERNAL_ID, position: 0 },
+            ];
 
             const generatedSchema = Translator.generateSchema(
                 mockElement,
@@ -174,11 +176,11 @@ describe("Translator", () => {
             const defaultValue = "testValue";
             const mockElementAttributes: IEmailField = {
                 type: EElementType.EMAIL,
-                label,
-                id,
-                internalId,
+                label: LABEL,
+                id: ID,
+                internalId: INTERNAL_ID,
                 required: true,
-                requiredErrorMsg,
+                requiredErrorMsg: REQUIRED_ERROR_MESSAGE,
                 columns: { desktop: 12, tablet: 8, mobile: 4 },
                 validation: [],
                 preselectedValue: defaultValue,
@@ -190,23 +192,25 @@ describe("Translator", () => {
 
             const mockSchema = generateMockSchema({
                 defaultValues: {
-                    [id]: defaultValue,
+                    [ID]: defaultValue,
                 },
                 children: generateMockElementSchema({
-                    id,
+                    id: ID,
                     label: {
-                        mainLabel: label,
+                        mainLabel: LABEL,
                     },
                     uiType: EElementType.EMAIL,
                     validation: [
                         {
                             required: true,
-                            errorMessage: requiredErrorMsg,
+                            errorMessage: REQUIRED_ERROR_MESSAGE,
                         },
                     ],
                 }),
             });
-            const orderedIdentifiers = [{ internalId, position: 0 }];
+            const orderedIdentifiers = [
+                { internalId: INTERNAL_ID, position: 0 },
+            ];
 
             const generatedSchema = Translator.generateSchema(
                 mockElement,
@@ -220,18 +224,24 @@ describe("Translator", () => {
         it.each(Object.values(EElementType))(
             "should parse schema for %s field",
             (elementType) => {
-                const label = "mockLabel";
-                const id = "mockId";
-
                 const mockSchema = generateMockSchema({
                     children: generateMockElementSchema({
-                        id,
+                        id: ID,
                         label: {
-                            mainLabel: label,
+                            mainLabel: LABEL,
                         },
                         uiType: elementType,
                         ...(elementType === EElementType.DROPDOWN && {
-                            dropdownItems: [],
+                            dropdownItems: [
+                                {
+                                    label: "test",
+                                    value: "test",
+                                },
+                                {
+                                    label: "test",
+                                    value: "test",
+                                },
+                            ],
                         }),
                     }),
                 });
@@ -253,9 +263,9 @@ describe("Translator", () => {
         it("should remove the conditional rendering rule if the element with the corresponding field key does not exist", () => {
             const mockSchema = generateMockSchema({
                 children: generateMockElementSchema({
-                    id,
+                    id: ID,
                     label: {
-                        mainLabel: label,
+                        mainLabel: LABEL,
                     },
                     uiType: EElementType.TEXT,
                     showIf: [
@@ -282,13 +292,38 @@ describe("Translator", () => {
             );
         });
     });
+
+    it("should parse schema with defaultValues correctly", () => {
+        const defaultValue = "testDefaultValue";
+        const mockSchema = generateMockSchema({
+            defaultValues: {
+                [ID]: defaultValue,
+            },
+            children: generateMockElementSchema({
+                id: ID,
+                label: {
+                    mainLabel: LABEL,
+                },
+                uiType: EElementType.TEXT,
+            }),
+        });
+
+        const parsedSchema = Translator.parseSchema(mockSchema as ISchemaProps);
+
+        const parsedElementId = Object.keys(parsedSchema.newElements)[0];
+
+        expect(parsedSchema.newElements[parsedElementId]).toHaveProperty(
+            "preselectedValue",
+            defaultValue
+        );
+    });
 });
 
 // =============================================================================
 // HELPERS
 // =============================================================================
 
-const label = "Email address";
-const id = "mock123";
-const requiredErrorMsg = "Email address is required";
-const internalId = "mock123";
+const LABEL = "mockLabel";
+const ID = "mockId";
+const REQUIRED_ERROR_MESSAGE = "Field is required";
+const INTERNAL_ID = "mockInternalId";

@@ -4,9 +4,6 @@ import { generateBaseSchema } from "../../common";
 export namespace DropdownSchemaGenerator {
     export const elementToSchema = (element: IDropdown) => {
         const baseSchema = generateBaseSchema(element);
-        const filteredDropdownItems = element.dropdownItems.filter(
-            (item) => item.label && item.value
-        );
 
         const dropdownSchema = {
             [element.id]: {
@@ -14,8 +11,8 @@ export namespace DropdownSchemaGenerator {
                 ...(element.placeholder && {
                     placeholder: element.placeholder,
                 }),
-                ...(filteredDropdownItems && {
-                    options: filteredDropdownItems,
+                ...(element.dropdownItems && {
+                    options: element.dropdownItems,
                 }),
             },
         };

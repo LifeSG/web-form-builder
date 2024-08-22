@@ -1,4 +1,5 @@
 import { ISelectSchema } from "@lifesg/web-frontend-engine/components/fields";
+import isEmpty from "lodash/isEmpty";
 import { TElement } from "src/context-providers";
 import { IPrefillConfig } from "src/translator";
 import { parseBaseSchema } from "../../common";
@@ -7,10 +8,15 @@ export namespace DropdownSchemaParser {
     export const schemaToElement = (
         schema: ISelectSchema,
         id: string,
-        prefill: IPrefillConfig
+        prefill: IPrefillConfig,
+        defaultValue?: string
     ) => {
+        const baseElement = parseBaseSchema(schema, id, prefill, defaultValue);
         const { options, placeholder } = schema;
-        const baseElement = parseBaseSchema(schema, id, prefill);
+
+        if (isEmpty(options) || options.length < 2) {
+            throw new Error("Dropdown schema must have at least 2 options");
+        }
 
         const parsedElement: TElement = {
             ...baseElement,
