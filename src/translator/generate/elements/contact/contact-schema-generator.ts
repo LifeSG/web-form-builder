@@ -8,6 +8,9 @@ export namespace ContactSchemaGenerator {
         const contactSchema = {
             [element.id]: {
                 ...baseSchema,
+                ...(element.placeholder && {
+                    placeholder: element.placeholder,
+                }),
                 // Add additional validation if it exists
                 // ...(additionalValidationSchema && {
                 //     validation: [

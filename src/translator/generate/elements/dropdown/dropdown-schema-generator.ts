@@ -11,6 +11,9 @@ export namespace DropdownSchemaGenerator {
         const dropdownSchema = {
             [element.id]: {
                 ...baseSchema,
+                ...(element.placeholder && {
+                    placeholder: element.placeholder,
+                }),
                 ...(filteredDropdownItems && {
                     options: filteredDropdownItems,
                 }),

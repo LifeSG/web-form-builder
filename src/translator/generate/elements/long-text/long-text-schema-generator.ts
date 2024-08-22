@@ -19,6 +19,9 @@ export namespace LongTextSchemaGenerator {
         const longTextSchema = {
             [element.id]: {
                 ...baseSchema,
+                ...(element.placeholder && {
+                    placeholder: element.placeholder,
+                }),
                 // Add additional validation if it exists
                 ...(additionalValidationSchema && {
                     validation: [

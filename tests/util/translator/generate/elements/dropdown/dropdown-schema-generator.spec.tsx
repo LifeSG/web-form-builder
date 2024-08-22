@@ -16,13 +16,42 @@ describe("DropdownSchemaGenerator", () => {
         jest.resetAllMocks();
     });
 
-    it("should generate the base schema with options if dropdown items are added", () => {
-        const elementId = "mockId123";
-        const label = "dropdown-field";
+    it("should generate the base schema with placeholder if placeholder is added", () => {
+        const placeholder = "This is a placeholder";
 
-        const MOCK_ELEMENT: IDropdown = {
-            label,
-            id: elementId,
+        const mockElement: IDropdown = {
+            label: LABEL,
+            id: ELEMENT_ID,
+            internalId: "dropdown-field",
+            type: EElementType.DROPDOWN,
+            required: false,
+            columns: { desktop: 12, tablet: 8, mobile: 4 },
+            placeholder,
+            dropdownItems: [
+                {
+                    label: "Option 1",
+                    value: "option1",
+                },
+                {
+                    label: "Option 2",
+                    value: "option2",
+                },
+            ],
+        };
+
+        const generatedSchema =
+            DropdownSchemaGenerator.elementToSchema(mockElement);
+
+        expect(generatedSchema[ELEMENT_ID]).toHaveProperty(
+            "placeholder",
+            placeholder
+        );
+    });
+
+    it("should generate the base schema with options if dropdown items are added", () => {
+        const mockElement: IDropdown = {
+            label: LABEL,
+            id: ELEMENT_ID,
             internalId: "dropdown-field",
             type: EElementType.DROPDOWN,
             required: false,
@@ -40,12 +69,12 @@ describe("DropdownSchemaGenerator", () => {
         };
 
         const generatedSchema =
-            DropdownSchemaGenerator.elementToSchema(MOCK_ELEMENT);
+            DropdownSchemaGenerator.elementToSchema(mockElement);
 
         const expectedSchema = generateMockElementSchema({
-            id: elementId,
+            id: ELEMENT_ID,
             label: {
-                mainLabel: label,
+                mainLabel: LABEL,
             },
             uiType: EElementType.DROPDOWN,
             dropdownItems: [
@@ -63,3 +92,9 @@ describe("DropdownSchemaGenerator", () => {
         expect(generatedSchema).toStrictEqual(expectedSchema);
     });
 });
+
+// =============================================================================
+// HELPERS
+// =============================================================================
+const ELEMENT_ID = "mockId123";
+const LABEL = "dropdown-field";
