@@ -1,7 +1,9 @@
 import { EModalType, TModalProps } from "src/context-providers";
 import { useModal } from "src/context-providers/display/modal-hook";
-import { BulkEditModal, DiscardChangesModal, ResetFieldsModal } from ".";
+import { BulkEditModal } from "./bulk-edit-modal";
+import { DiscardChangesModal } from "./discard-changes-modal";
 import { ScrollableModal } from "./modals.styles";
+import { ResetFieldsModal } from "./reset-fields-modal";
 
 export const Modals = () => {
     // =========================================================================
