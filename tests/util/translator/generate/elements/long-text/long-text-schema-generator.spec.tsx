@@ -20,6 +20,29 @@ describe("LongTextSchemaGenerator", () => {
         jest.resetAllMocks();
     });
 
+    it("should generate the base schema with placeholder if placeholder is added", () => {
+        const placeholder = "This is a placeholder";
+
+        const mockElement: ITextarea = {
+            label: LABEL,
+            id: ELEMENT_ID,
+            internalId: "long-text-field",
+            type: EElementType.TEXTAREA,
+            required: false,
+            columns: { desktop: 12, tablet: 8, mobile: 4 },
+            validation: [],
+            placeholder,
+        };
+
+        const generatedSchema =
+            LongTextSchemaGenerator.elementToSchema(mockElement);
+
+        expect(generatedSchema[ELEMENT_ID]).toHaveProperty(
+            "placeholder",
+            placeholder
+        );
+    });
+
     it("should generate the base schema WITHOUT validation if required is false", () => {
         const MOCK_ELEMENT: ITextarea = {
             label: LABEL,
@@ -32,7 +55,7 @@ describe("LongTextSchemaGenerator", () => {
         };
 
         const generatedSchema =
-            LongTextSchemaGenerator.elementToSchema(MOCK_ELEMENT);
+            LongTextSchemaGenerator.elementToSchema(mockElement);
 
         const expectedSchema = generateMockElementSchema({
             id: ELEMENT_ID,
@@ -58,7 +81,7 @@ describe("LongTextSchemaGenerator", () => {
         };
 
         const generatedSchema =
-            LongTextSchemaGenerator.elementToSchema(MOCK_ELEMENT);
+            LongTextSchemaGenerator.elementToSchema(mockElement);
 
         const expectedSchema = generateMockElementSchema({
             id: ELEMENT_ID,
@@ -82,7 +105,7 @@ describe("LongTextSchemaGenerator", () => {
         const validationErrorMessage =
             "This field must be at most 5 characters long";
 
-        const MOCK_ELEMENT: ITextarea = {
+        const mockElement: ITextarea = {
             label: LABEL,
             id: ELEMENT_ID,
             internalId: "long-text-field",
@@ -99,7 +122,7 @@ describe("LongTextSchemaGenerator", () => {
         };
 
         const generatedSchema =
-            LongTextSchemaGenerator.elementToSchema(MOCK_ELEMENT);
+            LongTextSchemaGenerator.elementToSchema(mockElement);
 
         const expectedSchema = generateMockElementSchema({
             id: ELEMENT_ID,
@@ -123,7 +146,7 @@ describe("LongTextSchemaGenerator", () => {
         const validationMaxErrorMessage =
             "This field must be at most 10 characters long";
 
-        const MOCK_ELEMENT: ITextarea = {
+        const mockElement: ITextarea = {
             label: LABEL,
             id: ELEMENT_ID,
             internalId: "text-field",
@@ -141,7 +164,7 @@ describe("LongTextSchemaGenerator", () => {
         };
 
         const generatedSchema =
-            LongTextSchemaGenerator.elementToSchema(MOCK_ELEMENT);
+            LongTextSchemaGenerator.elementToSchema(mockElement);
 
         const expectedSchema = generateMockElementSchema({
             id: ELEMENT_ID,
@@ -166,7 +189,7 @@ describe("LongTextSchemaGenerator", () => {
     });
 
     it("should generate the schema with conditional rendering if conditional rendering is added", () => {
-        const MOCK_ELEMENT: ITextarea = {
+        const mockElement: ITextarea = {
             label: LABEL,
             id: ELEMENT_ID,
             internalId: "long-text-field",
@@ -185,7 +208,7 @@ describe("LongTextSchemaGenerator", () => {
         };
 
         const generatedSchema =
-            LongTextSchemaGenerator.elementToSchema(MOCK_ELEMENT);
+            LongTextSchemaGenerator.elementToSchema(mockElement);
 
         const expectedSchema = generateMockElementSchema({
             id: ELEMENT_ID,
