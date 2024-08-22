@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import { EElementType, TElement, useBuilder } from "src/context-providers";
-import { TFormFieldValues } from "src/schemas";
 import { ElementObjectGenerator } from "src/util";
+import { TFormFieldValues } from "src/yup-schemas";
 import {
     AccordionItem,
     AccordionWrapper,

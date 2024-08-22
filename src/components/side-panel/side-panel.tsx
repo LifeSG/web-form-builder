@@ -9,7 +9,7 @@ import {
     TElement,
     useDisplay,
 } from "src/context-providers";
-import { SchemaHelper } from "src/schemas";
+import { YupSchemaBuilder } from "src/yup-schemas";
 import { EBuilderMode, useBuilder } from "../../context-providers";
 import { ElementEditor } from "../element-editor";
 import { AddElementsPanel } from "./add-elements-panel";
@@ -36,7 +36,7 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
         toggleSubmitting,
     } = useBuilder();
     const { showToast } = useDisplay();
-    const schema = SchemaHelper.buildSchema(
+    const schema = YupSchemaBuilder.buildYupSchema(
         selectedElementType || EElementType.EMAIL
     );
     const methods = useForm({

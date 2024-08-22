@@ -12,7 +12,7 @@ import {
     useBuilder,
 } from "src/context-providers";
 import { useModal } from "src/context-providers/display/modal-hook";
-import { TFormFieldValues } from "src/schemas";
+import { TFormFieldValues } from "src/yup-schemas";
 
 export const TypeField = () => {
     // =========================================================================
