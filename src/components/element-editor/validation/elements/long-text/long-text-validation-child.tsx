@@ -1,11 +1,11 @@
 import { Alert } from "@lifesg/react-design-system/alert";
 import { ChildEntry } from "src/components/common";
-import { FieldWrapper } from "../..";
 import {
     ValidationErrorMessage,
     ValidationRule,
     ValidationType,
 } from "../../common";
+import { FieldWrapper } from "../../validation.styles";
 
 interface IProps {
     onDelete: () => void;
