@@ -1,8 +1,11 @@
 import { ErrorDisplay } from "@lifesg/react-design-system/error-display";
 import { IResetFieldsModalProps } from "src/context-providers";
-import { ModalDisplayTitle } from "./discard-changes-modal.styles";
 import { GenericModal } from "./generic-modal";
-import { ActionButton, ButtonWrapper } from "./modals.styles";
+import {
+    ActionButton,
+    ButtonWrapper,
+    ModalDisplayTitle,
+} from "./modals.styles";
 
 interface IProps {
     modal: IResetFieldsModalProps;

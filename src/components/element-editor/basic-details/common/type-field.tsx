@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
-  Controller,
-  ControllerRenderProps,
-  useFormContext,
+    Controller,
+    ControllerRenderProps,
+    useFormContext,
 } from "react-hook-form";
 import { IconDropdown } from "src/components/common/icon-dropdown";
 import {
-  EElementType,
-  EModalType,
-  IResetFieldsModalProps,
-  useBuilder,
+    EElementType,
+    EModalType,
+    IResetFieldsModalProps,
+    useBuilder,
 } from "src/context-providers";
 import { useModal } from "src/context-providers/display/modal-hook";
 import { TFormFieldValues } from "src/yup-schemas";
@@ -40,6 +40,7 @@ export const TypeField = () => {
         if (value === field.value) {
             return;
         }
+        setLocalType(value);
         const resetFieldsModal: IResetFieldsModalProps = {
             type: EModalType.ResetFields,
             onClickActionButton: () => {
@@ -49,19 +50,12 @@ export const TypeField = () => {
             },
             onClose: () => {
                 hideModal(EModalType.ResetFields);
-                setLocalType(null);
+                setLocalType(selectedElementType);
             },
         };
 
         showModal(resetFieldsModal);
     };
-
-    // This useEffect is used to trigger a re-render of the IconDropdown component when the user decides not to reset the fields, such that the dropdown is updated with the correct type
-    useEffect(() => {
-        if (localType === null) {
-            setLocalType(selectedElementType);
-        }
-    }, [localType]);
 
     // =========================================================================
     // RENDER FUNCTIONS

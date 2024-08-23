@@ -1,9 +1,16 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
 import { BasicDetails } from "src/components/element-editor/basic-details";
 import { EElementType, TElement } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data";
 import { TestHelper } from "src/util/test-helper";
+
+jest.mock("src/context-providers/display/modal-hook", () => ({
+    useModal: () => ({
+        hideModal: mockHideModal,
+        showModal: mockShowModal,
+    }),
+}));
 
 describe("BasicDetails", () => {
     beforeEach(() => {
@@ -77,7 +84,7 @@ describe("BasicDetails", () => {
         });
 
         it("should replace element name, mandatory field's error message, and ID with values that correspond to the new element type", async () => {
-            const { rerender } = renderComponent({
+            renderComponent({
                 builderContext: {
                     focusedElement: {
                         element: MOCK_FOCUSED_ELEMENT(EElementType.EMAIL),
@@ -90,33 +97,24 @@ describe("BasicDetails", () => {
                 },
             });
 
-            // Re-render with a different element type to bypass modal confirmation
-            rerender(
-                TestHelper.withProviders(
-                    {
-                        builderContext: {
-                            focusedElement: {
-                                element: MOCK_FOCUSED_ELEMENT(
-                                    EElementType.EMAIL
-                                ),
-                                isDirty: false,
-                            },
-                            selectedElementType: EElementType.EMAIL,
-                        },
+            // trigger reset confirmation modal
+            const typeField = screen.getByTestId("type-field");
+            fireEvent.click(typeField);
 
-                        formContext: {
-                            defaultValues: MOCK_FOCUSED_ELEMENT(
-                                EElementType.EMAIL
-                            ),
-                            currentValues: {
-                                type: EElementType.TEXT,
-                            },
-                        },
-                    },
-                    <BasicDetails />
-                )
-            );
+            const shortTextOption = await screen.findByText("Short text");
+            expect(shortTextOption).toBeInTheDocument();
+            fireEvent.click(shortTextOption);
 
+            expect(mockShowModal).toHaveBeenCalled();
+
+            // Trigger the reset action
+            act(() => {
+                mockShowModal.mock.lastCall[0].onClickActionButton();
+            });
+
+            expect(mockHideModal).toHaveBeenCalled();
+
+            // Check if the form fields have been replaced with the new element type's default values
             const elementName = screen.getByTestId("label-field");
             const errorMessageField = screen.getByTestId(
                 "required-error-message-field"
@@ -129,7 +127,7 @@ describe("BasicDetails", () => {
         });
 
         it("should clear all other field values that do not have default values", async () => {
-            const { rerender } = renderComponent({
+            renderComponent({
                 builderContext: {
                     focusedElement: {
                         element: MOCK_FOCUSED_ELEMENT(EElementType.EMAIL),
@@ -162,32 +160,22 @@ describe("BasicDetails", () => {
             expect(placeholderField).toHaveValue("placeholder");
             expect(preselectedValueField).toHaveValue("preselectedValue");
 
-            // Re-render with a different element type to bypass modal confirmation
-            rerender(
-                TestHelper.withProviders(
-                    {
-                        builderContext: {
-                            focusedElement: {
-                                element: MOCK_FOCUSED_ELEMENT(
-                                    EElementType.EMAIL
-                                ),
-                                isDirty: false,
-                            },
-                            selectedElementType: EElementType.EMAIL,
-                        },
+            // trigger reset confirmation modal
+            const typeField = screen.getByTestId("type-field");
+            fireEvent.click(typeField);
 
-                        formContext: {
-                            defaultValues: MOCK_FOCUSED_ELEMENT(
-                                EElementType.EMAIL
-                            ),
-                            currentValues: {
-                                type: EElementType.TEXT,
-                            },
-                        },
-                    },
-                    <BasicDetails />
-                )
-            );
+            const shortTextOption = await screen.findByText("Short text");
+            expect(shortTextOption).toBeInTheDocument();
+            fireEvent.click(shortTextOption);
+
+            expect(mockShowModal).toHaveBeenCalled();
+
+            // Trigger the reset action
+            act(() => {
+                mockShowModal.mock.lastCall[0].onClickActionButton();
+            });
+
+            expect(mockHideModal).toHaveBeenCalled();
 
             // Wait for the form to reset
             const updatedDescriptionField =
@@ -230,3 +218,6 @@ const MOCK_FOCUSED_ELEMENT = (elementType: EElementType) => {
     };
     return element;
 };
+
+const mockHideModal = jest.fn();
+const mockShowModal = jest.fn();
