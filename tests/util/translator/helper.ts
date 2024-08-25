@@ -41,6 +41,8 @@ interface MockElementSchemaProps {
     validation?: IYupValidationRule[];
     showIf?: TRenderRules[];
     dropdownItems?: IDropdownItemAttributes[];
+    resizable?: boolean;
+    chipTexts?: string[];
 }
 
 interface MockPrefillSchema {
@@ -106,6 +108,8 @@ export const generateMockElementSchema = ({
     validation,
     showIf,
     dropdownItems,
+    resizable,
+    chipTexts,
 }: MockElementSchemaProps): MockChildrenSchema => {
     return {
         [id]: {
@@ -120,6 +124,8 @@ export const generateMockElementSchema = ({
             ...(placeholder && { placeholder }),
             ...(validation && { validation }),
             ...(showIf && { showIf }),
+            ...(resizable && { resizable }),
+            ...(chipTexts && { chipTexts }),
         },
     };
 };

@@ -16,6 +16,10 @@ export namespace LongTextSchemaGenerator {
         const additionalValidationSchema =
             generateLongTextAdditionalValidationSchema(element.validation);
 
+        const resizableAreaInput = element.resizableInput;
+
+        const pillItems = element.pillItems?.map((item) => item.content);
+
         const longTextSchema = {
             [element.id]: {
                 ...baseSchema,
@@ -30,6 +34,12 @@ export namespace LongTextSchemaGenerator {
                         additionalValidationSchema,
                     ],
                 }),
+                ...(resizableAreaInput && { resizable: true }),
+                ...(element.pills && { chipTexts: pillItems }),
+                ...(element.pills &&
+                    element.pillPosition === "bottom" && {
+                        chipPosition: element.pillPosition,
+                    }),
             },
         };
 

@@ -232,6 +232,83 @@ describe("LongTextSchemaGenerator", () => {
 
         expect(generatedSchema).toStrictEqual(expectedSchema);
     });
+
+    it("should generate the schema with resizable input if resizable input is true", () => {
+        const mockElement: ITextarea = {
+            label: LABEL,
+            id: ELEMENT_ID,
+            internalId: "long-text-field",
+            type: EElementType.TEXTAREA,
+            required: false,
+            columns: { desktop: 12, tablet: 8, mobile: 4 },
+            validation: [],
+            resizableInput: true,
+        };
+
+        const generatedSchema =
+            LongTextSchemaGenerator.elementToSchema(mockElement);
+
+        expect(generatedSchema[ELEMENT_ID]).toHaveProperty("resizable", true);
+    });
+
+    it("should generate the schema with chipTexts if pills is true and there are at least 2 pilItems", () => {
+        const mockElement: ITextarea = {
+            label: LABEL,
+            id: ELEMENT_ID,
+            internalId: "long-text-field",
+            type: EElementType.TEXTAREA,
+            required: false,
+            columns: { desktop: 12, tablet: 8, mobile: 4 },
+            validation: [],
+            pills: true,
+            pillItems: [
+                {
+                    content: "Pill 1",
+                },
+                {
+                    content: "Pill 2",
+                },
+            ],
+        };
+
+        const generatedSchema =
+            LongTextSchemaGenerator.elementToSchema(mockElement);
+
+        expect(generatedSchema[ELEMENT_ID]).toHaveProperty("chipTexts", [
+            "Pill 1",
+            "Pill 2",
+        ]);
+    });
+
+    it("should generate the schema with chipPosition if pills is true and pillPosition is bottom", () => {
+        const mockElement: ITextarea = {
+            label: LABEL,
+            id: ELEMENT_ID,
+            internalId: "long-text-field",
+            type: EElementType.TEXTAREA,
+            required: false,
+            columns: { desktop: 12, tablet: 8, mobile: 4 },
+            validation: [],
+            pills: true,
+            pillItems: [
+                {
+                    content: "Pill 1",
+                },
+                {
+                    content: "Pill 2",
+                },
+            ],
+            pillPosition: "bottom",
+        };
+
+        const generatedSchema =
+            LongTextSchemaGenerator.elementToSchema(mockElement);
+
+        expect(generatedSchema[ELEMENT_ID]).toHaveProperty(
+            "chipPosition",
+            "bottom"
+        );
+    });
 });
 
 // =============================================================================
