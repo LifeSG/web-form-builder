@@ -1,10 +1,17 @@
+import { useState } from "react";
 import {
     Controller,
     ControllerRenderProps,
     useFormContext,
 } from "react-hook-form";
 import { IconDropdown } from "src/components/common/icon-dropdown";
-import { EElementType, useBuilder } from "src/context-providers";
+import {
+    EElementType,
+    EModalType,
+    IResetFieldsModalProps,
+    useBuilder,
+} from "src/context-providers";
+import { useModal } from "src/context-providers/display/modal-hook";
 import { TFormFieldValues } from "src/yup-schemas";
 
 export const TypeField = () => {
@@ -12,11 +19,15 @@ export const TypeField = () => {
     // CONST, STATE, REF
     // =========================================================================
 
-    const { selectElementType } = useBuilder();
+    const { selectElementType, selectedElementType } = useBuilder();
+    const { showModal, hideModal } = useModal();
     const {
         control,
         formState: { errors },
     } = useFormContext<TFormFieldValues>();
+
+    const [localType, setLocalType] =
+        useState<EElementType>(selectedElementType);
 
     // =========================================================================
     // HELPER FUNCTIONS
@@ -29,8 +40,21 @@ export const TypeField = () => {
         if (value === field.value) {
             return;
         }
-        selectElementType(value);
-        field.onChange(value);
+        setLocalType(value);
+        const resetFieldsModal: IResetFieldsModalProps = {
+            type: EModalType.ResetFields,
+            onClickActionButton: () => {
+                hideModal(EModalType.ResetFields);
+                selectElementType(value);
+                field.onChange(value);
+            },
+            onClose: () => {
+                hideModal(EModalType.ResetFields);
+                setLocalType(selectedElementType);
+            },
+        };
+
+        showModal(resetFieldsModal);
     };
 
     // =========================================================================
@@ -44,7 +68,7 @@ export const TypeField = () => {
             render={({ field }) => (
                 <IconDropdown
                     onBlur={field.onBlur}
-                    type={field.value}
+                    type={localType}
                     onChange={(value: EElementType) => {
                         handleChange(value, field);
                     }}

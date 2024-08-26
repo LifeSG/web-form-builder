@@ -1,6 +1,5 @@
 import { ErrorDisplay } from "@lifesg/react-design-system/error-display";
-import { IDiscardChangesModalProps } from "src/context-providers";
-import { useModal } from "../../../context-providers/display/modal-hook";
+import { IResetFieldsModalProps } from "src/context-providers";
 import { GenericModal } from "./generic-modal";
 import {
     ActionButton,
@@ -9,23 +8,14 @@ import {
 } from "./modals.styles";
 
 interface IProps {
-    modal: IDiscardChangesModalProps;
+    modal: IResetFieldsModalProps;
 }
 
-export const DiscardChangesModal = ({ modal }: IProps) => {
+export const ResetFieldsModal = ({ modal }: IProps) => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
-    const { hideModal } = useModal();
-    const { type, onClickActionButton } = modal;
-
-    // =============================================================================
-    // HELPER FUNCTION
-    // ============================================================================
-
-    const handleKeepEditing = () => {
-        hideModal(type);
-    };
+    const { onClickActionButton, onClose } = modal;
 
     // =========================================================================
     // RENDER FUNCTIONS
@@ -35,22 +25,25 @@ export const DiscardChangesModal = ({ modal }: IProps) => {
         return (
             <ButtonWrapper>
                 <ActionButton onClick={onClickActionButton}>
-                    Discard changes
+                    Reset all fields
                 </ActionButton>
-                <ActionButton onClick={handleKeepEditing} styleType="light">
-                    Keep editing
+                <ActionButton onClick={onClose} styleType="light">
+                    Return to edit
                 </ActionButton>
             </ButtonWrapper>
         );
     };
 
     return (
-        <GenericModal type={modal?.type}>
+        <GenericModal type={modal?.type} onClose={onClose}>
             <ErrorDisplay
                 type="confirmation"
+                description={
+                    "You've changed the element type. This will reset all fields to match the new element type."
+                }
                 title={
                     <ModalDisplayTitle weight={"semibold"}>
-                        Discard changes?
+                        Reset all fields?
                     </ModalDisplayTitle>
                 }
             />

@@ -1,9 +1,16 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
 import { BasicDetails } from "src/components/element-editor/basic-details";
 import { EElementType, TElement } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data";
 import { TestHelper } from "src/util/test-helper";
+
+jest.mock("src/context-providers/display/modal-hook", () => ({
+    useModal: () => ({
+        hideModal: mockHideModal,
+        showModal: mockShowModal,
+    }),
+}));
 
 describe("BasicDetails", () => {
     beforeEach(() => {
@@ -90,14 +97,24 @@ describe("BasicDetails", () => {
                 },
             });
 
-            // Change element type to TEXT
-            fireEvent.click(screen.getByTestId("type-field"));
+            // trigger reset confirmation modal
+            const typeField = screen.getByTestId("type-field");
+            fireEvent.click(typeField);
 
-            const textOption = await screen.findByText("Short text");
-            expect(textOption).toBeInTheDocument();
+            const shortTextOption = await screen.findByText("Short text");
+            expect(shortTextOption).toBeInTheDocument();
+            fireEvent.click(shortTextOption);
 
-            fireEvent.click(textOption);
+            expect(mockShowModal).toHaveBeenCalled();
 
+            // Trigger the reset action
+            act(() => {
+                mockShowModal.mock.lastCall[0].onClickActionButton();
+            });
+
+            expect(mockHideModal).toHaveBeenCalled();
+
+            // Check if the form fields have been replaced with the new element type's default values
             const elementName = screen.getByTestId("label-field");
             const errorMessageField = screen.getByTestId(
                 "required-error-message-field"
@@ -143,13 +160,22 @@ describe("BasicDetails", () => {
             expect(placeholderField).toHaveValue("placeholder");
             expect(preselectedValueField).toHaveValue("preselectedValue");
 
-            // Change element type to TEXT
-            fireEvent.click(screen.getByTestId("type-field"));
+            // trigger reset confirmation modal
+            const typeField = screen.getByTestId("type-field");
+            fireEvent.click(typeField);
 
-            const textOption = await screen.findByText("Short text");
-            expect(textOption).toBeInTheDocument();
+            const shortTextOption = await screen.findByText("Short text");
+            expect(shortTextOption).toBeInTheDocument();
+            fireEvent.click(shortTextOption);
 
-            fireEvent.click(textOption);
+            expect(mockShowModal).toHaveBeenCalled();
+
+            // Trigger the reset action
+            act(() => {
+                mockShowModal.mock.lastCall[0].onClickActionButton();
+            });
+
+            expect(mockHideModal).toHaveBeenCalled();
 
             // Wait for the form to reset
             const updatedDescriptionField =
@@ -192,3 +218,6 @@ const MOCK_FOCUSED_ELEMENT = (elementType: EElementType) => {
     };
     return element;
 };
+
+const mockHideModal = jest.fn();
+const mockShowModal = jest.fn();
