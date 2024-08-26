@@ -1,4 +1,4 @@
-import { EElementType, IDropdown } from "src/context-providers";
+import { EElementType, IDropdownAttributes } from "src/context-providers";
 import { DropdownSchemaGenerator } from "src/translator/generate";
 import { generateMockElementSchema } from "tests/util/translator/helper";
 
@@ -19,7 +19,7 @@ describe("DropdownSchemaGenerator", () => {
     it("should generate the base schema with placeholder if placeholder is added", () => {
         const placeholder = "This is a placeholder";
 
-        const mockElement: IDropdown = {
+        const mockElement: IDropdownAttributes = {
             label: LABEL,
             id: ELEMENT_ID,
             internalId: "dropdown-field",
@@ -49,7 +49,7 @@ describe("DropdownSchemaGenerator", () => {
     });
 
     it("should generate the base schema with options if dropdown items are added", () => {
-        const mockElement: IDropdown = {
+        const mockElement: IDropdownAttributes = {
             label: LABEL,
             id: ELEMENT_ID,
             internalId: "dropdown-field",

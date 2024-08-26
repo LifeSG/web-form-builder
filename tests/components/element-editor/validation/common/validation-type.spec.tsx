@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
 import { ValidationType } from "src/components/element-editor/validation/common";
-import { IValidation } from "src/context-providers";
+import { EValidationType, IValidation } from "src/context-providers";
 import { TestHelper } from "src/util/test-helper";
 
 describe("ValidationType", () => {
@@ -21,14 +21,14 @@ describe("ValidationType", () => {
     it("should render the validation type field as disabled when there is only 1 option", () => {
         const mockValidationValue: IValidation[] = [
             {
-                validationType: "Option 1",
+                validationType: EValidationType.MAX_LENGTH,
                 validationRule: "mockRule",
                 validationErrorMessage: "mockErrorMessage",
             },
         ];
         renderComponent(
             {
-                options: ["Option 1"],
+                options: [EValidationType.MAX_LENGTH],
                 index: 0,
             },
             {
@@ -40,7 +40,7 @@ describe("ValidationType", () => {
             }
         );
         const getValidationTypeField = screen.getByRole("button", {
-            name: "Option 1",
+            name: EValidationType.MAX_LENGTH,
         });
         expect(getValidationTypeField).toBeInTheDocument();
         expect(getValidationTypeField).toBeDisabled();
@@ -49,7 +49,6 @@ describe("ValidationType", () => {
     it("should render an error message when validation type is left empty", async () => {
         const mockEmptyValidationValue: IValidation[] = [
             {
-                validationType: "",
                 validationRule: "",
                 validationErrorMessage: "",
             },

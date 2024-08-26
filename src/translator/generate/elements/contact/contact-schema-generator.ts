@@ -1,8 +1,8 @@
-import { IContactField } from "src/context-providers";
+import { IContactFieldAttributes } from "src/context-providers";
 import { generateBaseSchema } from "../../common";
 
 export namespace ContactSchemaGenerator {
-    export const elementToSchema = (element: IContactField) => {
+    export const elementToSchema = (element: IContactFieldAttributes) => {
         const baseSchema = generateBaseSchema(element);
         //TODO: Add validation for contact field once it's implemented
         const contactSchema = {

@@ -157,6 +157,11 @@ const MOCK_ELEMENT: TElement = {
     label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
     placeholder: "mockElement",
     requiredErrorMsg: "This is an error message",
+    columns: {
+        desktop: 12,
+        tablet: 8,
+        mobile: 4,
+    },
 };
 
 const MOCK_TYPE: EElementType = EElementType.EMAIL;

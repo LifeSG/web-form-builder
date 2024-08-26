@@ -1,4 +1,4 @@
-import { IEmailField, IValidation } from "src/context-providers";
+import { IEmailFieldAttributes, IValidation } from "src/context-providers";
 import { generateBaseSchema } from "../../common/generate-base-schema";
 
 export namespace EmailSchemaGenerator {
@@ -22,7 +22,7 @@ export namespace EmailSchemaGenerator {
         };
     };
 
-    export const elementToSchema = (element: IEmailField) => {
+    export const elementToSchema = (element: IEmailFieldAttributes) => {
         const baseSchema = generateBaseSchema(element);
         const additionalValidationSchema = generateAdditionalValidationSchema(
             element.validation

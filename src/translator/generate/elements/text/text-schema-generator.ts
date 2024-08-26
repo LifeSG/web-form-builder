@@ -1,6 +1,6 @@
 import {
     EValidationType,
-    ITextField,
+    ITextFieldAttributes,
     IValidation,
 } from "src/context-providers";
 import {
@@ -38,7 +38,7 @@ export namespace TextSchemaGenerator {
         );
         return validationObj;
     };
-    export const elementToSchema = (element: ITextField) => {
+    export const elementToSchema = (element: ITextFieldAttributes) => {
         const baseSchema = generateBaseSchema(element);
         const additionalValidationSchema =
             generateTextAdditionalValidationSchema(element.validation);

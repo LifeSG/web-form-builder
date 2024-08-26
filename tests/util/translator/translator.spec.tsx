@@ -1,6 +1,6 @@
 import {
     EElementType,
-    IEmailField,
+    IEmailFieldAttributes,
     TElement,
     TElementMap,
 } from "src/context-providers";
@@ -61,7 +61,7 @@ describe("Translator", () => {
         );
 
         it("should generate schema for the email field with myinfo prefill", () => {
-            const mockElementAttributes: IEmailField = {
+            const mockElementAttributes: IEmailFieldAttributes = {
                 type: EElementType.EMAIL,
                 label: LABEL,
                 id: ID,
@@ -115,7 +115,7 @@ describe("Translator", () => {
             expect(generatedSchema).toStrictEqual(mockSchema);
         });
         it("should generate schema with previous source prefill", () => {
-            const mockElementAttributes: IEmailField = {
+            const mockElementAttributes: IEmailFieldAttributes = {
                 type: EElementType.EMAIL,
                 label: LABEL,
                 id: ID,
@@ -174,7 +174,7 @@ describe("Translator", () => {
 
         it("should generate schema with default values", () => {
             const defaultValue = "testValue";
-            const mockElementAttributes: IEmailField = {
+            const mockElementAttributes: IEmailFieldAttributes = {
                 type: EElementType.EMAIL,
                 label: LABEL,
                 id: ID,

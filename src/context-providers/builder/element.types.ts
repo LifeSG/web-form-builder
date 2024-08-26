@@ -101,52 +101,61 @@ export interface IBaseFieldAttributes extends IBaseAttributes {
     required: boolean;
     requiredErrorMsg?: string | undefined;
     columns: IColumns;
-    placeholder?: string;
     description?: string;
+    preselectedValue?: string;
+    conditionalRendering?: IConditionalRendering[];
+    prefill?: IPrefillAttributes[];
 }
 
-export interface ITextareaFieldAttributes
-    extends IBaseTextBasedFieldAttributes {
-    resizableInput?: boolean;
-    preselectedValue?: string;
-    pills?: boolean;
+// =============================================================================
+// ELEMENT SPECIFIC ATTRIBUTES
+// =============================================================================
+
+export interface IEmailFieldAttributes extends IBaseFieldAttributes {
+    placeholder?: string;
+    validation?: IValidation[];
+}
+
+export interface ITextFieldAttributes extends IBaseFieldAttributes {
+    placeholder?: string;
+    validation?: IValidation[];
+}
+
+export interface ITextareaAttributes extends IBaseFieldAttributes {
+    placeholder?: string;
+    validation?: IValidation[];
+    resizableInput: boolean;
+    pills: boolean;
     pillItems?: IPillItemAttributes[];
     pillPosition?: "top" | "bottom" | null;
 }
 
-export interface IBaseTextBasedFieldAttributes extends IBaseFieldAttributes {
+export interface IContactFieldAttributes extends IBaseFieldAttributes {
+    placeholder?: string;
     validation?: IValidation[];
-    conditionalRendering?: IConditionalRendering[];
-    prefill?: IPrefillAttributes[];
-    preselectedValue?: string;
 }
 
-export interface IBaseOptionGroupBasedFieldAttributes
-    extends IBaseFieldAttributes {
+export interface INumericFieldAttributes extends IBaseFieldAttributes {
     placeholder?: string;
-    conditionalRendering?: IConditionalRendering[];
-    prefill?: IPrefillAttributes[];
+    validation?: IValidation[];
+}
+
+export interface IDropdownAttributes extends IBaseFieldAttributes {
+    placeholder?: string;
     dropdownItems?: IDropdownItemAttributes[];
-    preselectedValue?: string;
 }
 
 // =============================================================================
 // ELEMENT TYPES (Same order as EElementType)
 // =============================================================================
-export type IContactField = IBaseTextBasedFieldAttributes;
-export type IEmailField = IBaseTextBasedFieldAttributes;
-export type INumericField = IBaseTextBasedFieldAttributes;
-export type ITextField = IBaseTextBasedFieldAttributes;
-export type ITextarea = ITextareaFieldAttributes;
-export type IDropdown = IBaseOptionGroupBasedFieldAttributes;
 
 export type TTextBasedElement =
-    | IEmailField
-    | ITextField
-    | ITextarea
-    | INumericField
-    | IContactField;
+    | IEmailFieldAttributes
+    | ITextFieldAttributes
+    | ITextareaAttributes
+    | INumericFieldAttributes
+    | IContactFieldAttributes;
 
-export type TOptionGroupBasedElement = IDropdown;
+export type TOptionGroupBasedElement = IDropdownAttributes;
 
 export type TElement = TTextBasedElement | TOptionGroupBasedElement;

@@ -1,7 +1,7 @@
 import {
     EElementType,
     EValidationType,
-    IEmailField,
+    IEmailFieldAttributes,
 } from "src/context-providers";
 import { EmailSchemaGenerator } from "src/translator/generate";
 import { generateMockElementSchema } from "tests/util/translator/helper";
@@ -23,7 +23,7 @@ describe("EmailSchemaGenerator", () => {
     it("should generate the base schema with placeholder if placeholder is added", () => {
         const placeholder = "This is a placeholder";
 
-        const mockElement: IEmailField = {
+        const mockElement: IEmailFieldAttributes = {
             label: LABEL,
             id: ELEMENT_ID,
             internalId: "email-field",
@@ -48,7 +48,7 @@ describe("EmailSchemaGenerator", () => {
         const validationErrorMessage =
             "This field only accepts gmail addresses";
 
-        const mockElement: IEmailField = {
+        const mockElement: IEmailFieldAttributes = {
             label: LABEL,
             id: ELEMENT_ID,
             internalId: "email-field",
@@ -89,7 +89,7 @@ describe("EmailSchemaGenerator", () => {
         const validationErrorMessage =
             "This field only accepts gmail addresses";
 
-        const mockElement: IEmailField = {
+        const mockElement: IEmailFieldAttributes = {
             label: LABEL,
             id: ELEMENT_ID,
             internalId: "numeric-field",

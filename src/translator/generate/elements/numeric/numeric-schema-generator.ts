@@ -1,6 +1,6 @@
 import {
     EValidationType,
-    INumericField,
+    INumericFieldAttributes,
     IValidation,
 } from "src/context-providers";
 import {
@@ -38,7 +38,7 @@ export namespace NumericSchemaGenerator {
         return validationObj;
     };
 
-    export const elementToSchema = (element: INumericField) => {
+    export const elementToSchema = (element: INumericFieldAttributes) => {
         const baseSchema = generateBaseSchema(element);
         const additionalValidationSchema =
             generateNumericAdditionalValidationSchema(element.validation);

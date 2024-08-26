@@ -1,7 +1,7 @@
 import {
     EElementType,
     EValidationType,
-    ITextarea,
+    ITextareaAttributes,
 } from "src/context-providers";
 import { LongTextSchemaGenerator } from "src/translator/generate";
 import { generateMockElementSchema } from "tests/util/translator/helper";
@@ -23,7 +23,7 @@ describe("LongTextSchemaGenerator", () => {
     it("should generate the base schema with placeholder if placeholder is added", () => {
         const placeholder = "This is a placeholder";
 
-        const mockElement: ITextarea = {
+        const mockElement: ITextareaAttributes = {
             label: LABEL,
             id: ELEMENT_ID,
             internalId: "long-text-field",
@@ -32,6 +32,8 @@ describe("LongTextSchemaGenerator", () => {
             columns: { desktop: 12, tablet: 8, mobile: 4 },
             validation: [],
             placeholder,
+            resizableInput: false,
+            pills: false,
         };
 
         const generatedSchema =
@@ -44,7 +46,7 @@ describe("LongTextSchemaGenerator", () => {
     });
 
     it("should generate the base schema WITHOUT validation if required is false", () => {
-        const mockElement: ITextarea = {
+        const mockElement: ITextareaAttributes = {
             label: LABEL,
             id: ELEMENT_ID,
             internalId: "long-text-field",
@@ -52,6 +54,8 @@ describe("LongTextSchemaGenerator", () => {
             required: false,
             columns: { desktop: 12, tablet: 8, mobile: 4 },
             validation: [],
+            resizableInput: false,
+            pills: false,
         };
 
         const generatedSchema =
@@ -69,7 +73,7 @@ describe("LongTextSchemaGenerator", () => {
     });
 
     it("should generate the base schema WITH validation if required is true", () => {
-        const mockElement: ITextarea = {
+        const mockElement: ITextareaAttributes = {
             label: LABEL,
             id: ELEMENT_ID,
             internalId: "long-text-field",
@@ -78,6 +82,8 @@ describe("LongTextSchemaGenerator", () => {
             requiredErrorMsg: REQUIRED_ERROR_MESSAGE,
             columns: { desktop: 12, tablet: 8, mobile: 4 },
             validation: [],
+            resizableInput: false,
+            pills: false,
         };
 
         const generatedSchema =
@@ -105,7 +111,7 @@ describe("LongTextSchemaGenerator", () => {
         const validationErrorMessage =
             "This field must be at most 5 characters long";
 
-        const mockElement: ITextarea = {
+        const mockElement: ITextareaAttributes = {
             label: LABEL,
             id: ELEMENT_ID,
             internalId: "long-text-field",
@@ -119,6 +125,8 @@ describe("LongTextSchemaGenerator", () => {
                     validationErrorMessage,
                 },
             ],
+            resizableInput: false,
+            pills: false,
         };
 
         const generatedSchema =
@@ -146,7 +154,7 @@ describe("LongTextSchemaGenerator", () => {
         const validationMaxErrorMessage =
             "This field must be at most 10 characters long";
 
-        const mockElement: ITextarea = {
+        const mockElement: ITextareaAttributes = {
             label: LABEL,
             id: ELEMENT_ID,
             internalId: "text-field",
@@ -161,6 +169,8 @@ describe("LongTextSchemaGenerator", () => {
                     validationErrorMessage: validationMaxErrorMessage,
                 },
             ],
+            resizableInput: false,
+            pills: false,
         };
 
         const generatedSchema =
@@ -189,7 +199,7 @@ describe("LongTextSchemaGenerator", () => {
     });
 
     it("should generate the schema with conditional rendering if conditional rendering is added", () => {
-        const mockElement: ITextarea = {
+        const mockElement: ITextareaAttributes = {
             label: LABEL,
             id: ELEMENT_ID,
             internalId: "long-text-field",
@@ -205,6 +215,8 @@ describe("LongTextSchemaGenerator", () => {
                     internalId: "mock456",
                 },
             ],
+            resizableInput: false,
+            pills: false,
         };
 
         const generatedSchema =
@@ -234,7 +246,7 @@ describe("LongTextSchemaGenerator", () => {
     });
 
     it("should generate the schema with resizable input if resizable input is true", () => {
-        const mockElement: ITextarea = {
+        const mockElement: ITextareaAttributes = {
             label: LABEL,
             id: ELEMENT_ID,
             internalId: "long-text-field",
@@ -243,6 +255,7 @@ describe("LongTextSchemaGenerator", () => {
             columns: { desktop: 12, tablet: 8, mobile: 4 },
             validation: [],
             resizableInput: true,
+            pills: false,
         };
 
         const generatedSchema =
@@ -252,7 +265,7 @@ describe("LongTextSchemaGenerator", () => {
     });
 
     it("should generate the schema with chipTexts if pills is true and there are at least 2 pilItems", () => {
-        const mockElement: ITextarea = {
+        const mockElement: ITextareaAttributes = {
             label: LABEL,
             id: ELEMENT_ID,
             internalId: "long-text-field",
@@ -269,6 +282,7 @@ describe("LongTextSchemaGenerator", () => {
                     content: "Pill 2",
                 },
             ],
+            resizableInput: false,
         };
 
         const generatedSchema =
@@ -281,7 +295,7 @@ describe("LongTextSchemaGenerator", () => {
     });
 
     it("should generate the schema with chipPosition if pills is true and pillPosition is bottom", () => {
-        const mockElement: ITextarea = {
+        const mockElement: ITextareaAttributes = {
             label: LABEL,
             id: ELEMENT_ID,
             internalId: "long-text-field",
@@ -299,6 +313,7 @@ describe("LongTextSchemaGenerator", () => {
                 },
             ],
             pillPosition: "bottom",
+            resizableInput: false,
         };
 
         const generatedSchema =

@@ -1,4 +1,4 @@
-import { EElementType, ITextField } from "src/context-providers";
+import { EElementType, ITextFieldAttributes } from "src/context-providers";
 import { TextSchemaGenerator } from "src/translator/generate";
 import { generateMockElementSchema } from "tests/util/translator/helper";
 
@@ -17,7 +17,7 @@ describe("GenerateBaseSchema", () => {
     });
 
     it("should generate the full base schema if everything is provided", () => {
-        const mockElement: ITextField = {
+        const mockElement: ITextFieldAttributes = {
             columns: { desktop: 12, tablet: 8, mobile: 4 },
             label: LABEL,
             description: "This is a description",
@@ -73,7 +73,7 @@ describe("GenerateBaseSchema", () => {
     });
 
     it("should generate the base schema without placeholder if placeholder is not provided", () => {
-        const mockElement: ITextField = {
+        const mockElement: ITextFieldAttributes = {
             columns: { desktop: 12, tablet: 8, mobile: 4 },
             label: LABEL,
             description: DESCRIPTION,
@@ -127,7 +127,7 @@ describe("GenerateBaseSchema", () => {
     });
 
     it("should generate the base schema without showIf if conditional rendering is not provided", () => {
-        const mockElement: ITextField = {
+        const mockElement: ITextFieldAttributes = {
             columns: { desktop: 12, tablet: 8, mobile: 4 },
             label: LABEL,
             description: DESCRIPTION,
@@ -163,7 +163,7 @@ describe("GenerateBaseSchema", () => {
     });
 
     it("should generate the base schema without subLabel if description is not provided", () => {
-        const mockElement: ITextField = {
+        const mockElement: ITextFieldAttributes = {
             columns: { desktop: 12, tablet: 8, mobile: 4 },
             label: LABEL,
             id: ELEMENT_ID,
@@ -217,7 +217,7 @@ describe("GenerateBaseSchema", () => {
     });
 
     it("should generate the base schema without validation if required and requiredErrorMsg is not provided", () => {
-        const mockElement: ITextField = {
+        const mockElement: ITextFieldAttributes = {
             columns: { desktop: 12, tablet: 8, mobile: 4 },
             label: LABEL,
             description: DESCRIPTION,

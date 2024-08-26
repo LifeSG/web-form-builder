@@ -1,7 +1,7 @@
 import {
     EElementType,
     EValidationType,
-    INumericField,
+    INumericFieldAttributes,
 } from "src/context-providers";
 import { NumericSchemaGenerator } from "src/translator/generate";
 import { generateMockElementSchema } from "tests/util/translator/helper";
@@ -23,7 +23,7 @@ describe("NumericSchemaGenerator", () => {
     it("should generate the base schema with placeholder if placeholder is added", () => {
         const placeholder = "This is a placeholder";
 
-        const mockElement: INumericField = {
+        const mockElement: INumericFieldAttributes = {
             label: LABEL,
             id: ELEMENT_ID,
             internalId: "numeric-field",
@@ -47,7 +47,7 @@ describe("NumericSchemaGenerator", () => {
         const validationRule = "5";
         const validationErrorMessage = "The max value for this field is 5";
 
-        const mockElement: INumericField = {
+        const mockElement: INumericFieldAttributes = {
             label: LABEL,
             id: ELEMENT_ID,
             internalId: "numeric-field",
@@ -91,7 +91,7 @@ describe("NumericSchemaGenerator", () => {
         const validationWholeNumbersErrorMessage =
             "This field only accepts whole numbers";
 
-        const mockElement: INumericField = {
+        const mockElement: INumericFieldAttributes = {
             label: LABEL,
             id: ELEMENT_ID,
             internalId: "numeric-field",

@@ -4,10 +4,10 @@ import { MultiEntry } from "src/components/common";
 import { EElementType, useBuilder } from "src/context-providers";
 import { ELEMENT_VALIDATION_TYPES } from "src/data";
 import {
-    SchemaHelper,
     TOverallTextBasedYupSchema,
     TSchemasWithValidation,
-} from "src/schemas";
+    YupSchemaBuilder,
+} from "src/yup-schemas";
 import * as Yup from "yup";
 import {
     EmailValidationChild,
@@ -29,7 +29,7 @@ export const Validation = () => {
         name: "validation",
         shouldUnregister: true,
     });
-    const schema = SchemaHelper.buildSchema(
+    const schema = YupSchemaBuilder.buildYupSchema(
         selectedElementType
     ) as TOverallTextBasedYupSchema;
     const validationValues = watch("validation");

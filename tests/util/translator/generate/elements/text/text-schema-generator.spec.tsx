@@ -1,7 +1,7 @@
 import {
     EElementType,
     EValidationType,
-    ITextField,
+    ITextFieldAttributes,
 } from "src/context-providers";
 import { TextSchemaGenerator } from "src/translator/generate";
 import { generateMockElementSchema } from "tests/util/translator/helper";
@@ -23,7 +23,7 @@ describe("TextSchemaGenerator", () => {
     it("should generate the base schema with placeholder if placeholder is added", () => {
         const placeholder = "This is a placeholder";
 
-        const mockElement: ITextField = {
+        const mockElement: ITextFieldAttributes = {
             label: LABEL,
             id: ELEMENT_ID,
             internalId: "text-field",
@@ -48,7 +48,7 @@ describe("TextSchemaGenerator", () => {
         const validationErrorMessage =
             "This field must be at least 5 characters long";
 
-        const mockElement: ITextField = {
+        const mockElement: ITextFieldAttributes = {
             label: LABEL,
             id: ELEMENT_ID,
             internalId: "text-field",
@@ -97,7 +97,7 @@ describe("TextSchemaGenerator", () => {
         const validationRegexErrorMessage =
             "This field must start with 'hello'";
 
-        const mockElement: ITextField = {
+        const mockElement: ITextFieldAttributes = {
             label: LABEL,
             id: ELEMENT_ID,
             internalId: "text-field",

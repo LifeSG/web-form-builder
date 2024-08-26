@@ -4,7 +4,7 @@ import isEmpty from "lodash/isEmpty";
 import { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { IDropdownItemAttributes } from "src/context-providers/builder/";
-import { TOverallOptionGroupBasedSchema } from "src/schemas";
+import { TOverallOptionGroupBasedValues } from "src/yup-schemas";
 
 export const DropdownPreselectedValue = () => {
     // ===========================================================================
@@ -15,7 +15,7 @@ export const DropdownPreselectedValue = () => {
         formState: { errors },
         watch,
         setValue,
-    } = useFormContext<TOverallOptionGroupBasedSchema>();
+    } = useFormContext<TOverallOptionGroupBasedValues>();
 
     const preselectedValue = watch("preselectedValue");
     const dropdownItems = watch("dropdownItems", []);

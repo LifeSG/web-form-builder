@@ -6,11 +6,8 @@ import {
     TElementMap,
 } from "src/context-providers";
 import { ELEMENT_CONDITION_TYPES } from "src/data";
-import {
-    PREFILL_ACTIONID_REGEX,
-    PREFILL_PATH_REGEX,
-} from "src/schemas/base-helper";
 import { IPrefillConfig } from "src/translator/types";
+import { PREFILL_ACTIONID_REGEX, PREFILL_PATH_REGEX } from "src/util";
 
 export const parseConditionalRenderingSchema = (conditions: TRenderRules[]) => {
     return conditions.reduce(

@@ -1,7 +1,7 @@
 import { Form } from "@lifesg/react-design-system/form";
 import { Text } from "@lifesg/react-design-system/text";
 import { Controller, useFormContext } from "react-hook-form";
-import { TOverallTextBasedSchema } from "src/schemas";
+import { TOverallTextBasedValues } from "src/yup-schemas";
 
 export const TextBasedPreselectedValueField = () => {
     // ===========================================================================
@@ -11,7 +11,7 @@ export const TextBasedPreselectedValueField = () => {
     const {
         control,
         formState: { errors },
-    } = useFormContext<TOverallTextBasedSchema>();
+    } = useFormContext<TOverallTextBasedValues>();
 
     // =========================================================================
     // RENDER FUNCTIONS

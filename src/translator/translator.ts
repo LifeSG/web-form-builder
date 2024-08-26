@@ -13,6 +13,7 @@ import {
 import {
     EElementType,
     IElementIdentifier,
+    ITextareaAttributes,
     TElement,
     TElementMap,
 } from "src/context-providers";
@@ -62,8 +63,9 @@ export namespace Translator {
                         TextSchemaGenerator.elementToSchema(element);
                     break;
                 case EElementType.TEXTAREA:
-                    translatedChild =
-                        LongTextSchemaGenerator.elementToSchema(element);
+                    translatedChild = LongTextSchemaGenerator.elementToSchema(
+                        element as ITextareaAttributes
+                    );
                     break;
                 case EElementType.CONTACT:
                     translatedChild =
