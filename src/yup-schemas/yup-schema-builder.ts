@@ -2,6 +2,7 @@ import { useBuilder } from "src/context-providers";
 import * as yup from "yup";
 import { EElementType } from "../context-providers/builder/element.types";
 import {
+    CONTACT_YUP_SCHEMA,
     DROPDOWN_YUP_SCHEMA,
     EMAIL_YUP_SCHEMA,
     LONG_TEXT_YUP_SCHEMA,
@@ -30,7 +31,6 @@ export namespace YupSchemaBuilder {
                         .concat(baseSchema)
                         .concat(TEXT_YUP_SCHEMA);
                 case EElementType.NUMERIC:
-                case EElementType.CONTACT:
                     return yup
                         .object()
                         .concat(baseSchema)
@@ -45,6 +45,11 @@ export namespace YupSchemaBuilder {
                         .object()
                         .concat(baseSchema)
                         .concat(DROPDOWN_YUP_SCHEMA);
+                case EElementType.CONTACT:
+                    return yup
+                        .object()
+                        .concat(baseSchema)
+                        .concat(CONTACT_YUP_SCHEMA);
             }
         } catch (error) {
             console.error("Error in schema helper:", error);

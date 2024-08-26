@@ -14,6 +14,8 @@ interface IProps {
     disabledButton?: boolean;
     popoverMessage?: string | React.ReactNode;
     subtitle?: string;
+    expanded?: boolean;
+    hideAddButton?: boolean;
 }
 
 export const MultiEntry = ({
@@ -24,6 +26,8 @@ export const MultiEntry = ({
     disabledButton,
     popoverMessage,
     subtitle,
+    expanded,
+    hideAddButton,
 }: IProps) => {
     // =============================================================================
     // RENDER FUNCTIONS
@@ -66,11 +70,15 @@ export const MultiEntry = ({
     };
 
     return (
-        <MultiEntryAccordionItem title={title} $hasSubtitle={!!subtitle}>
+        <MultiEntryAccordionItem
+            title={title}
+            $hasSubtitle={!!subtitle}
+            expanded={expanded}
+        >
             <>
                 {subtitle && <SubtitleText>{subtitle}</SubtitleText>}
                 {children}
-                {renderButton()}
+                {!hideAddButton && renderButton()}
             </>
         </MultiEntryAccordionItem>
     );
