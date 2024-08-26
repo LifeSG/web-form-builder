@@ -13,6 +13,7 @@ export const DefaultCountryCode = () => {
     const { control, watch, unregister } =
         useFormContext<IContactFieldAttributes>();
     const defaultCountryCode = watch("defaultCountryCode");
+    const displayAsFixedCountryCode = watch("displayAsFixedCountryCode");
 
     // =========================================================================
     // RENDER FUNCTIONS
@@ -28,6 +29,7 @@ export const DefaultCountryCode = () => {
                     return (
                         <Form.Select
                             {...fieldWithoutRef}
+                            data-testid="default-country-code"
                             label="Default country code (optional)"
                             options={CountryData}
                             selectedOption={CountryData.find(
@@ -78,7 +80,9 @@ export const DefaultCountryCode = () => {
                 />
             )}
             <Alert type="info" showIcon>
-                Field will validate in international format.
+                {defaultCountryCode === "65" && displayAsFixedCountryCode
+                    ? "Field will validate in Singapore format. This enables selection of SG landline or mobile contact number validation under Additional Validation."
+                    : "Field will validate in international format."}
             </Alert>
         </MandatoryFieldBox>
     );
