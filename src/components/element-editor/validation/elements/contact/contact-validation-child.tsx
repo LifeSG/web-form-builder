@@ -1,6 +1,9 @@
+import { useFormContext } from "react-hook-form";
+import { IContactFieldAttributes } from "src/context-providers";
 import { ValidationErrorMessage, ValidationType } from "../../common";
 import { FieldWrapper } from "../../validation.styles";
 import { ChildEntry } from "./contact-validation-child.styles";
+import { ContactValidationRule } from "./contact-validation-rule";
 
 interface IProps {
     index: number;
@@ -13,6 +16,9 @@ export const ContactValidationChild = ({
     options,
     disabled,
 }: IProps) => {
+    const { watch } = useFormContext<IContactFieldAttributes>();
+    const defaultCountryCode = watch("defaultCountryCode");
+    const displayAsFixedCountryCode = watch("displayAsFixedCountryCode");
     // =================================================================
     // RENDER FUNCTIONS
     // =================================================================
@@ -24,6 +30,9 @@ export const ContactValidationChild = ({
                     options={options}
                     disabled={disabled}
                 />
+                {defaultCountryCode === "65" && displayAsFixedCountryCode && (
+                    <ContactValidationRule index={index} />
+                )}
                 <ValidationErrorMessage index={index} />
             </FieldWrapper>
         </ChildEntry>
