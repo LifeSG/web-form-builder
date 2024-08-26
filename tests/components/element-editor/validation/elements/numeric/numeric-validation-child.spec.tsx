@@ -26,7 +26,6 @@ describe("NumericValidationChild", () => {
     it("should un-render the validation rule field if validation type selected is whole numbers", async () => {
         const mockValue: IValidation[] = [
             {
-                validationType: "",
                 validationRule: "",
                 validationErrorMessage: "",
             },

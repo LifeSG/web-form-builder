@@ -3,54 +3,87 @@ import {
     TFrontendEngineFieldSchema,
 } from "@lifesg/web-frontend-engine";
 import {
+    IContactFieldSchema,
+    IEmailFieldSchema,
+    INumericFieldSchema,
+    ISelectSchema,
+    ITextareaSchema,
+    ITextFieldSchema,
+} from "@lifesg/web-frontend-engine/components/fields";
+import {
     EElementType,
     IElementIdentifier,
+    ITextareaAttributes,
+    TElement,
     TElementMap,
 } from "src/context-providers";
 import {
-    createDefaultValuesObject,
-    createPrefillObject,
-    parseSchemaBasedOnType,
+    ContactSchemaGenerator,
+    DropdownSchemaGenerator,
+    EmailSchemaGenerator,
+    generateDefaultValuesSchema,
+    generatePrefillSchema,
+    LongTextSchemaGenerator,
+    NumericSchemaGenerator,
+    TextSchemaGenerator,
+} from "./generate";
+import {
+    ContactSchemaParser,
+    DropdownSchemaParser,
+    EmailSchemaParser,
+    LongTextSchemaParser,
+    NumericSchemaParser,
+    TextSchemaParser,
     updateParsedElements,
-} from "./helper";
-import { OptionGroupBasedField } from "./option-group-based-field";
-import { TextBasedField } from "./text-based-field";
+} from "./parse";
 import { ISchemaProps } from "./types";
 
 export namespace Translator {
-    export function generateSchema(
+    export const generateSchema = (
         elements: TElementMap,
         orderedIdentifiers: IElementIdentifier[]
-    ) {
-        const prefill = createPrefillObject(elements);
-        const defaultValues = createDefaultValuesObject(elements);
+    ) => {
+        const prefill = generatePrefillSchema(elements);
+        const defaultValues = generateDefaultValuesSchema(elements);
 
-        const newElements = orderedIdentifiers.reduce((acc, value) => {
+        const orderedElements = orderedIdentifiers.reduce((acc, value) => {
             acc[value.internalId] = elements[value.internalId];
             return acc;
         }, {} as TElementMap);
 
-        const fields = Object.values(newElements).reduce((acc, element) => {
+        const fields = Object.values(orderedElements).reduce((acc, element) => {
             let translatedChild: Record<string, unknown>;
             switch (element.type) {
                 case EElementType.EMAIL:
-                case EElementType.TEXT:
-                case EElementType.TEXTAREA:
-                case EElementType.CONTACT:
-                case EElementType.NUMERIC:
-                    translatedChild = TextBasedField.elementToSchema(element);
+                    translatedChild =
+                        EmailSchemaGenerator.elementToSchema(element);
                     break;
-                case EElementType.CHECKBOX:
-                case EElementType.RADIO:
+                case EElementType.TEXT:
+                    translatedChild =
+                        TextSchemaGenerator.elementToSchema(element);
+                    break;
+                case EElementType.TEXTAREA:
+                    translatedChild = LongTextSchemaGenerator.elementToSchema(
+                        element as ITextareaAttributes
+                    );
+                    break;
+                case EElementType.CONTACT:
+                    translatedChild =
+                        ContactSchemaGenerator.elementToSchema(element);
+                    break;
+                case EElementType.NUMERIC:
+                    translatedChild =
+                        NumericSchemaGenerator.elementToSchema(element);
+                    break;
                 case EElementType.DROPDOWN:
                     translatedChild =
-                        OptionGroupBasedField.elementToSchema(element);
+                        DropdownSchemaGenerator.elementToSchema(element);
                     break;
             }
             return { ...acc, ...translatedChild };
         }, {});
 
-        const elementSchema: IFrontendEngineData = {
+        const elementsSchema: IFrontendEngineData = {
             defaultValues,
             sections: {
                 section: {
@@ -71,20 +104,99 @@ export namespace Translator {
                 },
             },
         };
-        return { schema: elementSchema, prefill };
-    }
+        return { schema: elementsSchema, prefill };
+    };
 
     export const parseSchema = (formSchema: ISchemaProps) => {
-        const schemaToParse = formSchema?.schema?.sections?.section?.children
-            ?.grid?.["children"] as Record<string, TFrontendEngineFieldSchema>;
-        if (Object.values(schemaToParse).length !== 0) {
-            const parsedElements = parseSchemaBasedOnType(
-                schemaToParse,
-                formSchema.prefill
-            );
-            return updateParsedElements(parsedElements);
-        } else {
+        const elementSchemas: Record<string, TFrontendEngineFieldSchema> =
+            formSchema?.schema?.sections?.section?.children?.grid?.["children"];
+
+        if (!elementSchemas) {
+            throw new Error("Element schemas are missing");
+        }
+
+        if (Object.keys(elementSchemas).length === 0) {
             return null;
         }
+
+        const defaultValues = formSchema?.schema?.defaultValues;
+        const parsedElements: TElement[] = [];
+
+        if (Object.values(elementSchemas).length !== 0) {
+            Object.entries(elementSchemas).forEach(([key, elementSchema]) => {
+                const { uiType } = elementSchema;
+
+                if (!uiType) {
+                    throw new Error("UI type is missing");
+                }
+
+                let parsedElement: TElement;
+
+                const defaultValue: string | undefined = defaultValues[key];
+
+                switch (uiType) {
+                    case EElementType.EMAIL: {
+                        parsedElement = EmailSchemaParser.schemaToElement(
+                            elementSchema as IEmailFieldSchema,
+                            key,
+                            formSchema.prefill,
+                            defaultValue
+                        );
+                        break;
+                    }
+                    case EElementType.TEXT: {
+                        parsedElement = TextSchemaParser.schemaToElement(
+                            elementSchema as ITextFieldSchema,
+                            key,
+                            formSchema.prefill,
+                            defaultValue
+                        );
+                        break;
+                    }
+                    case EElementType.TEXTAREA: {
+                        parsedElement = LongTextSchemaParser.schemaToElement(
+                            elementSchema as ITextareaSchema,
+                            key,
+                            formSchema.prefill,
+                            defaultValue
+                        );
+                        break;
+                    }
+                    case EElementType.NUMERIC: {
+                        parsedElement = NumericSchemaParser.schemaToElement(
+                            elementSchema as INumericFieldSchema,
+                            key,
+                            formSchema.prefill,
+                            defaultValue
+                        );
+                        break;
+                    }
+                    case EElementType.CONTACT: {
+                        parsedElement = ContactSchemaParser.schemaToElement(
+                            elementSchema as IContactFieldSchema,
+                            key,
+                            formSchema.prefill,
+                            defaultValue
+                        );
+                        break;
+                    }
+                    case EElementType.DROPDOWN: {
+                        parsedElement = DropdownSchemaParser.schemaToElement(
+                            elementSchema as ISelectSchema,
+                            key,
+                            formSchema.prefill,
+                            defaultValue
+                        );
+                        break;
+                    }
+                    default: {
+                        throw new Error("Invalid element type");
+                    }
+                }
+                parsedElements.push(parsedElement);
+            });
+            return updateParsedElements(parsedElements);
+        }
+        return null;
     };
 }
