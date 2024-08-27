@@ -8,7 +8,7 @@ import { CardIcon } from "../base-card";
 import { Wrapper } from "./icon-dropdown.styles";
 
 interface IProps {
-    type?: string;
+    type?: EElementType;
     onChange?: (option: unknown) => void;
     onBlur?: () => void;
     errorMessage?: string;

@@ -5,9 +5,15 @@ import { GrowContainer, ModalBox, ModalInner } from "./generic-modal.styles";
 
 interface IProps extends ModalBoxProps {
     type?: EModalType;
+    onClose?: () => void;
 }
 
-export const GenericModal = ({ type, children, ...otherProps }: IProps) => {
+export const GenericModal = ({
+    type,
+    onClose,
+    children,
+    ...otherProps
+}: IProps) => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
@@ -22,7 +28,7 @@ export const GenericModal = ({ type, children, ...otherProps }: IProps) => {
     // =============================================================================
     return (
         <GrowContainer>
-            <ModalBox onClose={handleModalClose} {...otherProps}>
+            <ModalBox onClose={onClose ?? handleModalClose} {...otherProps}>
                 <ModalInner data-testid="modal-content">{children}</ModalInner>
             </ModalBox>
         </GrowContainer>
