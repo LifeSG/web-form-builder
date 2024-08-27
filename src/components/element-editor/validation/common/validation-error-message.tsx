@@ -26,6 +26,7 @@ export const ValidationErrorMessage = ({ index }: IProps) => {
                 return (
                     <Form.Input
                         {...fieldWithoutRef}
+                        data-testid="validation-error-message"
                         placeholder="Set error message"
                         errorMessage={
                             errors?.validation?.[index]?.validationErrorMessage

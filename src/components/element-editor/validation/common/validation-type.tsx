@@ -28,6 +28,7 @@ export const ValidationType = ({ options, index, disabled }: IProps) => {
                 return (
                     <Form.Select
                         {...fieldWithoutRef}
+                        data-testid="validation-type"
                         placeholder="Select"
                         selectedOption={fieldWithoutRef.value}
                         options={options}

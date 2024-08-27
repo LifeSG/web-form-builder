@@ -19,6 +19,7 @@ export const ContactValidationChild = ({
     const { watch } = useFormContext<IContactFieldAttributes>();
     const defaultCountryCode = watch("defaultCountryCode");
     const displayAsFixedCountryCode = watch("displayAsFixedCountryCode");
+
     // =================================================================
     // RENDER FUNCTIONS
     // =================================================================
