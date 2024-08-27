@@ -21,7 +21,6 @@ describe("ValidationRule", () => {
     it("should render an error message when validation rule is left empty", async () => {
         const mockEmptyValidationValue: IValidation[] = [
             {
-                validationType: "",
                 validationRule: "",
                 validationErrorMessage: "",
             },

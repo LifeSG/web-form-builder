@@ -1,5 +1,6 @@
 import { Button } from "@lifesg/react-design-system/button";
 import { Modal } from "@lifesg/react-design-system/modal";
+import { Text } from "@lifesg/react-design-system/text";
 import styled from "styled-components";
 
 export const ScrollableModal = styled(Modal)`
@@ -20,4 +21,8 @@ export const ButtonWrapper = styled.div`
 
 export const ActionButton = styled(Button.Default)`
     width: 100%;
+`;
+
+export const ModalDisplayTitle = styled(Text.H3)`
+    padding: 2rem 0 1rem 0;
 `;
