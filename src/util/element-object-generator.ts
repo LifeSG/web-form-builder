@@ -9,7 +9,7 @@ import {
     ITextareaAttributes,
     ITextFieldAttributes,
     TElement,
-} from "src/context-providers";
+} from "src/context-providers/builder/element.types";
 import { ELEMENT_BUTTON_LABELS, ELEMENT_ID_PREFIX } from "src/data";
 import { SimpleIdGenerator } from "./simple-id-generator";
 
