@@ -25,9 +25,9 @@ describe("DefaultCountryCode", () => {
         expect(defaultCountryCode).toBeInTheDocument();
 
         fireEvent.click(defaultCountryCode);
-        const firstOption = screen.getAllByRole("option")[0];
+        const secondOption = screen.getAllByRole("option")[1];
 
-        fireEvent.click(firstOption);
+        fireEvent.click(secondOption);
 
         expect(
             screen.getByText("Display as fixed country code")

@@ -1,5 +1,6 @@
 import { Alert } from "@lifesg/react-design-system/alert";
 import { Form } from "@lifesg/react-design-system/form";
+import { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { TogglePair } from "src/components/common/toggle-pair/toggle-pair";
 import { IContactFieldAttributes } from "src/context-providers";
@@ -10,10 +11,31 @@ export const DefaultCountryCode = () => {
     // ===========================================================================
     // CONST, STATE, REFS
     // ===========================================================================
-    const { control, watch, unregister } =
+    const { control, watch, unregister, setValue } =
         useFormContext<IContactFieldAttributes>();
     const defaultCountryCode = watch("defaultCountryCode");
     const displayAsFixedCountryCode = watch("displayAsFixedCountryCode");
+
+    const options = [
+        ["No default country code", null, null, null],
+        ...CountryData,
+    ];
+
+    const selectedOption = options.find(
+        (item) => item[3] === defaultCountryCode
+    );
+
+    // =========================================================================
+    // EFFECTS
+    // =========================================================================
+
+    useEffect(() => {
+        if (defaultCountryCode === null) {
+            setValue("defaultCountryCode", "", {
+                shouldDirty: true,
+            });
+        }
+    }, [defaultCountryCode, setValue]);
 
     // =========================================================================
     // RENDER FUNCTIONS
@@ -31,14 +53,12 @@ export const DefaultCountryCode = () => {
                             {...fieldWithoutRef}
                             data-testid="default-country-code"
                             label="Default country code (optional)"
-                            options={CountryData}
-                            selectedOption={CountryData.find(
-                                (item) => item[3] === field.value
-                            )}
+                            options={options}
+                            selectedOption={selectedOption}
                             valueExtractor={(item) => item[3]}
                             listExtractor={(item) => ({
                                 title: item[0] as string,
-                                secondaryLabel: `+${item[3] as string}`,
+                                secondaryLabel: item[3] ? `+${item[3]}` : "",
                             })}
                             displayValueExtractor={(item) =>
                                 `${item[0]} (+${item[3]})`
@@ -67,6 +87,8 @@ export const DefaultCountryCode = () => {
                                 }}
                                 onChange={(value) => {
                                     if (!value) {
+                                        /** Without unregister, isDirty remains true even though current values match default values,
+                                         * until a re-render occurs. By using unregister, it triggers a re-render to evaluate the correct isDirty state. */
                                         unregister(
                                             "validation.0.validationRule"
                                         );
