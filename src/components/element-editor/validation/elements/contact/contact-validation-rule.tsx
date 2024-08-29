@@ -32,17 +32,17 @@ export const ContactValidationRule = ({ index }: IProps) => {
     const options: IOptionsProps[] = [
         {
             title: "All",
-            label: "All (First digit of 3, 6, 8 or 9 allowed with correct length.)",
+            label: "First digit of 3, 6, 8 or 9 allowed with correct length.",
             value: EValidationRuleFEEContact.DEFAULT,
         },
         {
             title: "Landline contact number only",
-            label: "All (First digit of 3 or 6 allowed with correct length.)",
+            label: "First digit of 3 or 6 allowed with correct length.",
             value: EValidationRuleFEEContact.HOUSE,
         },
         {
             title: "Mobile contact number only",
-            label: "All (First digit of 8 or 9 allowed with correct length.)",
+            label: "First digit of 8 or 9 allowed with correct length.",
             value: EValidationRuleFEEContact.MOBILE,
         },
     ];
@@ -82,7 +82,9 @@ export const ContactValidationRule = ({ index }: IProps) => {
                             title: option.title,
                             secondaryLabel: option.label,
                         })}
-                        displayValueExtractor={(option) => option.label}
+                        displayValueExtractor={(option) =>
+                            `${option.title} (${option.label})`
+                        }
                         onSelectOption={(option) =>
                             field.onChange(option.value)
                         }
