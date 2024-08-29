@@ -2,12 +2,12 @@ import { useFormContext } from "react-hook-form";
 import { ChildEntry } from "src/components/common";
 import { EValidationType } from "src/context-providers";
 import { TOverallTextBasedValues } from "src/yup-schemas";
-import { FieldWrapper } from "../..";
 import {
     ValidationErrorMessage,
     ValidationRule,
     ValidationType,
 } from "../../common";
+import { FieldWrapper } from "../../validation.styles";
 
 interface IProps {
     onDelete: () => void;

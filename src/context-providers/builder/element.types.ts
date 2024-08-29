@@ -41,6 +41,7 @@ export enum EValidationType {
     MAX_VALUE = "Maximum value",
     MIN_LENGTH = "Minimum length",
     MAX_LENGTH = "Maximum length",
+    CONTACT_NUMBER = "Contact number format",
 }
 
 export enum EValidationTypeFEE {
@@ -48,6 +49,12 @@ export enum EValidationTypeFEE {
     MAX = "max",
     INTEGER = "integer",
     MATCHES = "matches",
+}
+
+export enum EValidationRuleFEEContact {
+    DEFAULT = "default",
+    MOBILE = "mobile",
+    HOUSE = "house",
 }
 
 export interface IBaseAttributes {
@@ -133,6 +140,9 @@ export interface ITextareaAttributes extends IBaseFieldAttributes {
 export interface IContactFieldAttributes extends IBaseFieldAttributes {
     placeholder?: string;
     validation?: IValidation[];
+    enableClearButton?: boolean;
+    defaultCountryCode?: string;
+    displayAsFixedCountryCode?: boolean;
 }
 
 export interface INumericFieldAttributes extends IBaseFieldAttributes {

@@ -70,6 +70,10 @@ export const ELEMENT_VALIDATION_TYPES = {
             maxEntries: 1, // Set a negetive number so that it will allow unlimited entries as it will not be equal to 0
             validationTypes: [EValidationType.MAX_LENGTH],
         },
+        [EElementType.CONTACT]: {
+            maxEntries: 1,
+            validationTypes: [EValidationType.CONTACT_NUMBER],
+        },
     },
 };
 

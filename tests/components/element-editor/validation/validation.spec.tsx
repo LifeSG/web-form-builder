@@ -2,7 +2,11 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
 import { setupJestCanvasMock } from "jest-canvas-mock";
 import { Validation } from "src/components/element-editor/validation/";
-import { EElementType, EValidationType } from "src/context-providers";
+import {
+    EElementType,
+    EValidationType,
+    IValidation,
+} from "src/context-providers";
 import { TestHelper } from "src/util/test-helper";
 
 describe("Validation", () => {
@@ -112,23 +116,36 @@ describe("Validation", () => {
         ${EElementType.TEXT}     | ${"text-validation-child"}
         ${EElementType.TEXTAREA} | ${"long-text-validation-child"}
         ${EElementType.NUMERIC}  | ${"numeric-validation-child"}
-        ${EElementType.CONTACT}  | ${"contact-validation-child"}
     `(
         "should render the correct validation child component for $elementType",
         async ({ elementType, testId }) => {
             renderValidationComponent(elementType);
             fireEvent.click(getAddValidationButton());
-
             expect(screen.getByTestId(testId)).toBeInTheDocument();
         }
     );
+
+    it("should render the correct validation child component for contact", async () => {
+        renderValidationComponent(EElementType.CONTACT, [
+            {
+                validationType: EValidationType.CONTACT_NUMBER,
+                validationErrorMessage: "Invalid contact number.",
+            },
+        ]);
+        expect(
+            screen.getByTestId("contact-validation-child")
+        ).toBeInTheDocument();
+    });
 });
 
 // =============================================================================
 // HELPER FUNCTIONS
 // =============================================================================
 
-const renderValidationComponent = (elementType: EElementType) => {
+const renderValidationComponent = (
+    elementType: EElementType,
+    defaultValidation?: IValidation[]
+) => {
     renderComponent({
         builderContext: {
             selectedElementType: elementType,
@@ -137,7 +154,7 @@ const renderValidationComponent = (elementType: EElementType) => {
             elementType: elementType,
             defaultValues: {
                 type: elementType,
-                validation: [],
+                validation: defaultValidation ?? [],
             },
         },
     });

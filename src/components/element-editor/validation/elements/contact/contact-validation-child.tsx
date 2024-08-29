@@ -1,20 +1,14 @@
-import { ChildEntry } from "src/components/common";
-import { FieldWrapper } from "../..";
-import {
-    ValidationErrorMessage,
-    ValidationRule,
-    ValidationType,
-} from "../../common";
+import { ValidationErrorMessage, ValidationType } from "../../common";
+import { FieldWrapper } from "../../validation.styles";
+import { ChildEntry } from "./contact-validation-child.styles";
 
 interface IProps {
-    onDelete: () => void;
     index: number;
     options: string[];
     disabled?: boolean;
 }
 
 export const ContactValidationChild = ({
-    onDelete,
     index,
     options,
     disabled,
@@ -23,14 +17,13 @@ export const ContactValidationChild = ({
     // RENDER FUNCTIONS
     // =================================================================
     return (
-        <ChildEntry onDelete={onDelete}>
+        <ChildEntry>
             <FieldWrapper data-testid="contact-validation-child">
                 <ValidationType
                     index={index}
                     options={options}
                     disabled={disabled}
                 />
-                <ValidationRule index={index} />
                 <ValidationErrorMessage index={index} />
             </FieldWrapper>
         </ChildEntry>

@@ -22,7 +22,7 @@ export const Validation = () => {
     // =========================================================================
     // CONST, STATES, REFS
     // =========================================================================
-    const { selectedElementType } = useBuilder();
+    const { selectedElementType, focusedElement } = useBuilder();
     const { watch, control } = useFormContext<TSchemasWithValidation>();
     const { fields, append, remove } = useFieldArray({
         control,
@@ -32,8 +32,8 @@ export const Validation = () => {
     const schema = YupSchemaBuilder.buildYupSchema(
         selectedElementType
     ) as TOverallTextBasedYupSchema;
-    const validationValues = watch("validation");
-    const elementType = watch("type");
+    const validationValues = watch("validation", []);
+    const elementType = watch("type", focusedElement?.element?.type);
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
@@ -168,7 +168,7 @@ export const Validation = () => {
                             key={field.id}
                             index={index}
                             options={options}
-                            onDelete={() => handleDelete(index)}
+                            disabled={options.length === 1}
                         />
                     );
                 default:
@@ -186,6 +186,8 @@ export const Validation = () => {
                 hasReachedMaxEntries() || hasInvalidAndEmptyFields()
             }
             popoverMessage={getPopoverMessage()}
+            expanded={selectedElementType === EElementType.CONTACT}
+            hideAddButton={selectedElementType === EElementType.CONTACT}
         >
             {renderChildren()}
         </MultiEntry>
