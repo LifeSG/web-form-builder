@@ -31,9 +31,10 @@ export const ContactValidationChild = ({
                     options={options}
                     disabled={disabled}
                 />
-                {defaultCountryCode === "65" && displayAsFixedCountryCode && (
-                    <ContactValidationRule index={index} />
-                )}
+                {defaultCountryCode === "Singapore" &&
+                    displayAsFixedCountryCode && (
+                        <ContactValidationRule index={index} />
+                    )}
                 <ValidationErrorMessage index={index} />
             </FieldWrapper>
         </ChildEntry>

@@ -22,11 +22,11 @@ export const CONTACT_YUP_SCHEMA = yup.object().shape({
                         defaultCountryCode: string,
                         displayAsFixedCountryCode: boolean
                     ) =>
-                        defaultCountryCode === "65" &&
+                        defaultCountryCode === "Singapore" &&
                         displayAsFixedCountryCode,
                     then: (rule) =>
                         rule.required(
-                            "Validation rule required when country code is '65' and display as fixed country code is true."
+                            "Validation rule required when country code is 'Singapore' and display as fixed country code is true."
                         ),
                     otherwise: (rule) => rule.optional(),
                 }),
