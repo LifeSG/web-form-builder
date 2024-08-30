@@ -51,7 +51,7 @@ describe("ContactValidationChild", () => {
             },
         });
         expect(
-            screen.queryByTestId("contact-validation-rule")
+            screen.getByTestId("contact-validation-rule")
         ).toBeInTheDocument();
     });
 

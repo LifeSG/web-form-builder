@@ -17,8 +17,10 @@ export const ContactValidationChild = ({
     disabled,
 }: IProps) => {
     const { watch } = useFormContext<IContactFieldAttributes>();
-    const defaultCountryCode = watch("defaultCountryCode");
-    const displayAsFixedCountryCode = watch("displayAsFixedCountryCode");
+    const [defaultCountryCode, displayAsFixedCountryCode] = watch([
+        "defaultCountryCode",
+        "displayAsFixedCountryCode",
+    ]);
 
     // =================================================================
     // RENDER FUNCTIONS
