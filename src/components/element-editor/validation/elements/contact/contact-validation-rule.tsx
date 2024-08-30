@@ -24,7 +24,7 @@ export const ContactValidationRule = ({ index }: IProps) => {
     const {
         formState: { errors },
         control,
-        setValue,
+        resetField,
     } = useFormContext<IContactFieldAttributes>();
     const { focusedElement } = useBuilder();
     const element = focusedElement?.element as IContactFieldAttributes;
@@ -51,11 +51,13 @@ export const ContactValidationRule = ({ index }: IProps) => {
     // EFFECTS
     // =========================================================================
 
+    /** This useEffect repopulates the defaultValues of validationRule when it is remounted.*/
     useEffect(() => {
-        setValue(
-            "validation.0.validationRule",
-            EValidationRuleFEEContact.DEFAULT
-        );
+        resetField("validation.0.validationRule", {
+            defaultValue:
+                element?.validation[0]?.validationRule ||
+                EValidationRuleFEEContact.DEFAULT,
+        });
     }, []);
 
     // =========================================================================
