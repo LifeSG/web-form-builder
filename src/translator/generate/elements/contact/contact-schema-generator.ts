@@ -2,23 +2,67 @@ import { IContactFieldAttributes } from "src/context-providers";
 import { generateBaseSchema } from "../../common";
 
 export namespace ContactSchemaGenerator {
+    interface ContactNumberSchema {
+        singaporeNumber?: string;
+        internationalNumber?: string | boolean;
+    }
+
+    const generateContactAdditionalValidationSchema = (
+        element: IContactFieldAttributes
+    ) => {
+        const { defaultCountryCode, displayAsFixedCountryCode, validation } =
+            element;
+
+        const { validationRule, validationErrorMessage } = validation[0];
+
+        const schema: {
+            contactNumber: ContactNumberSchema;
+            errorMessage: string;
+        } = {
+            contactNumber: {
+                internationalNumber: true,
+            },
+            errorMessage: validationErrorMessage,
+        };
+
+        if (displayAsFixedCountryCode) {
+            schema.contactNumber =
+                defaultCountryCode === "Singapore"
+                    ? { singaporeNumber: validationRule }
+                    : { internationalNumber: defaultCountryCode };
+        }
+
+        return schema;
+    };
+
     export const elementToSchema = (element: IContactFieldAttributes) => {
         const baseSchema = generateBaseSchema(element);
-        //TODO: Add validation for contact field once it's implemented
+        const additionalValidationSchema =
+            generateContactAdditionalValidationSchema(element);
+
+        const {
+            placeholder,
+            enableClearButton,
+            defaultCountryCode,
+            displayAsFixedCountryCode,
+        } = element;
         const contactSchema = {
             [element.id]: {
                 ...baseSchema,
-                ...(element.placeholder && {
-                    placeholder: element.placeholder,
+                ...(placeholder && {
+                    placeholder,
                 }),
-                // Add additional validation if it exists
-                // ...(additionalValidationSchema && {
-                //     validation: [
-                //         // Keep base validation
-                //         ...(baseSchema.validation || []),
-                //         ...additionalValidationSchema,
-                //     ],
-                // }),
+                ...(enableClearButton && {
+                    allowClear: true,
+                }),
+                ...(!displayAsFixedCountryCode &&
+                    defaultCountryCode && {
+                        defaultCountry: element.defaultCountryCode,
+                    }),
+                validation: [
+                    ...(baseSchema.validation || []),
+                    additionalValidationSchema,
+                ],
             },
         };
 

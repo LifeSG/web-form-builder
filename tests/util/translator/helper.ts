@@ -1,5 +1,8 @@
 import { IYupValidationRule } from "@lifesg/web-frontend-engine";
-import { IComplexLabel } from "@lifesg/web-frontend-engine/components/fields";
+import {
+    IComplexLabel,
+    IContactFieldValidationRule,
+} from "@lifesg/web-frontend-engine/components/fields";
 import { TRenderRules } from "@lifesg/web-frontend-engine/context-providers";
 import {
     EElementType,
@@ -38,11 +41,13 @@ interface MockElementSchemaProps {
     label: IComplexLabel;
     uiType: EElementType;
     placeholder?: string;
-    validation?: IYupValidationRule[];
+    validation?: (IYupValidationRule | IContactFieldValidationRule)[];
     showIf?: TRenderRules[];
     dropdownItems?: IDropdownItemAttributes[];
     resizable?: boolean;
     chipTexts?: string[];
+    allowClear?: boolean;
+    defaultCountry?: string;
 }
 
 interface MockPrefillSchema {
@@ -55,8 +60,13 @@ interface MockChildrenSchema {
         uiType: EElementType;
         columns: IColumns;
         placeholder?: string;
-        validation?: IYupValidationRule[];
+        validation?: (IYupValidationRule | IContactFieldValidationRule)[];
         showIf?: TRenderRules[];
+        dropdownItems?: IDropdownItemAttributes[];
+        resizable?: boolean;
+        chipTexts?: string[];
+        allowClear?: boolean;
+        defaultCountry?: string;
     };
 }
 
@@ -110,6 +120,8 @@ export const generateMockElementSchema = ({
     dropdownItems,
     resizable,
     chipTexts,
+    allowClear,
+    defaultCountry,
 }: MockElementSchemaProps): MockChildrenSchema => {
     return {
         [id]: {
@@ -126,6 +138,8 @@ export const generateMockElementSchema = ({
             ...(showIf && { showIf }),
             ...(resizable && { resizable }),
             ...(chipTexts && { chipTexts }),
+            ...(allowClear && { allowClear }),
+            ...(defaultCountry && { defaultCountry }),
         },
     };
 };

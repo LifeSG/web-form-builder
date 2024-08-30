@@ -139,8 +139,8 @@ export interface ITextareaAttributes extends IBaseFieldAttributes {
 
 export interface IContactFieldAttributes extends IBaseFieldAttributes {
     placeholder?: string;
-    validation?: IValidation[];
-    enableClearButton?: boolean;
+    validation: IValidation[];
+    enableClearButton: boolean;
     defaultCountryCode?: string;
     displayAsFixedCountryCode?: boolean;
 }

@@ -22,7 +22,7 @@ export const DefaultCountryCode = () => {
     ];
 
     const selectedOption = options.find(
-        (item) => item[3] === defaultCountryCode
+        (item) => item[0] === defaultCountryCode
     );
 
     // =========================================================================
@@ -30,7 +30,7 @@ export const DefaultCountryCode = () => {
     // =========================================================================
 
     useEffect(() => {
-        if (defaultCountryCode === null) {
+        if (defaultCountryCode === "No default country code") {
             setValue("defaultCountryCode", "", {
                 shouldDirty: true,
             });
@@ -55,7 +55,6 @@ export const DefaultCountryCode = () => {
                             label="Default country code (optional)"
                             options={options}
                             selectedOption={selectedOption}
-                            valueExtractor={(item) => item[3]}
                             listExtractor={(item) => ({
                                 title: item[0] as string,
                                 secondaryLabel: item[3] ? `+${item[3]}` : "",
@@ -63,7 +62,7 @@ export const DefaultCountryCode = () => {
                             displayValueExtractor={(item) =>
                                 `${item[0]} (+${item[3]})`
                             }
-                            onSelectOption={(item) => field.onChange(item[3])}
+                            onSelectOption={(item) => field.onChange(item[0])}
                             enableSearch
                         />
                     );
@@ -102,7 +101,7 @@ export const DefaultCountryCode = () => {
                 />
             )}
             <Alert type="info" showIcon>
-                {defaultCountryCode === "65" && displayAsFixedCountryCode
+                {defaultCountryCode === "Singapore" && displayAsFixedCountryCode
                     ? "Field will validate in Singapore format. This enables selection of SG landline or mobile contact number validation under Additional Validation."
                     : "Field will validate in international format."}
             </Alert>

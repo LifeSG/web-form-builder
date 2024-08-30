@@ -41,11 +41,11 @@ describe("ContactValidationChild", () => {
         expect(validationErrorMessage).toBeInTheDocument();
     });
 
-    it("should render ContactValidationRule when defaultCountryCode is '65' and displayAsFixedCountryCode is true", () => {
+    it("should render ContactValidationRule when defaultCountryCode is 'Singapore' and displayAsFixedCountryCode is true", () => {
         renderComponent({
             formContext: {
                 defaultValues: {
-                    defaultCountryCode: "65",
+                    defaultCountryCode: "Singapore",
                     displayAsFixedCountryCode: true,
                 },
             },
@@ -59,7 +59,7 @@ describe("ContactValidationChild", () => {
         renderComponent({
             formContext: {
                 defaultValues: {
-                    defaultCountryCode: "65",
+                    defaultCountryCode: "Singapore",
                     displayAsFixedCountryCode: false,
                 },
             },
@@ -73,7 +73,7 @@ describe("ContactValidationChild", () => {
         renderComponent({
             formContext: {
                 defaultValues: {
-                    defaultCountryCode: "66",
+                    defaultCountryCode: "Albania",
                     displayAsFixedCountryCode: true,
                 },
             },
