@@ -51,6 +51,9 @@ export const getValidationOptionsByType = (
                     .validationTypes,
             ];
             return getFilteredValidationTypes(validation, validationTypes);
+        case EElementType.CONTACT:
+            return ELEMENT_VALIDATION_TYPES["Text field"][EElementType.CONTACT]
+                .validationTypes;
         default:
             return ["Select", "Type 1"];
     }

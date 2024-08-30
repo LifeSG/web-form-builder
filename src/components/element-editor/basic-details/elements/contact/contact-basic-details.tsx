@@ -7,6 +7,8 @@ import {
     TextBasedPreselectedValueField,
     TypeField,
 } from "../../common";
+import { DefaultCountryCode } from "./default-country-code";
+import { EnableClearButton } from "./enable-clear-button";
 
 export const ContactBasicDetails = () => {
     return (
@@ -15,6 +17,8 @@ export const ContactBasicDetails = () => {
             <LabelField />
             <MandatoryField />
             <IdField />
+            <EnableClearButton />
+            <DefaultCountryCode />
             <DescriptionField />
             <PlaceholderField />
             <TextBasedPreselectedValueField />

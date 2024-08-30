@@ -12,6 +12,7 @@ import {
 } from "@lifesg/web-frontend-engine/components/fields";
 import {
     EElementType,
+    IContactFieldAttributes,
     IElementIdentifier,
     ITextareaAttributes,
     TElement,
@@ -68,8 +69,9 @@ export namespace Translator {
                     );
                     break;
                 case EElementType.CONTACT:
-                    translatedChild =
-                        ContactSchemaGenerator.elementToSchema(element);
+                    translatedChild = ContactSchemaGenerator.elementToSchema(
+                        element as IContactFieldAttributes
+                    );
                     break;
                 case EElementType.NUMERIC:
                     translatedChild =

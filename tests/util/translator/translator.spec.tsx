@@ -1,5 +1,7 @@
 import {
     EElementType,
+    EValidationRuleFEEContact,
+    EValidationType,
     IEmailFieldAttributes,
     TElement,
     TElementMap,
@@ -28,6 +30,20 @@ describe("Translator", () => {
         it.each(Object.values(EElementType))(
             "should generate schema for %s field",
             (elementType) => {
+                const validation =
+                    elementType === EElementType.CONTACT
+                        ? [
+                              {
+                                  validationType:
+                                      EValidationType.CONTACT_NUMBER,
+                                  validationRule:
+                                      EValidationRuleFEEContact.DEFAULT,
+                                  validationErrorMessage:
+                                      "Incorrect contact number",
+                              },
+                          ]
+                        : [];
+
                 const mockElementAttributes: TElement = {
                     label: LABEL,
                     id: ID,
@@ -35,7 +51,7 @@ describe("Translator", () => {
                     type: elementType,
                     required: false,
                     columns: { desktop: 12, tablet: 8, mobile: 4 },
-                    validation: [],
+                    validation,
                     ...(elementType === EElementType.DROPDOWN && {
                         dropdownItems: [],
                     }),
@@ -240,6 +256,16 @@ describe("Translator", () => {
                                 {
                                     label: "test",
                                     value: "test",
+                                },
+                            ],
+                        }),
+                        ...(elementType === EElementType.CONTACT && {
+                            validation: [
+                                {
+                                    contactNumber: {
+                                        internationalNumber: true,
+                                    },
+                                    errorMessage: "Invalid contact number.",
                                 },
                             ],
                         }),

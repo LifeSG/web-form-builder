@@ -1,36 +1,42 @@
-import { ChildEntry } from "src/components/common";
-import { FieldWrapper } from "../..";
-import {
-    ValidationErrorMessage,
-    ValidationRule,
-    ValidationType,
-} from "../../common";
+import { useFormContext } from "react-hook-form";
+import { IContactFieldAttributes } from "src/context-providers";
+import { ValidationErrorMessage, ValidationType } from "../../common";
+import { FieldWrapper } from "../../validation.styles";
+import { ChildEntry } from "./contact-validation-child.styles";
+import { ContactValidationRule } from "./contact-validation-rule";
 
 interface IProps {
-    onDelete: () => void;
     index: number;
     options: string[];
     disabled?: boolean;
 }
 
 export const ContactValidationChild = ({
-    onDelete,
     index,
     options,
     disabled,
 }: IProps) => {
+    const { watch } = useFormContext<IContactFieldAttributes>();
+    const [defaultCountryCode, displayAsFixedCountryCode] = watch([
+        "defaultCountryCode",
+        "displayAsFixedCountryCode",
+    ]);
+
     // =================================================================
     // RENDER FUNCTIONS
     // =================================================================
     return (
-        <ChildEntry onDelete={onDelete}>
+        <ChildEntry>
             <FieldWrapper data-testid="contact-validation-child">
                 <ValidationType
                     index={index}
                     options={options}
                     disabled={disabled}
                 />
-                <ValidationRule index={index} />
+                {defaultCountryCode === "Singapore" &&
+                    displayAsFixedCountryCode && (
+                        <ContactValidationRule index={index} />
+                    )}
                 <ValidationErrorMessage index={index} />
             </FieldWrapper>
         </ChildEntry>

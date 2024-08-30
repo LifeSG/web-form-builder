@@ -1,13 +1,13 @@
 import { Controller, useFormContext } from "react-hook-form";
 import { TogglePair } from "src/components/common/toggle-pair/toggle-pair";
-import { ITextareaAttributes } from "src/context-providers";
+import { IContactFieldAttributes } from "src/context-providers";
 
-export const ResizableInput = () => {
+export const EnableClearButton = () => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
 
-    const { control } = useFormContext<ITextareaAttributes>();
+    const { control } = useFormContext<IContactFieldAttributes>();
 
     // =========================================================================
     // RENDER FUNCTIONS
@@ -15,7 +15,7 @@ export const ResizableInput = () => {
 
     return (
         <Controller
-            name="resizableInput"
+            name="enableClearButton"
             control={control}
             defaultValue={false}
             render={({ field }) => {
@@ -24,9 +24,9 @@ export const ResizableInput = () => {
                     <TogglePair
                         {...fieldWithoutRef}
                         label={{
-                            mainLabel: "Resizable area input",
+                            mainLabel: "Enable clear button",
                             subLabel:
-                                "This allows participant to resize text area.",
+                                "This enables form participant to remove contact number input with a click on a clear button.",
                         }}
                     />
                 );

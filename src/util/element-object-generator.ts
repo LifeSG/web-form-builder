@@ -1,5 +1,6 @@
 import {
     EElementType,
+    EValidationType,
     IBaseFieldAttributes,
     IContactFieldAttributes,
     IDropdownAttributes,
@@ -8,7 +9,7 @@ import {
     ITextareaAttributes,
     ITextFieldAttributes,
     TElement,
-} from "src/context-providers";
+} from "src/context-providers/builder/element.types";
 import { ELEMENT_BUTTON_LABELS, ELEMENT_ID_PREFIX } from "src/data";
 import { SimpleIdGenerator } from "./simple-id-generator";
 
@@ -88,14 +89,6 @@ export namespace ElementObjectGenerator {
                 };
                 return attributes;
             }
-            case EElementType.CONTACT: {
-                const attributes: IContactFieldAttributes = {
-                    ...baseAttributes,
-                    placeholder: "",
-                    validation: [],
-                };
-                return attributes;
-            }
             case EElementType.TEXT: {
                 const attributes: ITextFieldAttributes = {
                     ...baseAttributes,
@@ -126,6 +119,21 @@ export namespace ElementObjectGenerator {
                         {
                             label: "",
                             value: "",
+                        },
+                    ],
+                };
+                return attributes;
+            }
+            case EElementType.CONTACT: {
+                const attributes: IContactFieldAttributes = {
+                    ...baseAttributes,
+                    placeholder: "",
+                    enableClearButton: true,
+                    defaultCountryCode: "",
+                    validation: [
+                        {
+                            validationType: EValidationType.CONTACT_NUMBER,
+                            validationErrorMessage: "Invalid contact number.",
                         },
                     ],
                 };
