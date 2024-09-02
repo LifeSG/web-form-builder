@@ -26,14 +26,34 @@ export const ELEMENTS_CATEGORIES: IElementCategoryAttributes[] = [
     },
 ];
 
-export const ELEMENT_BUTTON_LABELS: { [key in EElementType]: string } = {
-    [EElementType.EMAIL]: "Email address",
-    [EElementType.NUMERIC]: "Numbers",
-    [EElementType.TEXT]: "Short text",
-    [EElementType.TEXTAREA]: "Long text",
-    [EElementType.CONTACT]: "Contact number",
-    [EElementType.DROPDOWN]: "Dropdown",
+export enum EElementLabel {
+    EMAIL = "Email address",
+    NUMERIC = "Numbers",
+    TEXT = "Short text",
+    TEXTAREA = "Long text",
+    CONTACT = "Contact number",
+    DROPDOWN = "Dropdown",
+    CHECKBOX = "Checkbox",
+    RADIO = "Radio Button",
+}
+
+export const ELEMENT_BUTTON_LABELS: { [key in EElementType]: EElementLabel } = {
+    [EElementType.EMAIL]: EElementLabel.EMAIL,
+    [EElementType.NUMERIC]: EElementLabel.NUMERIC,
+    [EElementType.TEXT]: EElementLabel.TEXT,
+    [EElementType.TEXTAREA]: EElementLabel.TEXTAREA,
+    [EElementType.CONTACT]: EElementLabel.CONTACT,
+    [EElementType.DROPDOWN]: EElementLabel.DROPDOWN,
 };
+
+// const LABEL_TO_TYPE_MAP: { [key in EElementLabel]: EElementType } =
+//     Object.entries(ELEMENT_BUTTON_LABELS).reduce(
+//         (acc, [type, label]) => {
+//             acc[label as EElementLabel] = type as EElementType;
+//             return acc;
+//         },
+//         {} as { [key in EElementLabel]: EElementType }
+//     );
 
 export const ELEMENT_ID_PREFIX: Record<EElementType, string> = {
     [EElementType.EMAIL]: "email-field",
