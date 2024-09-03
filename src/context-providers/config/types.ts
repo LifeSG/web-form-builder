@@ -17,17 +17,17 @@ interface IPanelConfig {
      * When set to `false`, the panel will be hidden.
      * Defaults to `true`, meaning the panel is visible by default.
      */
-    visible?: boolean;
+    shouldShow?: boolean;
 }
 
 interface ISectionConfig {
     /**
      * Controls the visibility of the specific section.
      *
-     * When set to `false`, the section will be hidden.
+     * When set to `false`, the section will be hidden and ignored during schema generation/parsing.
      * Defaults to `true`, meaning the section is visible by default.
      */
-    visible?: boolean;
+    shouldShow?: boolean;
 }
 
 interface IAttributeConfig {
@@ -37,14 +37,14 @@ interface IAttributeConfig {
      * When set to `false`, the attribute will be hidden.
      * Defaults to `true`, meaning the attribute is visible by default.
      */
-    visible?: boolean;
+    shouldShow?: boolean;
     /**
      * Controls the editability of the specific attribute.
      *
      * When set to `false`, the attribute field will be disabled.
      * Defaults to `true`, meaning the attribute is editable by default.
      */
-    editable?: boolean;
+    isEditable?: boolean;
 }
 
 type TElementAttributesMap = {
@@ -65,14 +65,14 @@ interface IElementConfig<T extends keyof TElementAttributesMap> {
      * When set to `false`, the element will be hidden from the Add Elements panel.
      * Defaults to `true`, meaning the element is visible by default.
      */
-    visible?: boolean;
+    shouldShow?: boolean;
     /**
      * Controls the editability of the specific element.
      *
      * When set to `false`, the Edit details form will be disabled for the element.
      * Defaults to `true`, meaning the element is editable by default.
      */
-    editable?: boolean;
+    isEditable?: boolean;
     /**
      * Configuration for attributes that are specific to the element.
      *
@@ -95,7 +95,7 @@ interface ICustomElement {
      *
      * Defaults to `true`, meaning the custom element is editable by default.
      */
-    editable?: boolean;
+    isEditable?: boolean;
 }
 
 export interface IFormBuilderConfig {

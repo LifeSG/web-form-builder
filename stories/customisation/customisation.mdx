@@ -1,0 +1,14 @@
+import { Canvas, Meta } from "@storybook/blocks";
+import * as CustomisationStories from "./customisation.stories"
+
+<Meta of={CustomisationStories} />
+
+# Customisation of Form Builder
+Form Builder provides a config prop that allows you to customise various aspects of the form builder's functionality.
+
+
+<span style={{ color: 'grey', letterSpacing: '0.2em', fontWeight: 'bold' }}>EXAMPLES</span>
+<br/><br/> 
+
+### Hiding the Prefill Section
+<Canvas of={CustomisationStories.HidePrefill} />
