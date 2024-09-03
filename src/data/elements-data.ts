@@ -46,15 +46,6 @@ export const ELEMENT_BUTTON_LABELS: { [key in EElementType]: EElementLabel } = {
     [EElementType.DROPDOWN]: EElementLabel.DROPDOWN,
 };
 
-// const LABEL_TO_TYPE_MAP: { [key in EElementLabel]: EElementType } =
-//     Object.entries(ELEMENT_BUTTON_LABELS).reduce(
-//         (acc, [type, label]) => {
-//             acc[label as EElementLabel] = type as EElementType;
-//             return acc;
-//         },
-//         {} as { [key in EElementLabel]: EElementType }
-//     );
-
 export const ELEMENT_ID_PREFIX: Record<EElementType, string> = {
     [EElementType.EMAIL]: "email-field",
     [EElementType.NUMERIC]: "numeric-field",
