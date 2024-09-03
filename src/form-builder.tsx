@@ -1,14 +1,20 @@
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
-import { MainPanel, SidePanel } from "./components";
-import { Modals, Toasts } from "./components/common";
-import { ScreenNotSupportedErrorDisplay } from "./components/error-display/screen-not-supported-error";
-import { DisplayProvider } from "./context-providers";
+import {
+    MainPanel,
+    Modals,
+    ScreenNotSupportedErrorDisplay,
+    SidePanel,
+    Toasts,
+} from "./components";
 import {
     BuilderProvider,
+    DisplayProvider,
+    FormBuilderConfigProvider,
+    IFormBuilderConfig,
     TElement,
     TElementMap,
     useBuilder,
-} from "./context-providers/builder";
+} from "./context-providers";
 import { Container, Wrapper } from "./form-builder.styles";
 import { ISchemaProps, Translator } from "./translator";
 
@@ -20,6 +26,7 @@ export interface IFormBuilderMethods {
 interface IProps {
     offset?: number;
     onSubmit?: (formData: TElement) => Promise<unknown>;
+    config?: IFormBuilderConfig;
 }
 
 const Component = forwardRef<IFormBuilderMethods, IProps>(
@@ -109,11 +116,13 @@ const Component = forwardRef<IFormBuilderMethods, IProps>(
 export const FormBuilder = forwardRef<IFormBuilderMethods, IProps>(
     (props, ref) => {
         return (
-            <BuilderProvider>
-                <DisplayProvider>
-                    <Component ref={ref} {...props} />
-                </DisplayProvider>
-            </BuilderProvider>
+            <FormBuilderConfigProvider value={props.config}>
+                <BuilderProvider>
+                    <DisplayProvider>
+                        <Component ref={ref} {...props} />
+                    </DisplayProvider>
+                </BuilderProvider>
+            </FormBuilderConfigProvider>
         );
     }
 );
