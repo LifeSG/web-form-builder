@@ -18,7 +18,7 @@ import {
 
 export interface IOptions {
     label: string;
-    elementType: EElementType;
+    elementType?: EElementType;
     id?: string;
     internalId?: string;
 }
