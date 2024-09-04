@@ -4,6 +4,7 @@ import {
     EElementType,
     TextBasedElementTypes,
     useBuilder,
+    useShouldShowPrefill,
 } from "src/context-providers";
 import { TFormFieldValues } from "src/yup-schemas";
 import { BasicDetails } from "./basic-details";
@@ -25,6 +26,7 @@ export const ElementEditor = () => {
     } = useFormContext<TFormFieldValues>();
 
     const { isTouched: isTypeTouched } = getFieldState("type");
+    const shouldShowPrefill = useShouldShowPrefill();
 
     // =========================================================================
     // HELPER FUNCTIONS
@@ -60,7 +62,7 @@ export const ElementEditor = () => {
             <BasicDetails />
             {isTextBasedElement(selectedElementType) && <Validation />}
             <ConditionalRendering />
-            <Prefill />
+            {shouldShowPrefill && <Prefill />}
         </Wrapper>
     );
 };
