@@ -8,15 +8,24 @@ const meta: Meta = {
 
 export default meta;
 
-export const HidePrefill: StoryObj<Component> = {
+export const HideIdField: StoryObj<Component> = {
     render: () => {
         return (
             <div style={{ height: "100vh", width: "100vw" }}>
                 <FormBuilder
                     config={{
-                        sections: {
-                            prefill: {
+                        attributes: {
+                            id: {
                                 shouldShow: false,
+                            },
+                        },
+                        elements: {
+                            Dropdown: {
+                                attributes: {
+                                    id: {
+                                        shouldShow: true,
+                                    },
+                                },
                             },
                         },
                     }}
