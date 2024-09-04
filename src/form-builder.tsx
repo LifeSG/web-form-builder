@@ -9,7 +9,7 @@ import {
 import {
     BuilderProvider,
     DisplayProvider,
-    FormBuilderConfigProvider,
+    ConfigProvider,
     IFormBuilderConfig,
     TElement,
     TElementMap,
@@ -116,13 +116,13 @@ const Component = forwardRef<IFormBuilderMethods, IProps>(
 export const FormBuilder = forwardRef<IFormBuilderMethods, IProps>(
     (props, ref) => {
         return (
-            <FormBuilderConfigProvider value={props.config}>
+            <ConfigProvider value={props.config}>
                 <BuilderProvider>
                     <DisplayProvider>
                         <Component ref={ref} {...props} />
                     </DisplayProvider>
                 </BuilderProvider>
-            </FormBuilderConfigProvider>
+            </ConfigProvider>
         );
     }
 );
