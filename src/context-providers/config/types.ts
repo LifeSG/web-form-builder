@@ -24,7 +24,7 @@ interface ISectionConfig {
     /**
      * Controls the visibility of the specific section.
      *
-     * When set to `false`, the section will be hidden and ignored during schema generation/parsing.
+     * When set to `false`, the section will be hidden.
      * Defaults to `true`, meaning the section is visible by default.
      */
     shouldShow?: boolean;
@@ -58,7 +58,7 @@ type TElementAttributesMap = {
     [EElementLabel.RADIO]: any;
 };
 
-interface IElementConfig<T extends keyof TElementAttributesMap> {
+interface IElementConfig {
     /**
      * Controls the visibility of the specific element.
      *
@@ -79,7 +79,7 @@ interface IElementConfig<T extends keyof TElementAttributesMap> {
      * When configured, these settings will take precedence over the main attributes settings.
      */
     attributes?: {
-        [K in keyof TElementAttributesMap[T]]?: IAttributeConfig;
+        [K in keyof TElement]?: IAttributeConfig;
     };
 }
 
@@ -117,7 +117,7 @@ export interface IFormBuilderConfig {
      * The keys correspond to labels defined in the `EElementLabels` enum.
      */
     elements?: {
-        [elementType in EElementLabel]?: IElementConfig<elementType>;
+        [elementType in EElementLabel]?: IElementConfig;
     };
     /**
      * Configuration for attributes that are common across elements.
