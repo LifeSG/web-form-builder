@@ -1,11 +1,11 @@
 import { EElementLabel } from "src/data/elements-data";
-import { useFormBuilderConfigContext } from "./form-builder-config";
+import { useConfigContext } from "./config-provider";
 
 export const useShouldShowField = (
     fieldName: string,
     elementName: EElementLabel
 ) => {
-    const { elements, attributes } = useFormBuilderConfigContext();
+    const { elements, attributes } = useConfigContext();
     const elementConfig = elements?.[elementName];
 
     const shouldShow =

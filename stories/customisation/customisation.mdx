@@ -11,4 +11,9 @@ Form Builder provides a config prop that allows you to customise various aspects
 <br/><br/> 
 
 ### Hiding the ID Field
+In this example, we are hiding the ID field across all elements by configuring the attributes in the config prop.
 <Canvas of={CustomisationStories.HideIdField} />
+
+### Hiding the ID Field (with element-specific override)
+In this example, we are hiding the ID field across all elements by configuring the attributes in the config prop. We are also overriding this configuration for the Dropdown element, which will allow the ID field to be visible only for the Dropdown element.
+<Canvas of={CustomisationStories.HideIdFieldWithElementSpecificOverride} />

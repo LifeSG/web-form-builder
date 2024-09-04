@@ -9,8 +9,8 @@ import {
 import {
     BuilderProvider,
     DisplayProvider,
-    FormBuilderConfigProvider,
-    IFormBuilderConfig,
+    ConfigProvider,
+    IConfigState,
     TElement,
     TElementMap,
     useBuilder,
@@ -26,7 +26,7 @@ export interface IFormBuilderMethods {
 interface IProps {
     offset?: number;
     onSubmit?: (formData: TElement) => Promise<unknown>;
-    config?: IFormBuilderConfig;
+    config?: IConfigState;
 }
 
 const Component = forwardRef<IFormBuilderMethods, IProps>(
@@ -116,13 +116,13 @@ const Component = forwardRef<IFormBuilderMethods, IProps>(
 export const FormBuilder = forwardRef<IFormBuilderMethods, IProps>(
     (props, ref) => {
         return (
-            <FormBuilderConfigProvider value={props.config}>
+            <ConfigProvider value={props.config}>
                 <BuilderProvider>
                     <DisplayProvider>
                         <Component ref={ref} {...props} />
                     </DisplayProvider>
                 </BuilderProvider>
-            </FormBuilderConfigProvider>
+            </ConfigProvider>
         );
     }
 );

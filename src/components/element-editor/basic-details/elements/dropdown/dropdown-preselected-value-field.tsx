@@ -73,6 +73,7 @@ export const DropdownPreselectedValue = () => {
                     return (
                         <Form.Select
                             {...withoutRef}
+                            data-testid="preselected-value-field"
                             options={preselectedValueOptions}
                             valueExtractor={(item) => item.value}
                             listExtractor={(item) => item.label}

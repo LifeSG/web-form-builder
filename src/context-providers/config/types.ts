@@ -38,7 +38,7 @@ interface IAttributeConfig {
      */
     isEditable?: boolean;
 }
-type TCustomisableElementAttributes = Pick<
+export type TCustomisableElementAttributes = Pick<
     TElement,
     "type" | "description" | "id" | "label" | "placeholder" | "preselectedValue"
 >;
@@ -83,7 +83,7 @@ interface ICustomElement {
     isEditable?: boolean;
 }
 
-export interface IFormBuilderConfig {
+export interface IConfigState {
     /**
      * Configuration for the panels in FormBuilder.
      */
