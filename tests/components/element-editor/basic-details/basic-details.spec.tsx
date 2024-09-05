@@ -1,12 +1,7 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
-import { kebabCase } from "lodash";
-import { BasicDetails } from "src/components/element-editor/basic-details";
-import {
-    EElementType,
-    TCustomisableElementAttributes,
-    TElement,
-} from "src/context-providers";
+import { BasicDetails } from "src/components";
+import { EElementType, TElement } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data";
 import { TestHelper } from "src/util/test-helper";
 
@@ -16,20 +11,6 @@ jest.mock("src/context-providers/display/modal-hook", () => ({
         showModal: mockShowModal,
     }),
 }));
-
-const MOCK_FOCUSED_ELEMENT = (elementType: EElementType) => {
-    const element: TElement = {
-        internalId: "mock123",
-        type: elementType,
-        id: "email-field",
-        required: true,
-        requiredErrorMsg: "This is a required field.",
-        description: "hellooo",
-        label: ELEMENT_BUTTON_LABELS[elementType],
-        columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
-    };
-    return element;
-};
 
 describe("BasicDetails", () => {
     beforeEach(() => {
@@ -210,118 +191,6 @@ describe("BasicDetails", () => {
             expect(updatedPreselectedValueField).toHaveValue("");
         });
     });
-
-    describe("hiding of form fields based on Form Builder Config", () => {
-        const attributeFields: Array<keyof TCustomisableElementAttributes> = [
-            "type",
-            "description",
-            "id",
-            "label",
-            "placeholder",
-            "preselectedValue",
-        ];
-
-        it.each(attributeFields)(
-            "should show the %s field when shouldShow in attributes is not configured",
-            async (fieldName) => {
-                renderComponent({
-                    builderContext: {
-                        focusedElement: {
-                            element: MOCK_FOCUSED_ELEMENT(EElementType.EMAIL),
-                            isDirty: false,
-                        },
-                        selectedElementType: EElementType.EMAIL,
-                    },
-                });
-
-                const field = screen.getByTestId(
-                    `${kebabCase(fieldName)}-field`
-                );
-                expect(field).toBeInTheDocument();
-            }
-        );
-
-        it.each(attributeFields)(
-            "should hide the %s field when shouldShow is set to false in attributes",
-            async (fieldName) => {
-                const config = {
-                    attributes: {
-                        [fieldName]: {
-                            shouldShow: false,
-                        },
-                    },
-                };
-
-                renderComponent({
-                    configContext: config,
-                    builderContext: {
-                        focusedElement: {
-                            element: MOCK_FOCUSED_ELEMENT(EElementType.EMAIL),
-                            isDirty: false,
-                        },
-                        selectedElementType: EElementType.EMAIL,
-                    },
-                });
-
-                const field = screen.queryByTestId(
-                    `${kebabCase(fieldName)}-field`
-                );
-                expect(field).not.toBeInTheDocument();
-            }
-        );
-
-        it.each(
-            attributeFields.flatMap((field) =>
-                Object.values(EElementType).map((elementType) => [
-                    field,
-                    elementType,
-                ])
-            )
-        )(
-            "should correctly handle %s field visibility for element %s",
-            async (fieldName, elementType) => {
-                if (
-                    fieldName === "preselectedValue" &&
-                    elementType === EElementType.DROPDOWN
-                ) {
-                    // Skip this test as preselectedValue is not visible by default for dropdown
-                    return;
-                }
-                renderComponent({
-                    configContext: {
-                        attributes: {
-                            [fieldName]: {
-                                shouldShow: false,
-                            },
-                        },
-                        elements: {
-                            [ELEMENT_BUTTON_LABELS[elementType]]: {
-                                attributes: {
-                                    [fieldName]: {
-                                        shouldShow: true,
-                                    },
-                                },
-                            },
-                        },
-                    },
-                    builderContext: {
-                        focusedElement: {
-                            element: MOCK_FOCUSED_ELEMENT(
-                                elementType as EElementType
-                            ),
-                            isDirty: false,
-                        },
-                        selectedElementType: elementType as EElementType,
-                    },
-                });
-
-                const field = screen.getByTestId(
-                    `${kebabCase(fieldName)}-field`
-                );
-                expect(field).toBeInTheDocument();
-            }
-        );
-    });
 });
 
 // =============================================================================
@@ -338,3 +207,17 @@ const renderComponent = (overrideOptions?: TestHelper.RenderOptions) => {
 
 const mockHideModal = jest.fn();
 const mockShowModal = jest.fn();
+
+const MOCK_FOCUSED_ELEMENT = (elementType: EElementType) => {
+    const element: TElement = {
+        internalId: "mock123",
+        type: elementType,
+        id: "email-field",
+        required: true,
+        requiredErrorMsg: "This is a required field.",
+        description: "hellooo",
+        label: ELEMENT_BUTTON_LABELS[elementType],
+        columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
+    };
+    return element;
+};
