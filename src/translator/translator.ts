@@ -47,7 +47,10 @@ export namespace Translator {
             shouldShowPrefill?: boolean;
         }
     ) => {
-        const prefill = generatePrefillSchema(elements);
+        const shouldShowPrefill = options?.shouldShowPrefill ?? true;
+        const prefill = shouldShowPrefill
+            ? generatePrefillSchema(elements)
+            : {};
         const defaultValues = generateDefaultValuesSchema(elements);
 
         const orderedElements = orderedIdentifiers.reduce((acc, value) => {
@@ -111,7 +114,7 @@ export namespace Translator {
         };
         return {
             schema: elementsSchema,
-            ...((options?.shouldShowPrefill ?? true) && { prefill }),
+            ...(shouldShowPrefill && { prefill }),
         };
     };
 

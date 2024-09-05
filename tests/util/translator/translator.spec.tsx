@@ -286,8 +286,6 @@ describe("Translator", () => {
                 }
             );
 
-            console.log(generatedSchema);
-
             expect(generatedSchema).toStrictEqual(mockSchema);
         });
     });
@@ -397,6 +395,74 @@ describe("Translator", () => {
         expect(parsedSchema.newElements[parsedElementId]).toHaveProperty(
             "preselectedValue",
             defaultValue
+        );
+    });
+
+    it("should parse schema with prefill correctly", () => {
+        const mockSchema = generateMockSchema({
+            prefill: {
+                [ID]: [
+                    {
+                        prefillMode: "Myinfo",
+                        path: "testpath",
+                    },
+                ],
+            },
+            children: generateMockElementSchema({
+                id: ID,
+                label: {
+                    mainLabel: LABEL,
+                },
+                uiType: EElementType.TEXT,
+            }),
+        });
+
+        const parsedSchema = Translator.parseSchema(mockSchema as ISchemaProps);
+
+        const parsedElementId = Object.keys(parsedSchema.newElements)[0];
+
+        expect(parsedSchema.newElements[parsedElementId]).toHaveProperty(
+            "prefill",
+            [
+                {
+                    path: "testpath",
+                    prefillMode: "Myinfo",
+                },
+            ]
+        );
+    });
+
+    it("should parse schema without prefill if shouldShowPrefill in options is false", () => {
+        const mockSchema = generateMockSchema({
+            prefill: {
+                [ID]: [
+                    {
+                        prefillMode: "Myinfo",
+                        path: "testpath",
+                    },
+                ],
+            },
+            children: generateMockElementSchema({
+                id: ID,
+                label: {
+                    mainLabel: LABEL,
+                },
+                uiType: EElementType.TEXT,
+            }),
+        });
+
+        const parsedSchema = Translator.parseSchema(
+            mockSchema as ISchemaProps,
+            {
+                shouldShowPrefill: false,
+            }
+        );
+
+        const parsedElementId = Object.keys(parsedSchema.newElements)[0];
+
+        expect(parsedSchema.newElements[parsedElementId]).toHaveProperty(
+            "prefill",
+            []
         );
     });
 });
