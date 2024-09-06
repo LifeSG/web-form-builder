@@ -25,6 +25,7 @@ import {
     ElementBaseCard,
     IdLabel,
     CardWrapper,
+    ElementName,
 } from "./element-card.styles";
 
 interface IProps {
@@ -147,7 +148,7 @@ export const ElementCard = ({ element, onClick }: IProps) => {
                         <DragHandle data-testid="drag-handle" />
                         <CardIcon elementType={element?.type} />
                         <DetailsContainer>
-                            <Text.Body weight="semibold">{label}</Text.Body>
+                            <ElementName weight="semibold">{label}</ElementName>
                             <IdLabel weight="semibold">ID: {id}</IdLabel>
                         </DetailsContainer>
                         {isFocused && (
@@ -160,7 +161,7 @@ export const ElementCard = ({ element, onClick }: IProps) => {
                                     disabled={disableDuplicate}
                                 >
                                     <CopyIcon />
-                                    Duplicate
+                                    {size?.size === "full" && "Duplicate"}
                                 </ActionButton>
                                 <ActionButton
                                     data-testid="duplicate-button"
@@ -168,7 +169,7 @@ export const ElementCard = ({ element, onClick }: IProps) => {
                                     onClick={handleDeleteClick}
                                 >
                                     <BinIcon />
-                                    Delete
+                                    {size?.size === "full" && "Delete"}
                                 </ActionButton>
                             </ActionsContainer>
                         )}
