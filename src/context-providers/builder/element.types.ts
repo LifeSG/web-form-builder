@@ -141,7 +141,7 @@ export interface IContactFieldAttributes extends IBaseFieldAttributes {
     placeholder?: string;
     validation: IValidation[];
     enableClearButton: boolean;
-    defaultCountryCode?: string;
+    defaultCountryCode: string;
     displayAsFixedCountryCode?: boolean;
 }
 

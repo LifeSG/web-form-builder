@@ -1,11 +1,13 @@
 import { Alert } from "@lifesg/react-design-system/alert";
 import { Form } from "@lifesg/react-design-system/form";
+import { Text } from "@lifesg/react-design-system/text";
 import { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { TogglePair } from "src/components/common/toggle-pair/toggle-pair";
 import { IContactFieldAttributes } from "src/context-providers";
 import { MandatoryFieldBox } from "../../common";
 import { CountryData } from "./country-code";
+import { SecondaryLabel } from "./default-country-code.styles";
 
 export const DefaultCountryCode = () => {
     // ===========================================================================
@@ -13,24 +15,21 @@ export const DefaultCountryCode = () => {
     // ===========================================================================
     const { control, watch, unregister, setValue } =
         useFormContext<IContactFieldAttributes>();
-    const defaultCountryCode = watch("defaultCountryCode");
+    const defaultCountryCode = watch("defaultCountryCode", "");
     const displayAsFixedCountryCode = watch("displayAsFixedCountryCode");
 
-    const options = [
-        ["No default country code", null, null, null],
-        ...CountryData,
-    ];
+    const options = [["No default country code", "", "", ""], ...CountryData];
 
-    const selectedOption = options.find(
-        (item) => item[0] === defaultCountryCode
-    );
+    const selectedOption =
+        options.find((item) => item[0] === defaultCountryCode) || options[0];
 
     // =========================================================================
     // EFFECTS
     // =========================================================================
 
+    /** This useEffect ensures that dirty state is cleared if default value of defaultCountryCode is empty. */
     useEffect(() => {
-        if (defaultCountryCode === "No default country code") {
+        if (defaultCountryCode === "") {
             setValue("defaultCountryCode", "", {
                 shouldDirty: true,
             });
@@ -40,6 +39,12 @@ export const DefaultCountryCode = () => {
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
+    const renderCustomOption = (item: (string | number | string[])[]) => (
+        <Text.Body>
+            {item[0]}{" "}
+            <SecondaryLabel>{item[3] ? `+${item[3]}` : ""}</SecondaryLabel>
+        </Text.Body>
+    );
 
     return (
         <MandatoryFieldBox>
@@ -52,17 +57,18 @@ export const DefaultCountryCode = () => {
                         <Form.Select
                             {...fieldWithoutRef}
                             data-testid="default-country-code"
-                            label="Default country code (optional)"
+                            label="Default country code"
+                            renderCustomSelectedOption={renderCustomOption}
+                            renderListItem={renderCustomOption}
                             options={options}
                             selectedOption={selectedOption}
-                            listExtractor={(item) => ({
-                                title: item[0] as string,
-                                secondaryLabel: item[3] ? `+${item[3]}` : "",
-                            })}
-                            displayValueExtractor={(item) =>
-                                `${item[0]} (+${item[3]})`
-                            }
-                            onSelectOption={(item) => field.onChange(item[0])}
+                            onSelectOption={(item) => {
+                                if (item[0] === "No default country code") {
+                                    field.onChange("");
+                                    return;
+                                }
+                                field.onChange(item[0]);
+                            }}
                             enableSearch
                         />
                     );
