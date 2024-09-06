@@ -37,6 +37,7 @@ export interface IFocusedElement {
 export interface IDeletedElement {
     element: TElement;
     position: number;
+    size: "full" | "left" | "right";
 }
 
 export interface IDeletedElementMap {
