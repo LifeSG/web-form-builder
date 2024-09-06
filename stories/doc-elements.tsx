@@ -5,10 +5,10 @@ interface IProps {
     onSubmit?: (formData: TElement) => Promise<unknown>;
 }
 
-export const DocElement = ({ onSubmit }: IProps) => {
+export const DocElement = ({onSubmit}: IProps) => {
     return (
         <div style={{ height: "100vh", width: "100vw" }}>
-            <FormBuilder onSubmit={onSubmit} />
+            <FormBuilder onSubmit={onSubmit}/>
         </div>
     );
 };
