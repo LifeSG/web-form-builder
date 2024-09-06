@@ -126,10 +126,15 @@ export const BuilderContext = createContext<TBuilderContext>({
 // =============================================================================
 export const BuilderProvider = ({
     children,
+    mockState,
 }: {
     children: React.ReactNode;
+    mockState?: Partial<IBuilderState>;
 }) => {
-    const [state, dispatch] = useImmerReducer(builderReducer, DEFAULT_VALUES);
+    const [state, dispatch] = useImmerReducer(builderReducer, {
+        ...DEFAULT_VALUES,
+        ...mockState,
+    });
     return (
         <BuilderContext.Provider value={{ state, dispatch }}>
             {children}
