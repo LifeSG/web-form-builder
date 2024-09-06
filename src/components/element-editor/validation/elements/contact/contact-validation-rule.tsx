@@ -1,4 +1,5 @@
 import { Form } from "@lifesg/react-design-system/form";
+import { Text } from "@lifesg/react-design-system/text";
 import { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import {
@@ -6,6 +7,7 @@ import {
     IContactFieldAttributes,
     useBuilder,
 } from "src/context-providers";
+import { SecondaryLabel } from "./contact-validation-rule.styles";
 
 interface IProps {
     index: number;
@@ -78,10 +80,14 @@ export const ContactValidationRule = ({ index }: IProps) => {
                             (option) => option.value === field.value
                         )}
                         options={options}
-                        listExtractor={(option) => ({
-                            title: option.title,
-                            secondaryLabel: option.label,
-                        })}
+                        renderListItem={(option) => (
+                            <div>
+                                <Text.Body>{option.title}</Text.Body>
+                                <SecondaryLabel weight="semibold">
+                                    {option.label}
+                                </SecondaryLabel>
+                            </div>
+                        )}
                         displayValueExtractor={(option) =>
                             `${option.title} (${option.label})`
                         }
