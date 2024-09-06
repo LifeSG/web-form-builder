@@ -1,5 +1,5 @@
 import { EElementLabel } from "src/data/elements-data";
-import { useConfigContext } from "./config-provider";
+import { useConfigContext } from "./config-hook";
 
 export const useShouldShowField = (
     fieldName: string,

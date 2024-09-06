@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { useConfigContext, useShouldShowField } from "src/context-providers";
 import { EElementLabel } from "src/data";
 
-jest.mock("src/context-providers/config/config-provider", () => ({
+jest.mock("src/context-providers/config/config-hook", () => ({
     useConfigContext: jest.fn(),
 }));
 

@@ -13,13 +13,3 @@ export const ConfigProvider: React.FC<{
         </ConfigContext.Provider>
     );
 };
-
-export const useConfigContext = () => {
-    const context = useContext(ConfigContext);
-    if (context === undefined) {
-        throw new Error(
-            "useFormBuilderConfigContext must be used within a FormBuilderConfigContext"
-        );
-    }
-    return context;
-};
