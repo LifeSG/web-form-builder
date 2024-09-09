@@ -1,8 +1,13 @@
 import { render, screen } from "@testing-library/react";
-import { useConfigContext, useShouldShowField } from "src/context-providers";
+import {
+    ConfigContext,
+    useConfigContext,
+    useShouldShowField,
+} from "src/context-providers";
 import { EElementLabel } from "src/data";
 
-jest.mock("src/context-providers/config/config-hook", () => ({
+jest.mock("src/context-providers", () => ({
+    ...jest.requireActual("src/context-providers"),
     useConfigContext: jest.fn(),
 }));
 
@@ -20,10 +25,12 @@ describe("useShouldShowField", () => {
         });
 
         render(
-            <TestComponent
-                fieldName="label"
-                elementName={EElementLabel.EMAIL}
-            />
+            <ConfigContext.Provider value={mockUseConfigContext()}>
+                <TestComponent
+                    fieldName="label"
+                    elementName={EElementLabel.EMAIL}
+                />
+            </ConfigContext.Provider>
         );
 
         expect(screen.getByTestId("should-show").textContent).toBe("Visible");
@@ -40,10 +47,12 @@ describe("useShouldShowField", () => {
         });
 
         render(
-            <TestComponent
-                fieldName="label"
-                elementName={EElementLabel.EMAIL}
-            />
+            <ConfigContext.Provider value={mockUseConfigContext()}>
+                <TestComponent
+                    fieldName="label"
+                    elementName={EElementLabel.EMAIL}
+                />
+            </ConfigContext.Provider>
         );
 
         expect(screen.getByTestId("should-show").textContent).toBe("Hidden");
@@ -64,10 +73,12 @@ describe("useShouldShowField", () => {
         });
 
         render(
-            <TestComponent
-                fieldName="label"
-                elementName={EElementLabel.EMAIL}
-            />
+            <ConfigContext.Provider value={mockUseConfigContext()}>
+                <TestComponent
+                    fieldName="label"
+                    elementName={EElementLabel.EMAIL}
+                />
+            </ConfigContext.Provider>
         );
 
         expect(screen.getByTestId("should-show").textContent).toBe("Visible");
@@ -92,10 +103,12 @@ describe("useShouldShowField", () => {
         });
 
         render(
-            <TestComponent
-                fieldName="label"
-                elementName={EElementLabel.EMAIL}
-            />
+            <ConfigContext.Provider value={mockUseConfigContext()}>
+                <TestComponent
+                    fieldName="label"
+                    elementName={EElementLabel.EMAIL}
+                />
+            </ConfigContext.Provider>
         );
 
         expect(screen.getByTestId("should-show").textContent).toBe("Visible");
@@ -116,10 +129,12 @@ describe("useShouldShowField", () => {
         });
 
         render(
-            <TestComponent
-                fieldName="label"
-                elementName={EElementLabel.EMAIL}
-            />
+            <ConfigContext.Provider value={mockUseConfigContext()}>
+                <TestComponent
+                    fieldName="label"
+                    elementName={EElementLabel.EMAIL}
+                />
+            </ConfigContext.Provider>
         );
 
         expect(screen.getByTestId("should-show").textContent).toBe("Hidden");

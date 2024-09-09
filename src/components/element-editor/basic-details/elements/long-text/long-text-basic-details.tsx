@@ -12,7 +12,7 @@ import {
 } from "../../common";
 import { ResizableInput } from "./resizable-input";
 
-const fields = [
+const FIELDS = [
     { name: "type", component: TypeField },
     { name: "label", component: LabelField },
     { name: "required", component: MandatoryField },
@@ -27,7 +27,7 @@ const fields = [
 export const LongTextBasicDetails = () => {
     return (
         <div data-testid="long-text-basic-details">
-            {fields.map(({ name, component: Component }) => {
+            {FIELDS.map(({ name, component: Component }) => {
                 const shouldShow = useShouldShowField(
                     name,
                     EElementLabel.TEXTAREA

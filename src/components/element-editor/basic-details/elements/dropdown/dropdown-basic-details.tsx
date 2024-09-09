@@ -11,7 +11,7 @@ import {
 import { DropdownItems } from "./dropdown-items";
 import { DropdownPreselectedValue } from "./dropdown-preselected-value-field";
 
-const fields = [
+const FIELDS = [
     { name: "type", component: TypeField },
     { name: "label", component: LabelField },
     { name: "required", component: MandatoryField },
@@ -28,7 +28,7 @@ const fields = [
 export const DropdownBasicDetails = () => {
     return (
         <div data-testid="dropdown-basic-details">
-            {fields.map(({ name, component: Component }) => {
+            {FIELDS.map(({ name, component: Component }) => {
                 const shouldShow = useShouldShowField(
                     name,
                     EElementLabel.DROPDOWN

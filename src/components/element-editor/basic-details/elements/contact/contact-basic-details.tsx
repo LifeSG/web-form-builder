@@ -12,7 +12,7 @@ import {
 import { DefaultCountryCode } from "./default-country-code";
 import { EnableClearButton } from "./enable-clear-button";
 
-const fields = [
+const FIELDS = [
     { name: "type", component: TypeField },
     { name: "label", component: LabelField },
     { name: "required", component: MandatoryField },
@@ -30,7 +30,7 @@ const fields = [
 export const ContactBasicDetails = () => {
     return (
         <div data-testid="contact-basic-details">
-            {fields.map(({ name, component: Component }) => {
+            {FIELDS.map(({ name, component: Component }) => {
                 const shouldShow = useShouldShowField(
                     name,
                     EElementLabel.CONTACT

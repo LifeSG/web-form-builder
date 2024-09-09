@@ -36,7 +36,7 @@ describe("LongTextBasicDetails", () => {
 
         it.each(attributeFields)(
             "should hide the %s field when shouldShow in attributes is set to false",
-            async (fieldName) => {
+            (fieldName) => {
                 renderComponent({
                     configContext: {
                         attributes: {

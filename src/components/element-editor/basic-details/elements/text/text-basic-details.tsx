@@ -10,7 +10,7 @@ import {
     TypeField,
 } from "../../common";
 
-const fields = [
+const FIELDS = [
     { name: "type", component: TypeField },
     { name: "label", component: LabelField },
     { name: "required", component: MandatoryField },
@@ -26,7 +26,7 @@ const fields = [
 export const TextBasicDetails = () => {
     return (
         <div data-testid="text-basic-details">
-            {fields.map(({ name, component: Component }) => {
+            {FIELDS.map(({ name, component: Component }) => {
                 const shouldShow = useShouldShowField(name, EElementLabel.TEXT);
                 return shouldShow && <Component key={name} />;
             })}
