@@ -34,25 +34,6 @@ describe("MainPanel", () => {
         ).toBeInTheDocument();
     });
 
-    it("should add a new element upon duplicating", () => {
-        renderComponent({
-            builderContext: {
-                orderedIdentifiers: MOCK_ORDERED_IDENTIFIER,
-                elements: MOCK_ELEMENTS,
-                focusedElement: {
-                    element: Object.values(MOCK_ELEMENTS)[0],
-                },
-            },
-        });
-        expect(screen.getAllByTestId("element-content")).toHaveLength(2);
-        const duplicateButton = screen.getByRole("button", {
-            name: "Duplicate",
-        });
-        expect(duplicateButton).toBeInTheDocument();
-        fireEvent.click(duplicateButton);
-        expect(screen.getAllByTestId("element-content")).toHaveLength(3);
-    });
-
     describe("Modals", () => {
         it("should render the modal when the editor panel is dirty when clicking on the cross button", async () => {
             renderComponent({

@@ -4,7 +4,7 @@ import { noop } from "lodash";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import {
-    BuilderProvider,
+    BuilderContext,
     DisplayContext,
     EBuilderMode,
     EElementType,
@@ -60,7 +60,12 @@ export namespace TestHelper {
     ) => {
         return (
             <ThemeProvider theme={BaseTheme}>
-                <BuilderProvider mockState={builderContext}>
+                <BuilderContext.Provider
+                    value={{
+                        state: { ...mockBuilderState, ...builderContext },
+                        dispatch: noop,
+                    }}
+                >
                     <DisplayContext.Provider
                         value={{
                             state: { ...mockDisplayState, ...displayContext },
@@ -80,7 +85,7 @@ export namespace TestHelper {
                             component
                         )}
                     </DisplayContext.Provider>
-                </BuilderProvider>
+                </BuilderContext.Provider>
             </ThemeProvider>
         );
     };
