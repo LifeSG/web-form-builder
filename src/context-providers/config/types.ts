@@ -1,14 +1,6 @@
 import { TFrontendEngineFieldSchema } from "@lifesg/web-frontend-engine";
 import { EElementLabel } from "src/data";
-import {
-    IContactFieldAttributes,
-    IDropdownAttributes,
-    IEmailFieldAttributes,
-    INumericFieldAttributes,
-    ITextareaAttributes,
-    ITextFieldAttributes,
-    TElement,
-} from "../builder";
+import { TElement } from "../builder";
 
 interface IPanelConfig {
     /**
@@ -16,16 +8,6 @@ interface IPanelConfig {
      *
      * When set to `false`, the panel will be hidden.
      * Defaults to `true`, meaning the panel is visible by default.
-     */
-    shouldShow?: boolean;
-}
-
-interface ISectionConfig {
-    /**
-     * Controls the visibility of the specific section.
-     *
-     * When set to `false`, the section will be hidden and ignored during schema generation/parsing.
-     * Defaults to `true`, meaning the section is visible by default.
      */
     shouldShow?: boolean;
 }
@@ -46,17 +28,6 @@ interface IAttributeConfig {
      */
     isEditable?: boolean;
 }
-
-type TElementAttributesMap = {
-    [EElementLabel.EMAIL]: IEmailFieldAttributes;
-    [EElementLabel.TEXT]: ITextFieldAttributes;
-    [EElementLabel.TEXTAREA]: ITextareaAttributes;
-    [EElementLabel.DROPDOWN]: IDropdownAttributes;
-    [EElementLabel.NUMERIC]: INumericFieldAttributes;
-    [EElementLabel.CONTACT]: IContactFieldAttributes;
-    [EElementLabel.CHECKBOX]: any;
-    [EElementLabel.RADIO]: any;
-};
 
 interface IElementConfig {
     /**
@@ -79,9 +50,25 @@ interface IElementConfig {
      * When configured, these settings will take precedence over the main attributes settings.
      */
     attributes?: {
-        [K in keyof TElement]?: IAttributeConfig;
+        [K in keyof TCustomisableElementAttributes]?: IAttributeConfig;
     };
 }
+
+export type TCustomisableElementAttributes = Pick<
+    TElement,
+    "type" | "description" | "id" | "label" | "placeholder" | "preselectedValue"
+>;
+
+export type TCustomisableGlobalAttributes = Pick<
+    TElement,
+    | "type"
+    | "description"
+    | "id"
+    | "label"
+    | "placeholder"
+    | "preselectedValue"
+    | "prefill"
+>;
 
 interface ICustomElement {
     /**
@@ -106,12 +93,6 @@ export interface IFormBuilderConfig {
         pages?: IPanelConfig;
     };
     /**
-     * Configuration for the sections of FormBuilder.
-     */
-    sections?: {
-        prefill?: ISectionConfig;
-    };
-    /**
      * Configuration for individual elements within FormBuilder.
      *
      * The keys correspond to labels defined in the `EElementLabels` enum.
@@ -120,12 +101,13 @@ export interface IFormBuilderConfig {
         [elementType in EElementLabel]?: IElementConfig;
     };
     /**
-     * Configuration for attributes that are common across elements.
+     * Configuration settings for attributes that are shared across all elements.
      *
-     * When configured, these settings will take precedence over the individual element's attribute settings.
+     * These common settings can be customised or overwritten by each element's specific attribute settings under the `elements` prop.
+     * Use this configuration to define default values or behaviors that apply broadly while allowing for individual element customisation as needed.
      */
     attributes?: {
-        [K in keyof TElement]?: IAttributeConfig;
+        [K in keyof TCustomisableGlobalAttributes]?: IAttributeConfig;
     };
 
     //TODO: To be implemented later on

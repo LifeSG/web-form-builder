@@ -14,7 +14,7 @@ export const HidePrefill: StoryObj<Component> = {
             <div style={{ height: "100vh", width: "100vw" }}>
                 <FormBuilder
                     config={{
-                        sections: {
+                        attributes: {
                             prefill: {
                                 shouldShow: false,
                             },

@@ -1,9 +1,9 @@
 import { useConfigContext } from "./config-hook";
 
 export const useShouldShowPrefill = () => {
-    const { sections } = useConfigContext();
+    const { attributes } = useConfigContext();
 
-    const shouldShow = sections?.prefill?.shouldShow ?? true;
+    const shouldShow = attributes?.prefill?.shouldShow ?? true;
 
     return shouldShow;
 };
