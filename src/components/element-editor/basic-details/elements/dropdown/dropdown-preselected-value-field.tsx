@@ -3,6 +3,7 @@ import { Text } from "@lifesg/react-design-system/text";
 import isEmpty from "lodash/isEmpty";
 import { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
+import { useShouldShowPrefill } from "src/context-providers";
 import { IDropdownItemAttributes } from "src/context-providers/builder/";
 import { TOverallOptionGroupBasedValues } from "src/yup-schemas";
 
@@ -19,6 +20,7 @@ export const DropdownPreselectedValue = () => {
 
     const preselectedValue = watch("preselectedValue");
     const dropdownItems = watch("dropdownItems", []);
+    const shouldShowPrefill = useShouldShowPrefill();
 
     const preselectedValueOptions: IDropdownItemAttributes[] = [
         {
@@ -80,13 +82,13 @@ export const DropdownPreselectedValue = () => {
                             placeholder="Select default value"
                             label={{
                                 children: "Pre-selected value (optional)",
-                                subtitle: (
+                                subtitle: shouldShowPrefill ? (
                                     <Text.H6 weight={400}>
                                         Select a value for users. Note that
                                         prefill value will replace the
                                         pre-selected value, if present.
                                     </Text.H6>
-                                ),
+                                ) : null,
                             }}
                             selectedOption={selectedOption}
                             onSelectOption={(option) => {

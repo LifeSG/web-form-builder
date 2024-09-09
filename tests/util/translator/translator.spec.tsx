@@ -234,6 +234,60 @@ describe("Translator", () => {
             );
             expect(generatedSchema).toStrictEqual(mockSchema);
         });
+
+        it("should generate schema without prefill if shouldShowPrefill in options is false", () => {
+            const mockElementAttributes: IEmailFieldAttributes = {
+                type: EElementType.EMAIL,
+                label: LABEL,
+                id: ID,
+                internalId: INTERNAL_ID,
+                required: true,
+                requiredErrorMsg: REQUIRED_ERROR_MESSAGE,
+                columns: { desktop: 12, tablet: 8, mobile: 4 },
+                validation: [],
+                prefill: [
+                    {
+                        prefillMode: "Myinfo",
+                        path: "testpath",
+                    },
+                ],
+            };
+
+            const mockElement: TElementMap = generateMockElement(
+                mockElementAttributes
+            );
+
+            const mockSchema = generateMockSchema({
+                shouldShowPrefill: false,
+                children: generateMockElementSchema({
+                    id: ID,
+                    label: {
+                        mainLabel: LABEL,
+                    },
+                    uiType: EElementType.EMAIL,
+                    validation: [
+                        {
+                            required: true,
+                            errorMessage: REQUIRED_ERROR_MESSAGE,
+                        },
+                    ],
+                }),
+            });
+
+            const orderedIdentifiers = [
+                { internalId: INTERNAL_ID, position: 0 },
+            ];
+
+            const generatedSchema = Translator.generateSchema(
+                mockElement,
+                orderedIdentifiers,
+                {
+                    shouldShowPrefill: false,
+                }
+            );
+
+            expect(generatedSchema).toStrictEqual(mockSchema);
+        });
     });
 
     describe("parseSchema", () => {
@@ -341,6 +395,74 @@ describe("Translator", () => {
         expect(parsedSchema.newElements[parsedElementId]).toHaveProperty(
             "preselectedValue",
             defaultValue
+        );
+    });
+
+    it("should parse schema with prefill correctly", () => {
+        const mockSchema = generateMockSchema({
+            prefill: {
+                [ID]: [
+                    {
+                        prefillMode: "Myinfo",
+                        path: "testpath",
+                    },
+                ],
+            },
+            children: generateMockElementSchema({
+                id: ID,
+                label: {
+                    mainLabel: LABEL,
+                },
+                uiType: EElementType.TEXT,
+            }),
+        });
+
+        const parsedSchema = Translator.parseSchema(mockSchema as ISchemaProps);
+
+        const parsedElementId = Object.keys(parsedSchema.newElements)[0];
+
+        expect(parsedSchema.newElements[parsedElementId]).toHaveProperty(
+            "prefill",
+            [
+                {
+                    path: "testpath",
+                    prefillMode: "Myinfo",
+                },
+            ]
+        );
+    });
+
+    it("should parse schema without prefill if shouldShowPrefill in options is false", () => {
+        const mockSchema = generateMockSchema({
+            prefill: {
+                [ID]: [
+                    {
+                        prefillMode: "Myinfo",
+                        path: "testpath",
+                    },
+                ],
+            },
+            children: generateMockElementSchema({
+                id: ID,
+                label: {
+                    mainLabel: LABEL,
+                },
+                uiType: EElementType.TEXT,
+            }),
+        });
+
+        const parsedSchema = Translator.parseSchema(
+            mockSchema as ISchemaProps,
+            {
+                shouldShowPrefill: false,
+            }
+        );
+
+        const parsedElementId = Object.keys(parsedSchema.newElements)[0];
+
+        expect(parsedSchema.newElements[parsedElementId]).toHaveProperty(
+            "prefill",
+            []
         );
     });
 });

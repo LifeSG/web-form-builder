@@ -42,9 +42,15 @@ import { ISchemaProps } from "./types";
 export namespace Translator {
     export const generateSchema = (
         elements: TElementMap,
-        orderedIdentifiers: IElementIdentifier[]
+        orderedIdentifiers: IElementIdentifier[],
+        options?: {
+            shouldShowPrefill?: boolean;
+        }
     ) => {
-        const prefill = generatePrefillSchema(elements);
+        const shouldShowPrefill = options?.shouldShowPrefill ?? true;
+        const prefill = shouldShowPrefill
+            ? generatePrefillSchema(elements)
+            : {};
         const defaultValues = generateDefaultValuesSchema(elements);
 
         const orderedElements = orderedIdentifiers.reduce((acc, value) => {
@@ -106,12 +112,22 @@ export namespace Translator {
                 },
             },
         };
-        return { schema: elementsSchema, prefill };
+        return {
+            schema: elementsSchema,
+            ...(shouldShowPrefill && { prefill }),
+        };
     };
 
-    export const parseSchema = (formSchema: ISchemaProps) => {
+    export const parseSchema = (
+        formSchema: ISchemaProps,
+        options?: {
+            shouldShowPrefill?: boolean;
+        }
+    ) => {
         const elementSchemas: Record<string, TFrontendEngineFieldSchema> =
             formSchema?.schema?.sections?.section?.children?.grid?.["children"];
+
+        const shouldShowPrefill = options?.shouldShowPrefill ?? true;
 
         if (!elementSchemas) {
             throw new Error("Element schemas are missing");
@@ -141,7 +157,7 @@ export namespace Translator {
                         parsedElement = EmailSchemaParser.schemaToElement(
                             elementSchema as IEmailFieldSchema,
                             key,
-                            formSchema.prefill,
+                            shouldShowPrefill ? formSchema.prefill : {},
                             defaultValue
                         );
                         break;
@@ -150,7 +166,7 @@ export namespace Translator {
                         parsedElement = TextSchemaParser.schemaToElement(
                             elementSchema as ITextFieldSchema,
                             key,
-                            formSchema.prefill,
+                            shouldShowPrefill ? formSchema.prefill : {},
                             defaultValue
                         );
                         break;
@@ -159,7 +175,7 @@ export namespace Translator {
                         parsedElement = LongTextSchemaParser.schemaToElement(
                             elementSchema as ITextareaSchema,
                             key,
-                            formSchema.prefill,
+                            shouldShowPrefill ? formSchema.prefill : {},
                             defaultValue
                         );
                         break;
@@ -168,7 +184,7 @@ export namespace Translator {
                         parsedElement = NumericSchemaParser.schemaToElement(
                             elementSchema as INumericFieldSchema,
                             key,
-                            formSchema.prefill,
+                            shouldShowPrefill ? formSchema.prefill : {},
                             defaultValue
                         );
                         break;
@@ -177,7 +193,7 @@ export namespace Translator {
                         parsedElement = ContactSchemaParser.schemaToElement(
                             elementSchema as IContactFieldSchema,
                             key,
-                            formSchema.prefill,
+                            shouldShowPrefill ? formSchema.prefill : {},
                             defaultValue
                         );
                         break;
@@ -186,7 +202,7 @@ export namespace Translator {
                         parsedElement = DropdownSchemaParser.schemaToElement(
                             elementSchema as ISelectSchema,
                             key,
-                            formSchema.prefill,
+                            shouldShowPrefill ? formSchema.prefill : {},
                             defaultValue
                         );
                         break;
