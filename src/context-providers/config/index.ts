@@ -1,3 +1,3 @@
 export * from "./config-provider";
-export * from "./hook";
+export * from "./config-hook";
 export * from "./types";

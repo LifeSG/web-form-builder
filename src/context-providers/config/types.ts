@@ -1,6 +1,7 @@
 import { TFrontendEngineFieldSchema } from "@lifesg/web-frontend-engine";
 import { EElementLabel } from "src/data";
 import { TElement } from "../builder";
+import { TElementSchema } from "src/translator/parse/types";
 
 interface IPanelConfig {
     /**
@@ -111,12 +112,13 @@ export interface IFormBuilderConfig {
     };
 
     //TODO: To be implemented later on
-    // /**
-    //  * An array of FormBuilder's supported element schemas that will be used to prepopulate FormBuilder.
-    //  *
-    //  * When provided, FormBuilder will be initialised with the specified elements.
-    //  */
-    // presetForm?: TElementSchema[];
+    /**
+     * An array of FormBuilder's supported element schemas that will be used to prepopulate FormBuilder.
+     *
+     * When provided, FormBuilder will be initialised with the specified elements.
+     * Users can specify the elements' properties and set them as disabled if needed with the `isDisabled` flag.
+     */
+    presetForm?: Record<string, TElementSchema & { isDisabled?: boolean }>;
     // /**
     //  * An array of custom element (supported by Frontend Engine) that can be used in the FormBuilder.
     //  *

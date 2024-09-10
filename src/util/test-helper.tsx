@@ -5,11 +5,13 @@ import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import {
     BuilderContext,
+    ConfigContext,
     DisplayContext,
     EBuilderMode,
     EElementType,
     IBuilderState,
     IDisplayState,
+    IFormBuilderConfig,
 } from "src/context-providers";
 import { YupSchemaBuilder } from "src/yup-schemas";
 import { ThemeProvider } from "styled-components";
@@ -43,6 +45,7 @@ interface FormContextProps {
 
 export namespace TestHelper {
     export interface RenderOptions {
+        configContext?: Partial<IFormBuilderConfig>;
         builderContext?: Partial<IBuilderState>;
         displayContext?: Partial<IDisplayState>;
         formContext?: FormContextProps;
@@ -51,6 +54,7 @@ export namespace TestHelper {
 
     export const withProviders = (
         {
+            configContext = {},
             builderContext,
             displayContext,
             formContext,
@@ -60,32 +64,37 @@ export namespace TestHelper {
     ) => {
         return (
             <ThemeProvider theme={BaseTheme}>
-                <BuilderContext.Provider
-                    value={{
-                        state: { ...mockBuilderState, ...builderContext },
-                        dispatch: noop,
-                    }}
-                >
-                    <DisplayContext.Provider
+                <ConfigContext.Provider value={configContext}>
+                    <BuilderContext.Provider
                         value={{
-                            state: { ...mockDisplayState, ...displayContext },
+                            state: { ...mockBuilderState, ...builderContext },
                             dispatch: noop,
                         }}
                     >
-                        {includeFormProvider ? (
-                            <InnerFormProvider
-                                formContext={formContext}
-                                selectedElementType={
-                                    builderContext?.selectedElementType
-                                }
-                            >
-                                {component}
-                            </InnerFormProvider>
-                        ) : (
-                            component
-                        )}
-                    </DisplayContext.Provider>
-                </BuilderContext.Provider>
+                        <DisplayContext.Provider
+                            value={{
+                                state: {
+                                    ...mockDisplayState,
+                                    ...displayContext,
+                                },
+                                dispatch: noop,
+                            }}
+                        >
+                            {includeFormProvider ? (
+                                <InnerFormProvider
+                                    formContext={formContext}
+                                    selectedElementType={
+                                        builderContext?.selectedElementType
+                                    }
+                                >
+                                    {component}
+                                </InnerFormProvider>
+                            ) : (
+                                component
+                            )}
+                        </DisplayContext.Provider>
+                    </BuilderContext.Provider>
+                </ConfigContext.Provider>
             </ThemeProvider>
         );
     };

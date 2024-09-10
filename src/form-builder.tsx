@@ -1,3 +1,4 @@
+import { IFrontendEngineData } from "@lifesg/web-frontend-engine";
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import {
     MainPanel,
@@ -14,6 +15,7 @@ import {
     TElement,
     TElementMap,
     useBuilder,
+    usePresetForm,
     useShouldShowPrefill,
 } from "./context-providers";
 import { Container, Wrapper } from "./form-builder.styles";
@@ -48,6 +50,7 @@ const Component = forwardRef<IFormBuilderMethods, IProps>(
         } = useBuilder();
 
         const shouldShowPrefill = useShouldShowPrefill();
+        const presetForm = usePresetForm();
 
         useImperativeHandle(
             ref,
@@ -93,6 +96,40 @@ const Component = forwardRef<IFormBuilderMethods, IProps>(
                 return () => {
                     window.removeEventListener("resize", handleResize);
                 };
+            }
+        }, []);
+
+        useEffect(() => {
+            if (presetForm) {
+                const elementsSchema: IFrontendEngineData = {
+                    defaultValues: {},
+                    sections: {
+                        section: {
+                            children: {
+                                grid: {
+                                    children: {
+                                        ...presetForm,
+                                    },
+                                    uiType: "grid",
+                                },
+                                "submit-button": {
+                                    disabled: "invalid-form",
+                                    label: "Submit",
+                                    uiType: "submit",
+                                },
+                            },
+                            uiType: "section",
+                        },
+                    },
+                };
+                const schema = {
+                    schema: elementsSchema,
+                    prefill: {},
+                };
+                const { newOrderedIdentifiers, newElements } =
+                    Translator.parseSchema(schema, { shouldShowPrefill }) || {};
+
+                updateElementSchema(newElements, newOrderedIdentifiers);
             }
         }, []);
 
