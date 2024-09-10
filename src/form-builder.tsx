@@ -8,12 +8,13 @@ import {
 } from "./components";
 import {
     BuilderProvider,
-    DisplayProvider,
     ConfigProvider,
+    DisplayProvider,
     IConfigState,
     TElement,
     TElementMap,
     useBuilder,
+    useShouldShowPrefill,
 } from "./context-providers";
 import { Container, Wrapper } from "./form-builder.styles";
 import { ISchemaProps, Translator } from "./translator";
@@ -46,14 +47,19 @@ const Component = forwardRef<IFormBuilderMethods, IProps>(
             focusedElement,
         } = useBuilder();
 
+        const shouldShowPrefill = useShouldShowPrefill();
+
         useImperativeHandle(
             ref,
             () => ({
                 generateSchema: () =>
-                    Translator.generateSchema(elements, orderedIdentifiers),
+                    Translator.generateSchema(elements, orderedIdentifiers, {
+                        shouldShowPrefill,
+                    }),
                 parseSchema: (schema: ISchemaProps) => {
                     const { newOrderedIdentifiers, newElements } =
-                        Translator.parseSchema(schema) || {};
+                        Translator.parseSchema(schema, { shouldShowPrefill }) ||
+                        {};
 
                     // If there are no elements in schema, clear the form and remove focused element
                     if (!newOrderedIdentifiers || !newElements) {

@@ -12,16 +12,6 @@ interface IPanelConfig {
     shouldShow?: boolean;
 }
 
-interface ISectionConfig {
-    /**
-     * Controls the visibility of the specific section.
-     *
-     * When set to `false`, the section will be hidden.
-     * Defaults to `true`, meaning the section is visible by default.
-     */
-    shouldShow?: boolean;
-}
-
 interface IAttributeConfig {
     /**
      * Controls the visibility of the specific attribute.
@@ -38,10 +28,6 @@ interface IAttributeConfig {
      */
     isEditable?: boolean;
 }
-export type TCustomisableElementAttributes = Pick<
-    TElement,
-    "type" | "description" | "id" | "label" | "placeholder" | "preselectedValue"
->;
 
 interface IElementConfig {
     /**
@@ -68,6 +54,22 @@ interface IElementConfig {
     };
 }
 
+export type TCustomisableElementAttributes = Pick<
+    TElement,
+    "type" | "description" | "id" | "label" | "placeholder" | "preselectedValue"
+>;
+
+export type TCustomisableGlobalAttributes = Pick<
+    TElement,
+    | "type"
+    | "description"
+    | "id"
+    | "label"
+    | "placeholder"
+    | "preselectedValue"
+    | "prefill"
+>;
+
 interface ICustomElement {
     /**
      * Defines the schema properties for the custom element.
@@ -91,12 +93,6 @@ export interface IConfigState {
         pages?: IPanelConfig;
     };
     /**
-     * Configuration for the sections of FormBuilder.
-     */
-    sections?: {
-        prefill?: ISectionConfig;
-    };
-    /**
      * Configuration for individual elements within FormBuilder.
      *
      * The keys correspond to labels defined in the `EElementLabels` enum.
@@ -108,11 +104,10 @@ export interface IConfigState {
      * Configuration settings for attributes that are shared across all elements.
      *
      * These common settings can be customised or overwritten by each element's specific attribute settings under the `elements` prop.
-     * Use this configuration to define default values or behaviors that apply broadly,
-     * while allowing for individual element customisation as needed.
+     * Use this configuration to define default values or behaviors that apply broadly while allowing for individual element customisation as needed.
      */
     attributes?: {
-        [K in keyof TCustomisableElementAttributes]?: IAttributeConfig;
+        [K in keyof TCustomisableGlobalAttributes]?: IAttributeConfig;
     };
 
     //TODO: To be implemented later on

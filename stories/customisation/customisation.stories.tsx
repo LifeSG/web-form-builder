@@ -8,6 +8,24 @@ const meta: Meta = {
 
 export default meta;
 
+export const HidePrefill: StoryObj<Component> = {
+    render: () => {
+        return (
+            <div style={{ height: "100vh", width: "100vw" }}>
+                <FormBuilder
+                    config={{
+                        attributes: {
+                            prefill: {
+                                shouldShow: false,
+                            },
+                        },
+                    }}
+                />
+            </div>
+        );
+    },
+};
+
 export const HideIdField: StoryObj<Component> = {
     render: () => {
         return (
