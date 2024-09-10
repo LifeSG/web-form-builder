@@ -150,9 +150,9 @@ export const useBuilder = () => {
             const { [internalId]: deletedElement, ...remaining } =
                 state.elements;
 
-            const deletedElementPosition = state.orderedIdentifiers.find(
+            const deletedElementIdentifier = state.orderedIdentifiers.find(
                 (identifier) => identifier.internalId === internalId
-            ).position;
+            );
 
             const newOrderedIdentifiers = state.orderedIdentifiers.filter(
                 (identifier) => identifier.internalId !== internalId
@@ -178,7 +178,8 @@ export const useBuilder = () => {
                 ...state.deletedElements,
                 [internalId]: {
                     element: deletedElement,
-                    position: deletedElementPosition,
+                    position: deletedElementIdentifier.position,
+                    size: deletedElementIdentifier.size,
                 },
             };
 
@@ -228,6 +229,7 @@ export const useBuilder = () => {
             newOrderedIdentifiers.splice(insertionIndex, 0, {
                 internalId,
                 position: deletedElement.position,
+                size: deletedElement.size,
             });
 
             dispatch({
