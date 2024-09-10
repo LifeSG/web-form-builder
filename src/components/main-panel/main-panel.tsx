@@ -199,8 +199,8 @@ export const MainPanel = () => {
             orderedIdentifiers.map((identifier) => identifier.internalId)
         );
 
-        elementRefs.current = elementRefs.current.filter((ref) =>
-            validInternalIds.has(ref.internalId)
+        elementRefs.current = elementRefs.current.filter(
+            (ref) => validInternalIds.has(ref.internalId) && ref.element
         );
     }, [orderedIdentifiers]);
 
