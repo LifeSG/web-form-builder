@@ -49,12 +49,20 @@ describe("ElementCard", () => {
                 {
                     builderContext: {
                         focusedElement: { element: MOCK_ELEMENT },
+                        orderedIdentifiers: [
+                            {
+                                internalId: MOCK_ELEMENT.internalId,
+                                position: 0,
+                                size: "full",
+                            },
+                        ],
                     },
                 }
             );
             expect(getDuplicateButton()).toBeInTheDocument();
             expect(getDeleteButton()).toBeInTheDocument();
         });
+
         it("should disable the duplicate button when the current element is in focus", () => {
             renderComponent(
                 { element: MOCK_ELEMENT },
@@ -65,6 +73,13 @@ describe("ElementCard", () => {
                             isDirty: true,
                             isValid: false,
                         },
+                        orderedIdentifiers: [
+                            {
+                                internalId: MOCK_ELEMENT.internalId,
+                                position: 0,
+                                size: "full",
+                            },
+                        ],
                     },
                 }
             );
@@ -78,6 +93,13 @@ describe("ElementCard", () => {
                 {
                     builderContext: {
                         focusedElement: { element: MOCK_ELEMENT },
+                        orderedIdentifiers: [
+                            {
+                                internalId: MOCK_ELEMENT.internalId,
+                                position: 0,
+                                size: "full",
+                            },
+                        ],
                     },
                 }
             );
@@ -95,6 +117,13 @@ describe("ElementCard", () => {
                             element: MOCK_ELEMENT,
                             isDirty: false,
                         },
+                        orderedIdentifiers: [
+                            {
+                                internalId: MOCK_ELEMENT.internalId,
+                                position: 0,
+                                size: "full",
+                            },
+                        ],
                     },
                 }
             );

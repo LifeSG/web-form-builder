@@ -26,6 +26,7 @@ interface IElementCardProps extends IProps {
 export const DragHandle = styled(DragHandleIcon)`
     display: none;
     transition: width 0.1s ease-out;
+    min-width: 1.25rem;
 
     svg {
         height: 1.25rem;
@@ -36,6 +37,7 @@ export const DragHandle = styled(DragHandleIcon)`
 export const Container = styled.div`
     display: flex;
     align-items: center;
+    width: 100%;
     gap: 1rem;
     flex: 1;
     &:hover ${DragHandle} {
@@ -45,13 +47,23 @@ export const Container = styled.div`
 
 export const DetailsContainer = styled.div`
     display: flex;
-    flex: 1;
+    flex-grow: 1;
     flex-direction: column;
     gap: 0.25rem;
+    overflow: hidden;
+`;
+
+export const ElementName = styled(Text.Body)`
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 `;
 
 export const IdLabel = styled(Text.XSmall)`
     color: ${Color.Neutral[3]};
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 `;
 
 export const ActionsContainer = styled.div`
