@@ -12,11 +12,14 @@ import {
     TElement,
     useBuilder,
     useDisplay,
+    useShouldShowField,
 } from "src/context-providers";
+import { ELEMENT_BUTTON_LABELS } from "src/data";
 import { CardIcon } from "../common";
 import {
     ActionButton,
     ActionsContainer,
+    CardWrapper,
     Container,
     DetailsContainer,
     DragHandle,
@@ -24,7 +27,6 @@ import {
     DroppableWrapper,
     ElementBaseCard,
     IdLabel,
-    CardWrapper,
 } from "./element-card.styles";
 
 interface IProps {
@@ -81,6 +83,11 @@ export const ElementCard = ({ element, onClick }: IProps) => {
         ...attributes,
         ...listeners,
     };
+
+    const isIdVisible = useShouldShowField(
+        "id",
+        ELEMENT_BUTTON_LABELS[element.type]
+    );
 
     // =========================================================================
     // EVENT HANDLERS
@@ -148,7 +155,9 @@ export const ElementCard = ({ element, onClick }: IProps) => {
                         <CardIcon elementType={element?.type} />
                         <DetailsContainer>
                             <Text.Body weight="semibold">{label}</Text.Body>
-                            <IdLabel weight="semibold">ID: {id}</IdLabel>
+                            {isIdVisible && (
+                                <IdLabel weight="semibold">ID: {id}</IdLabel>
+                            )}
                         </DetailsContainer>
                         {isFocused && (
                             <ActionsContainer>

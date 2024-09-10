@@ -38,6 +38,7 @@ export const Container = styled.div`
     align-items: center;
     gap: 1rem;
     flex: 1;
+    height: 3.125rem;
     &:hover ${DragHandle} {
         display: block;
     }

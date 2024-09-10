@@ -85,7 +85,7 @@ interface ICustomElement {
     isEditable?: boolean;
 }
 
-export interface IFormBuilderConfig {
+export interface IConfigState {
     /**
      * Configuration for the panels in FormBuilder.
      */

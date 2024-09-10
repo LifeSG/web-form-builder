@@ -10,7 +10,7 @@ import {
     BuilderProvider,
     ConfigProvider,
     DisplayProvider,
-    IFormBuilderConfig,
+    IConfigState,
     TElement,
     TElementMap,
     useBuilder,
@@ -27,7 +27,7 @@ export interface IFormBuilderMethods {
 interface IProps {
     offset?: number;
     onSubmit?: (formData: TElement) => Promise<unknown>;
-    config?: IFormBuilderConfig;
+    config?: IConfigState;
 }
 
 const Component = forwardRef<IFormBuilderMethods, IProps>(

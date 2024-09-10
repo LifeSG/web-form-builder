@@ -2,13 +2,18 @@ import { Text } from "@lifesg/react-design-system/text";
 import { useCallback } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
-import { EConditionType, useBuilder } from "src/context-providers";
+import {
+    EConditionType,
+    EElementType,
+    useBuilder,
+} from "src/context-providers";
 import { TFormFieldValues, YupSchemaBuilder } from "src/yup-schemas";
 import * as Yup from "yup";
 import { ConditionalRenderingChild } from "./conditional-rendering-child";
 
 interface IOptions {
     label: string;
+    elementType: EElementType;
     id?: string;
     internalId?: string;
 }
@@ -38,6 +43,7 @@ export const ConditionalRendering = () => {
                     label: value?.label,
                     id: value?.id,
                     internalId: value?.internalId,
+                    elementType: value?.type,
                 };
                 options.push(optionItem);
             }

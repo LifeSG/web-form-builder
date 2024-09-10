@@ -123,6 +123,47 @@ describe("ElementCard", () => {
             expect(screen.getByTestId("drag-handle")).toBeInTheDocument();
         });
     });
+
+    describe("hiding of form fields based on Form Builder Config", () => {
+        it("should not hide the id label in the element card if shouldShow of ID is not specified in config", () => {
+            renderComponent(
+                { element: MOCK_ELEMENT },
+                {
+                    builderContext: {
+                        focusedElement: {
+                            element: MOCK_ELEMENT,
+                        },
+                    },
+                }
+            );
+
+            expect(screen.getByText(`ID: ${MOCK_ID}`)).toBeInTheDocument();
+        });
+
+        it("should hide the id label in the element card if shouldShow of ID is set to false in config", () => {
+            renderComponent(
+                { element: MOCK_ELEMENT },
+                {
+                    configContext: {
+                        attributes: {
+                            id: {
+                                shouldShow: false,
+                            },
+                        },
+                    },
+                    builderContext: {
+                        focusedElement: {
+                            element: MOCK_ELEMENT,
+                        },
+                    },
+                }
+            );
+
+            expect(
+                screen.queryByText(`ID: ${MOCK_ID}`)
+            ).not.toBeInTheDocument();
+        });
+    });
 });
 
 // =============================================================================
@@ -161,11 +202,12 @@ const getDuplicateButton = (useQuery = false) =>
 // =============================================================================
 // MOCKS
 // =============================================================================
+const MOCK_ID = "mockId";
 
 const MOCK_ELEMENT: TElement = {
     internalId: "mock123",
     type: EElementType.EMAIL,
-    id: "mockElement",
+    id: MOCK_ID,
     required: false,
     label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
     columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
