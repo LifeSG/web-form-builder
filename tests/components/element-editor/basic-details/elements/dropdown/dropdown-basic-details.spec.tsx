@@ -51,12 +51,8 @@ describe("DropdownBasicDetails", () => {
         const dropdownItem = screen.getByText("Dropdown items");
         expect(dropdownItem).toBeInTheDocument();
 
-        const dropdownItemLabels = await screen.findAllByTestId(
-            "dropdown-item-label"
-        );
-        const dropdownItemValues = await screen.findAllByTestId(
-            "dropdown-item-value"
-        );
+        const dropdownItemLabels = await screen.findAllByTestId("option-label");
+        const dropdownItemValues = await screen.findAllByTestId("option-value");
 
         expect(dropdownItemLabels[0]).toBeInTheDocument();
         expect(dropdownItemValues[0]).toBeInTheDocument();

@@ -55,6 +55,9 @@ describe("Translator", () => {
                     ...(elementType === EElementType.DROPDOWN && {
                         dropdownItems: [],
                     }),
+                    ...(elementType === EElementType.RADIO && {
+                        radioItems: [],
+                    }),
                 };
 
                 const mockElement = generateMockElement(mockElementAttributes);
@@ -249,6 +252,18 @@ describe("Translator", () => {
                         uiType: elementType,
                         ...(elementType === EElementType.DROPDOWN && {
                             dropdownItems: [
+                                {
+                                    label: "test",
+                                    value: "test",
+                                },
+                                {
+                                    label: "test",
+                                    value: "test",
+                                },
+                            ],
+                        }),
+                        ...(elementType === EElementType.RADIO && {
+                            radioItems: [
                                 {
                                     label: "test",
                                     value: "test",

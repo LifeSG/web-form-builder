@@ -17,7 +17,7 @@ export const Wrapper = styled.div`
     position: relative;
 `;
 
-export const DropdownItemsChildWrapper = styled.div`
+export const OptionsChildWrapper = styled.div`
     display: flex;
     align-items: start;
     justify-content: center;
@@ -39,7 +39,7 @@ export const DropdownItemsChildWrapper = styled.div`
     }
 `;
 
-export const DropdownItemsDragHandleButton = styled.div`
+export const OptionsDragHandleButton = styled.div`
     margin-top: 0.875rem;
     svg {
         color: ${Color.Accent.Light[1]};

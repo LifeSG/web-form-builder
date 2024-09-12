@@ -1,6 +1,6 @@
 import isEmpty from "lodash/isEmpty";
 import * as Yup from "yup";
-import { getNonEmptyLines, getValidDropdownItem } from "./bulk-edit-helper";
+import { getNonEmptyLines, getValidOption } from "./bulk-edit-helper";
 
 // =============================================================================
 // HELPER FUNCTIONS
@@ -11,7 +11,7 @@ const validateFormat = (value: string): boolean => {
     if (isEmpty(value)) return true;
 
     const lines = getNonEmptyLines(value);
-    return lines.every((line) => getValidDropdownItem(line));
+    return lines.every((line) => getValidOption(line));
 };
 // =============================================================================
 // SCHEMA

@@ -9,6 +9,7 @@ export enum EElementType {
     CONTACT = "contact-field",
     EMAIL = "email-field",
     NUMERIC = "numeric-field",
+    RADIO = "radio",
     DROPDOWN = "select",
     TEXT = "text-field",
     TEXTAREA = "textarea",
@@ -82,9 +83,9 @@ export interface IPrefillAttributes {
     path?: string;
 }
 
-export interface IDropdownItemAttributes {
-    value: string;
-    label: string;
+export interface IOptionAttributes {
+    value?: string;
+    label?: string;
 }
 
 export interface IPillItemAttributes {
@@ -152,7 +153,12 @@ export interface INumericFieldAttributes extends IBaseFieldAttributes {
 
 export interface IDropdownAttributes extends IBaseFieldAttributes {
     placeholder?: string;
-    dropdownItems?: IDropdownItemAttributes[];
+    dropdownItems?: IOptionAttributes[];
+}
+
+export interface IRadioButtonAttributes extends IBaseFieldAttributes {
+    placeholder?: string;
+    radioItems?: IOptionAttributes[];
 }
 
 // =============================================================================
@@ -166,6 +172,8 @@ export type TTextBasedElement =
     | INumericFieldAttributes
     | IContactFieldAttributes;
 
-export type TOptionGroupBasedElement = IDropdownAttributes;
+export type TOptionGroupBasedElement =
+    | IDropdownAttributes
+    | IRadioButtonAttributes;
 
 export type TElement = TTextBasedElement | TOptionGroupBasedElement;

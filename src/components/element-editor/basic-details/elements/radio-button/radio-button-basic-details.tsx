@@ -7,19 +7,19 @@ import {
     PlaceholderField,
     TypeField,
 } from "../../common";
-import { DropdownItems } from "./dropdown-items";
+import { RadioButtonItems } from "./radio-button-items";
 
-export const DropdownBasicDetails = () => {
+export const RadioButtonBasicDetails = () => {
     return (
         <div data-testid="dropdown-basic-details">
             <TypeField />
             <LabelField />
             <MandatoryField />
-            <DropdownItems />
+            <RadioButtonItems />
             <IdField />
             <DescriptionField />
             <PlaceholderField />
-            <OptionPreselectedValue fieldName="dropdownItems" />
+            <OptionPreselectedValue fieldName="radioItems" />
         </div>
     );
 };

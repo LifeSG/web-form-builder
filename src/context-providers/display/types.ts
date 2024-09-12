@@ -42,7 +42,7 @@ export interface IDiscardChangesModalProps {
 
 export interface IBulkEditModalProps {
     type: EModalType.BulkEdit;
-    dropdownItemsString: string;
+    optionsString: string;
     onClickActionButton: (content: string) => void;
 }
 

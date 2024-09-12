@@ -155,5 +155,5 @@ const mockOnClickActionButton = jest.fn();
 const bulkEditModal: IBulkEditModalProps = {
     type: EModalType.BulkEdit,
     onClickActionButton: mockOnClickActionButton,
-    dropdownItemsString: "",
+    optionsString: "",
 };

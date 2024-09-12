@@ -3,10 +3,14 @@ import { Text } from "@lifesg/react-design-system/text";
 import isEmpty from "lodash/isEmpty";
 import { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import { IDropdownItemAttributes } from "src/context-providers/builder/";
+import { IOptionAttributes } from "src/context-providers/builder/";
 import { TOverallOptionGroupBasedValues } from "src/yup-schemas";
 
-export const DropdownPreselectedValue = () => {
+interface IProps {
+    fieldName: "dropdownItems" | "radioItems";
+}
+
+export const OptionPreselectedValue = ({ fieldName }: IProps) => {
     // ===========================================================================
     // CONST, STATE, REFS
     // ===========================================================================
@@ -18,16 +22,16 @@ export const DropdownPreselectedValue = () => {
     } = useFormContext<TOverallOptionGroupBasedValues>();
 
     const preselectedValue = watch("preselectedValue");
-    const dropdownItems = watch("dropdownItems", []);
+    const options = watch(fieldName, []);
 
-    const preselectedValueOptions: IDropdownItemAttributes[] = [
+    const preselectedValueOptions: IOptionAttributes[] = [
         {
             label: "Unselect default value",
             value: null,
         },
     ];
 
-    dropdownItems.forEach((item: IDropdownItemAttributes) => {
+    options.forEach((item: IOptionAttributes) => {
         if (!isEmpty(item.label) && !isEmpty(item.value)) {
             preselectedValueOptions.push(item);
         }
@@ -53,7 +57,7 @@ export const DropdownPreselectedValue = () => {
     useEffect(() => {
         if (
             preselectedValue &&
-            !dropdownItems.some((item) => item.value === preselectedValue)
+            !options.some((item) => item.value === preselectedValue)
         ) {
             setValue("preselectedValue", "");
         }

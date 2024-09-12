@@ -6,6 +6,7 @@ import {
     NUMERIC_YUP_SCHEMA,
     TEXT_YUP_SCHEMA,
 } from "./elements";
+import { RADIO_BUTTON_YUP_SCHEMA } from "./elements/radio-button-yup-schema";
 import { TBaseValues } from "./helper";
 
 export type TFormFieldValues =
@@ -17,11 +18,13 @@ export type TTextValues = yup.InferType<typeof TEXT_YUP_SCHEMA>;
 export type TLongTextValues = yup.InferType<typeof LONG_TEXT_YUP_SCHEMA>;
 export type TNumericValues = yup.InferType<typeof NUMERIC_YUP_SCHEMA>;
 export type TDropdownValues = yup.InferType<typeof DROPDOWN_YUP_SCHEMA>;
+export type TRadioValues = yup.InferType<typeof RADIO_BUTTON_YUP_SCHEMA>;
 
 export type TOverallTextBasedValues = TBaseValues &
     (TEmailValues | TTextValues | TLongTextValues | TNumericValues);
 
-export type TOverallOptionGroupBasedValues = TBaseValues & TDropdownValues;
+export type TOverallOptionGroupBasedValues = TBaseValues &
+    (TDropdownValues | TRadioValues);
 
 export type TOverallOptionGroupBasedYupSchema =
     yup.ObjectSchema<TOverallOptionGroupBasedValues>;
