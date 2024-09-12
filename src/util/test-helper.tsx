@@ -5,13 +5,13 @@ import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import {
     BuilderContext,
-    ConfigContext,
     DisplayContext,
     EBuilderMode,
     EElementType,
+    ConfigContext,
     IBuilderState,
     IDisplayState,
-    IFormBuilderConfig,
+    IConfigState,
 } from "src/context-providers";
 import { YupSchemaBuilder } from "src/yup-schemas";
 import { ThemeProvider } from "styled-components";
@@ -45,7 +45,7 @@ interface FormContextProps {
 
 export namespace TestHelper {
     export interface RenderOptions {
-        configContext?: Partial<IFormBuilderConfig>;
+        configContext?: Partial<IConfigState>;
         builderContext?: Partial<IBuilderState>;
         displayContext?: Partial<IDisplayState>;
         formContext?: FormContextProps;

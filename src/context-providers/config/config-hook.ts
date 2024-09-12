@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { ELEMENT_BUTTON_LABELS } from "src/data";
+import { EElementLabel, ELEMENT_BUTTON_LABELS } from "src/data";
 import { EElementType, IFocusedElement } from "../builder";
 import { ConfigContext } from "./config-provider";
 import { TCustomisableGlobalAttributes } from "./types";
@@ -7,14 +7,6 @@ import { TCustomisableGlobalAttributes } from "./types";
 export const useConfigContext = () => {
     const context = useContext(ConfigContext);
     return context;
-};
-
-export const useShouldShowPrefill = () => {
-    const { attributes } = useConfigContext();
-
-    const shouldShow = attributes?.prefill?.shouldShow ?? true;
-
-    return shouldShow;
 };
 
 export const usePresetForm = () => {
@@ -52,4 +44,26 @@ export const useIsAttributeDisabled = (
     const isGlobalAttributeDisabled = attributes?.[attribute]?.isDisabled;
 
     return isElementAttributeDisabled ?? isGlobalAttributeDisabled;
+};
+
+export const useShouldShowField = (
+    fieldName: string,
+    elementName: EElementLabel
+) => {
+    const { elements, attributes } = useConfigContext();
+    const elementConfig = elements?.[elementName];
+
+    const shouldShow =
+        elementConfig?.attributes?.[fieldName]?.shouldShow ??
+        attributes?.[fieldName]?.shouldShow ??
+        true;
+    return shouldShow;
+};
+
+export const useShouldShowPrefill = () => {
+    const { attributes } = useConfigContext();
+
+    const shouldShow = attributes?.prefill?.shouldShow ?? true;
+
+    return shouldShow;
 };

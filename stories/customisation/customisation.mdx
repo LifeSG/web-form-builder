@@ -10,8 +10,13 @@ Form Builder provides a config prop that allows you to customise various aspects
 <span style={{ color: 'grey', letterSpacing: '0.2em', fontWeight: 'bold' }}>EXAMPLES</span>
 <br/><br/> 
 
-### Hiding the Prefill Section
-<Canvas of={CustomisationStories.HidePrefill} />
+### Hiding the ID Field
+In this example, we are hiding the ID field across all elements by configuring the attributes in the config prop.
+<Canvas of={CustomisationStories.HideIdField} />
+
+### Hiding the ID Field (with element-specific override)
+In this example, we are hiding the ID field across all elements by configuring the attributes in the config prop. We are also overriding this configuration for the Dropdown element, which will allow the ID field to be visible only for the Dropdown element.
+<Canvas of={CustomisationStories.HideIdFieldWithElementSpecificOverride} />
 
 ### Presetting the form with elements
 <Canvas of={CustomisationStories.PresetForm} />

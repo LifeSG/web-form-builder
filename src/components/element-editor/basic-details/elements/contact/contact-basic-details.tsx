@@ -1,3 +1,5 @@
+import { useShouldShowField } from "src/context-providers";
+import { EElementLabel } from "src/data";
 import {
     DescriptionField,
     IdField,
@@ -10,18 +12,31 @@ import {
 import { DefaultCountryCode } from "./default-country-code";
 import { EnableClearButton } from "./enable-clear-button";
 
+const FIELDS = [
+    { name: "type", component: TypeField },
+    { name: "label", component: LabelField },
+    { name: "required", component: MandatoryField },
+    { name: "id", component: IdField },
+    { name: "enableClearButton", component: EnableClearButton },
+    { name: "defaultCountryCode", component: DefaultCountryCode },
+    { name: "description", component: DescriptionField },
+    { name: "placeholder", component: PlaceholderField },
+    {
+        name: "preselectedValue",
+        component: TextBasedPreselectedValueField,
+    },
+];
+
 export const ContactBasicDetails = () => {
     return (
         <div data-testid="contact-basic-details">
-            <TypeField />
-            <LabelField />
-            <MandatoryField />
-            <IdField />
-            <EnableClearButton />
-            <DefaultCountryCode />
-            <DescriptionField />
-            <PlaceholderField />
-            <TextBasedPreselectedValueField />
+            {FIELDS.map(({ name, component: Component }) => {
+                const shouldShow = useShouldShowField(
+                    name,
+                    EElementLabel.CONTACT
+                );
+                return shouldShow && <Component key={name} />;
+            })}
         </div>
     );
 };

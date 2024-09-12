@@ -99,7 +99,7 @@ export interface IPresetElement {
     isDisabled?: boolean;
 }
 
-export interface IFormBuilderConfig {
+export interface IConfigState {
     /**
      * Configuration for the panels in FormBuilder.
      */

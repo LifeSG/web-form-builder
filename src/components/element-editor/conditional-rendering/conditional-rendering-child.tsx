@@ -2,7 +2,12 @@ import { Form } from "@lifesg/react-design-system/form";
 import { Text } from "@lifesg/react-design-system/text";
 import { Controller, useFormContext } from "react-hook-form";
 import { ChildEntry } from "src/components/common";
-import { EConditionType } from "src/context-providers";
+import {
+    EConditionType,
+    EElementType,
+    useShouldShowField,
+} from "src/context-providers";
+import { ELEMENT_BUTTON_LABELS } from "src/data";
 import { TFormFieldValues } from "src/yup-schemas";
 import {
     FieldWrapper,
@@ -13,6 +18,7 @@ import {
 
 export interface IOptions {
     label: string;
+    elementType?: EElementType;
     id?: string;
     internalId?: string;
 }
@@ -51,6 +57,7 @@ export const ConditionalRenderingChild = ({
         control,
         setValue,
     } = useFormContext<TFormFieldValues>();
+
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
@@ -97,14 +104,23 @@ export const ConditionalRenderingChild = ({
                                             );
                                         }}
                                         renderListItem={(option: IOptions) => {
+                                            const isIdVisible =
+                                                useShouldShowField(
+                                                    "id",
+                                                    ELEMENT_BUTTON_LABELS[
+                                                        option.elementType
+                                                    ]
+                                                );
                                             return (
                                                 <div>
                                                     <Text.Body>
                                                         {option?.label}
                                                     </Text.Body>
-                                                    <OptionIDText>
-                                                        ID: {option?.id}
-                                                    </OptionIDText>
+                                                    {isIdVisible && (
+                                                        <OptionIDText>
+                                                            ID: {option?.id}
+                                                        </OptionIDText>
+                                                    )}
                                                 </div>
                                             );
                                         }}

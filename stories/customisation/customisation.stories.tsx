@@ -106,3 +106,48 @@ export const PresetFormWithDisabledElement: StoryObj<Component> = {
         );
     },
 };
+
+export const HideIdField: StoryObj<Component> = {
+    render: () => {
+        return (
+            <div style={{ height: "100vh", width: "100vw" }}>
+                <FormBuilder
+                    config={{
+                        attributes: {
+                            id: {
+                                shouldShow: false,
+                            },
+                        },
+                    }}
+                />
+            </div>
+        );
+    },
+};
+
+export const HideIdFieldWithElementSpecificOverride: StoryObj<Component> = {
+    render: () => {
+        return (
+            <div style={{ height: "100vh", width: "100vw" }}>
+                <FormBuilder
+                    config={{
+                        attributes: {
+                            id: {
+                                shouldShow: false,
+                            },
+                        },
+                        elements: {
+                            Dropdown: {
+                                attributes: {
+                                    id: {
+                                        shouldShow: true,
+                                    },
+                                },
+                            },
+                        },
+                    }}
+                />
+            </div>
+        );
+    },
+};

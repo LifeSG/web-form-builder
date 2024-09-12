@@ -93,6 +93,7 @@ export const DropdownPreselectedValue = () => {
                         <Form.Select
                             disabled={isDisabled}
                             {...withoutRef}
+                            data-testid="preselected-value-field"
                             options={preselectedValueOptions}
                             valueExtractor={(item) => item.value}
                             listExtractor={(item) => item.label}

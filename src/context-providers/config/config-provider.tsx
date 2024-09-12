@@ -1,11 +1,11 @@
-import React, { createContext, ReactNode } from "react";
-import { IFormBuilderConfig } from "./types";
+import React, { createContext, ReactNode, useContext } from "react";
+import { IConfigState } from "./types";
 
-export const ConfigContext = createContext<IFormBuilderConfig>({});
+export const ConfigContext = createContext<IConfigState>({});
 
 export const ConfigProvider: React.FC<{
     children: ReactNode;
-    value: IFormBuilderConfig;
+    value: IConfigState;
 }> = ({ children, value }) => {
     return (
         <ConfigContext.Provider value={value || {}}>
