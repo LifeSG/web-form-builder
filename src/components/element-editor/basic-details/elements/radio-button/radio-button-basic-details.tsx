@@ -4,10 +4,10 @@ import {
     LabelField,
     MandatoryField,
     OptionPreselectedValue,
+    Options,
     PlaceholderField,
     TypeField,
 } from "../../common";
-import { RadioButtonItems } from "./radio-button-items";
 
 export const RadioButtonBasicDetails = () => {
     return (
@@ -15,7 +15,11 @@ export const RadioButtonBasicDetails = () => {
             <TypeField />
             <LabelField />
             <MandatoryField />
-            <RadioButtonItems />
+            <Options
+                label="List items"
+                description="Label is the item displayed to the users in the dropdown menu. Value is used to differentiate the dropdown items in the backend."
+                fieldName="radioItems"
+            />
             <IdField />
             <DescriptionField />
             <PlaceholderField />

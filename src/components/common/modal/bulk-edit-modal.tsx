@@ -18,16 +18,12 @@ export const BulkEditModal = ({ modal }: IProps) => {
     // CONST, STATE, REFS
     // =========================================================================
     const { hideModal } = useModal();
-    const {
-        type,
-        onClickActionButton,
-        optionsString: dropdownItemsString,
-    } = modal;
+    const { type, onClickActionButton, optionsString } = modal;
     const methods = useForm({
         mode: "onTouched",
         resolver: yupResolver(BULK_EDIT_SCHEMA),
         defaultValues: {
-            items: dropdownItemsString,
+            items: optionsString,
         },
     });
 
