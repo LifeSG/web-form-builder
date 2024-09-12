@@ -1,5 +1,5 @@
 import { ISelectSchema } from "@lifesg/web-frontend-engine/components/fields";
-import { EElementType, IDropdownItemAttributes } from "src/context-providers";
+import { EElementType, IOptionAttributes } from "src/context-providers";
 import { DropdownSchemaParser } from "src/translator/parse/elements";
 import { generateMockElementSchema } from "tests/util/translator/helper";
 
@@ -50,7 +50,7 @@ describe("DropdownSchemaParser", () => {
     });
 
     it("should parse dropdown items correctly", () => {
-        const dropdownItems: IDropdownItemAttributes[] = [
+        const dropdownItems: IOptionAttributes[] = [
             {
                 value: "1",
                 label: "Option 1",

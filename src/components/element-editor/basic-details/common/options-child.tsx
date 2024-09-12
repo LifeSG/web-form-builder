@@ -8,19 +8,20 @@ import { Controller, useFormContext } from "react-hook-form";
 import { DeleteButton } from "src/components/common/delete-button/";
 import { TOverallOptionGroupBasedValues } from "src/yup-schemas";
 import {
-    DropdownItemsChildWrapper,
-    DropdownItemsDragHandleButton,
     DroppableWrapper,
+    OptionsChildWrapper,
+    OptionsDragHandleButton,
     Wrapper,
-} from "./dropdown-items-child.styles";
+} from "./options-child.styles";
 
 interface IProps {
     onDelete: () => void;
     id: string;
     index: number;
+    fieldName: "radioItems" | "dropdownItems";
 }
 
-export const DropdownItemsChild = ({ onDelete, id, index }: IProps) => {
+export const OptionsChild = ({ onDelete, id, index, fieldName }: IProps) => {
     // =============================================================================
     // CONST, STATE, REFS
     // =============================================================================
@@ -49,14 +50,14 @@ export const DropdownItemsChild = ({ onDelete, id, index }: IProps) => {
         zIndex: isDragging ? 1 : "auto",
     };
 
-    const dropdownItems = watch("dropdownItems");
+    const options = watch(fieldName);
 
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
 
     const isDeleteDisabled = () => {
-        return dropdownItems.length < 3;
+        return options.length < 3;
     };
     // =========================================================================
     // RENDER FUNCTIONS
@@ -79,39 +80,39 @@ export const DropdownItemsChild = ({ onDelete, id, index }: IProps) => {
     return (
         <Wrapper>
             {droppableContent}
-            <DropdownItemsChildWrapper
-                data-testid="dropdown-item-child"
+            <OptionsChildWrapper
+                data-testid="option-child"
                 ref={setNodeRef}
                 style={style}
                 {...attributes}
             >
-                <DropdownItemsDragHandleButton {...listeners}>
+                <OptionsDragHandleButton {...listeners}>
                     <DragHandleIcon />
-                </DropdownItemsDragHandleButton>
+                </OptionsDragHandleButton>
                 <Controller
-                    name={`dropdownItems.${index}.label`}
+                    name={`${fieldName}.${index}.label`}
                     control={control}
                     render={({ field }) => (
                         <Form.Input
-                            data-testid="dropdown-item-label"
+                            data-testid="option-label"
                             placeholder="Enter label"
                             {...field}
                             errorMessage={
-                                errors.dropdownItems?.[index]?.label?.message
+                                errors[fieldName]?.[index]?.label?.message
                             }
                         />
                     )}
                 ></Controller>
                 <Controller
-                    name={`dropdownItems.${index}.value`}
+                    name={`${fieldName}.${index}.value`}
                     control={control}
                     render={({ field }) => (
                         <Form.Input
-                            data-testid="dropdown-item-value"
+                            data-testid="option-value"
                             placeholder="Enter value"
                             {...field}
                             errorMessage={
-                                errors.dropdownItems?.[index]?.value?.message
+                                errors[fieldName]?.[index]?.value?.message
                             }
                         />
                     )}
@@ -121,7 +122,7 @@ export const DropdownItemsChild = ({ onDelete, id, index }: IProps) => {
                     popoverMessage={renderPopoverMessage()}
                     disabled={isDeleteDisabled()}
                 />
-            </DropdownItemsChildWrapper>
+            </OptionsChildWrapper>
         </Wrapper>
     );
 };

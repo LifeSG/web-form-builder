@@ -4,7 +4,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import {
     EElementType,
     EToastTypes,
-    IDropdownItemAttributes,
+    IOptionAttributes,
     IPillItemAttributes,
     TElement,
     useDisplay,
@@ -66,7 +66,7 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
             /** Remove empty dropdown items before updating element */
             if ("dropdownItems" in values) {
                 const nonEmptyDropdownItems = (
-                    getValues("dropdownItems") as IDropdownItemAttributes[]
+                    getValues("dropdownItems") as IOptionAttributes[]
                 ).filter(
                     (item) => item.label.length > 0 || item.value.length > 0
                 );
@@ -106,7 +106,6 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
         }
         methods.reset(focusedElement.element);
     }, [focusedElement?.element, methods.reset]);
-
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================

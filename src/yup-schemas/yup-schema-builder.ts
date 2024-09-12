@@ -9,6 +9,7 @@ import {
     NUMERIC_YUP_SCHEMA,
     TEXT_YUP_SCHEMA,
 } from "./elements";
+import { RADIO_BUTTON_YUP_SCHEMA } from "./elements/radio-button-yup-schema";
 import { generateBaseYupSchema } from "./helper";
 import { TYupSchema } from "./types";
 
@@ -40,16 +41,21 @@ export namespace YupSchemaBuilder {
                         .object()
                         .concat(baseSchema)
                         .concat(LONG_TEXT_YUP_SCHEMA);
-                case EElementType.DROPDOWN:
-                    return yup
-                        .object()
-                        .concat(baseSchema)
-                        .concat(DROPDOWN_YUP_SCHEMA);
                 case EElementType.CONTACT:
                     return yup
                         .object()
                         .concat(baseSchema)
                         .concat(CONTACT_YUP_SCHEMA);
+                case EElementType.DROPDOWN:
+                    return yup
+                        .object()
+                        .concat(baseSchema)
+                        .concat(DROPDOWN_YUP_SCHEMA);
+                case EElementType.RADIO:
+                    return yup
+                        .object()
+                        .concat(baseSchema)
+                        .concat(RADIO_BUTTON_YUP_SCHEMA);
             }
         } catch (error) {
             console.error("Error in schema helper:", error);

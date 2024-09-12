@@ -22,7 +22,7 @@ export const ELEMENTS_CATEGORIES: IElementCategoryAttributes[] = [
     },
     {
         categoryTitle: "Option group",
-        elementTypes: [EElementType.DROPDOWN],
+        elementTypes: [EElementType.DROPDOWN, EElementType.RADIO],
     },
 ];
 
@@ -33,6 +33,7 @@ export const ELEMENT_BUTTON_LABELS: { [key in EElementType]: string } = {
     [EElementType.TEXTAREA]: "Long text",
     [EElementType.CONTACT]: "Contact number",
     [EElementType.DROPDOWN]: "Dropdown",
+    [EElementType.RADIO]: "Radio Button",
 };
 
 export const ELEMENT_ID_PREFIX: Record<EElementType, string> = {
@@ -42,6 +43,7 @@ export const ELEMENT_ID_PREFIX: Record<EElementType, string> = {
     [EElementType.TEXT]: "short-text-field",
     [EElementType.TEXTAREA]: "long-text-field",
     [EElementType.DROPDOWN]: "select",
+    [EElementType.RADIO]: "radio-field",
 };
 
 export const ELEMENT_VALIDATION_TYPES = {

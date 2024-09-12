@@ -1,4 +1,5 @@
 import { ChevronDownIcon } from "@lifesg/react-icons/chevron-down";
+import { CircleDotIcon } from "@lifesg/react-icons/circle-dot";
 import { EnvelopeIcon } from "@lifesg/react-icons/envelope";
 import { PhoneIcon } from "@lifesg/react-icons/phone";
 import { EElementType } from "src/context-providers";
@@ -30,6 +31,9 @@ export const CardIcon = ({ elementType }: IProps) => {
             break;
         case EElementType.DROPDOWN:
             icon = <ChevronDownIcon />;
+            break;
+        case EElementType.RADIO:
+            icon = <CircleDotIcon />;
             break;
         default:
             break;

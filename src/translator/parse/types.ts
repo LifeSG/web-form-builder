@@ -6,6 +6,7 @@ import {
     ISelectSchema,
     ITextareaSchema,
     ITextFieldSchema,
+    TRadioButtonGroupSchema,
 } from "@lifesg/web-frontend-engine/components/fields";
 import { IValidation } from "src/context-providers";
 
@@ -15,7 +16,8 @@ export type TElementSchema =
     | IEmailFieldSchema
     | INumericFieldSchema
     | ISelectSchema
-    | IContactFieldSchema;
+    | IContactFieldSchema
+    | TRadioButtonGroupSchema;
 
 export type ValidationSchemaParser = (
     schema: IYupValidationRule

@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
 import { act } from "react-dom/test-utils";
-import { DropdownItems } from "src/components/element-editor/basic-details/elements";
+import { DropdownItems } from "src/components/element-editor/basic-details/elements/dropdown/dropdown-items";
 import { EElementType } from "src/context-providers";
 import { TestHelper } from "src/util/test-helper";
 
@@ -36,7 +36,7 @@ describe("DropdownItems", () => {
                 await screen.findByText("Dropdown items");
             expect(dropdownItemsContainer).toBeInTheDocument();
 
-            const dropdownItems = screen.getAllByTestId("dropdown-item-child");
+            const dropdownItems = screen.getAllByTestId("option-child");
             expect(dropdownItems).toHaveLength(2);
         });
 
@@ -56,7 +56,7 @@ describe("DropdownItems", () => {
 
             expect(addDropdownOptionButton).toBeInTheDocument();
 
-            let dropdownItems = screen.getAllByTestId("dropdown-item-child");
+            let dropdownItems = screen.getAllByTestId("option-child");
 
             expect(dropdownItems).toHaveLength(2);
 
@@ -64,7 +64,7 @@ describe("DropdownItems", () => {
                 fireEvent.click(addDropdownOptionButton);
             });
 
-            dropdownItems = screen.getAllByTestId("dropdown-item-label");
+            dropdownItems = screen.getAllByTestId("option-label");
 
             expect(dropdownItems).toHaveLength(3);
         });
@@ -85,7 +85,7 @@ describe("DropdownItems", () => {
                 fireEvent.click(getAddDropdownOptionButton());
             });
 
-            let dropdownItems = screen.getAllByTestId("dropdown-item-label");
+            let dropdownItems = screen.getAllByTestId("option-label");
 
             expect(dropdownItems).toHaveLength(3);
 
@@ -97,7 +97,7 @@ describe("DropdownItems", () => {
                 fireEvent.click(deleteButton);
             });
 
-            dropdownItems = screen.getAllByTestId("dropdown-item-label");
+            dropdownItems = screen.getAllByTestId("option-label");
 
             expect(dropdownItems).toHaveLength(2);
         });

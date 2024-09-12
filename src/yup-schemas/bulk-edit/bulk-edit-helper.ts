@@ -4,7 +4,7 @@ export const getNonEmptyLines = (value: string): string[] => {
     return value.split("\n").filter((line) => !isEmpty(line));
 };
 
-export const getValidDropdownItem = (
+export const getValidOption = (
     line: string
 ): { label: string; value: string } | null => {
     const parts = line.split("|").map((part) => part.trim());
