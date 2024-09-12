@@ -3,9 +3,7 @@ import {
     ConfigContext,
     EElementType,
     IFocusedElement,
-    TCustomisableGlobalAttributes,
     useConfigContext,
-    useIsAttributeDisabled,
     useIsElementDisabled,
 } from "src/context-providers";
 import { EElementLabel, ELEMENT_BUTTON_LABELS } from "src/data";
