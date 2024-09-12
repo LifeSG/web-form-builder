@@ -1,6 +1,11 @@
 import { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
-import { EElementType, TElement, useBuilder } from "src/context-providers";
+import {
+    EElementType,
+    TElement,
+    useBuilder,
+    useIsElementDisabled,
+} from "src/context-providers";
 import { ElementObjectGenerator } from "src/util";
 import { TFormFieldValues } from "src/yup-schemas";
 import {
@@ -28,6 +33,10 @@ export const BasicDetails = () => {
         formState: { isDirty },
     } = useFormContext<TFormFieldValues>();
     const type = watch("type", focusedElement?.element?.type);
+    const isDisabled = useIsElementDisabled(
+        focusedElement.element.id,
+        focusedElement.element.type
+    );
 
     // =========================================================================
     // EFFECTS
@@ -88,7 +97,7 @@ export const BasicDetails = () => {
                 type="default"
                 expanded
                 title="Basic"
-                $hideTopBorder={focusedElement.isDirty}
+                $hideTopBorder={focusedElement.isDirty || isDisabled}
             >
                 <Wrapper>{renderBasicDetails()}</Wrapper>
             </AccordionItem>

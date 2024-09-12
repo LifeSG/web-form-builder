@@ -101,6 +101,13 @@ const Component = forwardRef<IFormBuilderMethods, IProps>(
 
         useEffect(() => {
             if (presetForm) {
+                const elementSchema = Object.keys(presetForm).reduce(
+                    (acc, element) => {
+                        acc[element] = presetForm[element].schema;
+                        return acc;
+                    },
+                    {}
+                );
                 const elementsSchema: IFrontendEngineData = {
                     defaultValues: {},
                     sections: {
@@ -108,7 +115,7 @@ const Component = forwardRef<IFormBuilderMethods, IProps>(
                             children: {
                                 grid: {
                                     children: {
-                                        ...presetForm,
+                                        ...elementSchema,
                                     },
                                     uiType: "grid",
                                 },
@@ -122,12 +129,13 @@ const Component = forwardRef<IFormBuilderMethods, IProps>(
                         },
                     },
                 };
-                const schema = {
+                const formSchema = {
                     schema: elementsSchema,
                     prefill: {},
                 };
                 const { newOrderedIdentifiers, newElements } =
-                    Translator.parseSchema(schema, { shouldShowPrefill }) || {};
+                    Translator.parseSchema(formSchema, { shouldShowPrefill }) ||
+                    {};
 
                 updateElementSchema(newElements, newOrderedIdentifiers);
             }

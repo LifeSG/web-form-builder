@@ -1,5 +1,10 @@
 import { Form, Text } from "@lifesg/react-design-system";
-import { EElementType } from "src/context-providers";
+import {
+    EElementType,
+    useBuilder,
+    useIsAttributeDisabled,
+    useIsElementDisabled,
+} from "src/context-providers";
 import {
     ELEMENTS_CATEGORIES,
     ELEMENT_BUTTON_LABELS,
@@ -20,6 +25,16 @@ export const IconDropdown = ({
     onBlur,
     errorMessage,
 }: IProps) => {
+    // ===========================================================================
+    // CONST, STATE, REFS
+    // ===========================================================================
+    const { focusedElement } = useBuilder();
+    const isElementDisabled = useIsElementDisabled(
+        focusedElement?.element.id,
+        focusedElement?.element.type
+    );
+    const isAttributeDisabled = useIsAttributeDisabled(focusedElement, "type");
+    const isDisabled = isElementDisabled || isAttributeDisabled;
     // =============================================================================
     // RENDER FUNCTIONS
     // =============================================================================
@@ -30,6 +45,7 @@ export const IconDropdown = ({
     return (
         <Form.Select
             data-testid="type-field"
+            disabled={isDisabled}
             label={"Element type"}
             options={renderOptions()}
             renderCustomSelectedOption={(option: EElementType) => {

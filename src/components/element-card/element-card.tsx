@@ -12,6 +12,7 @@ import {
     TElement,
     useBuilder,
     useDisplay,
+    useIsElementDisabled,
 } from "src/context-providers";
 import { CardIcon } from "../common";
 import {
@@ -38,7 +39,8 @@ export const ElementCard = ({ element, onClick }: IProps) => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
-    const { label, id } = element || {};
+    const { label, id, type } = element || {};
+    const isDisabled = useIsElementDisabled(id, type);
     const {
         focusedElement,
         deleteElement,
@@ -49,9 +51,10 @@ export const ElementCard = ({ element, onClick }: IProps) => {
 
     const { isDragging } = useDraggable({
         id: element?.internalId,
+        disabled: isDisabled,
     });
     const { attributes, listeners, setNodeRef, transform, transition } =
-        useSortable({ id: element?.internalId });
+        useSortable({ id: element?.internalId, disabled: isDisabled });
     const { isOver, setNodeRef: droppableRef } = useDroppable({
         id: element?.internalId,
     });
@@ -144,13 +147,15 @@ export const ElementCard = ({ element, onClick }: IProps) => {
                     $isDragging={isDragging}
                 >
                     <Container data-testid={"card" + element?.internalId}>
-                        <DragHandle data-testid="drag-handle" />
+                        {!isDisabled && (
+                            <DragHandle data-testid="drag-handle" />
+                        )}
                         <CardIcon elementType={element?.type} />
                         <DetailsContainer>
                             <Text.Body weight="semibold">{label}</Text.Body>
                             <IdLabel weight="semibold">ID: {id}</IdLabel>
                         </DetailsContainer>
-                        {isFocused && (
+                        {isFocused && !isDisabled && (
                             <ActionsContainer>
                                 <ActionButton
                                     data-testid="delete-button"

@@ -1,7 +1,8 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
 import { TypeField } from "src/components/element-editor/basic-details/common";
-import { EElementType } from "src/context-providers";
+import { EElementType, TElement } from "src/context-providers";
+import { ELEMENT_BUTTON_LABELS } from "src/data";
 import { TestHelper } from "src/util/test-helper";
 
 jest.mock("src/context-providers/display/modal-hook", () => ({
@@ -94,6 +95,30 @@ describe("TypeField", () => {
             "Email address"
         );
     });
+
+    it("should be disabled when the element is disabled", async () => {
+        renderComponent({
+            configContext: {
+                elements: {
+                    "Email address": {
+                        isDisabled: true,
+                    },
+                },
+            },
+            builderContext: {
+                selectedElementType: EElementType.EMAIL,
+                focusedElement: {
+                    element: MOCK_FOCUSED_ELEMENT,
+                },
+            },
+        });
+
+        const typeField = screen.getByTestId("type-field");
+        fireEvent.click(typeField);
+
+        const shortTextOption = screen.queryByText("Short text");
+        expect(shortTextOption).not.toBeInTheDocument();
+    });
 });
 
 // =============================================================================
@@ -110,3 +135,14 @@ const renderComponent = (overrideOptions?: TestHelper.RenderOptions) => {
 const mockHideModal = jest.fn();
 const mockShowModal = jest.fn();
 const mockSelectElementType = jest.fn();
+
+const MOCK_FOCUSED_ELEMENT: TElement = {
+    internalId: "mock256",
+    type: EElementType.EMAIL,
+    id: "mockElement",
+    required: false,
+    description: "",
+    preselectedValue: "",
+    label: ELEMENT_BUTTON_LABELS[EElementType.TEXTAREA],
+    columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
+};
