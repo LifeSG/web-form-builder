@@ -3,8 +3,15 @@ import { Text } from "@lifesg/react-design-system/text";
 import isEmpty from "lodash/isEmpty";
 import { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import { useShouldShowPrefill } from "src/context-providers";
-import { IDropdownItemAttributes } from "src/context-providers/builder/";
+import {
+    useIsAttributeDisabled,
+    useIsElementDisabled,
+    useShouldShowPrefill,
+} from "src/context-providers";
+import {
+    IDropdownItemAttributes,
+    useBuilder,
+} from "src/context-providers/builder/";
 import { TOverallOptionGroupBasedValues } from "src/yup-schemas";
 
 export const DropdownPreselectedValue = () => {
@@ -21,6 +28,16 @@ export const DropdownPreselectedValue = () => {
     const preselectedValue = watch("preselectedValue");
     const dropdownItems = watch("dropdownItems", []);
     const shouldShowPrefill = useShouldShowPrefill();
+    const { focusedElement } = useBuilder();
+    const isElementDisabled = useIsElementDisabled(
+        focusedElement.element.id,
+        focusedElement.element.type
+    );
+    const isAttributeDisabled = useIsAttributeDisabled(
+        focusedElement,
+        "preselectedValue"
+    );
+    const isDisabled = isElementDisabled || isAttributeDisabled;
 
     const preselectedValueOptions: IDropdownItemAttributes[] = [
         {
@@ -74,6 +91,7 @@ export const DropdownPreselectedValue = () => {
                     const { ref, ...withoutRef } = field;
                     return (
                         <Form.Select
+                            disabled={isDisabled}
                             {...withoutRef}
                             data-testid="preselected-value-field"
                             options={preselectedValueOptions}

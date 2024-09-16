@@ -23,6 +23,8 @@ import {
     EModalType,
     IBulkEditModalProps,
     IDropdownItemAttributes,
+    useBuilder,
+    useIsElementDisabled,
 } from "src/context-providers";
 import { useModal } from "src/context-providers/display/modal-hook";
 import {
@@ -55,6 +57,12 @@ export const DropdownItems = () => {
         useSensor(KeyboardSensor, {
             coordinateGetter: sortableKeyboardCoordinates,
         })
+    );
+
+    const { focusedElement } = useBuilder();
+    const isDisabled = useIsElementDisabled(
+        focusedElement?.element?.id,
+        focusedElement?.element?.type
     );
 
     // =========================================================================
@@ -159,6 +167,7 @@ export const DropdownItems = () => {
         return (
             <DropdownItemsButtonsWrapper>
                 <DropdownItemsButton
+                    disabled={isDisabled}
                     onClick={handleAddButtonClick}
                     icon={<PlusIcon />}
                     styleType="secondary"
@@ -167,6 +176,7 @@ export const DropdownItems = () => {
                     Add Option
                 </DropdownItemsButton>
                 <DropdownItemsButton
+                    disabled={isDisabled}
                     onClick={handleBulkEditButtonClick}
                     icon={<PencilIcon />}
                     styleType="secondary"

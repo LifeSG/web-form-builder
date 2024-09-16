@@ -13,6 +13,7 @@ import {
     DroppableWrapper,
     Wrapper,
 } from "./dropdown-items-child.styles";
+import { useBuilder, useIsElementDisabled } from "src/context-providers";
 
 interface IProps {
     onDelete: () => void;
@@ -31,6 +32,12 @@ export const DropdownItemsChild = ({ onDelete, id, index }: IProps) => {
         watch,
     } = useFormContext<TOverallOptionGroupBasedValues>();
 
+    const { focusedElement } = useBuilder();
+    const isDisabled = useIsElementDisabled(
+        focusedElement?.element?.id,
+        focusedElement?.element?.type
+    );
+
     const {
         attributes,
         listeners,
@@ -39,7 +46,7 @@ export const DropdownItemsChild = ({ onDelete, id, index }: IProps) => {
         transition,
         isDragging,
         isOver,
-    } = useSortable({ id });
+    } = useSortable({ id, disabled: isDisabled });
 
     const style: CSSProperties = {
         transform: CSS.Translate.toString(transform),
@@ -56,7 +63,7 @@ export const DropdownItemsChild = ({ onDelete, id, index }: IProps) => {
     // =========================================================================
 
     const isDeleteDisabled = () => {
-        return dropdownItems.length < 3;
+        return isDisabled || dropdownItems.length < 3;
     };
     // =========================================================================
     // RENDER FUNCTIONS
@@ -93,6 +100,7 @@ export const DropdownItemsChild = ({ onDelete, id, index }: IProps) => {
                     control={control}
                     render={({ field }) => (
                         <Form.Input
+                            disabled={isDisabled}
                             data-testid="dropdown-item-label"
                             placeholder="Enter label"
                             {...field}
@@ -107,6 +115,7 @@ export const DropdownItemsChild = ({ onDelete, id, index }: IProps) => {
                     control={control}
                     render={({ field }) => (
                         <Form.Input
+                            disabled={isDisabled}
                             data-testid="dropdown-item-value"
                             placeholder="Enter value"
                             {...field}

@@ -1,6 +1,7 @@
 import { TFrontendEngineFieldSchema } from "@lifesg/web-frontend-engine";
 import { EElementLabel } from "src/data";
 import { TElement } from "../builder";
+import { TElementSchema } from "src/translator/parse/types";
 
 interface IPanelConfig {
     /**
@@ -23,10 +24,10 @@ interface IAttributeConfig {
     /**
      * Controls the editability of the specific attribute.
      *
-     * When set to `false`, the attribute field will be disabled.
-     * Defaults to `true`, meaning the attribute is editable by default.
+     * When set to `true`, the attribute field will be disabled.
+     * Defaults to `false`, meaning the attribute is editable by default.
      */
-    isEditable?: boolean;
+    isDisabled?: boolean;
 }
 
 interface IElementConfig {
@@ -38,12 +39,12 @@ interface IElementConfig {
      */
     shouldShow?: boolean;
     /**
-     * Controls the editability of the specific element.
+     * Controls the editability of the specific attribute.
      *
-     * When set to `false`, the Edit details form will be disabled for the element.
-     * Defaults to `true`, meaning the element is editable by default.
+     * When set to `true`, the attribute field will be disabled.
+     * Defaults to `false`, meaning the attribute is editable by default.
      */
-    isEditable?: boolean;
+    isDisabled?: boolean;
     /**
      * Configuration for attributes that are specific to the element.
      *
@@ -80,9 +81,22 @@ interface ICustomElement {
     /**
      * Controls whether the custom element is editable on the Edit details panel.
      *
-     * Defaults to `true`, meaning the custom element is editable by default.
+     * Defaults to `false`, meaning the custom element is editable by default.
      */
-    isEditable?: boolean;
+    isDisabled?: boolean;
+}
+
+export interface IPresetElement {
+    /**
+     * Defines the schema properties for the preset element that is supported by form builder.
+     */
+    schema: TElementSchema;
+    /**
+     * Controls whether the element is editable on the Edit details panel.
+     *
+     * Defaults to `false`, meaning the element is editable by default.
+     */
+    isDisabled?: boolean;
 }
 
 export interface IConfigState {
@@ -111,12 +125,13 @@ export interface IConfigState {
     };
 
     //TODO: To be implemented later on
-    // /**
-    //  * An array of FormBuilder's supported element schemas that will be used to prepopulate FormBuilder.
-    //  *
-    //  * When provided, FormBuilder will be initialised with the specified elements.
-    //  */
-    // presetForm?: TElementSchema[];
+    /**
+     * An array of FormBuilder's supported element schemas that will be used to prepopulate FormBuilder.
+     *
+     * When provided, FormBuilder will be initialised with the specified elements.
+     * Users can specify the elements' properties and set them as disabled if needed with the `isDisabled` flag.
+     */
+    presetForm?: Record<string, IPresetElement>;
     // /**
     //  * An array of custom element (supported by Frontend Engine) that can be used in the FormBuilder.
     //  *

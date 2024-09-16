@@ -4,6 +4,11 @@ import {
     ControllerRenderProps,
     useFormContext,
 } from "react-hook-form";
+import {
+    useBuilder,
+    useIsAttributeDisabled,
+    useIsElementDisabled,
+} from "src/context-providers";
 import { TFormFieldValues } from "src/yup-schemas";
 import { StyledTextarea } from "./common.styles";
 
@@ -16,6 +21,17 @@ export const DescriptionField = () => {
         control,
         formState: { errors },
     } = useFormContext<TFormFieldValues>();
+
+    const { focusedElement } = useBuilder();
+    const isElementDisabled = useIsElementDisabled(
+        focusedElement.element.id,
+        focusedElement.element.type
+    );
+    const isAttributeDisabled = useIsAttributeDisabled(
+        focusedElement,
+        "description"
+    );
+    const isDisabled = isElementDisabled || isAttributeDisabled;
 
     // =========================================================================
     // HELPER FUNCTIONS
@@ -40,6 +56,7 @@ export const DescriptionField = () => {
             control={control}
             render={({ field }) => (
                 <StyledTextarea
+                    disabled={isDisabled}
                     {...field}
                     data-testid="description-field"
                     label={{

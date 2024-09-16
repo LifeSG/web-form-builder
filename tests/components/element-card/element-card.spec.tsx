@@ -55,6 +55,27 @@ describe("ElementCard", () => {
             expect(getDuplicateButton()).toBeInTheDocument();
             expect(getDeleteButton()).toBeInTheDocument();
         });
+
+        it("should not show the duplicate and delete buttons when in focused state if element is disabled", () => {
+            renderComponent(
+                { element: MOCK_ELEMENT },
+                {
+                    configContext: {
+                        elements: {
+                            "Email address": {
+                                isDisabled: true,
+                            },
+                        },
+                    },
+                    builderContext: {
+                        focusedElement: { element: MOCK_ELEMENT },
+                    },
+                }
+            );
+            expect(getDuplicateButton(true)).not.toBeInTheDocument();
+            expect(getDeleteButton(true)).not.toBeInTheDocument();
+        });
+
         it("should disable the duplicate button when the current element is in focus", () => {
             renderComponent(
                 { element: MOCK_ELEMENT },
@@ -121,6 +142,30 @@ describe("ElementCard", () => {
             );
             fireEvent.mouseEnter(getElementCard());
             expect(screen.getByTestId("drag-handle")).toBeInTheDocument();
+        });
+
+        it("should not render the drag handle when hovering over the element card of a disabled element", () => {
+            renderComponent(
+                { element: MOCK_ELEMENT },
+                {
+                    configContext: {
+                        elements: {
+                            "Email address": {
+                                isDisabled: true,
+                            },
+                        },
+                    },
+                    builderContext: {
+                        focusedElement: {
+                            element: MOCK_ELEMENT,
+                            isDirty: true,
+                            isValid: false,
+                        },
+                    },
+                }
+            );
+            fireEvent.mouseEnter(getElementCard());
+            expect(screen.queryByTestId("drag-handle")).not.toBeInTheDocument();
         });
     });
 

@@ -1,6 +1,11 @@
 import { Form } from "@lifesg/react-design-system/form";
 import { Text } from "@lifesg/react-design-system/text";
 import { Controller, useFormContext } from "react-hook-form";
+import {
+    useBuilder,
+    useIsAttributeDisabled,
+    useIsElementDisabled,
+} from "src/context-providers";
 import { TFormFieldValues } from "src/yup-schemas";
 
 export const IdField = () => {
@@ -13,6 +18,14 @@ export const IdField = () => {
         formState: { errors },
     } = useFormContext<TFormFieldValues>();
 
+    const { focusedElement } = useBuilder();
+    const isElementDisabled = useIsElementDisabled(
+        focusedElement?.element?.id,
+        focusedElement?.element?.type
+    );
+    const isAttributeDisabled = useIsAttributeDisabled(focusedElement, "id");
+    const isDisabled = isElementDisabled || isAttributeDisabled;
+
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
@@ -23,6 +36,7 @@ export const IdField = () => {
             control={control}
             render={({ field }) => (
                 <Form.Input
+                    disabled={isDisabled}
                     {...field}
                     data-testid="id-field"
                     label={{
