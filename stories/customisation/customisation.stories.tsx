@@ -151,3 +151,21 @@ export const HideIdFieldWithElementSpecificOverride: StoryObj<Component> = {
         );
     },
 };
+
+export const HidePagesPanel: StoryObj<Component> = {
+    render: () => {
+        return (
+            <div style={{ height: "100vh", width: "100vw" }}>
+                <FormBuilder
+                    config={{
+                        panels: {
+                            pages: {
+                                shouldShow: false,
+                            },
+                        },
+                    }}
+                />
+            </div>
+        );
+    },
+};
