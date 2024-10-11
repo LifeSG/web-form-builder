@@ -24,7 +24,7 @@ describe("SidePanel", () => {
     });
 
     describe("rendering of the toolbar", () => {
-        it("should display the toolbar when there is no focused element", () => {
+        it("should display the toolbar by default", () => {
             renderComponent();
             expect(getToolbar()).toBeInTheDocument();
         });
@@ -34,6 +34,19 @@ describe("SidePanel", () => {
                 builderContext: {
                     focusedElement: {
                         element: MOCK_ELEMENT,
+                    },
+                },
+            });
+            expect(getToolbar()).not.toBeInTheDocument();
+        });
+
+        it("should not display the toolbar when there pages panel configured to be hidden", () => {
+            renderComponent({
+                configContext: {
+                    panels: {
+                        pages: {
+                            shouldShow: false,
+                        },
                     },
                 },
             });
