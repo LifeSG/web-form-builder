@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { EElementLabel, ELEMENT_BUTTON_LABELS } from "src/data";
 import { EElementType, IFocusedElement } from "../builder";
 import { ConfigContext } from "./config-provider";
-import { TCustomisableGlobalAttributes } from "./types";
+import { IConfigState, TCustomisableGlobalAttributes } from "./types";
 
 export const useConfigContext = () => {
     const context = useContext(ConfigContext);
@@ -13,6 +13,12 @@ export const usePresetForm = () => {
     const { presetForm } = useConfigContext();
 
     return presetForm;
+};
+
+export const useShouldShowPanel = (panel: keyof IConfigState["panels"]) => {
+    const { panels } = useConfigContext();
+
+    return panels?.[panel]?.shouldShow ?? true;
 };
 
 export const useIsElementDisabled = (
