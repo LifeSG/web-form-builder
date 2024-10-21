@@ -4,10 +4,10 @@ import {
     LabelField,
     MandatoryField,
     OptionPreselectedValue,
+    Options,
     PlaceholderField,
     TypeField,
 } from "../../common";
-import { DropdownItems } from "./dropdown-items";
 
 export const DropdownBasicDetails = () => {
     return (
@@ -15,7 +15,11 @@ export const DropdownBasicDetails = () => {
             <TypeField />
             <LabelField />
             <MandatoryField />
-            <DropdownItems />
+            <Options
+                label="Dropdown items"
+                description="Label is the item displayed to the users in the dropdown menu. Value is used to differentiate the dropdown items in the backend."
+                fieldName="dropdownItems"
+            />
             <IdField />
             <DescriptionField />
             <PlaceholderField />
