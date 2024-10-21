@@ -7,6 +7,10 @@ import styled, { css } from "styled-components";
 // =============================================================================
 // STYLE INTERFACES
 // =============================================================================
+interface IWrapperStyleProps {
+    $showDivider: boolean;
+}
+
 interface IIconStyleProps {
     $isCollapsed: boolean;
 }
@@ -14,7 +18,7 @@ interface IIconStyleProps {
 // =============================================================================
 // STYLING
 // =============================================================================
-export const Wrapper = styled.div<{ $showDivider: boolean }>`
+export const Wrapper = styled.div<IWrapperStyleProps>`
     height: 5.75rem;
     width: 100%;
     display: flex;
