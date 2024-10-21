@@ -16,7 +16,11 @@ import {
     Wrapper,
 } from "./side-panel-header.styles";
 
-export const SidePanelHeader = () => {
+interface Props {
+    showDivider: boolean;
+}
+
+export const SidePanelHeader = ({ showDivider }: Props) => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
@@ -115,12 +119,11 @@ export const SidePanelHeader = () => {
     };
 
     return (
-        <Wrapper>
+        <Wrapper $showDivider={showDivider}>
             <HeaderLabel weight="semibold" data-testid="header-label">
                 {getHeaderTitle()}
             </HeaderLabel>
             {renderButtons()}
-            {/* TODO: To work on when react hook form is set up */}
         </Wrapper>
     );
 };
