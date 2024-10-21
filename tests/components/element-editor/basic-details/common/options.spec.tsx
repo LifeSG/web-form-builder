@@ -20,14 +20,11 @@ describe("Options", () => {
     });
 
     describe("rendering the items", () => {
-        it("should render the option items with 2 empty options if the element type is dropdown", async () => {
+        it("should render the option items with 2 empty options by default", async () => {
             renderComponent({
                 formContext: {
                     defaultValues: {
-                        optionItems: [
-                            { label: "", value: "" },
-                            { label: "", value: "" },
-                        ],
+                        dropdownItems: [],
                     },
                 },
             });
@@ -43,10 +40,7 @@ describe("Options", () => {
             renderComponent({
                 formContext: {
                     defaultValues: {
-                        optionItems: [
-                            { label: "Option 1", value: "Option 1" },
-                            { label: "Option 2", value: "Option 2" },
-                        ],
+                        dropdownItems: [],
                     },
                 },
             });
@@ -72,16 +66,13 @@ describe("Options", () => {
             renderComponent({
                 formContext: {
                     defaultValues: {
-                        optionItems: [
+                        dropdownItems: [
                             { label: "Option 1", value: "Option 1" },
                             { label: "Option 2", value: "Option 2" },
+                            { label: "Option 3", value: "Option 3" },
                         ],
                     },
                 },
-            });
-
-            await act(async () => {
-                fireEvent.click(getAddDropdownOptionButton());
             });
 
             let optionItems = screen.getAllByTestId("option-label");
@@ -110,7 +101,7 @@ describe("Options", () => {
                 },
                 formContext: {
                     defaultValues: {
-                        optionItems: [
+                        dropdownItems: [
                             { label: "", value: "" },
                             { label: "", value: "" },
                         ],
