@@ -137,7 +137,7 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
                 <Wrapper
                     $minimised={isSidePanelMinimised}
                     $offset={offset ? offset : 0}
-                    $narrow={shouldShowPagesPanel}
+                    $narrow={!shouldShowPagesPanel}
                 >
                     <SidePanelHeader showDivider={shouldShowDivider} />
                     <ContentWrapper>

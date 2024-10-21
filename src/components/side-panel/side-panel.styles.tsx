@@ -23,7 +23,7 @@ export const Wrapper = styled.div<IWrapperStyleProps>`
     display: flex;
     flex-direction: column;
     height: calc(100% - ${(props) => props.$offset}rem);
-    width: ${({ $narrow }) => ($narrow ? "36.8rem" : "31.2rem")};
+    width: ${({ $narrow }) => ($narrow ? "31.2rem" : "36.8rem")};
     transition: ${Transition.Base};
     background: ${Color.Neutral[8]};
     border-left: 1px solid ${Color.Neutral[5]};
