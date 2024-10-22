@@ -174,7 +174,7 @@ export const ElementCard = ({ element, onClick }: IProps) => {
                                     disabled={disableDuplicate}
                                 >
                                     <CopyIcon />
-                                    Duplicate
+                                    {size?.size === "full" && "Duplicate"}
                                 </ActionButton>
                                 <ActionButton
                                     data-testid="duplicate-button"
@@ -182,7 +182,7 @@ export const ElementCard = ({ element, onClick }: IProps) => {
                                     onClick={handleDeleteClick}
                                 >
                                     <BinIcon />
-                                    Delete
+                                    {size?.size === "full" && "Delete"}
                                 </ActionButton>
                             </ActionsContainer>
                         )}

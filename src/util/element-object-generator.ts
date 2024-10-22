@@ -6,6 +6,7 @@ import {
     IDropdownAttributes,
     IEmailFieldAttributes,
     INumericFieldAttributes,
+    IRadioButtonAttributes,
     ITextareaAttributes,
     ITextFieldAttributes,
     TElement,
@@ -134,6 +135,23 @@ export namespace ElementObjectGenerator {
                         {
                             validationType: EValidationType.CONTACT_NUMBER,
                             validationErrorMessage: "Invalid contact number.",
+                        },
+                    ],
+                };
+                return attributes;
+            }
+            case EElementType.RADIO: {
+                const attributes: IRadioButtonAttributes = {
+                    ...baseAttributes,
+                    placeholder: "",
+                    radioItems: [
+                        {
+                            label: "",
+                            value: "",
+                        },
+                        {
+                            label: "",
+                            value: "",
                         },
                     ],
                 };

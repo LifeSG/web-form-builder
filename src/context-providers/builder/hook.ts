@@ -99,6 +99,10 @@ export const useBuilder = () => {
 
     const duplicateElement = useCallback(
         (element: TElement) => {
+            const duplicatedElementSize = state.orderedIdentifiers.find(
+                (identifier) => identifier.internalId === element.internalId
+            ).size;
+
             const existingIdentifiers = state.orderedIdentifiers.map(
                 (elementId) => elementId.internalId
             );
@@ -118,7 +122,8 @@ export const useBuilder = () => {
                 {
                     internalId: duplicatedElement.internalId,
                     position: state.elementCounter,
-                },
+                    size: duplicatedElementSize,
+                } as IElementIdentifier,
             ];
 
             dispatch({
@@ -133,7 +138,7 @@ export const useBuilder = () => {
                 type: "focus-element",
                 payload: {
                     element: duplicatedElement as TElement,
-                    isDirty: true,
+                    isDirty: false,
                 },
             });
         },
@@ -145,9 +150,9 @@ export const useBuilder = () => {
             const { [internalId]: deletedElement, ...remaining } =
                 state.elements;
 
-            const deletedElementPosition = state.orderedIdentifiers.find(
+            const deletedElementIdentifier = state.orderedIdentifiers.find(
                 (identifier) => identifier.internalId === internalId
-            ).position;
+            );
 
             const newOrderedIdentifiers = state.orderedIdentifiers.filter(
                 (identifier) => identifier.internalId !== internalId
@@ -173,7 +178,8 @@ export const useBuilder = () => {
                 ...state.deletedElements,
                 [internalId]: {
                     element: deletedElement,
-                    position: deletedElementPosition,
+                    position: deletedElementIdentifier.position,
+                    size: deletedElementIdentifier.size,
                 },
             };
 
@@ -223,6 +229,7 @@ export const useBuilder = () => {
             newOrderedIdentifiers.splice(insertionIndex, 0, {
                 internalId,
                 position: deletedElement.position,
+                size: deletedElement.size,
             });
 
             dispatch({

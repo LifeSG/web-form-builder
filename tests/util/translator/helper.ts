@@ -8,7 +8,7 @@ import {
     EElementType,
     IColumns,
     IConditionalRendering,
-    IDropdownItemAttributes,
+    IOptionAttributes,
     IPrefillAttributes,
     IValidation,
     TElementMap,
@@ -44,7 +44,8 @@ interface MockElementSchemaProps {
     placeholder?: string;
     validation?: (IYupValidationRule | IContactFieldValidationRule)[];
     showIf?: TRenderRules[];
-    dropdownItems?: IDropdownItemAttributes[];
+    dropdownItems?: IOptionAttributes[];
+    radioItems?: IOptionAttributes[];
     resizable?: boolean;
     chipTexts?: string[];
     allowClear?: boolean;
@@ -63,7 +64,7 @@ interface MockChildrenSchema {
         placeholder?: string;
         validation?: (IYupValidationRule | IContactFieldValidationRule)[];
         showIf?: TRenderRules[];
-        dropdownItems?: IDropdownItemAttributes[];
+        dropdownItems?: IOptionAttributes[];
         resizable?: boolean;
         chipTexts?: string[];
         allowClear?: boolean;
@@ -120,6 +121,7 @@ export const generateMockElementSchema = ({
     validation,
     showIf,
     dropdownItems,
+    radioItems,
     resizable,
     chipTexts,
     allowClear,
@@ -135,6 +137,7 @@ export const generateMockElementSchema = ({
                 mobile: 4,
             },
             ...(dropdownItems && { options: dropdownItems }),
+            ...(radioItems && { options: radioItems }),
             ...(placeholder && { placeholder }),
             ...(validation && { validation }),
             ...(showIf && { showIf }),

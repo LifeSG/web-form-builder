@@ -1,6 +1,7 @@
 import {
     EElementType,
     IFocusedElement,
+    IOptionAttributes,
     TElementMap,
 } from "src/context-providers";
 import * as yup from "yup";
@@ -46,6 +47,48 @@ yup.addMethod(yup.string, "isNumber", function (message) {
         return false;
     });
 });
+
+export const validateOptions = (
+    options: IOptionAttributes[],
+    context: yup.TestContext<yup.AnyObject>
+) => {
+    const validItemsCount = options.filter(
+        (item) => item.label && item.value
+    ).length;
+
+    const allItemsValidOrEmpty = options.every(
+        (item) => (item.label && item.value) || (!item.label && !item.value)
+    );
+
+    if (validItemsCount >= 2 && allItemsValidOrEmpty) {
+        return true;
+    }
+
+    const errors = options.reduce((acc, item, index) => {
+        if (!item.label && !item.value && validItemsCount >= 2) {
+            return acc;
+        }
+        if (!item.label) {
+            acc.push(
+                context.createError({
+                    path: `${context.path}[${index}].label`,
+                    message: "Option label required.",
+                })
+            );
+        }
+        if (!item.value) {
+            acc.push(
+                context.createError({
+                    path: `${context.path}[${index}].value`,
+                    message: "Option value required.",
+                })
+            );
+        }
+        return acc;
+    }, []);
+
+    throw new yup.ValidationError(errors);
+};
 
 export const generateBaseYupSchema = (
     elements: TElementMap,

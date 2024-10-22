@@ -31,6 +31,7 @@ describe("ContactSchemaGenerator", () => {
             required: false,
             columns: { desktop: 12, tablet: 8, mobile: 4 },
             enableClearButton: true,
+            defaultCountryCode: "",
             validation: [
                 {
                     validationType: EValidationType.CONTACT_NUMBER,
@@ -58,6 +59,7 @@ describe("ContactSchemaGenerator", () => {
             required: false,
             columns: { desktop: 12, tablet: 8, mobile: 4 },
             enableClearButton: true,
+            defaultCountryCode: "",
             validation: [
                 {
                     validationType: EValidationType.CONTACT_NUMBER,
@@ -81,6 +83,7 @@ describe("ContactSchemaGenerator", () => {
             required: false,
             columns: { desktop: 12, tablet: 8, mobile: 4 },
             enableClearButton: false,
+            defaultCountryCode: "",
             validation: [
                 {
                     validationType: EValidationType.CONTACT_NUMBER,
@@ -162,6 +165,7 @@ describe("ContactSchemaGenerator", () => {
             columns: { desktop: 12, tablet: 8, mobile: 4 },
             enableClearButton: true,
             displayAsFixedCountryCode: false,
+            defaultCountryCode: "",
             validation: [
                 {
                     validationType: EValidationType.CONTACT_NUMBER,

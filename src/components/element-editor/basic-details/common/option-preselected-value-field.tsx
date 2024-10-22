@@ -8,13 +8,14 @@ import {
     useIsElementDisabled,
     useShouldShowPrefill,
 } from "src/context-providers";
-import {
-    IDropdownItemAttributes,
-    useBuilder,
-} from "src/context-providers/builder/";
+import { IOptionAttributes, useBuilder } from "src/context-providers/builder/";
 import { TOverallOptionGroupBasedValues } from "src/yup-schemas";
 
-export const DropdownPreselectedValue = () => {
+interface IProps {
+    fieldName: "dropdownItems" | "radioItems";
+}
+
+export const OptionPreselectedValue = ({ fieldName }: IProps) => {
     // ===========================================================================
     // CONST, STATE, REFS
     // ===========================================================================
@@ -26,7 +27,7 @@ export const DropdownPreselectedValue = () => {
     } = useFormContext<TOverallOptionGroupBasedValues>();
 
     const preselectedValue = watch("preselectedValue");
-    const dropdownItems = watch("dropdownItems", []);
+    const options = watch(fieldName, []);
     const shouldShowPrefill = useShouldShowPrefill();
     const { focusedElement } = useBuilder();
     const isElementDisabled = useIsElementDisabled(
@@ -39,14 +40,14 @@ export const DropdownPreselectedValue = () => {
     );
     const isDisabled = isElementDisabled || isAttributeDisabled;
 
-    const preselectedValueOptions: IDropdownItemAttributes[] = [
+    const preselectedValueOptions: IOptionAttributes[] = [
         {
             label: "Unselect default value",
             value: null,
         },
     ];
 
-    dropdownItems.forEach((item: IDropdownItemAttributes) => {
+    options.forEach((item: IOptionAttributes) => {
         if (!isEmpty(item.label) && !isEmpty(item.value)) {
             preselectedValueOptions.push(item);
         }
@@ -72,7 +73,7 @@ export const DropdownPreselectedValue = () => {
     useEffect(() => {
         if (
             preselectedValue &&
-            !dropdownItems.some((item) => item.value === preselectedValue)
+            !options.some((item) => item.value === preselectedValue)
         ) {
             setValue("preselectedValue", "");
         }

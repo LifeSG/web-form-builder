@@ -122,7 +122,7 @@ describe("SidePanel", () => {
             await waitFor(() => expect(mockOnSubmit).toHaveBeenCalled());
         });
 
-        it("should remove empty dropdown items when saving if there are at least 2 valid dropdown items", async () => {
+        it("should remove empty options when saving if there are at least 2 valid options", async () => {
             const MOCK_DROPDOWN_ELEMENT: TOptionGroupBasedElement = {
                 internalId: "mock123",
                 type: EElementType.DROPDOWN,
@@ -145,40 +145,36 @@ describe("SidePanel", () => {
                 },
             });
 
-            const dropdownItemLabels = await screen.findAllByTestId(
-                "dropdown-item-label"
-            );
-            const dropdownItemValues = await screen.findAllByTestId(
-                "dropdown-item-value"
-            );
+            const optionLabels = await screen.findAllByTestId("option-label");
+            const optionValues = await screen.findAllByTestId("option-value");
 
             let saveButton = screen.getByTestId("save-changes-button");
 
             expect(saveButton).toHaveTextContent("Saved");
 
-            expect(dropdownItemLabels).toHaveLength(2);
+            expect(optionLabels).toHaveLength(2);
 
-            fireEvent.input(dropdownItemLabels[0], {
+            fireEvent.input(optionLabels[0], {
                 target: { value: "New Label" },
             });
-            fireEvent.input(dropdownItemValues[0], {
+            fireEvent.input(optionValues[0], {
                 target: { value: "New Value" },
             });
-            fireEvent.input(dropdownItemLabels[1], {
+            fireEvent.input(optionLabels[1], {
                 target: { value: "New Label" },
             });
-            fireEvent.input(dropdownItemValues[1], {
+            fireEvent.input(optionValues[1], {
                 target: { value: "New Value" },
             });
 
             fireEvent.click(screen.getByText("Add Option"));
 
-            expect(getDropdownItemChildren()).toHaveLength(3);
+            expect(getOptionChildren()).toHaveLength(3);
 
             fireEvent.click(saveButton);
 
             await waitFor(() => {
-                expect(getDropdownItemChildren()).toHaveLength(2);
+                expect(getOptionChildren()).toHaveLength(2);
             });
         });
     });
@@ -209,8 +205,7 @@ const getAddElementsPanel = () => screen.getByTestId("add-elements-panel");
 
 const getElementEditor = () => screen.getByTestId("element-editor");
 
-const getDropdownItemChildren = () =>
-    screen.queryAllByTestId("dropdown-item-child");
+const getOptionChildren = () => screen.queryAllByTestId("option-child");
 
 // =============================================================================
 // MOCKS

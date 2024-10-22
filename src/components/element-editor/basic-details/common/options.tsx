@@ -22,32 +22,38 @@ import { useFieldArray, useFormContext } from "react-hook-form";
 import {
     EModalType,
     IBulkEditModalProps,
-    IDropdownItemAttributes,
+    IOptionAttributes,
     useBuilder,
     useIsElementDisabled,
 } from "src/context-providers";
 import { useModal } from "src/context-providers/display/modal-hook";
 import {
     getNonEmptyLines,
-    getValidDropdownItem,
+    getValidOption,
     TOverallOptionGroupBasedValues,
 } from "src/yup-schemas";
-import { DropdownItemsChild } from "./dropdown-items-child";
 import {
-    DropdownItemsButton,
-    DropdownItemsButtonsWrapper,
-    DropdownItemsWrapper,
-} from "./dropdown-items.styles";
+    OptionsButton,
+    OptionsButtonsWrapper,
+    OptionsWrapper,
+} from "./options.styles";
+import { OptionsChild } from "./options-child";
 
-export const DropdownItems = () => {
-    // =========================================================================
+interface IOptionsProps {
+    label: string;
+    description: string;
+    fieldName: "radioItems" | "dropdownItems";
+}
+
+export const Options = ({ label, description, fieldName }: IOptionsProps) => {
+    // ===========================================================================
     // CONST, STATE, REFS
-    // =========================================================================
+    // ===========================================================================
     const { control, getValues, trigger } =
         useFormContext<TOverallOptionGroupBasedValues>();
     const { fields, append, remove, move, replace } = useFieldArray({
         control,
-        name: "dropdownItems",
+        name: fieldName,
         shouldUnregister: true,
     });
     const { showModal } = useModal();
@@ -81,59 +87,11 @@ export const DropdownItems = () => {
                 }
             );
         }
-    }, []);
+    }, [fields]);
 
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
-
-    const convertDropdownItemsToString = (
-        items: IDropdownItemAttributes[]
-    ): string => {
-        const lines = items
-            .filter((item) => !isEmpty(item.label) || !isEmpty(item.value))
-            .map((item) => `${item.label} | ${item.value}`);
-        return lines.join("\n");
-    };
-
-    // =========================================================================
-    // EVENT HANDLERS
-    // =========================================================================
-
-    const handleAddButtonClick = () => {
-        append(
-            { label: "", value: "" },
-            {
-                shouldFocus: false,
-            }
-        );
-    };
-
-    const handleDeleteButtonClick = (index: number) => {
-        remove(index);
-    };
-
-    const handleBulkEditSaveButtonClick = (value: string): void => {
-        const lines = getNonEmptyLines(value);
-        const dropdownItems = lines.map((line) => getValidDropdownItem(line));
-        while (dropdownItems.length < 2) {
-            dropdownItems.push({ label: "", value: "" });
-        }
-        replace(dropdownItems);
-        trigger("dropdownItems");
-    };
-
-    const handleBulkEditButtonClick = () => {
-        const dropdownItems = getValues(
-            "dropdownItems"
-        ) as IDropdownItemAttributes[];
-        const bulkEditModal: IBulkEditModalProps = {
-            type: EModalType.BulkEdit,
-            dropdownItemsString: convertDropdownItemsToString(dropdownItems),
-            onClickActionButton: handleBulkEditSaveButtonClick,
-        };
-        showModal(bulkEditModal);
-    };
 
     const handleDragEnd = (event: DragEndEvent) => {
         const { active, over } = event;
@@ -146,6 +104,38 @@ export const DropdownItems = () => {
         }
     };
 
+    const handleBulkEditSaveButtonClick = (value: string) => {
+        const lines = getNonEmptyLines(value);
+        const dropdownItems = lines.map((line) => getValidOption(line));
+        while (dropdownItems.length < 2) {
+            dropdownItems.push({ label: "", value: "" });
+        }
+        replace(dropdownItems);
+        trigger(fieldName);
+    };
+
+    const handleAddButtonClick = () => {
+        append({ label: "", value: "" }, { shouldFocus: false });
+    };
+
+    const convertOptionsToString = (items: IOptionAttributes[]): string => {
+        const lines = items
+            .filter((item) => !isEmpty(item.label) || !isEmpty(item.value))
+            .map((item) => `${item.label} | ${item.value}`);
+        return lines.join("\n");
+    };
+
+    const handleBulkEditButtonClick = () => {
+        const options = getValues(fieldName);
+        const bulkEditModal: IBulkEditModalProps = {
+            type: EModalType.BulkEdit,
+            optionsString: convertOptionsToString(options),
+            onClickActionButton: (value: string) =>
+                handleBulkEditSaveButtonClick(value),
+        };
+        showModal(bulkEditModal);
+    };
+
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
@@ -153,11 +143,12 @@ export const DropdownItems = () => {
     const renderChildren = () => {
         return fields.map((field, index) => {
             return (
-                <DropdownItemsChild
+                <OptionsChild
                     key={field.id}
                     id={field.id}
                     index={index}
-                    onDelete={() => handleDeleteButtonClick(index)}
+                    onDelete={() => remove(index)}
+                    fieldName={fieldName}
                 />
             );
         });
@@ -165,8 +156,8 @@ export const DropdownItems = () => {
 
     const renderButtons = () => {
         return (
-            <DropdownItemsButtonsWrapper>
-                <DropdownItemsButton
+            <OptionsButtonsWrapper>
+                <OptionsButton
                     disabled={isDisabled}
                     onClick={handleAddButtonClick}
                     icon={<PlusIcon />}
@@ -174,8 +165,8 @@ export const DropdownItems = () => {
                     type="button"
                 >
                     Add Option
-                </DropdownItemsButton>
-                <DropdownItemsButton
+                </OptionsButton>
+                <OptionsButton
                     disabled={isDisabled}
                     onClick={handleBulkEditButtonClick}
                     icon={<PencilIcon />}
@@ -183,20 +174,16 @@ export const DropdownItems = () => {
                     type="button"
                 >
                     Bulk Edit
-                </DropdownItemsButton>
-            </DropdownItemsButtonsWrapper>
+                </OptionsButton>
+            </OptionsButtonsWrapper>
         );
     };
 
     return (
-        <DropdownItemsWrapper>
+        <OptionsWrapper>
             <Form.Label>
-                Dropdown items
-                <Text.H6 weight={400}>
-                    Label is the item displayed to the users in the dropdown
-                    menu. Value is used to differentiate the dropdown items in
-                    the backend.
-                </Text.H6>
+                {label}
+                <Text.H6 weight={400}>{description}</Text.H6>
             </Form.Label>
             <DndContext
                 sensors={sensors}
@@ -210,7 +197,24 @@ export const DropdownItems = () => {
                     {renderChildren()}
                 </SortableContext>
             </DndContext>
-            {renderButtons()}
-        </DropdownItemsWrapper>
+            <OptionsButtonsWrapper>
+                <OptionsButton
+                    onClick={handleAddButtonClick}
+                    icon={<PlusIcon />}
+                    styleType="secondary"
+                    type="button"
+                >
+                    Add Option
+                </OptionsButton>
+                <OptionsButton
+                    onClick={handleBulkEditButtonClick}
+                    icon={<PencilIcon />}
+                    styleType="secondary"
+                    type="button"
+                >
+                    Bulk Edit
+                </OptionsButton>
+            </OptionsButtonsWrapper>
+        </OptionsWrapper>
     );
 };

@@ -9,6 +9,7 @@ import {
     ISelectSchema,
     ITextareaSchema,
     ITextFieldSchema,
+    TRadioButtonGroupSchema,
 } from "@lifesg/web-frontend-engine/components/fields";
 import {
     EElementType,
@@ -28,6 +29,7 @@ import {
     NumericSchemaGenerator,
     TextSchemaGenerator,
 } from "./generate";
+import { RadioButtonSchemaGenerator } from "./generate/elements/radio-button/radio-button-schema-generator";
 import {
     ContactSchemaParser,
     DropdownSchemaParser,
@@ -37,6 +39,7 @@ import {
     TextSchemaParser,
     updateParsedElements,
 } from "./parse";
+import { RadioSchemaParser } from "./parse/elements/radio-button/radio-button-schema-parser";
 import { ISchemaProps } from "./types";
 
 export namespace Translator {
@@ -87,6 +90,9 @@ export namespace Translator {
                     translatedChild =
                         DropdownSchemaGenerator.elementToSchema(element);
                     break;
+                case EElementType.RADIO:
+                    translatedChild =
+                        RadioButtonSchemaGenerator.elementToSchema(element);
             }
             return { ...acc, ...translatedChild };
         }, {});
@@ -203,6 +209,15 @@ export namespace Translator {
                             elementSchema as ISelectSchema,
                             key,
                             shouldShowPrefill ? formSchema.prefill : {},
+                            defaultValue
+                        );
+                        break;
+                    }
+                    case EElementType.RADIO: {
+                        parsedElement = RadioSchemaParser.schemaToElement(
+                            elementSchema as TRadioButtonGroupSchema,
+                            key,
+                            formSchema.prefill,
                             defaultValue
                         );
                         break;

@@ -5,6 +5,7 @@ import {
     DisplayProvider,
     EElementType,
     IElementIdentifier,
+    TElementMap,
 } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data/elements-data";
 import { TestHelper } from "src/util/test-helper";
@@ -40,7 +41,7 @@ describe("MainPanel", () => {
                     orderedIdentifiers: MOCK_ORDERED_IDENTIFIER,
                     elements: MOCK_ELEMENTS,
                     focusedElement: {
-                        element: MOCK_ELEMENTS[0],
+                        element: Object.values(MOCK_ELEMENTS)[0],
                         isDirty: true,
                     },
                 },
@@ -61,7 +62,7 @@ describe("MainPanel", () => {
                     orderedIdentifiers: MOCK_ORDERED_IDENTIFIER,
                     elements: MOCK_ELEMENTS,
                     focusedElement: {
-                        element: MOCK_ELEMENTS[0],
+                        element: Object.values(MOCK_ELEMENTS)[0],
                         isDirty: false,
                     },
                 },
@@ -115,13 +116,12 @@ const MOCK_ORDERED_IDENTIFIER: IElementIdentifier[] = [
     },
 ];
 
-const MOCK_ELEMENTS = {
+const MOCK_ELEMENTS: TElementMap = {
     mock123: {
         internalId: "mock123",
         type: EElementType.EMAIL,
         id: "mockElement",
         required: false,
-        size: "full",
         label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
         columns: { desktop: 12, tablet: 8, mobile: 4 } as const,
     },

@@ -1,11 +1,11 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
 import { act } from "react-dom/test-utils";
-import { DropdownItems } from "src/components/element-editor/basic-details/elements";
+import { Options } from "src/components/element-editor/basic-details/common/options";
 import { EElementType } from "src/context-providers";
 import { TestHelper } from "src/util/test-helper";
 
-describe("DropdownItems", () => {
+describe("Options", () => {
     beforeEach(() => {
         global.ResizeObserver = jest.fn().mockImplementation(() => ({
             observe: jest.fn(),
@@ -19,75 +19,65 @@ describe("DropdownItems", () => {
         jest.resetAllMocks();
     });
 
-    describe("rendering the dropdown items", () => {
-        it("should render the dropdown items with 2 empty options if the element type is dropdown", async () => {
+    describe("rendering the items", () => {
+        it("should render the option items with 2 empty options by default", async () => {
             renderComponent({
                 formContext: {
                     defaultValues: {
-                        dropdownItems: [
-                            { label: "", value: "" },
-                            { label: "", value: "" },
-                        ],
+                        dropdownItems: [],
                     },
                 },
             });
 
-            const dropdownItemsContainer =
-                await screen.findByText("Dropdown items");
-            expect(dropdownItemsContainer).toBeInTheDocument();
+            const options = await screen.findByText(LABEL);
+            expect(options).toBeInTheDocument();
 
-            const dropdownItems = screen.getAllByTestId("dropdown-item-child");
-            expect(dropdownItems).toHaveLength(2);
+            const optionItems = screen.getAllByTestId("option-child");
+            expect(optionItems).toHaveLength(2);
         });
 
-        it("should append a new dropdown item when the add button is clicked", async () => {
+        it("should append a new item when the add button is clicked", async () => {
+            renderComponent({
+                formContext: {
+                    defaultValues: {
+                        dropdownItems: [],
+                    },
+                },
+            });
+
+            const addOptionButton = getAddDropdownOptionButton();
+
+            expect(addOptionButton).toBeInTheDocument();
+
+            let optionItems = screen.getAllByTestId("option-child");
+
+            expect(optionItems).toHaveLength(2);
+
+            await act(async () => {
+                fireEvent.click(addOptionButton);
+            });
+
+            optionItems = screen.getAllByTestId("option-label");
+
+            expect(optionItems).toHaveLength(3);
+        });
+
+        it("should delete an item when the bin icon button is clicked and there are at least 3 options", async () => {
             renderComponent({
                 formContext: {
                     defaultValues: {
                         dropdownItems: [
                             { label: "Option 1", value: "Option 1" },
                             { label: "Option 2", value: "Option 2" },
+                            { label: "Option 3", value: "Option 3" },
                         ],
                     },
                 },
             });
 
-            const addDropdownOptionButton = getAddDropdownOptionButton();
+            let optionItems = screen.getAllByTestId("option-label");
 
-            expect(addDropdownOptionButton).toBeInTheDocument();
-
-            let dropdownItems = screen.getAllByTestId("dropdown-item-child");
-
-            expect(dropdownItems).toHaveLength(2);
-
-            await act(async () => {
-                fireEvent.click(addDropdownOptionButton);
-            });
-
-            dropdownItems = screen.getAllByTestId("dropdown-item-label");
-
-            expect(dropdownItems).toHaveLength(3);
-        });
-
-        it("should delete a dropdown item when the bin icon button is clicked and there are at least 3 options", async () => {
-            renderComponent({
-                formContext: {
-                    defaultValues: {
-                        dropdownItems: [
-                            { label: "Option 1", value: "Option 1" },
-                            { label: "Option 2", value: "Option 2" },
-                        ],
-                    },
-                },
-            });
-
-            await act(async () => {
-                fireEvent.click(getAddDropdownOptionButton());
-            });
-
-            let dropdownItems = screen.getAllByTestId("dropdown-item-label");
-
-            expect(dropdownItems).toHaveLength(3);
+            expect(optionItems).toHaveLength(3);
 
             const deleteButton = screen.getAllByTestId("delete-button")[0];
 
@@ -97,14 +87,14 @@ describe("DropdownItems", () => {
                 fireEvent.click(deleteButton);
             });
 
-            dropdownItems = screen.getAllByTestId("dropdown-item-label");
+            optionItems = screen.getAllByTestId("option-label");
 
-            expect(dropdownItems).toHaveLength(2);
+            expect(optionItems).toHaveLength(2);
         });
     });
 
-    describe("submitting the form for dropdown element", () => {
-        it("should not be able to submit the form if there are not at least 2 valid dropdown items", async () => {
+    describe("validation", () => {
+        it("should not be able to submit the form if there are less than 2 valid items", async () => {
             renderComponent({
                 builderContext: {
                     selectedElementType: EElementType.DROPDOWN,
@@ -129,12 +119,17 @@ describe("DropdownItems", () => {
                 "Option value required."
             );
 
-            // Initially there are 2 empty dropdown items
+            // Initially there are 2 empty items
             expect(labelError).toHaveLength(2);
             expect(valueError).toHaveLength(2);
         });
     });
 });
+
+// =============================================================================
+// CONSTANTS
+// =============================================================================
+const LABEL = "label";
 
 // =============================================================================
 // HELPER FUNCTIONS
@@ -143,7 +138,11 @@ describe("DropdownItems", () => {
 const MyTestComponent = () => {
     return (
         <>
-            <DropdownItems />
+            <Options
+                label={LABEL}
+                description="Description"
+                fieldName="dropdownItems"
+            />
             <button type="submit">Submit</button>
         </>
     );

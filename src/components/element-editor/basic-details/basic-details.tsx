@@ -19,6 +19,7 @@ import {
     EmailBasicDetails,
     LongTextBasicDetails,
     NumericBasicDetails,
+    RadioButtonBasicDetails,
     TextBasicDetails,
 } from "./elements";
 
@@ -86,6 +87,8 @@ export const BasicDetails = () => {
                 return <ContactBasicDetails />;
             case EElementType.DROPDOWN:
                 return <DropdownBasicDetails />;
+            case EElementType.RADIO:
+                return <RadioButtonBasicDetails />;
             default:
                 return null;
         }
