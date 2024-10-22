@@ -63,6 +63,26 @@ describe("ElementCard", () => {
             expect(getDeleteButton()).toBeInTheDocument();
         });
 
+        it("should not show the duplicate and delete buttons when in focused state if element is disabled", () => {
+            renderComponent(
+                { element: MOCK_ELEMENT },
+                {
+                    configContext: {
+                        elements: {
+                            "Email address": {
+                                isDisabled: true,
+                            },
+                        },
+                    },
+                    builderContext: {
+                        focusedElement: { element: MOCK_ELEMENT },
+                    },
+                }
+            );
+            expect(getDuplicateButton(true)).not.toBeInTheDocument();
+            expect(getDeleteButton(true)).not.toBeInTheDocument();
+        });
+
         it("should disable the duplicate button when the current element is in focus", () => {
             renderComponent(
                 { element: MOCK_ELEMENT },
@@ -151,6 +171,71 @@ describe("ElementCard", () => {
             fireEvent.mouseEnter(getElementCard());
             expect(screen.getByTestId("drag-handle")).toBeInTheDocument();
         });
+
+        it("should not render the drag handle when hovering over the element card of a disabled element", () => {
+            renderComponent(
+                { element: MOCK_ELEMENT },
+                {
+                    configContext: {
+                        elements: {
+                            "Email address": {
+                                isDisabled: true,
+                            },
+                        },
+                    },
+                    builderContext: {
+                        focusedElement: {
+                            element: MOCK_ELEMENT,
+                            isDirty: true,
+                            isValid: false,
+                        },
+                    },
+                }
+            );
+            fireEvent.mouseEnter(getElementCard());
+            expect(screen.queryByTestId("drag-handle")).not.toBeInTheDocument();
+        });
+    });
+
+    describe("hiding of form fields based on Form Builder Config", () => {
+        it("should not hide the id label in the element card if shouldShow of ID is not specified in config", () => {
+            renderComponent(
+                { element: MOCK_ELEMENT },
+                {
+                    builderContext: {
+                        focusedElement: {
+                            element: MOCK_ELEMENT,
+                        },
+                    },
+                }
+            );
+
+            expect(screen.getByText(`ID: ${MOCK_ID}`)).toBeInTheDocument();
+        });
+
+        it("should hide the id label in the element card if shouldShow of ID is set to false in config", () => {
+            renderComponent(
+                { element: MOCK_ELEMENT },
+                {
+                    configContext: {
+                        attributes: {
+                            id: {
+                                shouldShow: false,
+                            },
+                        },
+                    },
+                    builderContext: {
+                        focusedElement: {
+                            element: MOCK_ELEMENT,
+                        },
+                    },
+                }
+            );
+
+            expect(
+                screen.queryByText(`ID: ${MOCK_ID}`)
+            ).not.toBeInTheDocument();
+        });
     });
 });
 
@@ -190,11 +275,12 @@ const getDuplicateButton = (useQuery = false) =>
 // =============================================================================
 // MOCKS
 // =============================================================================
+const MOCK_ID = "mockId";
 
 const MOCK_ELEMENT: TElement = {
     internalId: "mock123",
     type: EElementType.EMAIL,
-    id: "mockElement",
+    id: MOCK_ID,
     required: false,
     label: ELEMENT_BUTTON_LABELS[EElementType.EMAIL],
     columns: { desktop: 12, tablet: 8, mobile: 4 } as const,

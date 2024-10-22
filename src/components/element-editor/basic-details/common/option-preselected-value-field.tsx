@@ -3,7 +3,12 @@ import { Text } from "@lifesg/react-design-system/text";
 import isEmpty from "lodash/isEmpty";
 import { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import { IOptionAttributes } from "src/context-providers/builder/";
+import {
+    useIsAttributeDisabled,
+    useIsElementDisabled,
+    useShouldShowPrefill,
+} from "src/context-providers";
+import { IOptionAttributes, useBuilder } from "src/context-providers/builder/";
 import { TOverallOptionGroupBasedValues } from "src/yup-schemas";
 
 interface IProps {
@@ -23,6 +28,17 @@ export const OptionPreselectedValue = ({ fieldName }: IProps) => {
 
     const preselectedValue = watch("preselectedValue");
     const options = watch(fieldName, []);
+    const shouldShowPrefill = useShouldShowPrefill();
+    const { focusedElement } = useBuilder();
+    const isElementDisabled = useIsElementDisabled(
+        focusedElement.element.id,
+        focusedElement.element.type
+    );
+    const isAttributeDisabled = useIsAttributeDisabled(
+        focusedElement,
+        "preselectedValue"
+    );
+    const isDisabled = isElementDisabled || isAttributeDisabled;
 
     const preselectedValueOptions: IOptionAttributes[] = [
         {
@@ -76,7 +92,9 @@ export const OptionPreselectedValue = ({ fieldName }: IProps) => {
                     const { ref, ...withoutRef } = field;
                     return (
                         <Form.Select
+                            disabled={isDisabled}
                             {...withoutRef}
+                            data-testid="preselected-value-field"
                             options={preselectedValueOptions}
                             valueExtractor={(item) => item.value}
                             listExtractor={(item) => item.label}
@@ -84,13 +102,13 @@ export const OptionPreselectedValue = ({ fieldName }: IProps) => {
                             placeholder="Select default value"
                             label={{
                                 children: "Pre-selected value (optional)",
-                                subtitle: (
+                                subtitle: shouldShowPrefill ? (
                                     <Text.H6 weight={400}>
                                         Select a value for users. Note that
                                         prefill value will replace the
                                         pre-selected value, if present.
                                     </Text.H6>
-                                ),
+                                ) : null,
                             }}
                             selectedOption={selectedOption}
                             onSelectOption={(option) => {

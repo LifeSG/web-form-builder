@@ -1,6 +1,6 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
-import { BasicDetails } from "src/components/element-editor/basic-details";
+import { BasicDetails } from "src/components";
 import { EElementType, TElement } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data";
 import { TestHelper } from "src/util/test-helper";
@@ -205,6 +205,9 @@ const renderComponent = (overrideOptions?: TestHelper.RenderOptions) => {
 // MOCKS
 // =============================================================================
 
+const mockHideModal = jest.fn();
+const mockShowModal = jest.fn();
+
 const MOCK_FOCUSED_ELEMENT = (elementType: EElementType) => {
     const element: TElement = {
         internalId: "mock123",
@@ -218,6 +221,3 @@ const MOCK_FOCUSED_ELEMENT = (elementType: EElementType) => {
     };
     return element;
 };
-
-const mockHideModal = jest.fn();
-const mockShowModal = jest.fn();

@@ -8,6 +8,7 @@ import {
     IPillItemAttributes,
     TElement,
     useDisplay,
+    useShouldShowPanel,
 } from "src/context-providers";
 import { YupSchemaBuilder } from "src/yup-schemas";
 import { EBuilderMode, useBuilder } from "../../context-providers";
@@ -35,6 +36,7 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
         selectedElementType,
         toggleSubmitting,
     } = useBuilder();
+    const shouldShowPagesPanel = useShouldShowPanel("pages");
     const { showToast } = useDisplay();
     const schema = YupSchemaBuilder.buildYupSchema(
         selectedElementType || EElementType.EMAIL
@@ -51,7 +53,6 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
-
     const onFormSubmit = useCallback(
         async (values: TElement) => {
             if (onSubmit) {
@@ -87,7 +88,7 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
         [updateElement, updateFocusedElement, onSubmit]
     );
     // =========================================================================
-    // USE EFFECTS
+    // EFFECTS
     // =========================================================================
 
     useEffect(() => {
@@ -109,6 +110,9 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
+    const shouldShowToolbar = focusedElement === null && shouldShowPagesPanel;
+    const isSidePanelMinimised = focusedElement ? false : !showSidePanel;
+    const shouldShowDivider = shouldShowToolbar || !isSidePanelMinimised;
 
     const renderPanelContent = () => {
         if (focusedElement) {
@@ -130,17 +134,19 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
         <FormProvider {...methods}>
             <form onSubmit={methods.handleSubmit(onFormSubmit)}>
                 <Wrapper
-                    $minimised={focusedElement ? false : !showSidePanel}
+                    $minimised={isSidePanelMinimised}
                     $offset={offset ? offset : 0}
+                    $narrow={!shouldShowPagesPanel}
                 >
-                    <SidePanelHeader />
+                    <SidePanelHeader showDivider={shouldShowDivider} />
                     <ContentWrapper>
                         <ContentSection
-                            $isFocusedElement={focusedElement ? true : false}
+                            $minimised={isSidePanelMinimised}
+                            $isFocusedElement={!!focusedElement}
                         >
                             {renderPanelContent()}
                         </ContentSection>
-                        {focusedElement === null && <Toolbar />}
+                        {shouldShowToolbar && <Toolbar />}
                     </ContentWrapper>
                 </Wrapper>
             </form>

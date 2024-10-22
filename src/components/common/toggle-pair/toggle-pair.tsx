@@ -14,9 +14,16 @@ interface IProps {
     value?: boolean;
     onChange: (value: boolean) => void;
     options?: IOptionProps[];
+    disabled?: boolean;
 }
 
-export const TogglePair = ({ onChange, value, label, options }: IProps) => {
+export const TogglePair = ({
+    onChange,
+    value,
+    label,
+    options,
+    disabled,
+}: IProps) => {
     const handleChange = (value: boolean) => {
         onChange(value);
     };
@@ -30,6 +37,7 @@ export const TogglePair = ({ onChange, value, label, options }: IProps) => {
             </Form.Label>
             <Row>
                 <ToggleOptionWrapper
+                    disabled={disabled}
                     type="yes"
                     checked={value === true}
                     onChange={() => handleChange(true)}
@@ -39,6 +47,7 @@ export const TogglePair = ({ onChange, value, label, options }: IProps) => {
                     {options?.[0]?.title || "Yes"}
                 </ToggleOptionWrapper>
                 <ToggleOptionWrapper
+                    disabled={disabled}
                     type="no"
                     checked={value === false}
                     onChange={() => handleChange(false)}

@@ -14,6 +14,16 @@ export const parseBaseSchema = (
 ) => {
     const { showIf, uiType, validation, label } = schema;
 
+    let mainLabel = "";
+    let subLabel = "";
+
+    if (typeof label === "string") {
+        mainLabel = label;
+    } else if (label && "mainLabel" in label) {
+        mainLabel = label.mainLabel;
+        subLabel = label.subLabel || "";
+    }
+
     const requiredValidation: IYupValidationRule = validation?.find((rule) =>
         Object.prototype.hasOwnProperty.call(rule, "required")
     ) as IYupValidationRule;
@@ -22,8 +32,8 @@ export const parseBaseSchema = (
 
     const baseElement: TElement = {
         columns: { desktop: 12, tablet: 8, mobile: 4 },
-        label: (label as IComplexLabel).mainLabel || "",
-        description: (label as IComplexLabel).subLabel || "",
+        label: mainLabel,
+        description: subLabel,
         type: uiType as EElementType,
         required: !!requiredValidation?.required,
         requiredErrorMsg: requiredValidation?.errorMessage || "",

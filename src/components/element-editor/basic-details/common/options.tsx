@@ -23,6 +23,8 @@ import {
     EModalType,
     IBulkEditModalProps,
     IOptionAttributes,
+    useBuilder,
+    useIsElementDisabled,
 } from "src/context-providers";
 import { useModal } from "src/context-providers/display/modal-hook";
 import {
@@ -30,12 +32,12 @@ import {
     getValidOption,
     TOverallOptionGroupBasedValues,
 } from "src/yup-schemas";
-import { OptionsChild } from "./options-child";
 import {
     OptionsButton,
     OptionsButtonsWrapper,
     OptionsWrapper,
 } from "./options.styles";
+import { OptionsChild } from "./options-child";
 
 interface IOptionsProps {
     label: string;
@@ -61,6 +63,12 @@ export const Options = ({ label, description, fieldName }: IOptionsProps) => {
         useSensor(KeyboardSensor, {
             coordinateGetter: sortableKeyboardCoordinates,
         })
+    );
+
+    const { focusedElement } = useBuilder();
+    const isDisabled = useIsElementDisabled(
+        focusedElement?.element?.id,
+        focusedElement?.element?.type
     );
 
     // =========================================================================
@@ -133,15 +141,42 @@ export const Options = ({ label, description, fieldName }: IOptionsProps) => {
     // =========================================================================
 
     const renderChildren = () => {
-        return fields.map((field, index) => (
-            <OptionsChild
-                key={field.id}
-                id={field.id}
-                index={index}
-                onDelete={() => remove(index)}
-                fieldName={fieldName}
-            />
-        ));
+        return fields.map((field, index) => {
+            return (
+                <OptionsChild
+                    key={field.id}
+                    id={field.id}
+                    index={index}
+                    onDelete={() => remove(index)}
+                    fieldName={fieldName}
+                />
+            );
+        });
+    };
+
+    const renderButtons = () => {
+        return (
+            <OptionsButtonsWrapper>
+                <OptionsButton
+                    disabled={isDisabled}
+                    onClick={handleAddButtonClick}
+                    icon={<PlusIcon />}
+                    styleType="secondary"
+                    type="button"
+                >
+                    Add Option
+                </OptionsButton>
+                <OptionsButton
+                    disabled={isDisabled}
+                    onClick={handleBulkEditButtonClick}
+                    icon={<PencilIcon />}
+                    styleType="secondary"
+                    type="button"
+                >
+                    Bulk Edit
+                </OptionsButton>
+            </OptionsButtonsWrapper>
+        );
     };
 
     return (

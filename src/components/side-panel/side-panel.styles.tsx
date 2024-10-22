@@ -9,9 +9,11 @@ import styled, { css } from "styled-components";
 export interface IWrapperStyleProps {
     $minimised: boolean;
     $offset: number;
+    $narrow: boolean;
 }
 
 export interface IContentSectionStyleProps {
+    $minimised: boolean;
     $isFocusedElement: boolean;
 }
 // =============================================================================
@@ -21,7 +23,7 @@ export const Wrapper = styled.div<IWrapperStyleProps>`
     display: flex;
     flex-direction: column;
     height: calc(100% - ${(props) => props.$offset}rem);
-    width: 36.8rem;
+    width: ${({ $narrow }) => ($narrow ? "31.2rem" : "36.8rem")};
     transition: ${Transition.Base};
     background: ${Color.Neutral[8]};
     border-left: 1px solid ${Color.Neutral[5]};
@@ -33,7 +35,7 @@ export const Wrapper = styled.div<IWrapperStyleProps>`
     transform: translateX(0);
 
     ${MediaQuery.MaxWidth.desktopM} {
-        width: 30rem;
+        width: ${({ $narrow }) => ($narrow ? "30rem" : "24.4rem")};
     }
 
     ${(props) => {
@@ -52,10 +54,15 @@ export const ContentWrapper = styled.div`
 `;
 
 export const ContentSection = styled.div<IContentSectionStyleProps>`
-    padding: ${({ $isFocusedElement }) =>
-        $isFocusedElement ? "1rem" : "2rem"};
+    padding: ${({ $isFocusedElement, $minimised }) => {
+        if ($isFocusedElement) {
+            return "1rem";
+        }
+        return $minimised ? "2rem 6rem 2rem 2rem" : "2rem";
+    }};
+
     flex: 1;
-    overflow-y: auto;
+    overflow-y: ${({ $minimised }) => (!$minimised ? "auto" : "hidden")};
     display: flex;
     flex-direction: column;
     height: 100%;

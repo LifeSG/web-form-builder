@@ -33,6 +33,7 @@ interface MockElementProps {
 interface MockSchemaProps {
     defaultValues?: Record<string, unknown>;
     prefill?: MockPrefillSchema;
+    shouldShowPrefill?: boolean;
     children: MockChildrenSchema;
 }
 
@@ -85,10 +86,11 @@ export const generateMockElement = (props: MockElementProps): TElementMap => {
 export const generateMockSchema = ({
     defaultValues = {},
     prefill = {},
+    shouldShowPrefill = true,
     children,
 }: MockSchemaProps) => {
     return {
-        prefill,
+        ...(shouldShowPrefill && { prefill }),
         schema: {
             defaultValues,
             sections: {

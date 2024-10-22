@@ -1,14 +1,23 @@
+import { IFrontendEngineData } from "@lifesg/web-frontend-engine";
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
-import { MainPanel, SidePanel } from "./components";
-import { Modals, Toasts } from "./components/common";
-import { ScreenNotSupportedErrorDisplay } from "./components/error-display/screen-not-supported-error";
-import { DisplayProvider } from "./context-providers";
+import {
+    MainPanel,
+    Modals,
+    ScreenNotSupportedErrorDisplay,
+    SidePanel,
+    Toasts,
+} from "./components";
 import {
     BuilderProvider,
+    ConfigProvider,
+    DisplayProvider,
+    IConfigState,
     TElement,
     TElementMap,
     useBuilder,
-} from "./context-providers/builder";
+    usePresetForm,
+    useShouldShowPrefill,
+} from "./context-providers";
 import { Container, Wrapper } from "./form-builder.styles";
 import { ISchemaProps, Translator } from "./translator";
 
@@ -20,6 +29,7 @@ export interface IFormBuilderMethods {
 interface IProps {
     offset?: number;
     onSubmit?: (formData: TElement) => Promise<unknown>;
+    config?: IConfigState;
 }
 
 const Component = forwardRef<IFormBuilderMethods, IProps>(
@@ -39,14 +49,20 @@ const Component = forwardRef<IFormBuilderMethods, IProps>(
             focusedElement,
         } = useBuilder();
 
+        const shouldShowPrefill = useShouldShowPrefill();
+        const presetForm = usePresetForm();
+
         useImperativeHandle(
             ref,
             () => ({
                 generateSchema: () =>
-                    Translator.generateSchema(elements, orderedIdentifiers),
+                    Translator.generateSchema(elements, orderedIdentifiers, {
+                        shouldShowPrefill,
+                    }),
                 parseSchema: (schema: ISchemaProps) => {
                     const { newOrderedIdentifiers, newElements } =
-                        Translator.parseSchema(schema) || {};
+                        Translator.parseSchema(schema, { shouldShowPrefill }) ||
+                        {};
 
                     // If there are no elements in schema, clear the form and remove focused element
                     if (!newOrderedIdentifiers || !newElements) {
@@ -83,6 +99,48 @@ const Component = forwardRef<IFormBuilderMethods, IProps>(
             }
         }, []);
 
+        useEffect(() => {
+            if (presetForm) {
+                const elementSchema = Object.keys(presetForm).reduce(
+                    (acc, element) => {
+                        acc[element] = presetForm[element].schema;
+                        return acc;
+                    },
+                    {}
+                );
+                const elementsSchema: IFrontendEngineData = {
+                    defaultValues: {},
+                    sections: {
+                        section: {
+                            children: {
+                                grid: {
+                                    children: {
+                                        ...elementSchema,
+                                    },
+                                    uiType: "grid",
+                                },
+                                "submit-button": {
+                                    disabled: "invalid-form",
+                                    label: "Submit",
+                                    uiType: "submit",
+                                },
+                            },
+                            uiType: "section",
+                        },
+                    },
+                };
+                const formSchema = {
+                    schema: elementsSchema,
+                    prefill: {},
+                };
+                const { newOrderedIdentifiers, newElements } =
+                    Translator.parseSchema(formSchema, { shouldShowPrefill }) ||
+                    {};
+
+                updateElementSchema(newElements, newOrderedIdentifiers);
+            }
+        }, []);
+
         // =========================================================================
         // RENDER FUNCTIONS
         // =========================================================================
@@ -109,11 +167,13 @@ const Component = forwardRef<IFormBuilderMethods, IProps>(
 export const FormBuilder = forwardRef<IFormBuilderMethods, IProps>(
     (props, ref) => {
         return (
-            <BuilderProvider>
-                <DisplayProvider>
-                    <Component ref={ref} {...props} />
-                </DisplayProvider>
-            </BuilderProvider>
+            <ConfigProvider value={props.config}>
+                <BuilderProvider>
+                    <DisplayProvider>
+                        <Component ref={ref} {...props} />
+                    </DisplayProvider>
+                </BuilderProvider>
+            </ConfigProvider>
         );
     }
 );
