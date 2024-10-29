@@ -35,7 +35,7 @@ export const Wrapper = styled.div<IWrapperStyleProps>`
     transform: translateX(0);
 
     ${MediaQuery.MaxWidth.desktopM} {
-        width: ${({ $narrow }) => ($narrow ? "30rem" : "24.4rem")};
+        width: ${({ $narrow }) => ($narrow ? "24.4rem" : "30rem")};
     }
 
     ${(props) => {
