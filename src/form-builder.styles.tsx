@@ -11,7 +11,7 @@ export interface IWrapperProps {
 }
 
 export const Wrapper = styled(Layout.Section)<IWrapperProps>`
-    cursor: ${({ $disabled }) => ($disabled ? "not-allowed" : "pointer")};
+    cursor: ${({ $disabled }) => ($disabled ? "not-allowed" : "auto")};
     height: 100%;
     overflow-x: hidden;
     padding-left: 0 !important;
