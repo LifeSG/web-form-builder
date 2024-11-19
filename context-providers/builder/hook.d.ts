@@ -1,0 +1,26 @@
+import { EElementType, TElement } from "./element.types";
+import { EBuilderMode, IDeletedElementMap, IElementIdentifier, TElementMap } from "./types";
+export declare const useBuilder: () => {
+    isSubmitting: boolean;
+    deletedElements: IDeletedElementMap;
+    elements: TElementMap;
+    showSidePanel: boolean;
+    currentMode: EBuilderMode;
+    orderedIdentifiers: IElementIdentifier[];
+    focusedElement: import("./types").IFocusedElement;
+    selectedElementType: EElementType;
+    toggleSubmitting: (isSubmitting: boolean) => void;
+    togglePanel: (isCollapsed: boolean) => void;
+    toggleMode: (mode: EBuilderMode) => void;
+    updateOrderedIdentifiers: (orderedIdentifiers: IElementIdentifier[]) => void;
+    addElement: (type: EElementType, setFocus?: boolean) => void;
+    deleteElement: (internalId: string) => void;
+    undoDeleteElement: (internalId: string) => void;
+    focusElement: (element: TElement) => void;
+    removeFocusedElement: () => void;
+    updateElement: (element: TElement) => void;
+    updateFocusedElement: (isDirty: boolean, element?: TElement) => void;
+    duplicateElement: (element: TElement) => void;
+    selectElementType: (type: EElementType) => void;
+    updateElementSchema: (elements?: TElementMap, orderedIdentifiers?: IElementIdentifier[], newFocusedElement?: TElement) => void;
+};
