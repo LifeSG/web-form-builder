@@ -1,5 +1,5 @@
 import { Accordion } from "@lifesg/react-design-system/accordion";
-import { Color } from "@lifesg/react-design-system/color";
+import { V2_Color } from "@lifesg/react-design-system/v2_color";
 import styled from "styled-components";
 
 interface IFieldEditorAccordionItemProps {
@@ -15,7 +15,7 @@ export const AccordionItem = styled(
     Accordion.Item
 )<IFieldEditorAccordionItemProps>`
     border-top: ${({ $hideTopBorder }) =>
-        $hideTopBorder ? `1px solid ${Color.Neutral[6]}` : "0"};
+        $hideTopBorder ? `1px solid ${V2_Color.Neutral[6]}` : "0"};
 
     margin-top: ${({ $hideTopBorder }) => ($hideTopBorder ? "0" : "-1rem")};
 

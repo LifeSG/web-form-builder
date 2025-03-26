@@ -1,6 +1,6 @@
 import { Button } from "@lifesg/react-design-system/button";
-import { Color } from "@lifesg/react-design-system/color";
-import { Text } from "@lifesg/react-design-system/text";
+import { V2_Color } from "@lifesg/react-design-system/v2_color";
+import { V2_Text } from "@lifesg/react-design-system/v2_text";
 import { ChevronRightIcon } from "@lifesg/react-icons/chevron-right";
 import styled, { css } from "styled-components";
 
@@ -26,7 +26,7 @@ export const Wrapper = styled.div<IWrapperStyleProps>`
     align-items: center;
     padding: 2rem 1rem 2rem 2rem;
     border-bottom: ${({ $showDivider }) =>
-        $showDivider ? css`1px solid ${Color.Neutral[5]}` : "none"};
+        $showDivider ? css`1px solid ${V2_Color.Neutral[5]}` : "none"};
 `;
 
 export const HeaderChevronIcon = styled(ChevronRightIcon)<IIconStyleProps>`
@@ -35,7 +35,7 @@ export const HeaderChevronIcon = styled(ChevronRightIcon)<IIconStyleProps>`
     transition: transform 350ms ease-in-out;
 `;
 
-export const HeaderLabel = styled(Text.H3)`
+export const HeaderLabel = styled(V2_Text.H3)`
     margin-right: 1rem;
 `;
 

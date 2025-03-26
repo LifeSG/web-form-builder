@@ -1,5 +1,5 @@
 import { Form } from "@lifesg/react-design-system/form";
-import { Text } from "@lifesg/react-design-system/text";
+import { V2_Text } from "@lifesg/react-design-system/v2_text";
 import { Controller, useFormContext } from "react-hook-form";
 import { ChildEntry } from "src/components/common";
 import {
@@ -62,7 +62,7 @@ export const ConditionalRenderingChild = ({
     // RENDER FUNCTIONS
     // =========================================================================
     return (
-        <ChildEntry onDelete={onDelete}>
+        (<ChildEntry onDelete={onDelete}>
             <FieldWrapper>
                 <SelectFieldContainer>
                     <div>
@@ -72,7 +72,7 @@ export const ConditionalRenderingChild = ({
                             render={({ field }) => {
                                 const { ref, ...fieldWithoutRef } = field;
                                 return (
-                                    <SelectFieldWrapper
+                                    (<SelectFieldWrapper
                                         {...fieldWithoutRef}
                                         placeholder="Select"
                                         selectedOption={
@@ -98,9 +98,9 @@ export const ConditionalRenderingChild = ({
                                             option: IOptions
                                         ) => {
                                             return (
-                                                <Text.Body>
+                                                (<V2_Text.Body>
                                                     {option?.label}
-                                                </Text.Body>
+                                                </V2_Text.Body>)
                                             );
                                         }}
                                         renderListItem={(option: IOptions) => {
@@ -112,16 +112,16 @@ export const ConditionalRenderingChild = ({
                                                     ]
                                                 );
                                             return (
-                                                <div>
-                                                    <Text.Body>
+                                                (<div>
+                                                    <V2_Text.Body>
                                                         {option?.label}
-                                                    </Text.Body>
+                                                    </V2_Text.Body>
                                                     {isIdVisible && (
                                                         <OptionIDText>
                                                             ID: {option?.id}
                                                         </OptionIDText>
                                                     )}
-                                                </div>
+                                                </div>)
                                             );
                                         }}
                                         errorMessage={
@@ -132,7 +132,7 @@ export const ConditionalRenderingChild = ({
                                                 ]?.fieldKey?.message) ||
                                             ""
                                         }
-                                    />
+                                    />)
                                 );
                             }}
                         />
@@ -193,6 +193,6 @@ export const ConditionalRenderingChild = ({
                     />
                 </div>
             </FieldWrapper>
-        </ChildEntry>
+        </ChildEntry>)
     );
 };

@@ -1,5 +1,5 @@
 import { Form } from "@lifesg/react-design-system/form";
-import { Text } from "@lifesg/react-design-system/text";
+import { V2_Text } from "@lifesg/react-design-system/v2_text";
 import styled from "styled-components";
 
 export const FieldWrapper = styled.div`
@@ -20,6 +20,6 @@ export const SelectFieldWrapper = styled(Form.Select)`
     }
 `;
 
-export const OptionIDText = styled(Text.XSmall)`
+export const OptionIDText = styled(V2_Text.XSmall)`
     text-align: left;
 `;

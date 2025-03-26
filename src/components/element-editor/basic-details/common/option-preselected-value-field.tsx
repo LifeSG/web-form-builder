@@ -1,5 +1,5 @@
 import { Form } from "@lifesg/react-design-system/form";
-import { Text } from "@lifesg/react-design-system/text";
+import { V2_Text } from "@lifesg/react-design-system/v2_text";
 import isEmpty from "lodash/isEmpty";
 import { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
@@ -83,42 +83,38 @@ export const OptionPreselectedValue = ({ fieldName }: IProps) => {
     // RENDER FUNCTIONS
     // =========================================================================
 
-    return (
-        preselectedValueOptions.length > 1 && (
-            <Controller
-                name="preselectedValue"
-                control={control}
-                render={({ field }) => {
-                    const { ref, ...withoutRef } = field;
-                    return (
-                        <Form.Select
-                            disabled={isDisabled}
-                            {...withoutRef}
-                            data-testid="preselected-value-field"
-                            options={preselectedValueOptions}
-                            valueExtractor={(item) => item.value}
-                            listExtractor={(item) => item.label}
-                            displayValueExtractor={(item) => item.label}
-                            placeholder="Select default value"
-                            label={{
-                                children: "Pre-selected value (optional)",
-                                subtitle: shouldShowPrefill ? (
-                                    <Text.H6 weight={400}>
-                                        Select a value for users. Note that
-                                        prefill value will replace the
-                                        pre-selected value, if present.
-                                    </Text.H6>
-                                ) : null,
-                            }}
-                            selectedOption={selectedOption}
-                            onSelectOption={(option) => {
-                                field.onChange(option.value);
-                            }}
-                            errorMessage={errors.preselectedValue?.message}
-                        />
-                    );
-                }}
-            />
-        )
-    );
+    return (preselectedValueOptions.length > 1 && (<Controller
+        name="preselectedValue"
+        control={control}
+        render={({ field }) => {
+            const { ref, ...withoutRef } = field;
+            return (
+                (<Form.Select
+                    disabled={isDisabled}
+                    {...withoutRef}
+                    data-testid="preselected-value-field"
+                    options={preselectedValueOptions}
+                    valueExtractor={(item) => item.value}
+                    listExtractor={(item) => item.label}
+                    displayValueExtractor={(item) => item.label}
+                    placeholder="Select default value"
+                    label={{
+                        children: "Pre-selected value (optional)",
+                        subtitle: shouldShowPrefill ? (
+                            <V2_Text.H6 weight={400}>
+                                Select a value for users. Note that
+                                prefill value will replace the
+                                pre-selected value, if present.
+                            </V2_Text.H6>
+                        ) : null,
+                    }}
+                    selectedOption={selectedOption}
+                    onSelectOption={(option) => {
+                        field.onChange(option.value);
+                    }}
+                    errorMessage={errors.preselectedValue?.message}
+                />)
+            );
+        }}
+    />));
 };

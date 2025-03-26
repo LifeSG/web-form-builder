@@ -1,5 +1,5 @@
 import { Form } from "@lifesg/react-design-system/form";
-import { Text } from "@lifesg/react-design-system/text";
+import { V2_Text } from "@lifesg/react-design-system/v2_text";
 import { IComplexLabel } from "@lifesg/web-frontend-engine/components/fields";
 import { ReactNode } from "react";
 import { Row, ToggleOptionWrapper, ToggleWrapper } from "./toggle-pair.styles";
@@ -29,9 +29,9 @@ export const TogglePair = ({
     };
 
     return (
-        <ToggleWrapper>
+        (<ToggleWrapper>
             <Form.Label
-                subtitle={<Text.H6 weight={400}>{label?.subLabel}</Text.H6>}
+                subtitle={<V2_Text.H6 weight={400}>{label?.subLabel}</V2_Text.H6>}
             >
                 {label?.mainLabel}
             </Form.Label>
@@ -57,6 +57,6 @@ export const TogglePair = ({
                     {options?.[1]?.title || "No"}
                 </ToggleOptionWrapper>
             </Row>
-        </ToggleWrapper>
+        </ToggleWrapper>)
     );
 };

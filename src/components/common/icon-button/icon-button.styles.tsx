@@ -1,4 +1,4 @@
-import { Color } from "@lifesg/react-design-system/color";
+import { V2_Color } from "@lifesg/react-design-system/v2_color";
 import styled from "styled-components";
 
 // =============================================================================
@@ -23,7 +23,7 @@ export const IconButton = styled.button<IIconButtonStyleProps>`
     }
 
     :focus {
-        outline-color: ${Color.Primary};
+        outline-color: ${V2_Color.Primary};
     }
 
     svg {

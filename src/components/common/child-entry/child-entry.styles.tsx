@@ -1,8 +1,8 @@
-import { Color } from "@lifesg/react-design-system/color";
+import { V2_Color } from "@lifesg/react-design-system/v2_color";
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-    background: ${Color.Neutral[7]};
+    background: ${V2_Color.Neutral[7]};
     display: flex;
     flex: 1;
     width: 100%;

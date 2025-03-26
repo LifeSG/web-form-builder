@@ -1,4 +1,4 @@
-import { Text } from "@lifesg/react-design-system/text";
+import { V2_Text } from "@lifesg/react-design-system/v2_text";
 import { EyeIcon } from "@lifesg/react-icons/eye";
 import { PencilIcon } from "@lifesg/react-icons/pencil";
 import { TabletIcon } from "@lifesg/react-icons/tablet";
@@ -29,10 +29,10 @@ interface ISchemaViewProps {
 
 const FormPreview = ({ data }: IProps) => {
     return (
-        <ViewWrapper>
-            <Text.H2>Generate Form</Text.H2>
+        (<ViewWrapper>
+            <V2_Text.H2>Generate Form</V2_Text.H2>
             {data && <FrontendEngine data={data.schema} />}
-        </ViewWrapper>
+        </ViewWrapper>)
     );
 };
 
@@ -121,11 +121,11 @@ const SchemaView = ({ data, onChange, formBuilderRef }: ISchemaViewProps) => {
     );
 
     return (
-        <ViewWrapper>
-            <Text.H2>Generate Schema</Text.H2>
+        (<ViewWrapper>
+            <V2_Text.H2>Generate Schema</V2_Text.H2>
             {renderActionPanel()}
             <SchemaPreview value={schema} onChange={handleSchemaChange} />
-        </ViewWrapper>
+        </ViewWrapper>)
     );
 };
 

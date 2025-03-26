@@ -1,4 +1,4 @@
-import { Text } from "@lifesg/react-design-system/text";
+import { V2_Text } from "@lifesg/react-design-system/v2_text";
 import { MagnifierIcon } from "@lifesg/react-icons/magnifier";
 import { useState } from "react";
 import { ElementSelectorCard } from "src/components/element-selector-card";
@@ -78,9 +78,9 @@ export const AddElementsPanel = () => {
             return elementCategories.map((category, key) => (
                 <Category key={key}>
                     <CategoryHeader>
-                        <Text.H6 weight="semibold">
+                        <V2_Text.H6 weight="semibold">
                             {category.categoryTitle}
-                        </Text.H6>
+                        </V2_Text.H6>
                     </CategoryHeader>
                     <ElementButtonList>
                         {renderElementButtons(category.elementTypes)}
@@ -89,10 +89,10 @@ export const AddElementsPanel = () => {
             ));
         } else {
             return (
-                <NoResultsWrapper>
+                (<NoResultsWrapper>
                     <NotFoundIcon />
-                    <Text.Body>No results found.</Text.Body>
-                </NoResultsWrapper>
+                    <V2_Text.Body>No results found.</V2_Text.Body>
+                </NoResultsWrapper>)
             );
         }
     };

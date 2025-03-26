@@ -28,17 +28,24 @@ export const useBuilder = () => {
 
     const updateOrderedIdentifiers = useCallback(
         (orderedIdentifiers: IElementIdentifier[]) => {
-            const positions = orderedIdentifiers.map(
-                (identifier) => identifier.position
+            const positionAndSize = orderedIdentifiers.map(
+                ({ position, size }) => ({
+                    position,
+                    size,
+                })
             );
 
-            const sortedPositions = [...positions].sort((a, b) => a - b);
+            const sortedPositions = [...positionAndSize].sort(
+                (a, b) => a.position - b.position
+            );
 
             const updatedOrderedIdentifiers = orderedIdentifiers.map(
                 (identifier, index) => {
+                    const { size, position } = sortedPositions[index];
                     return {
                         ...identifier,
-                        position: sortedPositions[index],
+                        position,
+                        size,
                     };
                 }
             );

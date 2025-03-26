@@ -57,45 +57,53 @@ export namespace Translator {
         const defaultValues = generateDefaultValuesSchema(elements);
 
         const orderedElements = orderedIdentifiers.reduce((acc, value) => {
-            acc[value.internalId] = elements[value.internalId];
+            acc[value.internalId] = {
+                ...elements[value.internalId],
+                size: value.size,
+            };
             return acc;
         }, {} as TElementMap);
 
-        const fields = Object.values(orderedElements).reduce((acc, element) => {
-            let translatedChild: Record<string, unknown>;
-            switch (element.type) {
-                case EElementType.EMAIL:
-                    translatedChild =
-                        EmailSchemaGenerator.elementToSchema(element);
-                    break;
-                case EElementType.TEXT:
-                    translatedChild =
-                        TextSchemaGenerator.elementToSchema(element);
-                    break;
-                case EElementType.TEXTAREA:
-                    translatedChild = LongTextSchemaGenerator.elementToSchema(
-                        element as ITextareaAttributes
-                    );
-                    break;
-                case EElementType.CONTACT:
-                    translatedChild = ContactSchemaGenerator.elementToSchema(
-                        element as IContactFieldAttributes
-                    );
-                    break;
-                case EElementType.NUMERIC:
-                    translatedChild =
-                        NumericSchemaGenerator.elementToSchema(element);
-                    break;
-                case EElementType.DROPDOWN:
-                    translatedChild =
-                        DropdownSchemaGenerator.elementToSchema(element);
-                    break;
-                case EElementType.RADIO:
-                    translatedChild =
-                        RadioButtonSchemaGenerator.elementToSchema(element);
-            }
-            return { ...acc, ...translatedChild };
-        }, {});
+        const fields = Object.values(orderedElements).reduce(
+            (acc, element, i) => {
+                let translatedChild: Record<string, unknown>;
+                switch (element.type) {
+                    case EElementType.EMAIL:
+                        translatedChild =
+                            EmailSchemaGenerator.elementToSchema(element);
+                        break;
+                    case EElementType.TEXT:
+                        translatedChild =
+                            TextSchemaGenerator.elementToSchema(element);
+                        break;
+                    case EElementType.TEXTAREA:
+                        translatedChild =
+                            LongTextSchemaGenerator.elementToSchema(
+                                element as ITextareaAttributes
+                            );
+                        break;
+                    case EElementType.CONTACT:
+                        translatedChild =
+                            ContactSchemaGenerator.elementToSchema(
+                                element as IContactFieldAttributes
+                            );
+                        break;
+                    case EElementType.NUMERIC:
+                        translatedChild =
+                            NumericSchemaGenerator.elementToSchema(element);
+                        break;
+                    case EElementType.DROPDOWN:
+                        translatedChild =
+                            DropdownSchemaGenerator.elementToSchema(element);
+                        break;
+                    case EElementType.RADIO:
+                        translatedChild =
+                            RadioButtonSchemaGenerator.elementToSchema(element);
+                }
+                return { ...acc, ...translatedChild };
+            },
+            {}
+        );
 
         const elementsSchema: IFrontendEngineData = {
             defaultValues,

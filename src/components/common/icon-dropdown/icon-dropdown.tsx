@@ -1,4 +1,4 @@
-import { Form, Text } from "@lifesg/react-design-system";
+import { Form, V2_Text } from "@lifesg/react-design-system";
 import {
     EElementType,
     useBuilder,
@@ -43,29 +43,29 @@ export const IconDropdown = ({
         ELEMENTS_CATEGORIES.flatMap((category) => category.elementTypes);
 
     return (
-        <Form.Select
+        (<Form.Select
             data-testid="type-field"
             disabled={isDisabled}
             label={"Element type"}
             options={renderOptions()}
             renderCustomSelectedOption={(option: EElementType) => {
                 return (
-                    <Wrapper>
+                    (<Wrapper>
                         <CardIcon elementType={option} />
-                        <Text.Body>{ELEMENT_BUTTON_LABELS[option]}</Text.Body>
-                    </Wrapper>
+                        <V2_Text.Body>{ELEMENT_BUTTON_LABELS[option]}</V2_Text.Body>
+                    </Wrapper>)
                 );
             }}
             selectedOption={type}
             renderListItem={(option: EElementType) => (
                 <Wrapper>
                     <CardIcon elementType={option} />
-                    <Text.Body>{ELEMENT_BUTTON_LABELS[option]}</Text.Body>
+                    <V2_Text.Body>{ELEMENT_BUTTON_LABELS[option]}</V2_Text.Body>
                 </Wrapper>
             )}
             onSelectOption={(option) => onChange(option)}
             errorMessage={errorMessage && errorMessage}
             onBlur={onBlur}
-        />
+        />)
     );
 };

@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Form } from "@lifesg/react-design-system/form";
-import { Text } from "@lifesg/react-design-system/text";
+import { V2_Text } from "@lifesg/react-design-system/v2_text";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import { IBulkEditModalProps } from "src/context-providers";
 import { BULK_EDIT_SCHEMA, TBulkEditData } from "src/yup-schemas/bulk-edit";
@@ -62,23 +62,23 @@ export const BulkEditModal = ({ modal }: IProps) => {
     };
 
     return (
-        <GenericModal type={modal?.type}>
+        (<GenericModal type={modal?.type}>
             <FormProvider {...methods}>
                 <form onSubmit={methods.handleSubmit(handleFormSubmit)}>
                     <Wrapper data-testid="bulk-edit-modal">
-                        <Text.H3 weight={600}>Bulk Edit</Text.H3>
-                        <Text.Body weight={400}>
+                        <V2_Text.H3 weight={600}>Bulk Edit</V2_Text.H3>
+                        <V2_Text.Body weight={400}>
                             To add multiple entries at once, input each item on
                             a new line, separating the label and value with a
                             bar “|”.
-                        </Text.Body>
-                        <Text.H6 weight={400}>
+                        </V2_Text.Body>
+                        <V2_Text.H6 weight={400}>
                             Example:
                             <br />
                             Banana | banana
                             <br />
                             Green Apple | green-apple
-                        </Text.H6>
+                        </V2_Text.H6>
                         <Controller
                             name="items"
                             control={methods.control}
@@ -100,6 +100,6 @@ export const BulkEditModal = ({ modal }: IProps) => {
                     {renderActionButtons()}
                 </form>
             </FormProvider>
-        </GenericModal>
+        </GenericModal>)
     );
 };

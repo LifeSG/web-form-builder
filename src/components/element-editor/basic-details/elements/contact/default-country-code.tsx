@@ -1,6 +1,6 @@
 import { Alert } from "@lifesg/react-design-system/alert";
 import { Form } from "@lifesg/react-design-system/form";
-import { Text } from "@lifesg/react-design-system/text";
+import { V2_Text } from "@lifesg/react-design-system/v2_text";
 import { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { TogglePair } from "src/components/common/toggle-pair/toggle-pair";
@@ -40,10 +40,10 @@ export const DefaultCountryCode = () => {
     // RENDER FUNCTIONS
     // =========================================================================
     const renderCustomOption = (item: (string | number | string[])[]) => (
-        <Text.Body>
+        <V2_Text.Body>
             {item[0]}{" "}
             <SecondaryLabel>{item[3] ? `+${item[3]}` : ""}</SecondaryLabel>
-        </Text.Body>
+        </V2_Text.Body>
     );
 
     return (

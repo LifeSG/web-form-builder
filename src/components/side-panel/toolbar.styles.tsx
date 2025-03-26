@@ -1,4 +1,4 @@
-import { Color } from "@lifesg/react-design-system/color";
+import { V2_Color } from "@lifesg/react-design-system/v2_color";
 import styled from "styled-components";
 
 // =============================================================================
@@ -13,20 +13,20 @@ export interface IModeButtonProps {
 // =============================================================================
 export const Wrapper = styled.div`
     height: 100%;
-    background: ${Color.Neutral[8]};
+    background: ${V2_Color.Neutral[8]};
     display: flex;
     flex-direction: column;
     align-items: center;
     width: fit-content;
     padding: 2rem 1rem;
-    border-left: 1px solid ${Color.Neutral[5]};
+    border-left: 1px solid ${V2_Color.Neutral[5]};
     gap: 2rem;
 `;
 
 export const ModeButton = styled.button<IModeButtonProps>`
     background: ${({ $active }) =>
-        $active ? Color.Accent.Light[4] : "transparent"};
-    color: ${Color.Primary};
+        $active ? V2_Color.Accent.Light[4] : "transparent"};
+    color: ${V2_Color.Primary};
     display: grid;
     cursor: pointer;
     border: none;
@@ -34,11 +34,11 @@ export const ModeButton = styled.button<IModeButtonProps>`
     padding: 1rem;
 
     :hover {
-        background: ${Color.Accent.Light[4]};
+        background: ${V2_Color.Accent.Light[4]};
     }
 
     :focus {
-        outline-color: ${Color.Primary};
+        outline-color: ${V2_Color.Primary};
     }
 
     svg {

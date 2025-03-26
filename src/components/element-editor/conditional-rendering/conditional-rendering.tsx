@@ -1,4 +1,4 @@
-import { Text } from "@lifesg/react-design-system/text";
+import { V2_Text } from "@lifesg/react-design-system/v2_text";
 import { useCallback } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
@@ -67,14 +67,12 @@ export const ConditionalRendering = () => {
     const getPopoverMessage = useCallback(() => {
         if (hasInvalidAndEmptyFields()) {
             return (
-                <Text.Body>
-                    To add a new condition, fill up the existing condition
-                    first.
-                </Text.Body>
+                (<V2_Text.Body>To add a new condition, fill up the existing condition
+                                        first.</V2_Text.Body>)
             );
         }
         if (getElementOptions()?.length === 0) {
-            return <Text.Body>No conditional rendering available.</Text.Body>;
+            return <V2_Text.Body>No conditional rendering available.</V2_Text.Body>;
         }
         return null;
     }, [hasInvalidAndEmptyFields, getElementOptions]);

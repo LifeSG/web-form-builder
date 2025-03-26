@@ -1,5 +1,5 @@
 import { Form } from "@lifesg/react-design-system/form";
-import { Text } from "@lifesg/react-design-system/text";
+import { V2_Text } from "@lifesg/react-design-system/v2_text";
 import { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import {
@@ -66,13 +66,13 @@ export const ContactValidationRule = ({ index }: IProps) => {
     // RENDER FUNCTIONS
     // =========================================================================
     return (
-        <Controller
+        (<Controller
             name={`validation.${index}.validationRule`}
             control={control}
             render={({ field }) => {
                 const { ref, ...fieldWithoutRef } = field;
                 return (
-                    <Form.Select
+                    (<Form.Select
                         {...fieldWithoutRef}
                         data-testid="contact-validation-rule"
                         placeholder="Select"
@@ -82,7 +82,7 @@ export const ContactValidationRule = ({ index }: IProps) => {
                         options={options}
                         renderListItem={(option) => (
                             <div>
-                                <Text.Body>{option.title}</Text.Body>
+                                <V2_Text.Body>{option.title}</V2_Text.Body>
                                 <SecondaryLabel weight="semibold">
                                     {option.label}
                                 </SecondaryLabel>
@@ -97,10 +97,10 @@ export const ContactValidationRule = ({ index }: IProps) => {
                         errorMessage={
                             errors?.validation?.[index]?.validationRule?.message
                         }
-                    />
+                    />)
                 );
             }}
             shouldUnregister
-        />
+        />)
     );
 };

@@ -13,7 +13,7 @@ import {
     verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { Form } from "@lifesg/react-design-system/form";
-import { Text } from "@lifesg/react-design-system/text";
+import { V2_Text } from "@lifesg/react-design-system/v2_text";
 import { PencilIcon } from "@lifesg/react-icons/pencil";
 import { PlusIcon } from "@lifesg/react-icons/plus";
 import isEmpty from "lodash/isEmpty";
@@ -180,10 +180,10 @@ export const Options = ({ label, description, fieldName }: IOptionsProps) => {
     };
 
     return (
-        <OptionsWrapper>
+        (<OptionsWrapper>
             <Form.Label>
                 {label}
-                <Text.H6 weight={400}>{description}</Text.H6>
+                <V2_Text.H6 weight={400}>{description}</V2_Text.H6>
             </Form.Label>
             <DndContext
                 sensors={sensors}
@@ -215,6 +215,6 @@ export const Options = ({ label, description, fieldName }: IOptionsProps) => {
                     Bulk Edit
                 </OptionsButton>
             </OptionsButtonsWrapper>
-        </OptionsWrapper>
+        </OptionsWrapper>)
     );
 };

@@ -1,4 +1,4 @@
-import { MediaQuery } from "@lifesg/react-design-system/media";
+import { V2_MediaQuery } from "@lifesg/react-design-system/v2_media";
 import styled from "styled-components";
 
 export const ErrorWrapper = styled.div`
@@ -7,7 +7,7 @@ export const ErrorWrapper = styled.div`
     align-items: center;
     height: 100%;
 
-    ${MediaQuery.MaxWidth.mobileL} {
+    ${V2_MediaQuery.MaxWidth.mobileL} {
         width: auto;
         padding: 0 2.375rem 0 2.375rem;
     }

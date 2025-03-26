@@ -1,6 +1,6 @@
-import { Color } from "@lifesg/react-design-system/color";
+import { V2_Color } from "@lifesg/react-design-system/v2_color";
 import styled from "styled-components";
 
 export const SecondaryLabel = styled.span`
-    color: ${Color.Neutral[3]};
+    color: ${V2_Color.Neutral[3]};
 `;

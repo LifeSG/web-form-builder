@@ -1,5 +1,5 @@
-import { Color } from "@lifesg/react-design-system/color";
-import { Text, TextStyleHelper } from "@lifesg/react-design-system/text";
+import { V2_Color } from "@lifesg/react-design-system/v2_color";
+import { V2_Text, V2_TextStyleHelper } from "@lifesg/react-design-system/v2_text";
 import { DragHandleIcon } from "@lifesg/react-icons";
 import styled, { css } from "styled-components";
 import { BaseCard, IProps } from "../common";
@@ -54,14 +54,14 @@ export const DetailsContainer = styled.div`
     overflow: hidden;
 `;
 
-export const ElementName = styled(Text.Body)`
+export const ElementName = styled(V2_Text.Body)`
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 `;
 
-export const IdLabel = styled(Text.XSmall)`
-    color: ${Color.Neutral[3]};
+export const IdLabel = styled(V2_Text.XSmall)`
+    color: ${V2_Color.Neutral[3]};
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -81,7 +81,7 @@ export const ActionButton = styled.button<IActionButtonStyleProps>`
     gap: 0.25rem;
     display: flex;
     align-items: center;
-    ${TextStyleHelper.getTextStyle("XSmall", "semibold")}
+    ${V2_TextStyleHelper.getTextStyle("XSmall", "semibold")}
 
     svg {
         height: 1rem;
@@ -91,15 +91,15 @@ export const ActionButton = styled.button<IActionButtonStyleProps>`
     ${({ $disabled }) => {
         if ($disabled) {
             return css`
-                color: ${Color.Neutral[3]};
+                color: ${V2_Color.Neutral[3]};
                 cursor: not-allowed;
             `;
         } else {
             return css`
-                color: ${Color.Primary};
+                color: ${V2_Color.Primary};
 
                 :hover {
-                    color: ${Color.Secondary};
+                    color: ${V2_Color.Secondary};
                 }
             `;
         }
@@ -124,20 +124,20 @@ export const DroppableWrapper = styled.div<IDroppableWrapperProps>`
     ${({ isOver }) =>
         isOver &&
         css`
-            border: 1px dashed ${Color.Primary};
+            border: 1px dashed ${V2_Color.Primary};
             border-radius: 0.25rem;
-            background: ${Color.Accent.Light[5]};
+            background: ${V2_Color.Accent.Light[5]};
         `}
 
     svg {
-        color: ${Color.Primary};
+        color: ${V2_Color.Primary};
         height: 2.08rem;
         width: 2.08rem;
     }
 `;
 
-export const DroppableText = styled(Text.Body)`
-    color: ${Color.Primary};
+export const DroppableText = styled(V2_Text.Body)`
+    color: ${V2_Color.Primary};
     text-align: center;
     font-size: 1rem;
 `;

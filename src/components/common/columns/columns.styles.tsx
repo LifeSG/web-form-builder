@@ -1,4 +1,4 @@
-import { MediaQuery } from "@lifesg/react-design-system/media";
+import { V2_MediaQuery } from "@lifesg/react-design-system/v2_media";
 import { css } from "styled-components";
 
 // =========================================================================
@@ -44,7 +44,7 @@ const ELEMENT_CARD_SIZE_MAP = {
 const generateGridColumn = (breakpoints: { [key: string]: string }) => css`
     ${Object.entries(breakpoints).map(
         ([key, value]) =>
-            `${MediaQuery.MaxWidth[key]} { grid-column: ${value}; }`
+            `${V2_MediaQuery.MaxWidth[key]} { grid-column: ${value}; }`
     )}
 `;
 

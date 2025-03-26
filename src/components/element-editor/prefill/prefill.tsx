@@ -1,4 +1,4 @@
-import { Text } from "@lifesg/react-design-system/text";
+import { V2_Text } from "@lifesg/react-design-system/v2_text";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
 import { useBuilder } from "src/context-providers";
@@ -37,11 +37,7 @@ export const Prefill = () => {
 
     const getPopoverMessage = () => {
         if (hasInvalidAndEmptyFields()) {
-            return (
-                <Text.Body>
-                    To add new prefill, fill up existing prefill first.
-                </Text.Body>
-            );
+            return (<V2_Text.Body>To add new prefill, fill up existing prefill first.</V2_Text.Body>);
         }
     };
 

@@ -1,4 +1,4 @@
-import { Color } from "@lifesg/react-design-system/color";
+import { V2_Color } from "@lifesg/react-design-system/v2_color";
 import styled, { css } from "styled-components";
 
 // =============================================================================
@@ -24,19 +24,19 @@ export const Body = styled.div<IBodyStyleProps>`
     ${({ $focused }) =>
         $focused
             ? css`
-                  border: 1px solid ${Color.Primary};
-                  background: ${Color.Accent.Light[5]};
+                  border: 1px solid ${V2_Color.Primary};
+                  background: ${V2_Color.Accent.Light[5]};
               `
             : css`
                   border: 1px solid transparent;
               `}
 
     :hover {
-        border-color: ${Color.Primary};
-        box-shadow: 0px 2px 8px 0px ${Color.Shadow.Accent};
+        border-color: ${V2_Color.Primary};
+        box-shadow: 0px 2px 8px 0px ${V2_Color.Shadow.Accent};
     }
 
     :focus {
-        outline-color: ${Color.Primary};
+        outline-color: ${V2_Color.Primary};
     }
 `;

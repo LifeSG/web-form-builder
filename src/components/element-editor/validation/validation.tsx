@@ -1,4 +1,4 @@
-import { Text } from "@lifesg/react-design-system/text";
+import { V2_Text } from "@lifesg/react-design-system/v2_text";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
 import { EElementType, useBuilder } from "src/context-providers";
@@ -71,17 +71,11 @@ export const Validation = () => {
 
     const getPopoverMessage = () => {
         if (hasInvalidAndEmptyFields()) {
-            return (
-                <Text.Body>
-                    To add new validation, fill up existing validation first.
-                </Text.Body>
-            );
+            return (<V2_Text.Body>To add new validation, fill up existing validation first.</V2_Text.Body>);
         } else if (hasReachedMaxEntries()) {
             return (
-                <Text.Body>
-                    Limit reached. To add new validation, remove existing ones
-                    first.
-                </Text.Body>
+                (<V2_Text.Body>Limit reached. To add new validation, remove existing ones
+                                        first.</V2_Text.Body>)
             );
         }
     };

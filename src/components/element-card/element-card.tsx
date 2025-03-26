@@ -1,7 +1,7 @@
 import { useDraggable, useDroppable } from "@dnd-kit/core";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Text } from "@lifesg/react-design-system/text";
+import { V2_Text } from "@lifesg/react-design-system/v2_text";
 import { PlusCircleIcon } from "@lifesg/react-icons";
 import { BinIcon } from "@lifesg/react-icons/bin";
 import { CopyIcon } from "@lifesg/react-icons/copy";
@@ -144,7 +144,7 @@ export const ElementCard = ({ element, onClick }: IProps) => {
     ) : null;
 
     return (
-        <CardWrapper ref={droppableRef}>
+        (<CardWrapper ref={droppableRef}>
             {droppableContent}
             <div ref={setNodeRef} {...sortableProps}>
                 <ElementBaseCard
@@ -159,7 +159,7 @@ export const ElementCard = ({ element, onClick }: IProps) => {
                         )}
                         <CardIcon elementType={element?.type} />
                         <DetailsContainer>
-                            <Text.Body weight="semibold">{label}</Text.Body>
+                            <V2_Text.Body weight="semibold">{label}</V2_Text.Body>
                             {isIdVisible && (
                                 <IdLabel weight="semibold">ID: {id}</IdLabel>
                             )}
@@ -189,6 +189,6 @@ export const ElementCard = ({ element, onClick }: IProps) => {
                     </Container>
                 </ElementBaseCard>
             </div>
-        </CardWrapper>
+        </CardWrapper>)
     );
 };

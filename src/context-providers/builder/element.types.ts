@@ -113,6 +113,7 @@ export interface IBaseFieldAttributes extends IBaseAttributes {
     preselectedValue?: string;
     conditionalRendering?: IConditionalRendering[];
     prefill?: IPrefillAttributes[];
+    size?: "full" | "left" | "right";
 }
 
 // =============================================================================
