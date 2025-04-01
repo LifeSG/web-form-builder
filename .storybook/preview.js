@@ -1,4 +1,4 @@
-import { BaseTheme } from "@lifesg/react-design-system/theme";
+import { LifeSGTheme } from "@lifesg/react-design-system/theme";
 import { withThemeFromJSXProvider } from "@storybook/addon-themes";
 import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
 import { ThemeProvider } from "styled-components";
@@ -7,7 +7,7 @@ const preview = {
     decorators: [
         withThemeFromJSXProvider({
             themes: {
-                LifeSG: BaseTheme,
+                LifeSG: LifeSGTheme,
             },
             Provider: ThemeProvider,
         }),
