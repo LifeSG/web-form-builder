@@ -1,4 +1,4 @@
-import { V2_Color } from "@lifesg/react-design-system/v2_color";
+import { Colour } from "@lifesg/react-design-system/theme";
 import { CrossIcon } from "@lifesg/react-icons/cross";
 import { useFormContext } from "react-hook-form";
 import { useModal } from "src/context-providers/display/modal-hook";
@@ -78,40 +78,42 @@ export const SidePanelHeader = ({ showDivider }: Props) => {
     // =========================================================================
     const renderButtons = () => {
         if (focusedElement) {
-            return (<>
-                <SaveChangesButton
-                    data-testid="save-changes-button"
-                    disabled={isSubmitting}
-                    loading={isSubmitting}
-                >
-                    {isSubmitting
-                        ? "Saving"
-                        : !isDirty
-                          ? "Saved"
-                          : "Save Changes"}
-                </SaveChangesButton>
-                <IconButton
-                    $iconSize="1.5rem"
-                    $iconColor={V2_Color.Neutral[3]}
-                    onClick={handleCrossButtonClick}
-                    type="button"
-                >
-                    <CrossIcon data-testid="cross-button" />
-                </IconButton>
-            </>);
+            return (
+                <>
+                    <SaveChangesButton
+                        data-testid="save-changes-button"
+                        disabled={isSubmitting}
+                        loading={isSubmitting}
+                    >
+                        {isSubmitting
+                            ? "Saving"
+                            : !isDirty
+                              ? "Saved"
+                              : "Save Changes"}
+                    </SaveChangesButton>
+                    <IconButton
+                        $iconSize="1.5rem"
+                        $iconColor={Colour.icon}
+                        onClick={handleCrossButtonClick}
+                        type="button"
+                    >
+                        <CrossIcon data-testid="cross-button" />
+                    </IconButton>
+                </>
+            );
         }
 
         switch (currentMode) {
             case EBuilderMode.ADD_ELEMENT:
             case EBuilderMode.EDIT_PAGES:
                 return (
-                    (<IconButton
+                    <IconButton
                         $iconSize="1.5rem"
-                        $iconColor={V2_Color.Neutral[3]}
+                        $iconColor={Colour.icon}
                         onClick={() => togglePanel(!showSidePanel)}
                     >
                         <HeaderChevronIcon $isCollapsed={showSidePanel} />
-                    </IconButton>)
+                    </IconButton>
                 );
         }
     };

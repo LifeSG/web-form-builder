@@ -1,4 +1,4 @@
-import { V2_Color } from "@lifesg/react-design-system/v2_color";
+import { Colour } from "@lifesg/react-design-system/theme";
 import styled from "styled-components";
 
 // =============================================================================
@@ -42,7 +42,7 @@ export const OptionsChildWrapper = styled.div`
 export const OptionsDragHandleButton = styled.div`
     margin-top: 0.875rem;
     svg {
-        color: ${V2_Color.Accent.Light[1]};
+        color: ${Colour["icon-primary-subtlest"]};
         width: 1.25rem;
         height: 1.25rem;
         align-items: center;
@@ -51,9 +51,9 @@ export const OptionsDragHandleButton = styled.div`
 `;
 
 export const DroppableWrapper = styled.div<IDroppableWrapperProps>`
-    border: 1px dashed ${V2_Color.Primary};
+    border: 1px dashed ${Colour["border-primary"]};
     border-radius: 0.25rem;
-    background: ${V2_Color.Accent.Light[5]};
+    background: ${Colour["bg-primary-subtlest"]};
     position: absolute;
     height: auto;
     width: 100%;
@@ -64,7 +64,7 @@ export const DroppableWrapper = styled.div<IDroppableWrapperProps>`
     gap: 0.25rem;
 
     svg {
-        color: ${V2_Color.Primary};
+        color: ${Colour["icon-primary"]};
         height: 2.08rem;
         width: 2.08rem;
     }

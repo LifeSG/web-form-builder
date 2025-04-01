@@ -1,8 +1,8 @@
-import { V2_Color } from "@lifesg/react-design-system/v2_color";
+import { Colour } from "@lifesg/react-design-system/theme";
 import styled from "styled-components";
 
 export const ChildEntry = styled.div`
-    background: ${V2_Color.Neutral[7]};
+    background: ${Colour["bg-strong"]};
     padding: 1rem;
     margin-bottom: 2rem;
 `;

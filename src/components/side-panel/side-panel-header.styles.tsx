@@ -1,5 +1,5 @@
 import { Button } from "@lifesg/react-design-system/button";
-import { V2_Color } from "@lifesg/react-design-system/v2_color";
+import { Colour } from "@lifesg/react-design-system/theme";
 import { V2_Text } from "@lifesg/react-design-system/v2_text";
 import { ChevronRightIcon } from "@lifesg/react-icons/chevron-right";
 import styled, { css } from "styled-components";
@@ -26,7 +26,7 @@ export const Wrapper = styled.div<IWrapperStyleProps>`
     align-items: center;
     padding: 2rem 1rem 2rem 2rem;
     border-bottom: ${({ $showDivider }) =>
-        $showDivider ? css`1px solid ${V2_Color.Neutral[5]}` : "none"};
+        $showDivider ? css`1px solid ${Colour.border}` : "none"};
 `;
 
 export const HeaderChevronIcon = styled(ChevronRightIcon)<IIconStyleProps>`

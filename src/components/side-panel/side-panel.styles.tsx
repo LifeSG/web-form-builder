@@ -1,4 +1,4 @@
-import { V2_Color } from "@lifesg/react-design-system/v2_color";
+import { Colour } from "@lifesg/react-design-system/theme";
 import { V2_MediaQuery } from "@lifesg/react-design-system/v2_media";
 import { V2_Transition } from "@lifesg/react-design-system/v2_transition";
 import styled, { css } from "styled-components";
@@ -25,8 +25,8 @@ export const Wrapper = styled.div<IWrapperStyleProps>`
     height: calc(100% - ${(props) => props.$offset}rem);
     width: ${({ $narrow }) => ($narrow ? "31.2rem" : "36.8rem")};
     transition: ${V2_Transition.Base};
-    background: ${V2_Color.Neutral[8]};
-    border-left: 1px solid ${V2_Color.Neutral[5]};
+    background: ${Colour.bg};
+    border-left: 1px solid ${Colour.border};
     margin-left: auto;
     box-shadow: 0px 2px 12px 0px rgba(104, 104, 104, 0.25);
     position: fixed;

@@ -1,5 +1,8 @@
-import { V2_Color } from "@lifesg/react-design-system/v2_color";
-import { V2_Text, V2_TextStyleHelper } from "@lifesg/react-design-system/v2_text";
+import { Colour } from "@lifesg/react-design-system/theme";
+import {
+    V2_Text,
+    V2_TextStyleHelper,
+} from "@lifesg/react-design-system/v2_text";
 import { DragHandleIcon } from "@lifesg/react-icons";
 import styled, { css } from "styled-components";
 import { BaseCard, IProps } from "../common";
@@ -61,7 +64,7 @@ export const ElementName = styled(V2_Text.Body)`
 `;
 
 export const IdLabel = styled(V2_Text.XSmall)`
-    color: ${V2_Color.Neutral[3]};
+    color: ${Colour["text-subtler"]};
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -91,15 +94,15 @@ export const ActionButton = styled.button<IActionButtonStyleProps>`
     ${({ $disabled }) => {
         if ($disabled) {
             return css`
-                color: ${V2_Color.Neutral[3]};
+                color: ${Colour["text-disabled"]};
                 cursor: not-allowed;
             `;
         } else {
             return css`
-                color: ${V2_Color.Primary};
+                color: ${Colour["text-primary"]};
 
                 :hover {
-                    color: ${V2_Color.Secondary};
+                    color: ${Colour["text-hover"]};
                 }
             `;
         }
@@ -124,20 +127,20 @@ export const DroppableWrapper = styled.div<IDroppableWrapperProps>`
     ${({ isOver }) =>
         isOver &&
         css`
-            border: 1px dashed ${V2_Color.Primary};
+            border: 1px dashed ${Colour["border-primary"]};
             border-radius: 0.25rem;
-            background: ${V2_Color.Accent.Light[5]};
+            background: ${Colour["bg-hover-subtle"]};
         `}
 
     svg {
-        color: ${V2_Color.Primary};
+        color: ${Colour["icon-primary"]};
         height: 2.08rem;
         width: 2.08rem;
     }
 `;
 
-export const DroppableText = styled(V2_Text.Body)`
-    color: ${V2_Color.Primary};
+export const DroppableText = styled(Typography.BodyBL)`
+    color: ${Colour["text-primary"]};
     text-align: center;
     font-size: 1rem;
 `;
