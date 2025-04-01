@@ -1,5 +1,5 @@
 import { Form } from "@lifesg/react-design-system/form";
-import { V2_Text } from "@lifesg/react-design-system/v2_text";
+import { Typography } from "@lifesg/react-design-system/typography";
 import { Controller, useFormContext } from "react-hook-form";
 import {
     useBuilder,
@@ -31,7 +31,7 @@ export const IdField = () => {
     // =========================================================================
 
     return (
-        (<Controller
+        <Controller
             name="id"
             control={control}
             render={({ field }) => (
@@ -42,10 +42,10 @@ export const IdField = () => {
                     label={{
                         children: "ID",
                         subtitle: (
-                            <V2_Text.H6 weight={400}>
+                            <Typography.BodySM>
                                 ID is used to differentiate element from the
                                 others in the UI schema.
-                            </V2_Text.H6>
+                            </Typography.BodySM>
                         ),
                     }}
                     placeholder="Create an ID"
@@ -53,6 +53,6 @@ export const IdField = () => {
                     errorMessage={errors.id?.message}
                 />
             )}
-        />)
+        />
     );
 };

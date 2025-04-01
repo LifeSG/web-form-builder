@@ -1,4 +1,4 @@
-import { V2_Text } from "@lifesg/react-design-system/v2_text";
+import { Typography } from "@lifesg/react-design-system/typography";
 import { Accordion } from "@lifesg/react-design-system/accordion";
 import { ButtonWithIcon } from "@lifesg/react-design-system/button-with-icon";
 import { Colour } from "@lifesg/react-design-system/theme";
@@ -8,7 +8,7 @@ interface MultiEntryAccordionItemProps {
     $hasSubtitle: boolean;
 }
 
-export const SubtitleText = styled(V2_Text.Body)`
+export const SubtitleText = styled(Typography.BodyBL)`
     margin-bottom: 2rem;
 `;
 

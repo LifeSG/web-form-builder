@@ -1,7 +1,7 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Form } from "@lifesg/react-design-system/form";
-import { V2_Text } from "@lifesg/react-design-system/v2_text";
+import { Typography } from "@lifesg/react-design-system/typography";
 import { DragHandleIcon, PlusCircleIcon } from "@lifesg/react-icons";
 import { CSSProperties } from "react";
 import { Controller, useFormContext } from "react-hook-form";
@@ -77,7 +77,11 @@ export const OptionsChild = ({ onDelete, id, index, fieldName }: IProps) => {
     ) : null;
 
     const renderPopoverMessage = () => {
-        return (<V2_Text.Body>Item deletion is not allowed when there are less than 3 items.</V2_Text.Body>);
+        return (
+            <Typography.BodyBL>
+                Item deletion is not allowed when there are less than 3 items.
+            </Typography.BodyBL>
+        );
     };
 
     return (

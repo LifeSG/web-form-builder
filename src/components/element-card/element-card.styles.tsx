@@ -1,8 +1,6 @@
 import { Colour } from "@lifesg/react-design-system/theme";
-import {
-    V2_Text,
-    V2_TextStyleHelper,
-} from "@lifesg/react-design-system/v2_text";
+import { Typography } from "@lifesg/react-design-system/typography";
+import { V2_TextStyleHelper } from "@lifesg/react-design-system/v2_text";
 import { DragHandleIcon } from "@lifesg/react-icons";
 import styled, { css } from "styled-components";
 import { BaseCard, IProps } from "../common";
@@ -57,13 +55,13 @@ export const DetailsContainer = styled.div`
     overflow: hidden;
 `;
 
-export const ElementName = styled(V2_Text.Body)`
+export const ElementName = styled(Typography.BodyBL)`
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 `;
 
-export const IdLabel = styled(V2_Text.XSmall)`
+export const IdLabel = styled(Typography.BodyXS)`
     color: ${Colour["text-subtler"]};
     overflow: hidden;
     text-overflow: ellipsis;

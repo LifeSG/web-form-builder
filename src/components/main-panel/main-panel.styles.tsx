@@ -1,5 +1,5 @@
 import { V2_MediaQuery } from "@lifesg/react-design-system/v2_media";
-import { V2_Text } from "@lifesg/react-design-system/v2_text";
+import { Typography } from "@lifesg/react-design-system/typography";
 import styled, { css } from "styled-components";
 import { generateElementCardView } from "../common/columns/columns.styles";
 
@@ -101,11 +101,11 @@ export const EmptyDisplayWrapper = styled.div<IWrapperStyleProps>`
     }}
 `;
 
-export const EmptyDisplayTitle = styled(V2_Text.H3)`
+export const EmptyDisplayTitle = styled(Typography.HeadingSM)`
     margin-top: 2rem;
 `;
 
-export const EmptyDisplayDescription = styled(V2_Text.Body)`
+export const EmptyDisplayDescription = styled(Typography.BodyBL)`
     margin-top: 1rem;
 `;
 

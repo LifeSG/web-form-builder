@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Form } from "@lifesg/react-design-system/form";
-import { V2_Text } from "@lifesg/react-design-system/v2_text";
+import { Typography } from "@lifesg/react-design-system/typography";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import { IBulkEditModalProps } from "src/context-providers";
 import { BULK_EDIT_SCHEMA, TBulkEditData } from "src/yup-schemas/bulk-edit";
@@ -62,23 +62,25 @@ export const BulkEditModal = ({ modal }: IProps) => {
     };
 
     return (
-        (<GenericModal type={modal?.type}>
+        <GenericModal type={modal?.type}>
             <FormProvider {...methods}>
                 <form onSubmit={methods.handleSubmit(handleFormSubmit)}>
                     <Wrapper data-testid="bulk-edit-modal">
-                        <V2_Text.H3 weight={600}>Bulk Edit</V2_Text.H3>
-                        <V2_Text.Body weight={400}>
+                        <Typography.HeadingSM weight="semibold">
+                            Bulk Edit
+                        </Typography.HeadingSM>
+                        <Typography.BodyBL>
                             To add multiple entries at once, input each item on
                             a new line, separating the label and value with a
                             bar “|”.
-                        </V2_Text.Body>
-                        <V2_Text.H6 weight={400}>
+                        </Typography.BodyBL>
+                        <Typography.BodySM>
                             Example:
                             <br />
                             Banana | banana
                             <br />
                             Green Apple | green-apple
-                        </V2_Text.H6>
+                        </Typography.BodySM>
                         <Controller
                             name="items"
                             control={methods.control}
@@ -100,6 +102,6 @@ export const BulkEditModal = ({ modal }: IProps) => {
                     {renderActionButtons()}
                 </form>
             </FormProvider>
-        </GenericModal>)
+        </GenericModal>
     );
 };

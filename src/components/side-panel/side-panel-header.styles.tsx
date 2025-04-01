@@ -1,6 +1,6 @@
 import { Button } from "@lifesg/react-design-system/button";
 import { Colour } from "@lifesg/react-design-system/theme";
-import { V2_Text } from "@lifesg/react-design-system/v2_text";
+import { Typography } from "@lifesg/react-design-system/typography";
 import { ChevronRightIcon } from "@lifesg/react-icons/chevron-right";
 import styled, { css } from "styled-components";
 
@@ -35,7 +35,7 @@ export const HeaderChevronIcon = styled(ChevronRightIcon)<IIconStyleProps>`
     transition: transform 350ms ease-in-out;
 `;
 
-export const HeaderLabel = styled(V2_Text.H3)`
+export const HeaderLabel = styled(Typography.HeadingSM)`
     margin-right: 1rem;
 `;
 

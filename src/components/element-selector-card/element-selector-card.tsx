@@ -1,4 +1,4 @@
-import { V2_Text } from "@lifesg/react-design-system/v2_text";
+import { Typography } from "@lifesg/react-design-system/typography";
 import { EElementType } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data";
 import { BaseCard, CardIcon } from "../common";
@@ -11,11 +11,13 @@ interface IProps {
 
 export const ElementSelectorCard = ({ type, onClick }: IProps) => {
     return (
-        (<BaseCard onClick={onClick}>
+        <BaseCard onClick={onClick}>
             <Body>
                 <CardIcon elementType={type} />
-                <V2_Text.Body>{ELEMENT_BUTTON_LABELS[type]}</V2_Text.Body>
+                <Typography.BodyBL>
+                    {ELEMENT_BUTTON_LABELS[type]}
+                </Typography.BodyBL>
             </Body>
-        </BaseCard>)
+        </BaseCard>
     );
 };

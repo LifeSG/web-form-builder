@@ -1,4 +1,4 @@
-import { V2_Text } from "@lifesg/react-design-system/v2_text";
+import { Typography } from "@lifesg/react-design-system/typography";
 import {
     Controller,
     ControllerRenderProps,
@@ -51,7 +51,7 @@ export const DescriptionField = () => {
     // =========================================================================
 
     return (
-        (<Controller
+        <Controller
             name="description"
             control={control}
             render={({ field }) => (
@@ -62,9 +62,9 @@ export const DescriptionField = () => {
                     label={{
                         children: "Description text (optional)",
                         subtitle: (
-                            <V2_Text.H6 weight={400}>
+                            <Typography.BodySM>
                                 This displays as a description under the label.
-                            </V2_Text.H6>
+                            </Typography.BodySM>
                         ),
                     }}
                     placeholder="Enter description text"
@@ -74,6 +74,6 @@ export const DescriptionField = () => {
                     maxLength={180}
                 />
             )}
-        />)
+        />
     );
 };
