@@ -1,6 +1,6 @@
 import { Colour } from "@lifesg/react-design-system/theme";
 import { Typography } from "@lifesg/react-design-system/typography";
-import { V2_TextStyleHelper } from "@lifesg/react-design-system/v2_text";
+import { Font } from "@lifesg/react-design-system/theme";
 import { DragHandleIcon } from "@lifesg/react-icons";
 import styled, { css } from "styled-components";
 import { BaseCard, IProps } from "../common";
@@ -82,7 +82,7 @@ export const ActionButton = styled.button<IActionButtonStyleProps>`
     gap: 0.25rem;
     display: flex;
     align-items: center;
-    ${V2_TextStyleHelper.getTextStyle("XSmall", "semibold")}
+    ${Font["body-xs-semibold"]}
 
     svg {
         height: 1rem;
