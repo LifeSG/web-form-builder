@@ -1,5 +1,5 @@
 import { Colour } from "@lifesg/react-design-system/theme";
-import { V2_MediaQuery } from "@lifesg/react-design-system/v2_media";
+import { MediaQuery } from "@lifesg/react-design-system/theme";
 import { V2_Transition } from "@lifesg/react-design-system/v2_transition";
 import styled, { css } from "styled-components";
 
@@ -34,7 +34,7 @@ export const Wrapper = styled.div<IWrapperStyleProps>`
     left: 0;
     transform: translateX(0);
 
-    ${V2_MediaQuery.MaxWidth.desktopM} {
+    ${MediaQuery.MaxWidth.xl} {
         width: ${({ $narrow }) => ($narrow ? "24.4rem" : "30rem")};
     }
 

@@ -1,4 +1,4 @@
-import { V2_MediaQuery } from "@lifesg/react-design-system/v2_media";
+import { MediaQuery } from "@lifesg/react-design-system/theme";
 import { Modal } from "@lifesg/react-design-system/modal";
 import styled from "styled-components";
 
@@ -17,7 +17,7 @@ export const ModalInner = styled.div`
     margin: 4rem;
     text-align: center;
 
-    ${V2_MediaQuery.MaxWidth.mobileL} {
+    ${MediaQuery.MaxWidth.sm} {
         margin: 4rem 1.25rem;
     }
 `;
@@ -27,7 +27,7 @@ export const GrowContainer = styled.div`
     padding: 5rem 1.25rem;
     width: 100%;
 
-    ${V2_MediaQuery.MaxWidth.mobileL} {
+    ${MediaQuery.MaxWidth.sm} {
         padding: 1rem 1.25rem;
     }
 `;
