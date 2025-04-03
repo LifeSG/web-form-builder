@@ -1,4 +1,4 @@
-import { V2_Layout } from "@lifesg/react-design-system/v2_layout";
+import { Layout } from "@lifesg/react-design-system/layout";
 import { MediaQuery } from "@lifesg/react-design-system/theme";
 import styled from "styled-components";
 
@@ -10,7 +10,7 @@ export interface IWrapperProps {
     $disabled?: boolean;
 }
 
-export const Wrapper = styled(V2_Layout.Section)<IWrapperProps>`
+export const Wrapper = styled(Layout.Section)<IWrapperProps>`
     cursor: ${({ $disabled }) => ($disabled ? "not-allowed" : "auto")};
     height: 100%;
     overflow-x: hidden;
@@ -18,7 +18,7 @@ export const Wrapper = styled(V2_Layout.Section)<IWrapperProps>`
     padding-right: 0 !important;
 `;
 
-export const Container = styled(V2_Layout.Container)<IContainerProps>`
+export const Container = styled(Layout.Container)<IContainerProps>`
     position: relative;
     height: 100%;
     padding: 2rem 3rem;

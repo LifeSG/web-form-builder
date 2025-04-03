@@ -1,6 +1,5 @@
 import { Colour } from "@lifesg/react-design-system/theme";
 import { MediaQuery } from "@lifesg/react-design-system/theme";
-import { V2_Transition } from "@lifesg/react-design-system/v2_transition";
 import styled, { css } from "styled-components";
 
 // =============================================================================
@@ -24,7 +23,7 @@ export const Wrapper = styled.div<IWrapperStyleProps>`
     flex-direction: column;
     height: calc(100% - ${(props) => props.$offset}rem);
     width: ${({ $narrow }) => ($narrow ? "31.2rem" : "36.8rem")};
-    transition: ${V2_Transition.Base};
+    transition: all 300ms cubic-bezier(0.21, 0.79, 0.53, 1);
     background: ${Colour.bg};
     border-left: 1px solid ${Colour.border};
     margin-left: auto;
