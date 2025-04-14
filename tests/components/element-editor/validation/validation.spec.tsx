@@ -37,16 +37,18 @@ describe("Validation", () => {
 
         fireEvent.change(inputName, { target: { value: "Test rule" } });
         fireEvent.change(inputValue, { target: { value: "Test Value" } });
-        fireEvent.mouseOver(getAddValidationButton());
 
-        const popoverText = await screen.findByTestId("add-button-popover");
-        expect(popoverText).toBeVisible();
+        const popoverContainer =
+            await screen.findByTestId("add-button-popover");
+        fireEvent.mouseEnter(popoverContainer);
+
+        expect(popoverContainer).toBeVisible();
         expect(
             screen.getByText(
                 "Limit reached. To add new validation, remove existing ones first."
             )
         ).toBeInTheDocument();
-        expect(getAddValidationButton()).toBeDisabled();
+        expect(getAddValidationButton(true)).toBeDisabled();
     });
 
     it("should disable the button and show a popover when existing validation is not filled", async () => {
@@ -60,17 +62,21 @@ describe("Validation", () => {
         });
 
         fireEvent.click(getAddValidationButton());
-        fireEvent.mouseOver(getAddValidationButton());
 
-        const popoverText = await screen.findByTestId("add-button-popover");
-        expect(popoverText).toBeVisible();
+        const popoverContainer =
+            await screen.findByTestId("add-button-popover");
+        fireEvent.mouseEnter(popoverContainer);
+
+        expect(popoverContainer).toBeVisible();
         expect(
             screen.getByText(
                 "To add new validation, fill up existing validation first."
             )
         ).toBeInTheDocument();
-        expect(getAddValidationButton()).toBeDisabled();
+
+        expect(getAddValidationButton(true)).toBeDisabled();
     });
+
     it("should remove the validation option when min or max length validation has been used.", async () => {
         setupJestCanvasMock();
         renderComponent({
@@ -164,5 +170,8 @@ const renderComponent = (overrideOptions?: TestHelper.RenderOptions) => {
     return render(TestHelper.withProviders(overrideOptions, <Validation />));
 };
 
-const getAddValidationButton: () => HTMLElement = () =>
-    screen.getByRole("button", { name: "Add validation" });
+const getAddValidationButton = (inaccessible = false): HTMLElement =>
+    screen.getByRole("button", {
+        name: "Add validation",
+        hidden: inaccessible,
+    });
