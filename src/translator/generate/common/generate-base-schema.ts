@@ -15,7 +15,10 @@ export const generateBaseSchema = (element: TElement) => {
         },
         uiType: element.type,
         columns: {
-            desktop: element.size === "full" ? element.columns.desktop : 6,
+            desktop:
+                element.size === "left" || element.size === "right"
+                    ? 6
+                    : element.columns.desktop,
             tablet: element.columns.tablet,
             mobile: element.columns.mobile,
         },
