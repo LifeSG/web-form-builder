@@ -1,11 +1,13 @@
+import { IColumns } from "@lifesg/web-frontend-engine/components/frontend-engine";
 import { TRenderRules } from "@lifesg/web-frontend-engine/context-providers";
 import {
     IConditionalRendering,
     IPrefillAttributes,
     TElement,
     TElementMap,
+    TElementSize,
 } from "src/context-providers";
-import { ELEMENT_CONDITION_TYPES } from "src/data";
+import { ELEMENT_CONDITION_TYPES, ELEMENT_SIZE_COLUMNS } from "src/data";
 import { IPrefillConfig } from "src/translator/types";
 import { PREFILL_ACTIONID_REGEX, PREFILL_PATH_REGEX } from "src/util";
 
@@ -60,7 +62,7 @@ export const updateParsedElements = (parsedElements: TElement[]) => {
         newElements[parsedElement.internalId] = parsedElement;
         newOrderedIdentifiers.push({
             internalId: parsedElement.internalId,
-            size: "full",
+            size: parsedElement.size || "full",
         });
 
         if (parsedElement?.conditionalRendering?.length > 0) {
@@ -85,4 +87,18 @@ export const updateParsedElements = (parsedElements: TElement[]) => {
         newElements,
         newOrderedIdentifiers,
     };
+};
+
+export const schemaColumnsToElementSize = (columns: IColumns): TElementSize => {
+    if (!columns) {
+        return "full";
+    }
+
+    if (columns?.desktop === ELEMENT_SIZE_COLUMNS.full.desktop) {
+        return "full";
+    } else if (columns?.desktop === ELEMENT_SIZE_COLUMNS.left.desktop) {
+        return "left";
+    } else {
+        return "right";
+    }
 };

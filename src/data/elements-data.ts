@@ -2,6 +2,8 @@ import {
     EConditionType,
     EElementType,
     EValidationType,
+    IColumns,
+    TElementSize,
 } from "src/context-providers/builder/element.types";
 
 interface IElementCategoryAttributes {
@@ -102,4 +104,11 @@ export const ELEMENT_CONDITION_TYPES = {
     ["lessThan"]: EConditionType.LESS_THAN,
     ["equals"]: EConditionType.EQUALS,
     ["notEquals"]: EConditionType.NOT_EQUALS,
+};
+
+// TODO: switch to new column system after FEE has migrated
+export const ELEMENT_SIZE_COLUMNS: Record<TElementSize, IColumns> = {
+    full: { desktop: 12, tablet: 8, mobile: 4 },
+    left: { desktop: 6, tablet: 8, mobile: 4 },
+    right: { desktop: [7, 13], tablet: 8, mobile: 4 },
 };

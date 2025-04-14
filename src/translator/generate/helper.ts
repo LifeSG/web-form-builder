@@ -3,8 +3,9 @@ import { TElementMap } from "src/context-providers";
 import {
     EConditionType,
     IConditionalRendering,
+    TElementSize,
 } from "src/context-providers/builder";
-import { SCHEMA_CONDITION_TYPES } from "src/data";
+import { ELEMENT_SIZE_COLUMNS, SCHEMA_CONDITION_TYPES } from "src/data";
 
 export const generateConditionalRenderingSchema = (
     conditions: IConditionalRendering[]
@@ -56,4 +57,8 @@ export const generateDefaultValuesSchema = (elements: TElementMap) => {
     }, {});
 
     return defaultValues;
+};
+
+export const elementSizeToColumn = (size: TElementSize) => {
+    return ELEMENT_SIZE_COLUMNS[size || "full"];
 };
