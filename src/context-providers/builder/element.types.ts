@@ -98,6 +98,10 @@ type TabletCol = MobileCol | 5 | 6 | 7 | 8;
 type TabletColRange = TabletCol | 9;
 type DesktopCol = TabletCol | 9 | 10 | 11 | 12;
 type DesktopColRange = DesktopCol | 13;
+
+export type TElementSize = "full" | "left" | "right";
+
+// TODO: switch to new column system after FEE has migrated
 export interface IColumns {
     desktop: DesktopCol | [DesktopColRange, DesktopColRange];
     tablet: TabletCol | [TabletColRange, TabletColRange];
@@ -113,7 +117,7 @@ export interface IBaseFieldAttributes extends IBaseAttributes {
     preselectedValue?: string;
     conditionalRendering?: IConditionalRendering[];
     prefill?: IPrefillAttributes[];
-    size?: "full" | "left" | "right";
+    size?: TElementSize;
 }
 
 // =============================================================================

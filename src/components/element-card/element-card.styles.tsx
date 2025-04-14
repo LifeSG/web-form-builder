@@ -10,6 +10,7 @@ import { DragHandleIcon } from "@lifesg/react-icons";
 import styled, { css } from "styled-components";
 import { BaseCard, IProps } from "../common";
 import { generateElementCardView } from "../common/columns/columns.styles";
+import { TElementSize } from "src/context-providers";
 
 // =============================================================================
 // STYLE INTERFACES
@@ -19,7 +20,7 @@ interface IActionButtonStyleProps {
 }
 interface IDroppableWrapperProps {
     isOver: boolean;
-    $size: "full" | "left" | "right";
+    $size: TElementSize;
 }
 
 interface IElementCardProps extends IProps {

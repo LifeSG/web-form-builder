@@ -1,5 +1,5 @@
 import { Dispatch } from "react";
-import { EElementType, TElement } from "./element.types";
+import { EElementType, TElement, TElementSize } from "./element.types";
 
 export enum EBuilderMode {
     /** Mode where we get to select the elements to add */
@@ -24,7 +24,7 @@ export enum ETextFieldMode {
 export interface IElementIdentifier {
     internalId?: string;
     parentInternalId?: string;
-    size?: "full" | "left" | "right";
+    size?: TElementSize;
     position: number;
 }
 
@@ -37,7 +37,7 @@ export interface IFocusedElement {
 export interface IDeletedElement {
     element: TElement;
     position: number;
-    size: "full" | "left" | "right";
+    size: TElementSize;
 }
 
 export interface IDeletedElementMap {

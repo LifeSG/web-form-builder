@@ -1,8 +1,9 @@
 import { MediaQuery } from "@lifesg/react-design-system/theme";
 import { Typography } from "@lifesg/react-design-system/typography";
+import { TElementSize } from "src/context-providers";
+import { FormBuilderMediaQuery } from "src/data";
 import styled, { css } from "styled-components";
 import { generateElementCardView } from "../common/columns/columns.styles";
-import { FormBuilderMediaQuery } from "src/data";
 
 // =============================================================================
 // STLE INTERFACES
@@ -12,7 +13,7 @@ interface IWrapperStyleProps {
 }
 
 interface IElementItemWrapperProps extends IWrapperStyleProps {
-    $size: "full" | "left" | "right";
+    $size: TElementSize;
 }
 
 // =============================================================================

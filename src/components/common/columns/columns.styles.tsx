@@ -1,5 +1,6 @@
 import { MediaQuery } from "@lifesg/react-design-system/theme";
 import { FormBuilderMediaQuery } from "src/data";
+import { TElementSize } from "src/context-providers";
 import { css } from "styled-components";
 
 // =========================================================================
@@ -66,7 +67,7 @@ const generateGridColumn = (breakpoints: { [key: string]: string }) => css`
 `;
 
 export const generateElementCardView = (
-    size: "left" | "right" | "full",
+    size: TElementSize,
     mode: "expanded" | "minimised" = "expanded"
 ) => {
     return generateGridColumn(ELEMENT_CARD_SIZE_MAP[mode][size]);
