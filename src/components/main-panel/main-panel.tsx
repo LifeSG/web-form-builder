@@ -181,7 +181,7 @@ export const MainPanel = () => {
         // update dragged element size
         updatedOrderedIdentifiers[elementIndex] = {
             ...updatedOrderedIdentifiers[elementIndex],
-            size: size,
+            size,
         };
 
         updateOrderedIdentifiers(updatedOrderedIdentifiers);

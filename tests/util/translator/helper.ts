@@ -12,6 +12,7 @@ import {
     IPrefillAttributes,
     IValidation,
     TElementMap,
+    TElementSize,
 } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data";
 interface MockElementProps {
@@ -28,6 +29,7 @@ interface MockElementProps {
     conditionalRendering?: IConditionalRendering[];
     prefill?: IPrefillAttributes[];
     preselectedValue?: string;
+    size?: TElementSize;
 }
 
 interface MockSchemaProps {

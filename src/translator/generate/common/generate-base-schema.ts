@@ -1,5 +1,8 @@
 import { TElement } from "src/context-providers";
-import { generateConditionalRenderingSchema } from "../helper";
+import {
+    elementSizeToColumn,
+    generateConditionalRenderingSchema,
+} from "../helper";
 
 export const generateBaseSchema = (element: TElement) => {
     const conditionalRenderingSchema = generateConditionalRenderingSchema(
@@ -9,19 +12,10 @@ export const generateBaseSchema = (element: TElement) => {
     return {
         label: {
             mainLabel: element.label,
-            ...(element.description && {
-                subLabel: element.description,
-            }),
+            ...(element.description && { subLabel: element.description }),
         },
         uiType: element.type,
-        columns: {
-            desktop:
-                element.size === "left" || element.size === "right"
-                    ? 6
-                    : element.columns.desktop,
-            tablet: element.columns.tablet,
-            mobile: element.columns.mobile,
-        },
+        columns: elementSizeToColumn(element.size),
         ...(element.required && {
             validation: [
                 {

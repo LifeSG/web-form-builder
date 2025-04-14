@@ -1,9 +1,12 @@
 import { IYupValidationRule } from "@lifesg/web-frontend-engine";
-import { IComplexLabel } from "@lifesg/web-frontend-engine/components/fields";
 import { EElementType, TElement } from "src/context-providers";
-import { IPrefillConfig } from "src/translator";
+import { elementSizeToColumn, IPrefillConfig } from "src/translator";
 import { SimpleIdGenerator } from "src/util/simple-id-generator";
-import { parseConditionalRenderingSchema, parsePrefillSchema } from "../helper";
+import {
+    parseConditionalRenderingSchema,
+    parsePrefillSchema,
+    schemaColumnsToElementSize,
+} from "../helper";
 import { TElementSchema } from "../types";
 
 export const parseBaseSchema = (
@@ -28,10 +31,13 @@ export const parseBaseSchema = (
         Object.prototype.hasOwnProperty.call(rule, "required")
     ) as IYupValidationRule;
 
+    const size = schemaColumnsToElementSize(schema.columns);
+    const columns = elementSizeToColumn(size);
     const internalId = SimpleIdGenerator.generate();
 
     const baseElement: TElement = {
-        columns: { desktop: 12, tablet: 8, mobile: 4 },
+        columns,
+        size,
         label: mainLabel,
         description: subLabel,
         type: uiType as EElementType,
