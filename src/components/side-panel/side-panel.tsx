@@ -1,6 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
+import cloneDeep from "lodash/cloneDeep";
 import { useCallback, useEffect } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, ResolverOptions, useForm } from "react-hook-form";
 import {
     EElementType,
     EToastTypes,
@@ -41,9 +42,15 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
     const schema = YupSchemaBuilder.buildYupSchema(
         selectedElementType || EElementType.EMAIL
     );
-    const methods = useForm({
+    const methods = useForm<TElement>({
         mode: "onTouched",
-        resolver: yupResolver(schema),
+        resolver: async (data, context, options) => {
+            return await yupResolver(schema)(
+                cloneDeep(data),
+                context,
+                options as ResolverOptions<unknown>
+            );
+        },
         defaultValues: focusedElement?.element,
     });
     const {
@@ -105,6 +112,7 @@ export const SidePanel = ({ offset, onSubmit }: IProps) => {
         if (!focusedElement) {
             return;
         }
+        console.log("***", focusedElement);
         methods.reset(focusedElement.element);
     }, [focusedElement?.element, methods.reset]);
     // =========================================================================
