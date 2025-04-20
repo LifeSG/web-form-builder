@@ -137,10 +137,9 @@ export const DroppableWrapper = styled.div<IDroppableWrapperProps>`
     }
 `;
 
-export const DroppableText = styled(Typography.BodyBL)`
+export const DroppableText = styled(Typography.BodyMD)`
     color: ${Colour["text-primary"]};
     text-align: center;
-    font-size: 1rem;
 `;
 
 export const ElementBaseCard = styled(BaseCard)<IElementCardProps>`

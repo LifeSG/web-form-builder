@@ -30,7 +30,9 @@ interface ISchemaViewProps {
 const FormPreview = ({ data }: IProps) => {
     return (
         <ViewWrapper>
-            <Typography.HeadingMD>Generate Form</Typography.HeadingMD>
+            <Typography.HeadingMD weight="bold">
+                Generate Form
+            </Typography.HeadingMD>
             {data && <FrontendEngine data={data.schema} />}
         </ViewWrapper>
     );
