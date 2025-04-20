@@ -2,6 +2,7 @@ import { MediaQuery } from "@lifesg/react-design-system/theme";
 import { Typography } from "@lifesg/react-design-system/typography";
 import styled, { css } from "styled-components";
 import { generateElementCardView } from "../common/columns/columns.styles";
+import { FormBuilderMediaQuery } from "src/data";
 
 // =============================================================================
 // STLE INTERFACES
@@ -26,21 +27,17 @@ export const Wrapper = styled.div<IWrapperStyleProps>`
             case "expanded":
                 return css`
                     grid-column: 4 / span 6;
-                    ${MediaQuery.MaxWidth.xl} {
+
+                    ${FormBuilderMediaQuery.MaxWidth["2xl"]} {
                         grid-column: 3 / span 8;
-                    }
-                    ${MediaQuery.MaxWidth.lg} {
-                        grid-column: 2 / span 6;
                     }
                 `;
             case "minimised":
                 return css`
-                    grid-column: 6 / span 6;
-                    ${MediaQuery.MaxWidth.xl} {
+                    grid-column: 5 / span 6;
+
+                    ${FormBuilderMediaQuery.MaxWidth["2xl"]} {
                         grid-column: 6 / span 6;
-                    }
-                    ${MediaQuery.MaxWidth.lg} {
-                        grid-column: 5 / span 4;
                     }
                 `;
         }
@@ -60,21 +57,17 @@ export const EmptyDisplayWrapper = styled.div<IWrapperStyleProps>`
             case "expanded":
                 return css`
                     grid-column: 4 / span 6;
-                    ${MediaQuery.MaxWidth.xl} {
+
+                    ${FormBuilderMediaQuery.MaxWidth["2xl"]} {
                         grid-column: 3 / span 9;
-                    }
-                    ${MediaQuery.MaxWidth.lg} {
-                        grid-column: 2 / span 7;
                     }
                 `;
             case "minimised":
                 return css`
                     grid-column: 5 / span 7;
-                    ${MediaQuery.MaxWidth.xl} {
+
+                    ${FormBuilderMediaQuery.MaxWidth["2xl"]} {
                         grid-column: 6 / span 7;
-                    }
-                    ${MediaQuery.MaxWidth.lg} {
-                        grid-column: 5 / span 4;
                     }
                 `;
         }
@@ -100,22 +93,23 @@ export const ElementsWrapper = styled.ul<IWrapperStyleProps>`
                 return css`
                     grid-template-columns: repeat(6, minmax(0, 1fr));
                     column-gap: 2rem;
-                    ${MediaQuery.MaxWidth.xl} {
+
+                    ${FormBuilderMediaQuery.MaxWidth["2xl"]} {
                         grid-template-columns: repeat(8, minmax(0, 1fr));
                         column-gap: 2rem;
                     }
-                    ${MediaQuery.MaxWidth.lg} {
+
+                    ${MediaQuery.MaxWidth.xl} {
                         grid-template-columns: repeat(6, minmax(0, 1fr));
-                        column-gap: 1.5rem;
+                        column-gap: 2rem;
                     }
                 `;
             case "minimised":
                 return css`
+                    grid-template-columns: repeat(6, minmax(0, 1fr));
+                    column-gap: 2rem;
+
                     ${MediaQuery.MaxWidth.xl} {
-                        grid-template-columns: repeat(6, minmax(0, 1fr));
-                        column-gap: 2rem;
-                    }
-                    ${MediaQuery.MaxWidth.lg} {
                         grid-template-columns: repeat(4, minmax(0, 1fr));
                         column-gap: 1.5rem;
                     }
