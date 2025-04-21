@@ -1,4 +1,4 @@
-import { Border, Colour } from "@lifesg/react-design-system/theme";
+import { Border, Colour, Radius } from "@lifesg/react-design-system/theme";
 import styled from "styled-components";
 
 interface IDroppableWrapperProps {
@@ -14,6 +14,7 @@ export const DroppableWrapper = styled.div<IDroppableWrapperProps>`
         thickness: Border["width-010"],
         colour: Colour["border-focus-strong"],
     })};
+    border-radius: ${Radius.xs};
     background: ${Colour["bg-primary-subtlest"]};
     position: absolute;
     height: auto;

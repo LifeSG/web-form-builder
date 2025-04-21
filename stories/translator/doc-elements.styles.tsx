@@ -1,6 +1,6 @@
 import { Alert } from "@lifesg/react-design-system/alert";
 import { Button } from "@lifesg/react-design-system/button";
-import { Border, Colour } from "@lifesg/react-design-system/theme";
+import { Border, Colour, Radius } from "@lifesg/react-design-system/theme";
 import { Textarea } from "@lifesg/react-design-system/input-textarea";
 import styled from "styled-components";
 
@@ -38,7 +38,7 @@ export const IconButton = styled.button<IModeButtonProps>`
     display: grid;
     cursor: pointer;
     border: none;
-    border-radius: 0.25rem;
+    border-radius: ${Radius.xs};
     padding: 1rem;
     align-self: center;
 
@@ -74,6 +74,7 @@ export const SchemaPreview = styled(Textarea)`
         thickness: Border["width-010"],
         colour: Colour["border-primary"],
     })};
+    border-radius: ${Radius.sm};
 `;
 
 export const SaveButton = styled(Button.Default)`

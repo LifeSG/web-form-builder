@@ -1,4 +1,4 @@
-import { Border, Colour } from "@lifesg/react-design-system/theme";
+import { Border, Colour, Radius } from "@lifesg/react-design-system/theme";
 import styled from "styled-components";
 
 // =============================================================================
@@ -30,7 +30,7 @@ export const ModeButton = styled.button<IModeButtonProps>`
     display: grid;
     cursor: pointer;
     border: none;
-    border-radius: 0.25rem;
+    border-radius: ${Radius.xs};
     padding: 1rem;
 
     :hover {

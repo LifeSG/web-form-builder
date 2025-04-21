@@ -1,4 +1,4 @@
-import { Border, Colour } from "@lifesg/react-design-system/theme";
+import { Border, Colour, Radius } from "@lifesg/react-design-system/theme";
 import styled, { css } from "styled-components";
 
 // =============================================================================
