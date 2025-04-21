@@ -1,4 +1,4 @@
-import { Colour } from "@lifesg/react-design-system/theme";
+import { Border, Colour } from "@lifesg/react-design-system/theme";
 import styled from "styled-components";
 
 // =============================================================================
@@ -19,7 +19,7 @@ export const Wrapper = styled.div`
     align-items: center;
     width: fit-content;
     padding: 2rem 1rem;
-    border-left: 1px solid ${Colour.border};
+    border-left: ${Border["width-010"]} ${Border.solid} ${Colour.border};
     gap: 2rem;
 `;
 

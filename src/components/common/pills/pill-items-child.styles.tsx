@@ -1,4 +1,4 @@
-import { Colour } from "@lifesg/react-design-system/theme";
+import { Border, Colour } from "@lifesg/react-design-system/theme";
 import styled from "styled-components";
 
 interface IDroppableWrapperProps {
@@ -10,8 +10,10 @@ export const Wrapper = styled.div`
 `;
 
 export const DroppableWrapper = styled.div<IDroppableWrapperProps>`
-    border: 1px dashed ${Colour["border-primary"]};
-    border-radius: 0.25rem;
+    ${Border.Util["dashed-default"]({
+        thickness: Border["width-010"],
+        colour: Colour["border-focus-strong"],
+    })};
     background: ${Colour["bg-primary-subtlest"]};
     position: absolute;
     height: auto;

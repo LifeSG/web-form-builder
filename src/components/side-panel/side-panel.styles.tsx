@@ -1,4 +1,4 @@
-import { Colour } from "@lifesg/react-design-system/theme";
+import { Border, Colour } from "@lifesg/react-design-system/theme";
 import { MediaQuery } from "@lifesg/react-design-system/theme";
 import styled, { css } from "styled-components";
 
@@ -25,7 +25,7 @@ export const Wrapper = styled.div<IWrapperStyleProps>`
     width: ${({ $narrow }) => ($narrow ? "31.2rem" : "36.8rem")};
     transition: all 300ms cubic-bezier(0.21, 0.79, 0.53, 1);
     background: ${Colour.bg};
-    border-left: 1px solid ${Colour.border};
+    border-left: ${Border["width-010"]} ${Border.solid} ${Colour.border};
     margin-left: auto;
     box-shadow: 0px 2px 12px 0px rgba(104, 104, 104, 0.25);
     position: fixed;

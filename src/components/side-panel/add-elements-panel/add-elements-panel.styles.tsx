@@ -1,4 +1,4 @@
-import { Colour } from "@lifesg/react-design-system/theme";
+import { Border, Colour } from "@lifesg/react-design-system/theme";
 import { InputGroup } from "@lifesg/react-design-system/input-group";
 import { ICircleFillIcon } from "@lifesg/react-icons";
 import styled from "styled-components";
@@ -17,7 +17,7 @@ export const Category = styled.li`
 `;
 
 export const CategoryHeader = styled.div`
-    border-bottom: 1px solid ${Colour.border};
+    border-bottom: ${Border["width-010"]} ${Border.solid} ${Colour.border};
     margin-bottom: 1rem;
     padding-bottom: 0.375rem;
 `;

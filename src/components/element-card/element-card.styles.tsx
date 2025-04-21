@@ -1,4 +1,4 @@
-import { Colour } from "@lifesg/react-design-system/theme";
+import { Border, Colour } from "@lifesg/react-design-system/theme";
 import { Typography } from "@lifesg/react-design-system/typography";
 import { Font } from "@lifesg/react-design-system/theme";
 import { DragHandleIcon } from "@lifesg/react-icons";
@@ -117,7 +117,10 @@ export const DroppableWrapper = styled.div<IDroppableWrapperProps>`
     width: 100%;
     padding: 0.4rem;
     gap: 0.25rem;
-    border: 1px solid transparent;
+    ${Border.Util.solid({
+        thickness: Border["width-010"],
+        colour: "transparent",
+    })};
     z-index: -1;
 
     ${({ $size }) => generateElementCardView($size)}
@@ -125,7 +128,10 @@ export const DroppableWrapper = styled.div<IDroppableWrapperProps>`
     ${({ isOver }) =>
         isOver &&
         css`
-            border: 1px dashed ${Colour["border-primary"]};
+            ${Border.Util["dashed-default"]({
+                thickness: Border["width-010"],
+                colour: Colour["border-primary"],
+            })};
             border-radius: 0.25rem;
             background: ${Colour["bg-hover-subtle"]};
         `}

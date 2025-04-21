@@ -1,5 +1,5 @@
 import { Button } from "@lifesg/react-design-system/button";
-import { Colour } from "@lifesg/react-design-system/theme";
+import { Border, Colour } from "@lifesg/react-design-system/theme";
 import { Typography } from "@lifesg/react-design-system/typography";
 import { ChevronRightIcon } from "@lifesg/react-icons/chevron-right";
 import styled, { css } from "styled-components";
@@ -26,7 +26,11 @@ export const Wrapper = styled.div<IWrapperStyleProps>`
     align-items: center;
     padding: 2rem 1rem 2rem 2rem;
     border-bottom: ${({ $showDivider }) =>
-        $showDivider ? css`1px solid ${Colour.border}` : "none"};
+        $showDivider
+            ? css`
+                  ${Border["width-010"]} ${Border.solid} ${Colour.border};
+              `
+            : "none"};
 `;
 
 export const HeaderChevronIcon = styled(ChevronRightIcon)<IIconStyleProps>`

@@ -1,6 +1,6 @@
 import { Alert } from "@lifesg/react-design-system/alert";
 import { Button } from "@lifesg/react-design-system/button";
-import { Colour } from "@lifesg/react-design-system/theme";
+import { Border, Colour } from "@lifesg/react-design-system/theme";
 import { Textarea } from "@lifesg/react-design-system/input-textarea";
 import styled from "styled-components";
 
@@ -70,8 +70,10 @@ export const SchemaPreview = styled(Textarea)`
     height: 60vw;
     overflow: auto;
     padding: 1rem;
-    border: 1px solid ${Colour.border};
-    border-radius: 4px;
+    ${Border.Util.solid({
+        thickness: Border["width-010"],
+        colour: Colour["border-primary"],
+    })};
 `;
 
 export const SaveButton = styled(Button.Default)`

@@ -1,4 +1,4 @@
-import { Colour } from "@lifesg/react-design-system/theme";
+import { Border, Colour } from "@lifesg/react-design-system/theme";
 import styled, { css } from "styled-components";
 
 // =============================================================================
@@ -13,7 +13,7 @@ interface IBodyStyleProps {
 // =============================================================================
 export const Body = styled.div<IBodyStyleProps>`
     padding: 1rem;
-    border-radius: 0.5rem;
+    border-radius: ${Radius.sm};
     cursor: pointer;
     width: 100%;
     position: relative;
@@ -24,11 +24,17 @@ export const Body = styled.div<IBodyStyleProps>`
     ${({ $focused }) =>
         $focused
             ? css`
-                  border: 1px solid ${Colour["border-focus-strong"]};
+                  ${Border.Util.solid({
+                      thickness: Border["width-010"],
+                      colour: Colour["border-focus-strong"],
+                  })};
                   background: ${Colour["bg-primary-subtlest"]};
               `
             : css`
-                  border: 1px solid transparent;
+                  ${Border.Util.solid({
+                      thickness: Border["width-010"],
+                      colour: "transparent",
+                  })};
               `}
 
     :hover {

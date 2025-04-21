@@ -1,7 +1,7 @@
 import { Typography } from "@lifesg/react-design-system/typography";
 import { Accordion } from "@lifesg/react-design-system/accordion";
 import { ButtonWithIcon } from "@lifesg/react-design-system/button-with-icon";
-import { Colour } from "@lifesg/react-design-system/theme";
+import { Border, Colour } from "@lifesg/react-design-system/theme";
 import styled from "styled-components";
 
 interface MultiEntryAccordionItemProps {
@@ -17,7 +17,7 @@ export const MultiEntryAccordionItem = styled(
 )<MultiEntryAccordionItemProps>`
     width: 100%;
     border-top: 0;
-    border-bottom: 1px solid ${Colour["border"]};
+    border-bottom: ${Border["width-010"]} ${Border.solid} ${Colour.border};
     padding-bottom: ${({ $hasSubtitle }) => ($hasSubtitle ? `0.5rem` : "0")};
 
     #content-container {
