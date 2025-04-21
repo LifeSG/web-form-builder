@@ -1,4 +1,4 @@
-import { Border, Colour } from "@lifesg/react-design-system/theme";
+import { Border, Colour, Motion } from "@lifesg/react-design-system/theme";
 import { Typography } from "@lifesg/react-design-system/typography";
 import { Font } from "@lifesg/react-design-system/theme";
 import { DragHandleIcon } from "@lifesg/react-icons";
@@ -26,7 +26,7 @@ interface IElementCardProps extends IProps {
 // =============================================================================
 export const DragHandle = styled(DragHandleIcon)`
     display: none;
-    transition: width 0.1s ease-out;
+    transition: width ${Motion["duration-150"]} ease-out;
     min-width: 1.25rem;
 
     svg {

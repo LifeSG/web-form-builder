@@ -1,5 +1,5 @@
 import { Button } from "@lifesg/react-design-system/button";
-import { Border, Colour } from "@lifesg/react-design-system/theme";
+import { Border, Colour, Motion } from "@lifesg/react-design-system/theme";
 import { Typography } from "@lifesg/react-design-system/typography";
 import { ChevronRightIcon } from "@lifesg/react-icons/chevron-right";
 import styled, { css } from "styled-components";
@@ -36,7 +36,7 @@ export const Wrapper = styled.div<IWrapperStyleProps>`
 export const HeaderChevronIcon = styled(ChevronRightIcon)<IIconStyleProps>`
     transform: ${({ $isCollapsed }) =>
         $isCollapsed ? "rotate(-180deg)" : "rotate(0)"};
-    transition: transform 350ms ease-in-out;
+    transition: transform ${Motion["duration-350"]} ${Motion["ease-standard"]};
 `;
 
 export const HeaderLabel = styled(Typography.HeadingSM)`
