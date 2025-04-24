@@ -73,8 +73,8 @@ export const SchemaPreview = styled(Textarea)`
     ${Border.Util.solid({
         thickness: Border["width-010"],
         colour: Colour["border-primary"],
+        radius: Radius.sm,
     })};
-    border-radius: ${Radius.sm};
 `;
 
 export const SaveButton = styled(Button.Default)`

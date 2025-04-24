@@ -13,7 +13,6 @@ interface IBodyStyleProps {
 // =============================================================================
 export const Body = styled.div<IBodyStyleProps>`
     padding: 1rem;
-    border-radius: ${Radius.sm};
     cursor: pointer;
     width: 100%;
     position: relative;
@@ -36,6 +35,8 @@ export const Body = styled.div<IBodyStyleProps>`
                       colour: "transparent",
                   })};
               `}
+
+    border-radius: ${Radius.sm};
 
     :hover {
         border-color: ${Colour["border-primary"]};

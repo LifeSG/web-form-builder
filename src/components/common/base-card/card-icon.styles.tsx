@@ -1,4 +1,4 @@
-import { Colour } from "@lifesg/react-design-system/theme";
+import { Colour, Radius } from "@lifesg/react-design-system/theme";
 import styled from "styled-components";
 
 export const Container = styled.div`
@@ -6,7 +6,7 @@ export const Container = styled.div`
     height: 2rem;
     display: grid;
     place-items: center;
-    border-radius: 0.4rem;
+    border-radius: ${Radius.sm};
     background: ${Colour["bg-primary-subtlest"]};
 
     svg {

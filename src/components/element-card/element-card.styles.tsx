@@ -1,4 +1,9 @@
-import { Border, Colour, Motion } from "@lifesg/react-design-system/theme";
+import {
+    Border,
+    Colour,
+    Motion,
+    Radius,
+} from "@lifesg/react-design-system/theme";
 import { Typography } from "@lifesg/react-design-system/typography";
 import { Font } from "@lifesg/react-design-system/theme";
 import { DragHandleIcon } from "@lifesg/react-icons";
@@ -131,8 +136,8 @@ export const DroppableWrapper = styled.div<IDroppableWrapperProps>`
             ${Border.Util["dashed-default"]({
                 thickness: Border["width-010"],
                 colour: Colour["border-primary"],
+                radius: Radius.sm,
             })};
-            border-radius: 0.25rem;
             background: ${Colour["bg-hover-subtle"]};
         `}
 

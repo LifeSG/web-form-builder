@@ -13,8 +13,8 @@ export const DroppableWrapper = styled.div<IDroppableWrapperProps>`
     ${Border.Util["dashed-default"]({
         thickness: Border["width-010"],
         colour: Colour["border-focus-strong"],
+        radius: Radius.xs,
     })};
-    border-radius: ${Radius.xs};
     background-color: ${Colour["bg-primary-subtlest"]};
     position: absolute;
     height: auto;

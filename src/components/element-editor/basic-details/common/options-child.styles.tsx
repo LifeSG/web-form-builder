@@ -54,8 +54,8 @@ export const DroppableWrapper = styled.div<IDroppableWrapperProps>`
     ${Border.Util["dashed-default"]({
         thickness: Border["width-010"],
         colour: Colour["border-primary"],
+        radius: Radius.xs,
     })};
-    border-radius: ${Radius.xs};
     background: ${Colour["bg-primary-subtlest"]};
     position: absolute;
     height: auto;
