@@ -56,7 +56,7 @@ export const DroppableWrapper = styled.div<IDroppableWrapperProps>`
         colour: Colour["border-primary"],
         radius: Radius.xs,
     })};
-    background: ${Colour["bg-primary-subtlest"]};
+    background-color: ${Colour["bg-primary-subtlest"]};
     position: absolute;
     height: auto;
     width: 100%;

@@ -138,7 +138,7 @@ export const DroppableWrapper = styled.div<IDroppableWrapperProps>`
                 colour: Colour["border-primary"],
                 radius: Radius.sm,
             })};
-            background: ${Colour["bg-hover-subtle"]};
+            background-color: ${Colour["bg-hover-subtle"]};
         `}
 
     svg {
