@@ -36,7 +36,7 @@ export const Body = styled.div<IBodyStyleProps>`
                   })};
               `}
 
-    border-radius: ${Radius.sm};
+    border-radius: ${Radius.md};
 
     :hover {
         border-color: ${Colour["border-primary"]};
