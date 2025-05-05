@@ -1,5 +1,5 @@
 import { Form } from "@lifesg/react-design-system/form";
-import { Text } from "@lifesg/react-design-system/text";
+import { Typography } from "@lifesg/react-design-system/typography";
 import isEmpty from "lodash/isEmpty";
 import { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
@@ -103,11 +103,11 @@ export const OptionPreselectedValue = ({ fieldName }: IProps) => {
                             label={{
                                 children: "Pre-selected value (optional)",
                                 subtitle: shouldShowPrefill ? (
-                                    <Text.H6 weight={400}>
+                                    <Typography.BodySM>
                                         Select a value for users. Note that
                                         prefill value will replace the
                                         pre-selected value, if present.
-                                    </Text.H6>
+                                    </Typography.BodySM>
                                 ) : null,
                             }}
                             selectedOption={selectedOption}

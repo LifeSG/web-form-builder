@@ -1,4 +1,4 @@
-import { Color } from "@lifesg/react-design-system/color";
+import { Border, Colour, Radius } from "@lifesg/react-design-system/theme";
 import styled from "styled-components";
 
 // =============================================================================
@@ -13,32 +13,32 @@ export interface IModeButtonProps {
 // =============================================================================
 export const Wrapper = styled.div`
     height: 100%;
-    background: ${Color.Neutral[8]};
+    background: ${Colour.bg};
     display: flex;
     flex-direction: column;
     align-items: center;
     width: fit-content;
     padding: 2rem 1rem;
-    border-left: 1px solid ${Color.Neutral[5]};
+    border-left: ${Border["width-010"]} ${Border.solid} ${Colour.border};
     gap: 2rem;
 `;
 
 export const ModeButton = styled.button<IModeButtonProps>`
     background: ${({ $active }) =>
-        $active ? Color.Accent.Light[4] : "transparent"};
-    color: ${Color.Primary};
+        $active ? Colour["bg-selected-strong"] : "transparent"};
+    color: ${Colour["text-primary"]};
     display: grid;
     cursor: pointer;
     border: none;
-    border-radius: 0.25rem;
+    border-radius: ${Radius.xs};
     padding: 1rem;
 
     :hover {
-        background: ${Color.Accent.Light[4]};
+        background: ${Colour["bg-hover-strong"]};
     }
 
     :focus {
-        outline-color: ${Color.Primary};
+        outline-color: ${Colour["border-focus-strong"]};
     }
 
     svg {

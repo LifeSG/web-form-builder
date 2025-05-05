@@ -1,5 +1,5 @@
 import { Form } from "@lifesg/react-design-system/form";
-import { Text } from "@lifesg/react-design-system/text";
+import { Typography } from "@lifesg/react-design-system/typography";
 import { IComplexLabel } from "@lifesg/web-frontend-engine/components/fields";
 import { ReactNode } from "react";
 import { Row, ToggleOptionWrapper, ToggleWrapper } from "./toggle-pair.styles";
@@ -31,7 +31,9 @@ export const TogglePair = ({
     return (
         <ToggleWrapper>
             <Form.Label
-                subtitle={<Text.H6 weight={400}>{label?.subLabel}</Text.H6>}
+                subtitle={
+                    <Typography.BodySM>{label?.subLabel}</Typography.BodySM>
+                }
             >
                 {label?.mainLabel}
             </Form.Label>

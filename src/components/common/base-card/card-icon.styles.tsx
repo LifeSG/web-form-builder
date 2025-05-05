@@ -1,4 +1,4 @@
-import { Color } from "@lifesg/react-design-system/color";
+import { Colour, Radius } from "@lifesg/react-design-system/theme";
 import styled from "styled-components";
 
 export const Container = styled.div`
@@ -6,11 +6,11 @@ export const Container = styled.div`
     height: 2rem;
     display: grid;
     place-items: center;
-    border-radius: 0.4rem;
-    background: ${Color.Accent.Light[5]};
+    border-radius: ${Radius.sm};
+    background: ${Colour["bg-primary-subtlest"]};
 
     svg {
-        color: ${Color.Accent.Light[2]};
+        color: ${Colour["icon-primary-subtlest"]};
         height: 1.5rem;
         width: 1.5rem;
     }

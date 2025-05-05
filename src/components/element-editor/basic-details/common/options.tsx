@@ -13,7 +13,7 @@ import {
     verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { Form } from "@lifesg/react-design-system/form";
-import { Text } from "@lifesg/react-design-system/text";
+import { Typography } from "@lifesg/react-design-system/typography";
 import { PencilIcon } from "@lifesg/react-icons/pencil";
 import { PlusIcon } from "@lifesg/react-icons/plus";
 import isEmpty from "lodash/isEmpty";
@@ -183,7 +183,7 @@ export const Options = ({ label, description, fieldName }: IOptionsProps) => {
         <OptionsWrapper>
             <Form.Label>
                 {label}
-                <Text.H6 weight={400}>{description}</Text.H6>
+                <Typography.BodySM>{description}</Typography.BodySM>
             </Form.Label>
             <DndContext
                 sensors={sensors}

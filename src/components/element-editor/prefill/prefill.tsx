@@ -1,4 +1,4 @@
-import { Text } from "@lifesg/react-design-system/text";
+import { Typography } from "@lifesg/react-design-system/typography";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { MultiEntry } from "src/components/common";
 import { useBuilder } from "src/context-providers";
@@ -38,9 +38,9 @@ export const Prefill = () => {
     const getPopoverMessage = () => {
         if (hasInvalidAndEmptyFields()) {
             return (
-                <Text.Body>
+                <Typography.BodyBL>
                     To add new prefill, fill up existing prefill first.
-                </Text.Body>
+                </Typography.BodyBL>
             );
         }
     };

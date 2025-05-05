@@ -1,6 +1,6 @@
-import { Color } from "@lifesg/react-design-system/color";
+import { Colour } from "@lifesg/react-design-system/theme";
 import styled from "styled-components";
 
 export const SecondaryLabel = styled.span`
-    color: ${Color.Neutral[3]};
+    color: ${Colour["text-subtler"]};
 `;

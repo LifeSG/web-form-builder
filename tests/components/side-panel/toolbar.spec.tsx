@@ -43,6 +43,9 @@ const mockToggleMode = jest.fn();
 jest.mock("src/context-providers/builder/hook.ts", () => {
     return {
         useBuilder: () => ({
+            ...jest
+                .requireActual("src/context-providers/builder/hook.ts")
+                .useBuilder(),
             toggleMode: mockToggleMode,
             togglePanel: mockTogglePanel,
         }),

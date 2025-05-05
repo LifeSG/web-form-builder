@@ -1,4 +1,4 @@
-import { Color } from "@lifesg/react-design-system/color";
+import { Border, Colour, Radius } from "@lifesg/react-design-system/theme";
 import styled, { css } from "styled-components";
 
 // =============================================================================
@@ -13,7 +13,6 @@ interface IBodyStyleProps {
 // =============================================================================
 export const Body = styled.div<IBodyStyleProps>`
     padding: 1rem;
-    border-radius: 0.5rem;
     cursor: pointer;
     width: 100%;
     position: relative;
@@ -24,19 +23,27 @@ export const Body = styled.div<IBodyStyleProps>`
     ${({ $focused }) =>
         $focused
             ? css`
-                  border: 1px solid ${Color.Primary};
-                  background: ${Color.Accent.Light[5]};
+                  ${Border.Util.solid({
+                      thickness: Border["width-010"],
+                      colour: Colour["border-focus-strong"],
+                  })};
+                  background: ${Colour["bg-primary-subtlest"]};
               `
             : css`
-                  border: 1px solid transparent;
+                  ${Border.Util.solid({
+                      thickness: Border["width-010"],
+                      colour: "transparent",
+                  })};
               `}
 
+    border-radius: ${Radius.md};
+
     :hover {
-        border-color: ${Color.Primary};
-        box-shadow: 0px 2px 8px 0px ${Color.Shadow.Accent};
+        border-color: ${Colour["border-primary"]};
+        box-shadow: 0px 2px 8px 0px ${Colour["border-selected-subtle"]};
     }
 
     :focus {
-        outline-color: ${Color.Primary};
+        outline-color: ${Colour["border-primary"]};
     }
 `;

@@ -1,4 +1,4 @@
-import { Color } from "@lifesg/react-design-system/color";
+import { Colour } from "@lifesg/react-design-system/theme";
 import styled from "styled-components";
 
 // =============================================================================
@@ -23,7 +23,7 @@ export const IconButton = styled.button<IIconButtonStyleProps>`
     }
 
     :focus {
-        outline-color: ${Color.Primary};
+        outline-color: ${Colour["border-focus-strong"]};
     }
 
     svg {

@@ -1,4 +1,4 @@
-import { Color } from "@lifesg/react-design-system/color";
+import { Colour } from "@lifesg/react-design-system/theme";
 import { CrossIcon } from "@lifesg/react-icons/cross";
 import { useFormContext } from "react-hook-form";
 import { useModal } from "src/context-providers/display/modal-hook";
@@ -93,7 +93,7 @@ export const SidePanelHeader = ({ showDivider }: Props) => {
                     </SaveChangesButton>
                     <IconButton
                         $iconSize="1.5rem"
-                        $iconColor={Color.Neutral[3]}
+                        $iconColor={Colour.icon}
                         onClick={handleCrossButtonClick}
                         type="button"
                     >
@@ -109,7 +109,7 @@ export const SidePanelHeader = ({ showDivider }: Props) => {
                 return (
                     <IconButton
                         $iconSize="1.5rem"
-                        $iconColor={Color.Neutral[3]}
+                        $iconColor={Colour.icon}
                         onClick={() => togglePanel(!showSidePanel)}
                     >
                         <HeaderChevronIcon $isCollapsed={showSidePanel} />

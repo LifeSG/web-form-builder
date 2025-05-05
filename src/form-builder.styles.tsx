@@ -1,5 +1,4 @@
 import { Layout } from "@lifesg/react-design-system/layout";
-import { MediaQuery } from "@lifesg/react-design-system/media";
 import styled from "styled-components";
 
 export interface IContainerProps {
@@ -23,8 +22,4 @@ export const Container = styled(Layout.Container)<IContainerProps>`
     height: 100%;
     padding: 2rem 3rem;
     display: ${({ $isLargeScreen }) => ($isLargeScreen ? "grid" : "none")};
-    ${MediaQuery.MaxWidth.tablet} {
-        max-width: unset;
-        width: 100%;
-    }
 `;

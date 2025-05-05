@@ -1,4 +1,5 @@
-import { MediaQuery } from "@lifesg/react-design-system/media";
+import { MediaQuery } from "@lifesg/react-design-system/theme";
+import { FormBuilderMediaQuery } from "src/data";
 import { css } from "styled-components";
 
 // =========================================================================
@@ -7,33 +8,33 @@ import { css } from "styled-components";
 const ELEMENT_CARD_SIZE_MAP = {
     expanded: {
         right: {
-            desktop4k: "4 / span 3",
-            desktopL: "5 / span 4",
-            tablet: "4 / span 3",
+            default: "4 / span 3",
+            "2xl": "5 / span 4",
+            xl: "4 / span 3",
         },
         left: {
-            desktop4k: "1 / span 3",
-            desktopL: "1 / span 4",
-            tablet: "1 / span 3",
+            default: "1 / span 3",
+            "2xl": "1 / span 4",
+            xl: "1 / span 3",
         },
         full: {
-            desktop4k: "1 / span 6",
-            desktopL: "1 / span 8",
-            tablet: "1 / span 6",
+            default: "1 / span 6",
+            "2xl": "1 / span 8",
+            xl: "1 / span 6",
         },
     },
     minimised: {
         right: {
-            desktop4k: "4 / span 3",
-            tablet: "4 / span 2",
+            default: "4 / span 3",
+            xl: "3 / span 2",
         },
         left: {
-            desktop4k: "1 / span 3",
-            tablet: "1 / span 2",
+            default: "1 / span 3",
+            xl: "1 / span 2",
         },
         full: {
-            desktop4k: "1 / span 6",
-            tablet: "1 / span 4",
+            default: "1 / span 6",
+            xl: "1 / span 4",
         },
     },
 };
@@ -42,10 +43,26 @@ const ELEMENT_CARD_SIZE_MAP = {
 // HELPER FUNCTIONS
 // =============================================================================
 const generateGridColumn = (breakpoints: { [key: string]: string }) => css`
-    ${Object.entries(breakpoints).map(
-        ([key, value]) =>
-            `${MediaQuery.MaxWidth[key]} { grid-column: ${value}; }`
-    )}
+    ${Object.entries(breakpoints).map(([key, value]) => {
+        switch (key) {
+            case "2xl":
+                return css`
+                    ${FormBuilderMediaQuery.MaxWidth["2xl"]} {
+                        grid-column: ${value};
+                    }
+                `;
+            case "xl":
+                return css`
+                    ${MediaQuery.MaxWidth[key]} {
+                        grid-column: ${value};
+                    }
+                `;
+            default:
+                return css`
+                    grid-column: ${value};
+                `;
+        }
+    })}
 `;
 
 export const generateElementCardView = (

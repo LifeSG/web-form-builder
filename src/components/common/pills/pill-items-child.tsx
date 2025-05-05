@@ -1,7 +1,7 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Form } from "@lifesg/react-design-system/form";
-import { Text } from "@lifesg/react-design-system/text";
+import { Typography } from "@lifesg/react-design-system/typography";
 import { DragHandleIcon, PlusCircleIcon } from "@lifesg/react-icons";
 import { CSSProperties } from "react";
 import { Controller, useFormContext } from "react-hook-form";
@@ -62,9 +62,9 @@ export const PillItemsChild = ({
 
     const renderPopoverMessage = () => {
         return (
-            <Text.Body>
+            <Typography.BodyBL>
                 Item deletion is not allowed when there are less than 3 items.
-            </Text.Body>
+            </Typography.BodyBL>
         );
     };
 

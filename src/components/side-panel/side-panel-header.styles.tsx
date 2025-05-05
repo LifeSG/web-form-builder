@@ -1,6 +1,6 @@
 import { Button } from "@lifesg/react-design-system/button";
-import { Color } from "@lifesg/react-design-system/color";
-import { Text } from "@lifesg/react-design-system/text";
+import { Border, Colour, Motion } from "@lifesg/react-design-system/theme";
+import { Typography } from "@lifesg/react-design-system/typography";
 import { ChevronRightIcon } from "@lifesg/react-icons/chevron-right";
 import styled, { css } from "styled-components";
 
@@ -26,16 +26,20 @@ export const Wrapper = styled.div<IWrapperStyleProps>`
     align-items: center;
     padding: 2rem 1rem 2rem 2rem;
     border-bottom: ${({ $showDivider }) =>
-        $showDivider ? css`1px solid ${Color.Neutral[5]}` : "none"};
+        $showDivider
+            ? css`
+                  ${Border["width-010"]} ${Border.solid} ${Colour.border};
+              `
+            : "none"};
 `;
 
 export const HeaderChevronIcon = styled(ChevronRightIcon)<IIconStyleProps>`
     transform: ${({ $isCollapsed }) =>
         $isCollapsed ? "rotate(-180deg)" : "rotate(0)"};
-    transition: transform 350ms ease-in-out;
+    transition: transform ${Motion["duration-350"]} ${Motion["ease-standard"]};
 `;
 
-export const HeaderLabel = styled(Text.H3)`
+export const HeaderLabel = styled(Typography.HeadingSM)`
     margin-right: 1rem;
 `;
 

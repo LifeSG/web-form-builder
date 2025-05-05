@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Form } from "@lifesg/react-design-system/form";
-import { Text } from "@lifesg/react-design-system/text";
+import { Typography } from "@lifesg/react-design-system/typography";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import { IBulkEditModalProps } from "src/context-providers";
 import { BULK_EDIT_SCHEMA, TBulkEditData } from "src/yup-schemas/bulk-edit";
@@ -66,19 +66,21 @@ export const BulkEditModal = ({ modal }: IProps) => {
             <FormProvider {...methods}>
                 <form onSubmit={methods.handleSubmit(handleFormSubmit)}>
                     <Wrapper data-testid="bulk-edit-modal">
-                        <Text.H3 weight={600}>Bulk Edit</Text.H3>
-                        <Text.Body weight={400}>
+                        <Typography.HeadingSM weight="semibold">
+                            Bulk Edit
+                        </Typography.HeadingSM>
+                        <Typography.BodyBL>
                             To add multiple entries at once, input each item on
                             a new line, separating the label and value with a
                             bar “|”.
-                        </Text.Body>
-                        <Text.H6 weight={400}>
+                        </Typography.BodyBL>
+                        <Typography.BodySM>
                             Example:
                             <br />
                             Banana | banana
                             <br />
                             Green Apple | green-apple
-                        </Text.H6>
+                        </Typography.BodySM>
                         <Controller
                             name="items"
                             control={methods.control}

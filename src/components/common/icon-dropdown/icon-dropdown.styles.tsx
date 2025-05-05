@@ -1,4 +1,4 @@
-import { Color } from "@lifesg/react-design-system/color";
+import { Colour } from "@lifesg/react-design-system/theme";
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
     gap: 1rem;
 
     svg {
-        color: ${Color.Accent.Light[2]};
+        color: ${Colour["icon-primary-subtlest"]};
         height: 1.5rem;
         width: 1.5rem;
     }

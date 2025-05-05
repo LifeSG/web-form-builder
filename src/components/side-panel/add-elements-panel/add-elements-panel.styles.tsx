@@ -1,4 +1,4 @@
-import { Color } from "@lifesg/react-design-system/color";
+import { Border, Colour } from "@lifesg/react-design-system/theme";
 import { InputGroup } from "@lifesg/react-design-system/input-group";
 import { ICircleFillIcon } from "@lifesg/react-icons";
 import styled from "styled-components";
@@ -17,7 +17,7 @@ export const Category = styled.li`
 `;
 
 export const CategoryHeader = styled.div`
-    border-bottom: 1px solid ${Color.Neutral[5]};
+    border-bottom: ${Border["width-010"]} ${Border.solid} ${Colour.border};
     margin-bottom: 1rem;
     padding-bottom: 0.375rem;
 `;
@@ -30,12 +30,12 @@ export const ElementButtonList = styled.ul`
 `;
 
 export const ElementSearch = styled(InputGroup)`
-    background: ${Color.Neutral[7]};
-    color: ${Color.Neutral[4]};
+    background: ${Colour["bg-strong"]};
+    color: ${Colour["text-subtlest"]};
     border: none;
 
     svg {
-        color: ${Color.Neutral[4]};
+        color: ${Colour["icon-subtle"]};
     }
 `;
 
@@ -46,7 +46,7 @@ export const NoResultsWrapper = styled.div`
 `;
 
 export const NotFoundIcon = styled(ICircleFillIcon)`
-    color: ${Color.Validation.Red.Icon};
+    color: ${Colour["icon-error"]};
     height: 1.125rem;
     width: 1.125rem;
 `;

@@ -1,6 +1,6 @@
 import { TRadioButtonGroupSchema } from "@lifesg/web-frontend-engine/components/fields";
 import isEmpty from "lodash/isEmpty";
-import { TElement } from "src/context-providers";
+import { IOptionAttributes, TElement } from "src/context-providers";
 import { IPrefillConfig } from "src/translator";
 import { parseBaseSchema } from "../../common";
 
@@ -21,7 +21,7 @@ export namespace RadioSchemaParser {
         const parsedElement: TElement = {
             ...baseElement,
             placeholder: placeholder || "",
-            radioItems: options,
+            radioItems: options as IOptionAttributes[],
         };
 
         return parsedElement;

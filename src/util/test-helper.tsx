@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { BaseTheme } from "@lifesg/react-design-system";
+import { LifeSGTheme } from "@lifesg/react-design-system/theme";
 import { noop } from "lodash";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -63,7 +63,7 @@ export namespace TestHelper {
         component: React.ReactNode
     ) => {
         return (
-            <ThemeProvider theme={BaseTheme}>
+            <ThemeProvider theme={LifeSGTheme}>
                 <ConfigContext.Provider value={configContext}>
                     <BuilderContext.Provider
                         value={{

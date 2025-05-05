@@ -1,5 +1,11 @@
-import { Color } from "@lifesg/react-design-system/color";
-import { Text, TextStyleHelper } from "@lifesg/react-design-system/text";
+import {
+    Border,
+    Colour,
+    Motion,
+    Radius,
+} from "@lifesg/react-design-system/theme";
+import { Typography } from "@lifesg/react-design-system/typography";
+import { Font } from "@lifesg/react-design-system/theme";
 import { DragHandleIcon } from "@lifesg/react-icons";
 import styled, { css } from "styled-components";
 import { BaseCard, IProps } from "../common";
@@ -25,7 +31,7 @@ interface IElementCardProps extends IProps {
 // =============================================================================
 export const DragHandle = styled(DragHandleIcon)`
     display: none;
-    transition: width 0.1s ease-out;
+    transition: width ${Motion["duration-150"]} ease-out;
     min-width: 1.25rem;
 
     svg {
@@ -54,14 +60,14 @@ export const DetailsContainer = styled.div`
     overflow: hidden;
 `;
 
-export const ElementName = styled(Text.Body)`
+export const ElementName = styled(Typography.BodyBL)`
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 `;
 
-export const IdLabel = styled(Text.XSmall)`
-    color: ${Color.Neutral[3]};
+export const IdLabel = styled(Typography.BodyXS)`
+    color: ${Colour["text-subtler"]};
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -81,7 +87,7 @@ export const ActionButton = styled.button<IActionButtonStyleProps>`
     gap: 0.25rem;
     display: flex;
     align-items: center;
-    ${TextStyleHelper.getTextStyle("XSmall", "semibold")}
+    ${Font["body-xs-semibold"]}
 
     svg {
         height: 1rem;
@@ -91,15 +97,15 @@ export const ActionButton = styled.button<IActionButtonStyleProps>`
     ${({ $disabled }) => {
         if ($disabled) {
             return css`
-                color: ${Color.Neutral[3]};
+                color: ${Colour["text-disabled"]};
                 cursor: not-allowed;
             `;
         } else {
             return css`
-                color: ${Color.Primary};
+                color: ${Colour["text-primary"]};
 
                 :hover {
-                    color: ${Color.Secondary};
+                    color: ${Colour["text-hover"]};
                 }
             `;
         }
@@ -116,7 +122,10 @@ export const DroppableWrapper = styled.div<IDroppableWrapperProps>`
     width: 100%;
     padding: 0.4rem;
     gap: 0.25rem;
-    border: 1px solid transparent;
+    ${Border.Util.solid({
+        thickness: Border["width-010"],
+        colour: "transparent",
+    })};
     z-index: -1;
 
     ${({ $size }) => generateElementCardView($size)}
@@ -124,22 +133,24 @@ export const DroppableWrapper = styled.div<IDroppableWrapperProps>`
     ${({ isOver }) =>
         isOver &&
         css`
-            border: 1px dashed ${Color.Primary};
-            border-radius: 0.25rem;
-            background: ${Color.Accent.Light[5]};
+            ${Border.Util["dashed-default"]({
+                thickness: Border["width-010"],
+                colour: Colour["border-primary"],
+                radius: Radius.sm,
+            })};
+            background-color: ${Colour["bg-hover-subtle"]};
         `}
 
     svg {
-        color: ${Color.Primary};
+        color: ${Colour["icon-primary"]};
         height: 2.08rem;
         width: 2.08rem;
     }
 `;
 
-export const DroppableText = styled(Text.Body)`
-    color: ${Color.Primary};
+export const DroppableText = styled(Typography.BodyMD)`
+    color: ${Colour["text-primary"]};
     text-align: center;
-    font-size: 1rem;
 `;
 
 export const ElementBaseCard = styled(BaseCard)<IElementCardProps>`

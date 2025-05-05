@@ -1,4 +1,4 @@
-import { Text } from "@lifesg/react-design-system/text";
+import { Typography } from "@lifesg/react-design-system/typography";
 import { EElementType } from "src/context-providers";
 import { ELEMENT_BUTTON_LABELS } from "src/data";
 import { BaseCard, CardIcon } from "../common";
@@ -14,7 +14,9 @@ export const ElementSelectorCard = ({ type, onClick }: IProps) => {
         <BaseCard onClick={onClick}>
             <Body>
                 <CardIcon elementType={type} />
-                <Text.Body>{ELEMENT_BUTTON_LABELS[type]}</Text.Body>
+                <Typography.BodyBL>
+                    {ELEMENT_BUTTON_LABELS[type]}
+                </Typography.BodyBL>
             </Body>
         </BaseCard>
     );

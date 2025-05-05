@@ -1,5 +1,5 @@
 import { Form } from "@lifesg/react-design-system/form";
-import { Text } from "@lifesg/react-design-system/text";
+import { Typography } from "@lifesg/react-design-system/typography";
 import { Controller, useFormContext } from "react-hook-form";
 import { ChildEntry } from "src/components/common";
 import {
@@ -98,9 +98,9 @@ export const ConditionalRenderingChild = ({
                                             option: IOptions
                                         ) => {
                                             return (
-                                                <Text.Body>
+                                                <Typography.BodyBL>
                                                     {option?.label}
-                                                </Text.Body>
+                                                </Typography.BodyBL>
                                             );
                                         }}
                                         renderListItem={(option: IOptions) => {
@@ -113,9 +113,9 @@ export const ConditionalRenderingChild = ({
                                                 );
                                             return (
                                                 <div>
-                                                    <Text.Body>
+                                                    <Typography.BodyBL>
                                                         {option?.label}
-                                                    </Text.Body>
+                                                    </Typography.BodyBL>
                                                     {isIdVisible && (
                                                         <OptionIDText>
                                                             ID: {option?.id}

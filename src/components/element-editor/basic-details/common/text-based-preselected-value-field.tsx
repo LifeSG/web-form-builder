@@ -1,5 +1,5 @@
 import { Form } from "@lifesg/react-design-system/form";
-import { Text } from "@lifesg/react-design-system/text";
+import { Typography } from "@lifesg/react-design-system/typography";
 import { Controller, useFormContext } from "react-hook-form";
 import {
     useBuilder,
@@ -45,10 +45,10 @@ export const TextBasedPreselectedValueField = () => {
                     label={{
                         children: "Pre-selected value (optional)",
                         subtitle: shouldShowPrefill ? (
-                            <Text.H6 weight={400}>
+                            <Typography.BodySM>
                                 Note that prefill value will replace the
                                 pre-selected value, if present.
-                            </Text.H6>
+                            </Typography.BodySM>
                         ) : null,
                     }}
                     placeholder="Enter pre-selected value"

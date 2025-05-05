@@ -1,6 +1,6 @@
 import { Alert } from "@lifesg/react-design-system/alert";
 import { Button } from "@lifesg/react-design-system/button";
-import { Color } from "@lifesg/react-design-system/color";
+import { Border, Colour, Radius } from "@lifesg/react-design-system/theme";
 import { Textarea } from "@lifesg/react-design-system/input-textarea";
 import styled from "styled-components";
 
@@ -27,27 +27,27 @@ export const IconWrapper = styled.div`
     z-index: 1;
     gap: 2rem;
     padding: 1rem;
-    background-color: ${Color.Accent.Light[5]};
+    background-color: ${Colour["bg-primary-subtlest"]};
     box-sizing: border-box;
 `;
 
 export const IconButton = styled.button<IModeButtonProps>`
     background: ${({ $active }) =>
-        $active ? Color.Accent.Light[4] : "transparent"};
-    color: ${Color.Primary};
+        $active ? Colour["bg-selected-strong"] : "transparent"};
+    color: ${Colour["text-primary"]};
     display: grid;
     cursor: pointer;
     border: none;
-    border-radius: 0.25rem;
+    border-radius: ${Radius.xs};
     padding: 1rem;
     align-self: center;
 
     :hover {
-        background: ${Color.Accent.Light[4]};
+        background: ${Colour["bg-hover-strong"]};
     }
 
     :focus {
-        outline-color: ${Color.Primary};
+        outline-color: ${Colour["border-focus-strong"]};
     }
 
     svg {
@@ -70,8 +70,11 @@ export const SchemaPreview = styled(Textarea)`
     height: 60vw;
     overflow: auto;
     padding: 1rem;
-    border: 1px solid ${Color.Neutral[5]};
-    border-radius: 4px;
+    ${Border.Util.solid({
+        thickness: Border["width-010"],
+        colour: Colour["border-primary"],
+        radius: Radius.sm,
+    })};
 `;
 
 export const SaveButton = styled(Button.Default)`

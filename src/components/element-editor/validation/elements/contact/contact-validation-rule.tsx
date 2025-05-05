@@ -1,5 +1,5 @@
 import { Form } from "@lifesg/react-design-system/form";
-import { Text } from "@lifesg/react-design-system/text";
+import { Typography } from "@lifesg/react-design-system/typography";
 import { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import {
@@ -82,7 +82,9 @@ export const ContactValidationRule = ({ index }: IProps) => {
                         options={options}
                         renderListItem={(option) => (
                             <div>
-                                <Text.Body>{option.title}</Text.Body>
+                                <Typography.BodyBL>
+                                    {option.title}
+                                </Typography.BodyBL>
                                 <SecondaryLabel weight="semibold">
                                     {option.label}
                                 </SecondaryLabel>

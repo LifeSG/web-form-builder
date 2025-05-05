@@ -1,4 +1,4 @@
-import { Text } from "@lifesg/react-design-system/text";
+import { Typography } from "@lifesg/react-design-system/typography";
 import { MagnifierIcon } from "@lifesg/react-icons/magnifier";
 import { useState } from "react";
 import { ElementSelectorCard } from "src/components/element-selector-card";
@@ -78,9 +78,9 @@ export const AddElementsPanel = () => {
             return elementCategories.map((category, key) => (
                 <Category key={key}>
                     <CategoryHeader>
-                        <Text.H6 weight="semibold">
+                        <Typography.BodySM weight="semibold">
                             {category.categoryTitle}
-                        </Text.H6>
+                        </Typography.BodySM>
                     </CategoryHeader>
                     <ElementButtonList>
                         {renderElementButtons(category.elementTypes)}
@@ -91,7 +91,7 @@ export const AddElementsPanel = () => {
             return (
                 <NoResultsWrapper>
                     <NotFoundIcon />
-                    <Text.Body>No results found.</Text.Body>
+                    <Typography.BodyBL>No results found.</Typography.BodyBL>
                 </NoResultsWrapper>
             );
         }

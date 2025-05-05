@@ -1,7 +1,7 @@
 import { useDraggable, useDroppable } from "@dnd-kit/core";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Text } from "@lifesg/react-design-system/text";
+import { Typography } from "@lifesg/react-design-system/typography";
 import { PlusCircleIcon } from "@lifesg/react-icons";
 import { BinIcon } from "@lifesg/react-icons/bin";
 import { CopyIcon } from "@lifesg/react-icons/copy";
@@ -139,7 +139,9 @@ export const ElementCard = ({ element, onClick }: IProps) => {
     const droppableContent = isOver ? (
         <DroppableWrapper isOver={isOver} $size={size?.size}>
             <PlusCircleIcon />
-            <DroppableText weight={600}>Drop your element here</DroppableText>
+            <DroppableText weight="semibold">
+                Drop your element here
+            </DroppableText>
         </DroppableWrapper>
     ) : null;
 
@@ -159,7 +161,9 @@ export const ElementCard = ({ element, onClick }: IProps) => {
                         )}
                         <CardIcon elementType={element?.type} />
                         <DetailsContainer>
-                            <Text.Body weight="semibold">{label}</Text.Body>
+                            <Typography.BodyBL weight="semibold">
+                                {label}
+                            </Typography.BodyBL>
                             {isIdVisible && (
                                 <IdLabel weight="semibold">ID: {id}</IdLabel>
                             )}

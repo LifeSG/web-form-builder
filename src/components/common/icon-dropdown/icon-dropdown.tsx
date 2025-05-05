@@ -1,4 +1,5 @@
-import { Form, Text } from "@lifesg/react-design-system";
+import { Form } from "@lifesg/react-design-system";
+import { Typography } from "@lifesg/react-design-system/typography";
 import {
     EElementType,
     useBuilder,
@@ -52,7 +53,9 @@ export const IconDropdown = ({
                 return (
                     <Wrapper>
                         <CardIcon elementType={option} />
-                        <Text.Body>{ELEMENT_BUTTON_LABELS[option]}</Text.Body>
+                        <Typography.BodyBL>
+                            {ELEMENT_BUTTON_LABELS[option]}
+                        </Typography.BodyBL>
                     </Wrapper>
                 );
             }}
@@ -60,7 +63,9 @@ export const IconDropdown = ({
             renderListItem={(option: EElementType) => (
                 <Wrapper>
                     <CardIcon elementType={option} />
-                    <Text.Body>{ELEMENT_BUTTON_LABELS[option]}</Text.Body>
+                    <Typography.BodyBL>
+                        {ELEMENT_BUTTON_LABELS[option]}
+                    </Typography.BodyBL>
                 </Wrapper>
             )}
             onSelectOption={(option) => onChange(option)}

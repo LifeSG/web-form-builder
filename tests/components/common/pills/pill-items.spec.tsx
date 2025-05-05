@@ -27,9 +27,11 @@ describe("PillItems", () => {
                     },
                 },
             });
-            const deleteButton = screen.getAllByTestId("delete-button")[0];
-            fireEvent.mouseOver(deleteButton);
-            const popoverText = screen.queryByText(
+            const deleteButton = screen.getAllByTestId(
+                "delete-button-popover"
+            )[0];
+            fireEvent.mouseEnter(deleteButton);
+            const popoverText = screen.getByText(
                 "Item deletion is not allowed when there are less than 3 items."
             );
             expect(popoverText).toBeInTheDocument();
@@ -48,7 +50,7 @@ describe("PillItems", () => {
                 },
             });
             const deleteButton = screen.getAllByTestId("delete-button")[0];
-            fireEvent.mouseOver(deleteButton);
+            fireEvent.mouseEnter(deleteButton);
             const popoverText = screen.queryByText(
                 "Item deletion is not allowed when there are less than 3 items."
             );
@@ -59,9 +61,7 @@ describe("PillItems", () => {
     describe("submitting the form for pill items", () => {
         it("should not be able to submit the form if there are not at least 2 valid pill items", async () => {
             renderComponent({
-                builderContext: {
-                    selectedElementType: EElementType.TEXTAREA,
-                },
+                builderContext: { selectedElementType: EElementType.TEXTAREA },
                 formContext: {
                     defaultValues: {
                         pillItems: [{ content: "" }, { content: "" }],

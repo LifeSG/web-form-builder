@@ -1,4 +1,3 @@
-import { Text } from "@lifesg/react-design-system/text";
 import { EyeIcon } from "@lifesg/react-icons/eye";
 import { PencilIcon } from "@lifesg/react-icons/pencil";
 import { TabletIcon } from "@lifesg/react-icons/tablet";
@@ -16,6 +15,7 @@ import {
     SchemaPreview,
     ViewWrapper,
 } from "./doc-elements.styles";
+import { Typography } from "@lifesg/react-design-system/typography";
 
 interface IProps {
     data?: ISchemaProps;
@@ -30,7 +30,9 @@ interface ISchemaViewProps {
 const FormPreview = ({ data }: IProps) => {
     return (
         <ViewWrapper>
-            <Text.H2>Generate Form</Text.H2>
+            <Typography.HeadingMD weight="bold">
+                Generate Form
+            </Typography.HeadingMD>
             {data && <FrontendEngine data={data.schema} />}
         </ViewWrapper>
     );
@@ -122,7 +124,9 @@ const SchemaView = ({ data, onChange, formBuilderRef }: ISchemaViewProps) => {
 
     return (
         <ViewWrapper>
-            <Text.H2>Generate Schema</Text.H2>
+            <Typography.HeadingMD weight="bold">
+                Generate Schema
+            </Typography.HeadingMD>
             {renderActionPanel()}
             <SchemaPreview value={schema} onChange={handleSchemaChange} />
         </ViewWrapper>

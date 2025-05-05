@@ -1,5 +1,5 @@
 import { Form } from "@lifesg/react-design-system/form";
-import { Text } from "@lifesg/react-design-system/text";
+import { Typography } from "@lifesg/react-design-system/typography";
 import { Controller, useFormContext } from "react-hook-form";
 import {
     useBuilder,
@@ -42,10 +42,10 @@ export const IdField = () => {
                     label={{
                         children: "ID",
                         subtitle: (
-                            <Text.H6 weight={400}>
+                            <Typography.BodySM>
                                 ID is used to differentiate element from the
                                 others in the UI schema.
-                            </Text.H6>
+                            </Typography.BodySM>
                         ),
                     }}
                     placeholder="Create an ID"

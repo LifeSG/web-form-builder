@@ -1,7 +1,7 @@
-import { Color } from "@lifesg/react-design-system/color";
-import { Text } from "@lifesg/react-design-system/text";
+import { Colour } from "@lifesg/react-design-system/theme";
+import { Typography } from "@lifesg/react-design-system/typography";
 import styled from "styled-components";
 
-export const SecondaryLabel = styled(Text.BodySmall)`
-    color: ${Color.Neutral[4]};
+export const SecondaryLabel = styled(Typography.BodyMD)`
+    color: ${Colour["text-subtlest"]};
 `;
