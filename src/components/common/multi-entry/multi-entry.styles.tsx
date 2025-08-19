@@ -36,6 +36,7 @@ export const MultiEntryAccordionItem = styled(
 
     [data-testid="accordion-item-expand-collapse-button"] {
         margin-right: 0.1rem;
+        padding: 0 1rem 0 0;
     }
 
     [data-testid="accordion-item-title"] {

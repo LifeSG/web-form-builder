@@ -38,12 +38,12 @@ export const Body = styled.div<IBodyStyleProps>`
 
     border-radius: ${Radius.md};
 
-    :hover {
+    &:hover {
         border-color: ${Colour["border-primary"]};
         box-shadow: 0px 2px 8px 0px ${Colour["border-selected-subtle"]};
     }
 
-    :focus {
+    &:focus {
         outline-color: ${Colour["border-primary"]};
     }
 `;

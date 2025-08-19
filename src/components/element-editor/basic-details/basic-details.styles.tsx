@@ -27,7 +27,7 @@ export const AccordionItem = styled(
 
     [data-testid="accordion-item-title"] {
         margin: ${({ $hideTopBorder }) =>
-            $hideTopBorder ? "1rem 0 1rem 1rem" : "0 0 0 1rem"};
+            $hideTopBorder ? "1rem 0 1rem 1rem" : "1rem 0 1rem 1rem"};
     }
 
     [data-testid="accordion-item-expandable-container"] {
@@ -36,8 +36,9 @@ export const AccordionItem = styled(
     }
 
     [data-testid="accordion-item-expand-collapse-button"] {
-        margin: ${({ $hideTopBorder }) =>
-            $hideTopBorder ? "0 0.1rem 0 1rem" : "0 0.1rem 0 0"};
+        margin-left: ${({ $hideTopBorder }) => ($hideTopBorder ? "1rem" : "0")};
+        margin-right: 0.1rem;
+        padding: 0 1rem 0 0;
     }
 `;
 
