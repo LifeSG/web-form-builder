@@ -36,7 +36,7 @@ describe("ContactValidationChild", () => {
         expect(validationType).toBeInTheDocument();
         expect(validationType).toHaveTextContent("Contact number format");
         const validationErrorMessage = screen.getByTestId(
-            "validation-error-message"
+            "validation-error-message-base"
         );
         expect(validationErrorMessage).toBeInTheDocument();
     });

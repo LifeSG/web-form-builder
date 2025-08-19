@@ -57,7 +57,7 @@ describe("Options", () => {
                 fireEvent.click(addOptionButton);
             });
 
-            optionItems = screen.getAllByTestId("option-label");
+            optionItems = screen.getAllByTestId("option-label-base");
 
             expect(optionItems).toHaveLength(3);
         });
@@ -75,7 +75,7 @@ describe("Options", () => {
                 },
             });
 
-            let optionItems = screen.getAllByTestId("option-label");
+            let optionItems = screen.getAllByTestId("option-label-base");
 
             expect(optionItems).toHaveLength(3);
 
@@ -87,7 +87,7 @@ describe("Options", () => {
                 fireEvent.click(deleteButton);
             });
 
-            optionItems = screen.getAllByTestId("option-label");
+            optionItems = screen.getAllByTestId("option-label-base");
 
             expect(optionItems).toHaveLength(2);
         });

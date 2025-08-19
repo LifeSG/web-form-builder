@@ -52,8 +52,8 @@ describe("IdField", () => {
             },
         });
 
-        const idField = await screen.findByTestId("id-field");
-        expect(idField).toBeDisabled();
+        const idField = await screen.findByTestId("id-field-base");
+        expect(idField).toHaveAttribute("aria-disabled", "true");
     });
 });
 

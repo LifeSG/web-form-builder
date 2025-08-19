@@ -74,9 +74,9 @@ describe("BasicDetails", () => {
 
             const elementName = screen.getByTestId("label-field");
             const errorMessageField = screen.getByTestId(
-                "required-error-message-field"
+                "required-error-message-field-base"
             );
-            const elementId = screen.getByTestId("id-field");
+            const elementId = screen.getByTestId("id-field-base");
 
             expect(elementName).toHaveValue("Email address");
             expect(errorMessageField).toHaveValue("This is a required field.");
@@ -117,9 +117,9 @@ describe("BasicDetails", () => {
             // Check if the form fields have been replaced with the new element type's default values
             const elementName = screen.getByTestId("label-field");
             const errorMessageField = screen.getByTestId(
-                "required-error-message-field"
+                "required-error-message-field-base"
             );
-            const elementId = screen.getByTestId("id-field");
+            const elementId = screen.getByTestId("id-field-base");
 
             expect(elementName).toHaveValue("Short text");
             expect(errorMessageField).toHaveValue("This is a required field.");
@@ -141,9 +141,11 @@ describe("BasicDetails", () => {
             });
 
             const descriptionField = screen.getByTestId("description-field");
-            const placeholderField = screen.getByTestId("placeholder-field");
+            const placeholderField = screen.getByTestId(
+                "placeholder-field-base"
+            );
             const preselectedValueField = screen.getByTestId(
-                "preselected-value-field"
+                "preselected-value-field-base"
             );
 
             fireEvent.change(descriptionField, {
@@ -180,10 +182,11 @@ describe("BasicDetails", () => {
             // Wait for the form to reset
             const updatedDescriptionField =
                 await screen.findByTestId("description-field");
-            const updatedPlaceholderField =
-                await screen.findByTestId("placeholder-field");
+            const updatedPlaceholderField = await screen.findByTestId(
+                "placeholder-field-base"
+            );
             const updatedPreselectedValueField = await screen.findByTestId(
-                "preselected-value-field"
+                "preselected-value-field-base"
             );
 
             expect(updatedDescriptionField).toHaveValue("");

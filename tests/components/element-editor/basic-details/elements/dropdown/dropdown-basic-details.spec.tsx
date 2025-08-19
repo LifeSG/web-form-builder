@@ -39,8 +39,10 @@ describe("DropdownBasicDetails", () => {
         const dropdownItem = screen.getByText("Dropdown items");
         expect(dropdownItem).toBeInTheDocument();
 
-        const dropdownItemLabels = await screen.findAllByTestId("option-label");
-        const dropdownItemValues = await screen.findAllByTestId("option-value");
+        const dropdownItemLabels =
+            await screen.findAllByTestId("option-label-base");
+        const dropdownItemValues =
+            await screen.findAllByTestId("option-value-base");
 
         expect(dropdownItemLabels[0]).toBeInTheDocument();
         expect(dropdownItemValues[0]).toBeInTheDocument();
@@ -99,9 +101,9 @@ describe("DropdownBasicDetails", () => {
                 if (fieldName === "preselectedValue") {
                     //Ensure the rendering condition is met
                     const dropdownItemLabels =
-                        await screen.findAllByTestId("option-label");
+                        await screen.findAllByTestId("option-label-base");
                     const dropdownItemValues =
-                        await screen.findAllByTestId("option-value");
+                        await screen.findAllByTestId("option-value-base");
 
                     fireEvent.change(dropdownItemLabels[0], {
                         target: { value: "New Label" },
