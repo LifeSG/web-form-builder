@@ -39,7 +39,7 @@ describe("MultiEntry", () => {
             disabledButton: false,
         });
         fireEvent.click(getButton());
-        expect(mockOnAdd).toBeCalled();
+        expect(mockOnAdd).toHaveBeenCalled();
     });
 
     it("should disable the button when condition to disable it is fulfilled", () => {

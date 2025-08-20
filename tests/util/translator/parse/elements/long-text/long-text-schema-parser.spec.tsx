@@ -135,7 +135,7 @@ describe("LongTextSchemaParser", () => {
 
         expect(() =>
             LongTextSchemaParser.schemaToElement(mockSchema, ELEMENT_ID, {}, "")
-        ).toThrowError(
+        ).toThrow(
             "Long text area schema must have at least 2 chip texts if chipTexts is defined"
         );
     });

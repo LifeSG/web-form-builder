@@ -65,7 +65,7 @@ describe("ConditionalRenderingChild", () => {
 
         const deleteButton = screen.getByTestId("delete-button");
         fireEvent.click(deleteButton);
-        expect(mockDelete).toBeCalled();
+        expect(mockDelete).toHaveBeenCalled();
     });
 
     it("should render an error message when validation error message field is left empty", async () => {

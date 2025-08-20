@@ -54,7 +54,7 @@ describe("Bulk Edit Modal", () => {
         });
         const cancelButton = getCancelButton();
         fireEvent.click(cancelButton);
-        expect(mockHideModal).toBeCalled();
+        expect(mockHideModal).toHaveBeenCalled();
     });
 
     it("should run the onClickActionButton function when the 'Save' button is clicked", async () => {
@@ -70,7 +70,7 @@ describe("Bulk Edit Modal", () => {
         fireEvent.click(saveButton);
 
         await waitFor(() => {
-            expect(mockOnClickActionButton).toBeCalled();
+            expect(mockOnClickActionButton).toHaveBeenCalled();
         });
     });
 
@@ -119,7 +119,7 @@ describe("Bulk Edit Modal", () => {
         fireEvent.click(saveButton);
 
         await waitFor(() => {
-            expect(mockOnClickActionButton).toBeCalled();
+            expect(mockOnClickActionButton).toHaveBeenCalled();
         });
     });
 });

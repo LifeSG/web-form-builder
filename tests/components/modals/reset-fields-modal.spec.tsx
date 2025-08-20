@@ -57,7 +57,7 @@ describe("ResetFieldsModal", () => {
         });
         const returnToEditButton = getReturnToEditButton();
         fireEvent.click(returnToEditButton);
-        expect(mockOnClose).toBeCalled();
+        expect(mockOnClose).toHaveBeenCalled();
     });
 
     it("should run the onClickActionButton function when the 'Reset all fields' button is clicked", () => {
@@ -68,7 +68,7 @@ describe("ResetFieldsModal", () => {
         });
         const resetAllFieldsButton = getResetAllFieldsButton();
         fireEvent.click(resetAllFieldsButton);
-        expect(mockOnClickActionButton).toBeCalled();
+        expect(mockOnClickActionButton).toHaveBeenCalled();
     });
 });
 
