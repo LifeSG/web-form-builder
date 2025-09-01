@@ -43,6 +43,10 @@ export const MultiEntryAccordionItem = styled(
         margin: ${({ $hasSubtitle }) =>
             $hasSubtitle ? `1rem 0 0.5rem 1rem` : "1rem 0 1rem 1rem"};
     }
+
+    [data-testid="content-container"] {
+        padding-right: 0;
+    }
 `;
 
 export const AddMultiEntryButton = styled(ButtonWithIcon.Default)`

@@ -39,6 +39,10 @@ export const AccordionItem = styled(
         margin-right: 0.1rem;
         padding: 0 1rem 0 0;
     }
+
+    [data-testid="content-container"] {
+        padding-right: 0;
+    }
 `;
 
 export const AccordionWrapper = styled(Accordion)`
