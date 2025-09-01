@@ -26,8 +26,7 @@ export const AccordionItem = styled(
     }
 
     [data-testid="accordion-item-title"] {
-        margin: ${({ $hideTopBorder }) =>
-            $hideTopBorder ? "1rem 0 1rem 1rem" : "1rem 0 1rem 1rem"};
+        margin: 1rem 0 1rem 1rem;
     }
 
     [data-testid="accordion-item-expandable-container"] {
