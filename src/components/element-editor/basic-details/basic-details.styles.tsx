@@ -35,7 +35,7 @@ export const AccordionItem = styled(
     }
 
     [data-testid="accordion-item-expand-collapse-button"] {
-        margin-left: ${({ $hideTopBorder }) => ($hideTopBorder ? "1rem" : "0")};
+        margin-left: 0;
         margin-right: 0.1rem;
         padding: 0 1rem 0 0;
     }
