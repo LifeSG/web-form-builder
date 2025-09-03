@@ -1,6 +1,6 @@
 {
     "name": "@lifesg/web-form-builder",
-    "version": "1.0.0-alpha.3",
+    "version": "1.0.0-alpha.4",
     "description": "A module for the web form builder",
     "main": "dist/cjs/index.js",
     "module": "dist/index.js",
