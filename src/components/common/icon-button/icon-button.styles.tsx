@@ -18,11 +18,11 @@ export const IconButton = styled.button<IIconButtonStyleProps>`
     background: transparent;
     cursor: pointer;
 
-    :hover {
+    &:hover {
         box-shadow: none;
     }
 
-    :focus {
+    &:focus {
         outline-color: ${Colour["border-focus-strong"]};
     }
 

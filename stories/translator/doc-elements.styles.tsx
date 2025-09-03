@@ -42,11 +42,11 @@ export const IconButton = styled.button<IModeButtonProps>`
     padding: 1rem;
     align-self: center;
 
-    :hover {
+    &:hover {
         background: ${Colour["bg-hover-strong"]};
     }
 
-    :focus {
+    &:focus {
         outline-color: ${Colour["border-focus-strong"]};
     }
 

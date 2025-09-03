@@ -123,7 +123,7 @@ describe("ContactSchemaParser", () => {
 
         expect(() =>
             ContactSchemaParser.schemaToElement(mockSchema, ELEMENT_ID, {}, "")
-        ).toThrowError("Contact schema must have additional validation.");
+        ).toThrow("Contact schema must have additional validation.");
     });
 
     it("should throw an error if additional validation is defined but a valid contactNumber validation is not defined", () => {
@@ -139,7 +139,7 @@ describe("ContactSchemaParser", () => {
 
         expect(() =>
             ContactSchemaParser.schemaToElement(mockSchema, ELEMENT_ID, {}, "")
-        ).toThrowError(
+        ).toThrow(
             "Contact schema must define exactly one contactNumber validation."
         );
     });
@@ -162,7 +162,7 @@ describe("ContactSchemaParser", () => {
 
         expect(() =>
             ContactSchemaParser.schemaToElement(mockSchema, ELEMENT_ID, {}, "")
-        ).toThrowError(
+        ).toThrow(
             "Contact schema must have contactNumber validation with either singaporeNumber or internationalNumber."
         );
     });
@@ -187,7 +187,7 @@ describe("ContactSchemaParser", () => {
 
         expect(() =>
             ContactSchemaParser.schemaToElement(mockSchema, ELEMENT_ID, {}, "")
-        ).toThrowError(
+        ).toThrow(
             "Contact schema must set internationalNumber to true if it is defined."
         );
     });

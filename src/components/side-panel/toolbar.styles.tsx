@@ -33,11 +33,11 @@ export const ModeButton = styled.button<IModeButtonProps>`
     border-radius: ${Radius.xs};
     padding: 1rem;
 
-    :hover {
+    &:hover {
         background: ${Colour["bg-hover-strong"]};
     }
 
-    :focus {
+    &:focus {
         outline-color: ${Colour["border-focus-strong"]};
     }
 

@@ -125,7 +125,7 @@ describe("ElementCard", () => {
             );
             const deleteButton = getDeleteButton();
             fireEvent.click(deleteButton);
-            expect(mockDeleteElement).toBeCalled();
+            expect(mockDeleteElement).toHaveBeenCalled();
         });
 
         it("should run the duplicateElement hook when clicking the duplicate button", () => {
@@ -149,7 +149,7 @@ describe("ElementCard", () => {
             );
             const duplicateButton = getDuplicateButton();
             fireEvent.click(duplicateButton);
-            expect(mockDuplicateElement).toBeCalled();
+            expect(mockDuplicateElement).toHaveBeenCalled();
             expect(mockDuplicateElement).toHaveBeenCalledWith(MOCK_ELEMENT);
         });
     });

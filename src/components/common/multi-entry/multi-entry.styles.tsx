@@ -36,11 +36,16 @@ export const MultiEntryAccordionItem = styled(
 
     [data-testid="accordion-item-expand-collapse-button"] {
         margin-right: 0.1rem;
+        padding: 0 1rem 0 0;
     }
 
     [data-testid="accordion-item-title"] {
         margin: ${({ $hasSubtitle }) =>
             $hasSubtitle ? `1rem 0 0.5rem 1rem` : "1rem 0 1rem 1rem"};
+    }
+
+    [data-testid="content-container"] {
+        padding-right: 0;
     }
 `;
 

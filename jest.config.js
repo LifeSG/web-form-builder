@@ -10,6 +10,6 @@ module.exports = {
             "<rootDir>/src/__mocks__/fileMock.js",
     },
     moduleDirectories: ["node_modules", "<rootDir>"],
-    setupFilesAfterEnv: ["@testing-library/jest-dom"],
+    setupFilesAfterEnv: ["<rootDir>/tests/setup/global-setup.ts"],
     reporters: ["default", ["jest-junit", { outputName: "junit.xml" }]],
 };

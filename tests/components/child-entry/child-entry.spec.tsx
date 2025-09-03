@@ -24,7 +24,7 @@ describe("ChildEntry", () => {
         });
         const deleteButton = screen.getByTestId("delete-button");
         fireEvent.click(deleteButton);
-        expect(mockDelete).toBeCalled();
+        expect(mockDelete).toHaveBeenCalled();
     });
 });
 

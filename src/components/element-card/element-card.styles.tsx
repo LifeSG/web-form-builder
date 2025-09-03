@@ -104,7 +104,7 @@ export const ActionButton = styled.button<IActionButtonStyleProps>`
             return css`
                 color: ${Colour["text-primary"]};
 
-                :hover {
+                &:hover {
                     color: ${Colour["text-hover"]};
                 }
             `;

@@ -145,8 +145,10 @@ describe("SidePanel", () => {
                 },
             });
 
-            const optionLabels = await screen.findAllByTestId("option-label");
-            const optionValues = await screen.findAllByTestId("option-value");
+            const optionLabels =
+                await screen.findAllByTestId("option-label-base");
+            const optionValues =
+                await screen.findAllByTestId("option-value-base");
 
             let saveButton = screen.getByTestId("save-changes-button");
 

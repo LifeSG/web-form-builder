@@ -6,7 +6,6 @@ import terser from "@rollup/plugin-terser";
 import peerDepsExternal from "rollup-plugin-peer-deps-external";
 import postcss from "rollup-plugin-postcss";
 import typescript from "rollup-plugin-typescript2";
-import pkg from "./package.json";
 
 export const plugins = [
     peerDepsExternal(), // Add the externals for me. [react, react-dom, styled-components]
@@ -41,14 +40,14 @@ export default [
         input: "src/index.ts",
         output: [
             {
-                file: pkg.module,
+                dir: "dist",
                 format: "esm",
                 sourcemap: true,
                 exports: "named",
                 interop: "compat",
             },
             {
-                file: pkg.main,
+                dir: "dist/cjs",
                 format: "cjs",
                 sourcemap: true,
                 exports: "named",

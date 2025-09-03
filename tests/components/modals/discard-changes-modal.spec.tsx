@@ -58,7 +58,7 @@ describe("Discard changes modals", () => {
         });
         const keepEditingButton = getKeepEditingButton();
         fireEvent.click(keepEditingButton);
-        expect(mockHideModal).toBeCalled();
+        expect(mockHideModal).toHaveBeenCalled();
     });
 
     it("should run the onClickActionButton function when the 'Discard changes' button is clicked", () => {
@@ -69,7 +69,7 @@ describe("Discard changes modals", () => {
         });
         const discardChangesButton = getDiscardChangesButton();
         fireEvent.click(discardChangesButton);
-        expect(mockOnClickActionButton).toBeCalled();
+        expect(mockOnClickActionButton).toHaveBeenCalled();
     });
 });
 

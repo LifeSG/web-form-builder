@@ -110,7 +110,7 @@ describe("PrefillChild", () => {
         );
         const deleteButton = screen.getByTestId("delete-button");
         fireEvent.click(deleteButton);
-        expect(mockDelete).toBeCalled();
+        expect(mockDelete).toHaveBeenCalled();
     });
 
     it("should render an error message when prefill fields are left empty", async () => {

@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import "jest-canvas-mock";
 import { Pills } from "src/components/common/pills";
 import { EElementType, TElement } from "src/context-providers";
