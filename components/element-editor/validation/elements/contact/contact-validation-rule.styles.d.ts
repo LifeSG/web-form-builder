@@ -1,0 +1,4 @@
+/// <reference types="react" />
+export declare const SecondaryLabel: import("styled-components/dist/types").IStyledComponentBase<"web", import("styled-components").FastOmit<import("styled-components").FastOmit<import("styled-components/dist/types").Substitute<import("styled-components/dist/types").Substitute<import("react").DetailedHTMLProps<import("react").HTMLAttributes<HTMLParagraphElement>, HTMLParagraphElement>, Omit<import("react").DetailedHTMLProps<import("react").HTMLAttributes<HTMLParagraphElement>, HTMLParagraphElement>, "ref"> & {
+    ref?: import("react").RefObject<HTMLParagraphElement> | ((instance: HTMLParagraphElement) => void);
+}>, import("@lifesg/react-design-system/typography").TypographyProps>, keyof import("@lifesg/react-design-system/typography").TypographyProps> & import("@lifesg/react-design-system/typography").TypographyProps, never>> & string;
