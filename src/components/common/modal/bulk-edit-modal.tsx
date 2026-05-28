@@ -1,6 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Form } from "@lifesg/react-design-system/form";
 import { Typography } from "@lifesg/react-design-system/typography";
+import { forwardRef } from "react";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import { IBulkEditModalProps } from "src/context-providers";
 import { BULK_EDIT_SCHEMA, TBulkEditData } from "src/yup-schemas/bulk-edit";
@@ -13,7 +14,7 @@ interface IProps {
     modal: IBulkEditModalProps;
 }
 
-export const BulkEditModal = ({ modal }: IProps) => {
+const Modal = ({ modal }: IProps, ref: React.Ref<HTMLDivElement>) => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
@@ -62,7 +63,7 @@ export const BulkEditModal = ({ modal }: IProps) => {
     };
 
     return (
-        <GenericModal type={modal?.type}>
+        <GenericModal ref={ref} type={modal?.type}>
             <FormProvider {...methods}>
                 <form onSubmit={methods.handleSubmit(handleFormSubmit)}>
                     <Wrapper data-testid="bulk-edit-modal">
@@ -105,3 +106,5 @@ export const BulkEditModal = ({ modal }: IProps) => {
         </GenericModal>
     );
 };
+
+export const BulkEditModal = forwardRef(Modal);

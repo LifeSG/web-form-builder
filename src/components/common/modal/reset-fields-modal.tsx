@@ -1,4 +1,5 @@
 import { ErrorDisplay } from "@lifesg/react-design-system/error-display";
+import { forwardRef } from "react";
 import { IResetFieldsModalProps } from "src/context-providers";
 import { GenericModal } from "./generic-modal";
 import {
@@ -11,7 +12,7 @@ interface IProps {
     modal: IResetFieldsModalProps;
 }
 
-export const ResetFieldsModal = ({ modal }: IProps) => {
+const Modal = ({ modal }: IProps, ref: React.Ref<HTMLDivElement>) => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
@@ -35,7 +36,7 @@ export const ResetFieldsModal = ({ modal }: IProps) => {
     };
 
     return (
-        <GenericModal type={modal?.type} onClose={onClose}>
+        <GenericModal ref={ref} type={modal?.type} onClose={onClose}>
             <ErrorDisplay
                 type="confirmation"
                 description={
@@ -51,3 +52,5 @@ export const ResetFieldsModal = ({ modal }: IProps) => {
         </GenericModal>
     );
 };
+
+export const ResetFieldsModal = forwardRef(Modal);
