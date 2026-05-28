@@ -114,5 +114,8 @@
         "*.{tsx,ts}": [
             "eslint --fix"
         ]
+    },
+    "overrides": {
+        "nwsapi": "2.2.20"
     }
 }
