@@ -95,10 +95,9 @@ export const BasicDetails = () => {
     };
 
     return (
-        <AccordionWrapper>
+        <AccordionWrapper initialDisplay="expand-all">
             <AccordionItem
                 type="default"
-                expanded
                 title="Basic"
                 $hideTopBorder={focusedElement.isDirty || isDisabled}
             >
