@@ -30,6 +30,7 @@ module.exports = {
                 },
             },
         },
+        "@storybook/addon-webpack5-compiler-swc",
     ],
     // staticDirs: ["../public"], TODO: Reinstate after public folder contents established
     webpackFinal: async (config) => {
@@ -40,7 +41,4 @@ module.exports = {
         return config;
     },
     framework: "@storybook/react-webpack5",
-    docs: {
-        autodocs: true,
-    },
 };
