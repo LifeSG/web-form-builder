@@ -36,6 +36,7 @@ export const PrefillChild = ({ onDelete, index }: IProps) => {
                             const { ref, ...fieldWithoutRef } = field;
                             return (
                                 <Form.Select
+                                    data-testid="prefill-mode-field"
                                     {...fieldWithoutRef}
                                     placeholder="Select"
                                     selectedOption={fieldWithoutRef.value}
@@ -63,6 +64,7 @@ export const PrefillChild = ({ onDelete, index }: IProps) => {
                                 const { ref, ...fieldWithoutRef } = field;
                                 return (
                                     <Form.Input
+                                        data-testid="prefill-action-id-field"
                                         {...fieldWithoutRef}
                                         placeholder="Enter an action ID"
                                         value={fieldWithoutRef.value}
@@ -90,6 +92,7 @@ export const PrefillChild = ({ onDelete, index }: IProps) => {
                             const { ref, ...fieldWithoutRef } = field;
                             return (
                                 <Form.Input
+                                    data-testid="prefill-path-field"
                                     {...fieldWithoutRef}
                                     placeholder="Enter a path"
                                     value={fieldWithoutRef.value}
