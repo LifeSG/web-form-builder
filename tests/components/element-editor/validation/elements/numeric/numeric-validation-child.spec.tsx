@@ -40,9 +40,7 @@ describe("NumericValidationChild", () => {
 
         expect(screen.queryByPlaceholderText("Enter rule")).toBeInTheDocument();
 
-        const validationType = screen.getByRole("button", {
-            name: "Select",
-        });
+        const validationType = screen.getByTestId("validation-type-base");
 
         expect(validationType).toBeInTheDocument();
 

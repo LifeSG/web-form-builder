@@ -72,7 +72,7 @@ describe("BasicDetails", () => {
             );
             expect(textBasicDetails).toBeInTheDocument();
 
-            const elementName = screen.getByTestId("label-field");
+            const elementName = screen.getByTestId("label-field-base");
             const errorMessageField = screen.getByTestId(
                 "required-error-message-field-base"
             );
@@ -98,7 +98,7 @@ describe("BasicDetails", () => {
             });
 
             // trigger reset confirmation modal
-            const typeField = screen.getByTestId("type-field");
+            const typeField = screen.getByTestId("type-field-base");
             fireEvent.click(typeField);
 
             const shortTextOption = await screen.findByText("Short text");
@@ -115,7 +115,7 @@ describe("BasicDetails", () => {
             expect(mockHideModal).toHaveBeenCalled();
 
             // Check if the form fields have been replaced with the new element type's default values
-            const elementName = screen.getByTestId("label-field");
+            const elementName = screen.getByTestId("label-field-base");
             const errorMessageField = screen.getByTestId(
                 "required-error-message-field-base"
             );
@@ -140,7 +140,9 @@ describe("BasicDetails", () => {
                 },
             });
 
-            const descriptionField = screen.getByTestId("description-field");
+            const descriptionField = screen.getByTestId(
+                "description-field-base"
+            );
             const placeholderField = screen.getByTestId(
                 "placeholder-field-base"
             );
@@ -163,7 +165,7 @@ describe("BasicDetails", () => {
             expect(preselectedValueField).toHaveValue("preselectedValue");
 
             // trigger reset confirmation modal
-            const typeField = screen.getByTestId("type-field");
+            const typeField = screen.getByTestId("type-field-base");
             fireEvent.click(typeField);
 
             const shortTextOption = await screen.findByText("Short text");
@@ -180,8 +182,9 @@ describe("BasicDetails", () => {
             expect(mockHideModal).toHaveBeenCalled();
 
             // Wait for the form to reset
-            const updatedDescriptionField =
-                await screen.findByTestId("description-field");
+            const updatedDescriptionField = await screen.findByTestId(
+                "description-field-base"
+            );
             const updatedPlaceholderField = await screen.findByTestId(
                 "placeholder-field-base"
             );
