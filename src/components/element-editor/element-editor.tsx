@@ -8,7 +8,7 @@ import {
     useShouldShowPrefill,
 } from "src/context-providers";
 import { TFormFieldValues } from "src/yup-schemas";
-import { BasicDetails } from "./basic-details";
+import { AccordionWrapper, BasicDetails } from "./basic-details";
 import { ConditionalRendering } from "./conditional-rendering";
 import { EditorAlert, Wrapper } from "./element-editor.styles";
 import { Prefill } from "./prefill";
@@ -70,9 +70,11 @@ export const ElementEditor = () => {
                 </EditorAlert>
             )}
             <BasicDetails />
-            {isTextBasedElement(selectedElementType) && <Validation />}
-            <ConditionalRendering />
-            {shouldShowPrefill && <Prefill />}
+            <AccordionWrapper initialDisplay="collapse-all">
+                {isTextBasedElement(selectedElementType) && <Validation />}
+                <ConditionalRendering />
+                {shouldShowPrefill && <Prefill />}
+            </AccordionWrapper>
         </Wrapper>
     );
 };

@@ -45,8 +45,8 @@ describe("Pills", () => {
         const togglePillsNoButton = screen.getByLabelText("No");
         expect(togglePillsNoButton).toBeChecked();
 
-        expect(screen.queryByText("Pill items")).toBeNull();
-        expect(screen.queryByText("List position")).toBeNull();
+        expect(screen.queryByText("Pill items")).not.toBeInTheDocument();
+        expect(screen.queryByText("List position")).not.toBeInTheDocument();
     });
 
     it("should conditionally render the pill items and list position fields if pills is toggled to true", async () => {
@@ -73,7 +73,6 @@ describe("Pills", () => {
         });
 
         const pillItemsField = await screen.findByText("Pill items");
-
         const listPositionField = await screen.findByText("List position");
         expect(pillItemsField).toBeInTheDocument();
         expect(listPositionField).toBeInTheDocument();

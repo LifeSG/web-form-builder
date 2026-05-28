@@ -56,9 +56,7 @@ describe("Prefill", () => {
                 screen.getByPlaceholderText("Enter a path")
             ).toBeInTheDocument();
             expect(
-                screen.getByRole("button", {
-                    name: "Select",
-                })
+                screen.getByTestId("prefill-mode-field")
             ).toBeInTheDocument();
             const element = screen.queryByPlaceholderText("Enter an action ID");
             expect(element).not.toBeInTheDocument();
@@ -82,24 +80,24 @@ describe("Prefill", () => {
             })
         );
 
-        const getPrefillModeField = screen.getByRole("button", {
-            name: "Select",
-        });
+        const getPrefillModeField = screen.getByTestId(
+            "prefill-mode-field-base"
+        );
 
         fireEvent.click(getPrefillModeField);
 
-        const previousSourceOptions = screen.getAllByText("Previous source");
-        fireEvent.click(previousSourceOptions[0]);
+        const previousSourceOptions = screen.getByRole("option", {
+            name: "Previous source",
+        });
+        fireEvent.click(previousSourceOptions);
 
         expect(
             screen.getByPlaceholderText("Enter an action ID")
         ).toBeInTheDocument();
         expect(screen.getByPlaceholderText("Enter a path")).toBeInTheDocument();
-        expect(
-            screen.getByRole("button", {
-                name: "Previous source",
-            })
-        ).toBeInTheDocument();
+        expect(screen.getByTestId("prefill-mode-field-base")).toHaveTextContent(
+            "Previous source"
+        );
     });
 });
 

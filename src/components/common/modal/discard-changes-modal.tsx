@@ -1,4 +1,5 @@
 import { ErrorDisplay } from "@lifesg/react-design-system/error-display";
+import { forwardRef } from "react";
 import { IDiscardChangesModalProps } from "src/context-providers";
 import { useModal } from "../../../context-providers/display/modal-hook";
 import { GenericModal } from "./generic-modal";
@@ -12,7 +13,7 @@ interface IProps {
     modal: IDiscardChangesModalProps;
 }
 
-export const DiscardChangesModal = ({ modal }: IProps) => {
+const Modal = ({ modal }: IProps, ref: React.Ref<HTMLDivElement>) => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
@@ -45,7 +46,7 @@ export const DiscardChangesModal = ({ modal }: IProps) => {
     };
 
     return (
-        <GenericModal type={modal?.type}>
+        <GenericModal ref={ref} type={modal?.type}>
             <ErrorDisplay
                 type="confirmation"
                 title={
@@ -58,3 +59,5 @@ export const DiscardChangesModal = ({ modal }: IProps) => {
         </GenericModal>
     );
 };
+
+export const DiscardChangesModal = forwardRef(Modal);

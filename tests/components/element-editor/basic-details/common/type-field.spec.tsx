@@ -42,7 +42,7 @@ describe("TypeField", () => {
     it("should show the reset fields modal when the type is changed", async () => {
         renderComponent();
 
-        const typeField = screen.getByTestId("type-field");
+        const typeField = screen.getByTestId("type-field-base");
         fireEvent.click(typeField);
 
         const shortTextOption = await screen.findByText("Short text");
@@ -54,7 +54,7 @@ describe("TypeField", () => {
 
     it("should execute the callbacks of onClickActionButton when the 'Reset all fields' button is clicked", async () => {
         renderComponent();
-        const typeField = screen.getByTestId("type-field");
+        const typeField = screen.getByTestId("type-field-base");
         fireEvent.click(typeField);
 
         const shortTextOption = await screen.findByText("Short text");
@@ -68,7 +68,7 @@ describe("TypeField", () => {
         expect(mockHideModal).toHaveBeenCalled();
         expect(mockSelectElementType).toHaveBeenCalledWith(EElementType.TEXT);
 
-        expect(screen.getByTestId("type-field")).toHaveTextContent(
+        expect(screen.getByTestId("type-field-base")).toHaveTextContent(
             "Short text"
         );
     });
@@ -79,7 +79,7 @@ describe("TypeField", () => {
                 selectedElementType: EElementType.EMAIL,
             },
         });
-        const typeField = screen.getByTestId("type-field");
+        const typeField = screen.getByTestId("type-field-base");
         fireEvent.click(typeField);
 
         const shortTextOption = await screen.findByText("Short text");
@@ -91,7 +91,7 @@ describe("TypeField", () => {
         });
 
         expect(mockHideModal).toHaveBeenCalled();
-        expect(screen.getByTestId("type-field")).toHaveTextContent(
+        expect(screen.getByTestId("type-field-base")).toHaveTextContent(
             "Email address"
         );
     });
@@ -113,7 +113,7 @@ describe("TypeField", () => {
             },
         });
 
-        const typeField = screen.getByTestId("type-field");
+        const typeField = screen.getByTestId("type-field-base");
         fireEvent.click(typeField);
 
         const shortTextOption = screen.queryByText("Short text");

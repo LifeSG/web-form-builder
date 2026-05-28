@@ -21,7 +21,9 @@ describe("DefaultCountryCode", () => {
         renderComponent();
         expect(screen.queryByText("Display as fixed country code")).toBeNull();
 
-        const defaultCountryCode = screen.getByTestId("default-country-code");
+        const defaultCountryCode = screen.getByTestId(
+            "default-country-code-base"
+        );
         expect(defaultCountryCode).toBeInTheDocument();
 
         fireEvent.click(defaultCountryCode);

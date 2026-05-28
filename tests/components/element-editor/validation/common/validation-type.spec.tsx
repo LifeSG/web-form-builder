@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import "jest-canvas-mock";
 import { ValidationType } from "src/components/element-editor/validation/common";
 import { EValidationType, IValidation } from "src/context-providers";
@@ -39,11 +39,11 @@ describe("ValidationType", () => {
                 },
             }
         );
-        const getValidationTypeField = screen.getByRole("button", {
-            name: EValidationType.MAX_LENGTH,
-        });
+        const getValidationTypeField = within(
+            screen.getByTestId("validation-type")
+        ).getByRole("combobox");
         expect(getValidationTypeField).toBeInTheDocument();
-        expect(getValidationTypeField).toBeDisabled();
+        expect(getValidationTypeField).toHaveAttribute("aria-disabled", "true");
     });
 
     it("should render an error message when validation type is left empty", async () => {

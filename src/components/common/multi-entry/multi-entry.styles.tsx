@@ -16,9 +16,12 @@ export const MultiEntryAccordionItem = styled(
     Accordion.Item
 )<MultiEntryAccordionItemProps>`
     width: 100%;
-    border-top: 0;
-    border-bottom: ${Border["width-010"]} ${Border.solid} ${Colour.border};
     padding-bottom: ${({ $hasSubtitle }) => ($hasSubtitle ? `0.5rem` : "0")};
+
+    border-top: 0;
+    &:not(:last-child) {
+        border-bottom: ${Border["width-010"]} ${Border.solid} ${Colour.border};
+    }
 
     #content-container {
         padding: 0;

@@ -1,4 +1,5 @@
 import { ModalBoxProps } from "@lifesg/react-design-system/modal";
+import { forwardRef } from "react";
 import { EModalType } from "src/context-providers";
 import { useModal } from "src/context-providers/display/modal-hook";
 import { GrowContainer, ModalBox, ModalInner } from "./generic-modal.styles";
@@ -8,12 +9,10 @@ interface IProps extends ModalBoxProps {
     onClose?: () => void;
 }
 
-export const GenericModal = ({
-    type,
-    onClose,
-    children,
-    ...otherProps
-}: IProps) => {
+const Modal = (
+    { type, onClose, children, ...otherProps }: IProps,
+    ref: React.Ref<HTMLDivElement>
+) => {
     // =========================================================================
     // CONST, STATE, REFS
     // =========================================================================
@@ -28,9 +27,15 @@ export const GenericModal = ({
     // =============================================================================
     return (
         <GrowContainer>
-            <ModalBox onClose={onClose ?? handleModalClose} {...otherProps}>
+            <ModalBox
+                ref={ref}
+                onClose={onClose ?? handleModalClose}
+                {...otherProps}
+            >
                 <ModalInner data-testid="modal-content">{children}</ModalInner>
             </ModalBox>
         </GrowContainer>
     );
 };
+
+export const GenericModal = forwardRef(Modal);

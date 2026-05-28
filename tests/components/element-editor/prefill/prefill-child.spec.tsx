@@ -1,4 +1,10 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import {
+    fireEvent,
+    render,
+    screen,
+    waitFor,
+    within,
+} from "@testing-library/react";
 import "jest-canvas-mock";
 import { PrefillChild } from "src/components/element-editor/prefill";
 import { IPrefillAttributes } from "src/context-providers";
@@ -55,9 +61,9 @@ describe("PrefillChild", () => {
         fireEvent.click(submitButton);
 
         await waitFor(() => {
-            const getPrefillModeField = screen.getByRole("button", {
-                name: "Previous source",
-            });
+            const getPrefillModeField = screen.getByTestId(
+                "prefill-mode-field-base"
+            );
             expect(getPrefillModeField).toBeInTheDocument();
             expect(screen.getByDisplayValue("mockId")).toBeInTheDocument();
             expect(screen.getByDisplayValue("mockPath")).toBeInTheDocument();
@@ -84,12 +90,15 @@ describe("PrefillChild", () => {
                 },
             }
         );
-        const getPrefillModeField = screen.getByRole("button", {
-            name: "Myinfo",
-        });
+        const getPrefillModeField = screen.getByTestId(
+            "prefill-mode-field-base"
+        );
         expect(getPrefillModeField).toBeInTheDocument();
         expect(
-            screen.queryByPlaceholderText("Enter an action ID.")
+            within(getPrefillModeField).getByText("Myinfo")
+        ).toBeInTheDocument();
+        expect(
+            screen.queryByTestId("prefill-action-id-field")
         ).not.toBeInTheDocument();
         expect(screen.getByDisplayValue("mockPath")).toBeInTheDocument();
     });

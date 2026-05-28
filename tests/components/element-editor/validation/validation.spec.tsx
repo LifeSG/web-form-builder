@@ -94,9 +94,7 @@ describe("Validation", () => {
 
         fireEvent.click(getAddValidationButton());
 
-        const inputValidationType = screen.getByRole("button", {
-            name: "Select",
-        });
+        const inputValidationType = screen.getByTestId("validation-type-base");
         fireEvent.click(inputValidationType);
 
         const option = screen.getByText(EValidationType.MIN_LENGTH);

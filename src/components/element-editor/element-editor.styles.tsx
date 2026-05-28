@@ -1,3 +1,4 @@
+import { Accordion } from "@lifesg/react-design-system/accordion";
 import { Alert } from "@lifesg/react-design-system/alert";
 import styled from "styled-components";
 
@@ -8,4 +9,10 @@ export const Wrapper = styled.div`
         margin-bottom: 1rem;
     }
     margin-bottom: 8rem;
+`;
+
+export const AccordionWrapper = styled(Accordion)`
+    & > div:first-child {
+        display: none;
+    }
 `;
