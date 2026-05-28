@@ -22,6 +22,14 @@ export const Pills = () => {
     // EFFECTS
     // =========================================================================
 
+    useEffect(() => {
+        if (element?.pills != null) {
+            resetField("pills", {
+                defaultValue: element.pills,
+            });
+        }
+    }, []);
+
     /** This useEffect repopulates the defaultValues of pillPosition when it is remounted. */
     useEffect(() => {
         if (watchPills) {
